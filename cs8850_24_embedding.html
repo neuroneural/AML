@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+	        <section>
+
+	          <section data-background="figures/w2v_arrival.png" data-background-size="contain" data-background-repeat="repeat">
+	            <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Advanced Machine Learning</h2>
+                    <h3 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">25: word embedding</h3>
+                    <div class="slide-footer">
+                      <a href="https://community.wolfram.com/groups/-/m/t/1034626?sortMsg=Votes">background source</a> based on the movie Arrival together with other illustrations to this lecture
+                    </div>
+	          </section>
+
+	          <section data-background="figures/w2v_arrival.png" data-background-size="contain" data-background-repeat="repeat">
+	            <h2 shadows>Outline of this lecture</h2>
+                    <ul style="text-shadow: 6px 6px 10px #002b36; color: #eee8d5">
+                      <li class="fragment roll-in"> Introduction
+                      <li class="fragment roll-in"> Bag of Words
+                      <li class="fragment roll-in"> Singular Value Decomposition
+                      <li class="fragment roll-in"> Word2vec
+	            </ul>
+                  </section>
+
+                </section>
+
+                <!-- --------------------------------------------------------------------------->
+	        <section>
+                  <section data-background="figures/w2v_chernoff_faces.svg" data-background-size="cover">
+                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Why represent data as vectors?</h2>
+                    <aside class="notes">
+                      Sometimes data is collected from a number of individual sensors. Putting this sensors together per measurement or sample a list, an array, or vector is a natural way to represent this sample.<br>
+                      For example, height, weight, skin tone, eye color, hear color and many more, may be measurements about a person. We represent each as a dimension and can "walk" across the space of humans traveling along each of these dimensions independently. From a collection of samples represented as vectors we can learn how these dimensions interact.<br>
+                      We can also apply transformations, which eventually may enable us to build predictive models on the human space or we can use existing powerful ML models.
+                    </aside>
+                  </section>
+
+                  <section data-background="figures/w2v_chernoff_faces.svg" data-background-size="cover">
+                    <div id="header-right" style="margin-top: -200px;">
+                        <img src="figures/HermanChernoff.jpg" alt="Herman Chernoff" width="100px">
+                    </div>
+                    <h3>Vector components may have semantic meanings!</h3>
+                    <div class="slide-footer">
+                      <a href="https://www.wikiwand.com/en/Chernoff_face">Chernoff faces</a>
+                    </div>
+                    <aside class="notes">
+                      We can go in reverse too. If we have vector data we can assign dimensions to parameters of a cartoon face and do it in a way that faces are semantically meaningful to us. <br>
+                      Chernoff faces (of Herman Chernoff) are a way to semantically represent multivariate data. Imagine an operator controlling a state of a nuclear reactor, but instead of observing tens of parameters she just looks at a cartoon face and if the face grows unhappy investigates further into what's going on. Humans process faces in about 100ms. Would it not be nice to assess the status of a complex process as fast?<br>
+                      But what if we want to vectorize words by meaning into some form of a semantic space?
+                    </aside>
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="margin-right: -100px;">
+                      <a href="https://www.ling.upenn.edu/~wlabov/" target="_blank"><img src="figures/WilliamLabov.jpg" alt="William Labov" width="150px"></a>
+                    </div>
+                    <h2>What does a word mean?</h2>
+                    <h4>let's ask humans</h4>
+                    <row>
+                      <col50>
+                        <ul>
+                          <li class="fragment roll-in">
+                            William Labov. 1973
+                          <li class="fragment roll-in">
+                            Employ human subjects and ask them to label objects on the right as either a bowl or a cup.
+                          <li class="fragment roll-in">
+                            Construct a definition based on their responses.
+                        </ul>
+                      </col50>
+                      <col50>
+                      <img src="figures/Labovs_cups.png" alt="William Labov" style="margin-top: -10px;" width="75%">
+                      </col50>
+                    </row>
+                    <div class="slide-footer">
+                      Labov, W., 1973. The boundaries of words and their meanings. New ways of analyzing variation in English.
+                      <a href="https://web.stanford.edu/~jurafsky/slp3/slides/vector1.pdf">based on Daniel Jurafsky's slides</a>
+                    </div>
+                  </section>
+
+                  <section data-background="figures/Labov_category_end.png" data-background-size="contain">
+                    <div class="slide-footer">
+                      <a href="https://www.amazon.com/New-ways-analyzing-variation-English/dp/0878402055" target="_blank">Labov, W., 1973. The boundaries of words and their meanings. New ways of analyzing variation in English.</a>
+                    </div>
+                  </section>
+
+                  <section data-background="figures/Labov_context_sensitivity.png" data-background-size="contain">
+                    <div class="slide-footer">
+                      Labov, W., 1973. The boundaries of words and their meanings. New ways of analyzing variation in English.
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>A definition of "cup" emerges:</h2>
+                    <img src="figures/Labovs_cup.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+                    <div class="slide-footer">
+                      Labov, W., 1973. The boundaries of words and their meanings. New ways of analyzing variation in English.
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Ludwig Wittgenstein (1889-1951)</h2>
+                    <row>
+                      <col50>
+                        <ul style="font-size: 32px;">
+                          <li class="fragment roll-in">
+                            Philosopher of Language
+                          <li class="fragment roll-in">
+                            In his late years, a proponent of studying “ordinary language”
+                          <li class="fragment roll-in">
+                            In his view if we misuse words, when they have lost their meaning, it could create an inconsistency.
+                            <blockquote shade>
+                              A man loses his dog, so he puts an ad in the paper. And the ad says, ‘Here, boy!’
+                            </blockquote>
+                        </ul>
+                      </col50>
+                      <col50>
+                      <img src="figures/Ludwig_Wittgenstein.png" alt="Ludwig Wittgenstein" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="80%">
+                      </col50>
+                    </row>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>What is a game?</h2>
+                    <h4 style="margin-top: -35px;">Wittgenstein "Philosophical Investigations" (1945)</h4>
+                      <blockquote shade style="margin-top: -20px; text-align: left; font-size: 18px;" width="100%">
+                        66. Consider for example the proceedings that we call "games". I mean <mark>board-games, card-games, ball-games, Olympic games, and so on. What is common to them all? -- Don't say: "There must be something common, or they would not be called 'games' "-but look and see whether there is anything common to all.</mark> -- For if you look at them you will not see something that is common to all, but similarities, relationships, and a whole series of them at that. To repeat: don't think, but look! -- <mark>Look for example at board-games</mark>, with their multifarious relationships. <mark>Now pass to card-games;</mark> here you find many correspondences with the first group, but many common features drop out, and others appear. When we <mark>pass next to ball-games, much that is common is retained, but much is lost.</mark> -- Are they all 'amusing'? Compare chess with noughts and crosses. Or is there always winning and losing, or competition between players? Think of patience. In ball games there is winning and losing; but when a child throws his ball at the wall and catches it again, this feature has disappeared. Look at the parts played by skill and luck; and at the difference between skill in chess and skill in tennis. Think now of games like ring-a-ring-a-roses; here is the element of amusement, but how many other characteristic features have disappeared! And <mark>we can go through the many, many other groups of games in the same way; can see how similarities crop up and disappear.</mark>
+                        <br>
+                        And the result of this examination is: we see a complicated network of similarities overlapping and criss-crossing: sometimes overall similarities.
+                        <br>
+                        67. I can think of <mark>no better expression to characterize these similarities than "family resemblances";</mark> for the various resemblances between members of a family: build, features, colour of eyes, gait, temperament, etc. etc. overlap and criss-cross in the same way.-And I shall say: 'games' form a family.
+                        <br>
+                        And for instance the kinds of number form a family in the same way. Why do we call something a "number"? Well, perhaps because it has a-direct-relationship with several things that have hitherto been called number; and this can be said to give it an indirect relationship to other things we call the same name. And we extend our concept of number as in spinning a thread we twist fibre on fibre. And the strength of the thread does not reside in the fact that some on e fibre runs through its whole length, but in the overlapping of many fibres.
+                        <br>
+                        <mark>But if someone wished to say: "There is something common to all these constructions-namely the disjunction of all their common properties"  --I should reply: Now you are only playing with words.</mark> One might as well say: "Something runs through the whole thread- namely the continuous overlapping of those fibres".
+                      </blockquote>
+                    <div class="slide-footer">
+                      <a href="http://users.rcn.com/rathbone/lw65-69c.htm">source</a>
+                    </div>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h3>How about a radically different approach?</h3>
+                    <blockquote shade width="100%" class="fragment" data-fragment-index="0">
+                      "The meaning of a word is its use in the language."<br>
+                        Ludwig Wittgenstein
+                    </blockquote>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Words are defined by their environments</h2>
+                    <h3>the words around them</h3>
+                    <blockquote style="background-color: #eee8d5;" width="100%" class="fragment" data-fragment-index="1">
+                      "If A and B have almost identical environments we say that they are synonyms."
+                      <br>
+                      Zellig Harris (1954)
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>What does 'ong choi' mean?</h2>
+                    <div  class="fragment" data-fragment-index="0">
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width=100%">
+                      Suppose you see these sentences:
+                    </blockquote>
+                    <ul>
+                      <li> Ong choi is delicious <b>sautéed with garlic</b>.
+                      <li> Ong choi is superb <b>over rice</b>.
+                      <li> Ong choi <b>leaves</b> with salty sauces
+                    </ul>
+                    </div>
+                    <div  class="fragment" data-fragment-index="1">
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width=100%">
+                      And you've also seen these:
+                    </blockquote>
+                    <ul>
+                      <li> ...spinach <b>sautéed with garlic over rice</b>
+                      <li> Chard stems and <b>leaves</b> are <b>delicious</b>
+                      <li> Collard greens and other <b>salty</b> leafy greens
+                    </ul>
+                    </div>
+                    <div  class="fragment" data-fragment-index="2">
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width=100%">
+                    Conclusion:
+                    </blockquote>
+                    Ong choi is a leafy green like spinach, chard, or collard greens
+                    </div>
+                  </section>
+
+                  <section data-background="figures/ongchoy.png" data-background-size="cover">
+                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Ong choi: Ipomoea aquatica "Water Spinach"</h2>
+                  </section>
+
+                  <section data-background="figures/wordspace.png" data-background-size="cover">
+                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Let's consider methods that embed words in a vector space</h2>
+                  </section>
+
+                </section>
+
+                <!-- --------------------------------------------------------------------------->
+	        <section>
+                  <section data-background="figures/w2v_nlp_wordle.png" data-background-size="cover">
+                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Bag of Words</h2>
+                    check this for ideas and inspirations
+                    https://towardsdatascience.com/art-of-vector-representation-of-words-5e85c59fee5
+                  </section>
+
+                  <section>
+                    <h2>One hot encoding</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="900"
+                         src="figures/w2v_onehot.png" alt="One hot encoding">
+                  </section>
+
+                  <section>
+                    <h2>Simple counts</h2>
+                  </section>
+
+                  <section>
+                    <h2>tfidf</h2>
+                    <ul  style="list-style-type: none; font-size: 28px;">
+                      <li class="fragment roll-in">
+                        $$
+                        w_{i,j} = tf_{i,j}
+                        $$
+                        $tf_{i,j}$ - term frequency: number of occurrences of word $i$ in $j$
+                      <li class="fragment roll-in">
+                        \begin{align}
+                        idf & = - \log{\prob{P}{w_i|D}}\\
+                        & = \log{\frac{1}{\prob{P}{w_i|D}}}\\
+                        & =  \log{\left(\frac{N}{df_i}\right)}
+                        \end{align}
+                        $df_i$ - number of documents containing $i$
+                        $N$ - total number of documents
+                      <li class="fragment roll-in">
+                        $$
+                        w_{i,j} = tf_{i,j} \times \log{\left(\frac{N}{df_i}\right)}
+                        $$
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>n-grams</h2>
+                    <iframe name="ngram_chart" src="https://books.google.com/ngrams/interactive_chart?content=convolutional+neural+network%2Crecurrent+neural+network%2Cmultilayer+perceptron%2Csupport+vector+machine&year_start=1950&year_end=2010&corpus=15&smoothing=3&share=&direct_url=t1%3B%2Cconvolutional%20neural%20network%3B%2Cc0%3B.t1%3B%2Crecurrent%20neural%20network%3B%2Cc0%3B.t1%3B%2Cmultilayer%20perceptron%3B%2Cc0%3B.t1%3B%2Csupport%20vector%20machine%3B%2Cc0" width=1200 height=400 marginwidth=0 marginheight=0 hspace=0 vspace=0 frameborder=0 scrolling=no></iframe>
+                    <div class="slide-footer">
+                      <a href="https://books.google.com/ngrams">Google's n-gram viewer</a>
+                    </div>
+
+                  </section>
+
+                  <section data-background="figures/w2v_arrival_ft.png" data-background-size="contain">
+                    <h2>Take Away Bits</h2>
+                    <ol>
+                      <li class="fragment roll-in"> To use ML models need to vectorize categorical variables
+                      <li class="fragment roll-in"> One-hot encoding (aka 1-in-K) is a good start
+                      <li class="fragment roll-in"> To encode a collection use counts or tf-idf
+                      <li class="fragment roll-in"> To enrich representation use n-grams (beware of the exponent)
+                    </ol>
+                  </section>
+                </section>
+
+
+
+                <!-- --------------------------------------------------------------------------->
+	        <section>
+                  <section data-background="figures/svd_diagram.png" data-background-size="contain">
+                    <h2  style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Matrix Factorization Method</h2>
+                  </section>
+
+                  <section>
+                    <h2>CO-occurence tables</h2>
+                    <alert class="fragment roll-in" data-fragment-index="0">Frequent (stop) words dominate the table</alert>
+                  </section>
+
+                  <section>
+                    <h2>Fill the table with tfidf instead</h2>
+                    <ul  style="list-style-type: none; font-size: 28px; ">
+                      <li >
+                        $$
+                        w_{i,j} = tf_{i,j}
+                        $$
+                        $tf_{i,j}$ - term frequency: number of occurrences of word $i$ in $j$
+                      <li >
+                        \begin{align}
+                        idf & = - \log{\prob{P}{w_i|D}}\\
+                        & = \log{\frac{1}{\prob{P}{w_i|D}}}\\
+                        & =  \log{\left(\frac{N}{df_i}\right)}
+                        \end{align}
+                        $df_i$ - number of documents containing $i$
+                        $N$ - total number of documents
+                      <li >
+                        $$
+                        w_{i,j} = tf_{i,j} \times \log{\left(\frac{N}{df_i}\right)}
+                        $$
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>or use PMI</h2>
+                    <row>
+                      <col60>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width=100%">
+                          Pointwise Mutual Information (PMI)
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5; font-size: 26px;" width="100%" class="fragment" data-fragment-index="0">
+                          Do words x and y co-occur more than if they were independent?
+                          $$
+                          \prob{PMI}{w, c} = \log{\frac{\prob{p}{c,w}}{\prob{p}{w}\prob{p}{c}}}
+                          $$
+                        </blockquote>
+                      </col60>
+                      <col40>
+                        <ul  style="list-style-type: none; font-size: 24px">
+                          <li class="fragment roll-in" data-fragment-index="0">
+                            $$
+                            \prob{PMI}{w, c} = \log{\frac{\prob{p}{c|w}}{\prob{p}{c}}}
+                            $$
+                          <li class="fragment roll-in" data-fragment-index="1">
+                            $$
+                            \prob{p}{c} = \frac{\prob{count}{c}}{N}
+                            $$
+                          <li class="fragment roll-in" data-fragment-index="2">
+                            $$
+                            \prob{p}{c|w} = \frac{\prob{p}{c,w}}{\prob{p}{w}}
+                            $$
+                          <li class="fragment roll-in" data-fragment-index="3">
+                            $$
+                            \prob{p}{c,w} = \frac{\prob{count}{c,w}}{N}
+                            $$
+                          <li class="fragment roll-in" data-fragment-index="4">
+                            $$
+                            \prob{p}{w} = \frac{\prob{count}{w}}{N}
+                            $$
+                          <li class="fragment roll-in" data-fragment-index="5">
+                            $$
+                            \log{\frac{\prob{count}{c,w}\times N}{\prob{count}{c}\times \prob{count}{w}}}
+                            $$
+                        </ul>
+                      </col40>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h3>Positive Pointwise Mutual Information</h3>
+                    <row>
+                      <col50>
+                        <ul  style="list-style-type: none; font-size: 22pt">
+                          <li class="fragment roll-in" data-fragment-index="0">
+                            PMI ranges from $-\infty$ to $+\infty$
+                          <li class="fragment roll-in" data-fragment-index="1">
+                            But the negative values are problematic
+                            <ul  style="list-style-type: disk; font-size: 22pt">
+                              <li class="fragment roll-in" data-fragment-index="2"> Things are co-occurring <b>less</b> than we expect by chance
+                              <li class="fragment roll-in" data-fragment-index="3"> Unreliable without enormous corpora
+                                <ul  style="list-style-type: disk; font-size: 22pt">
+                                  <li class="fragment roll-in" data-fragment-index="4"> Imagine $w_1$ and $w_2$ whose probability is each $10^{-6}$
+                                  <li class="fragment roll-in" data-fragment-index="5"> Hard to be sure $\prob{p}{w_1,w_2}$ is significantly different than $10^{-12}$
+                                </ul>
+                              <li class="fragment roll-in" data-fragment-index="6">
+                                It’s not clear people are good at "unrelatedness"
+                            </ul>
+                          <li class="fragment roll-in" data-fragment-index="7">
+                            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 22px; width=100%">
+                              Let's try a hack: replace negative PMI values by 0
+                            </blockquote>
+                        </ul>
+                      </col50>
+                      <col50>
+                        <div class="fragment roll-in" data-fragment-index="8" style="font-size: 24px">
+                          $$
+                          \prob{PPMI}{w, c} = \begin{cases}
+                          \prob{PMI}{w, c} & \prob{PMI}{w, c} \gt 0 \\
+                          0 & \mbox{otherwise}
+                          \end{cases}
+                          $$
+                        </div>
+                        <alert class="fragment roll-in" data-fragment-index="9">Frequent (stop) words are normalized away in PPMI table</alert>
+                            <ul  style="list-style-type: disk; font-size: 22pt">
+                              <li class="fragment roll-in" data-fragment-index="9">
+                                PMI is biased toward infrequent events
+                                <ul  style="list-style-type: disk; font-size: 22pt">
+                                  <li class="fragment roll-in" data-fragment-index="10">
+                                    Very rare words have very high PMI values
+                                </ul>
+                              <li class="fragment roll-in" data-fragment-index="11">
+                                Two solutions:
+                                <ul  style="list-style-type: disk; font-size: 22pt">
+                                  <li class="fragment roll-in" data-fragment-index="12">
+                                    Give rare words slightly higher probabilities
+                                  <li class="fragment roll-in" data-fragment-index="13">
+                                    Use add-one smoothing (which has a similar effect)
+                                </ul>
+                            </ul>
+                      </col50>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>Probability Ratios</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="900"
+                         src="figures/glove_ratio_table.svg" alt="One hot encoding">
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Latent Semantic Analysis</h2>
+                    <video controls autoplay>
+                      <source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/7/70/Topic_model_scheme.webm/Topic_model_scheme.webm.480p.vp9.webm#t=00:00:01,00:00:17.600" width="900">
+                    </video>
+                  </section>
+
+                  <section>
+                    <h3>Matrix factorization for dense word vectors</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
+                         src="figures/matrix_factorization.svg" alt="Matrix factorization">
+                  </section>
+
+                  <section>
+                    <h3>SVD for dense word vectors</h3>
+                    <img style="margin-bottom: -50px; margin-top: -40px;" width="100%"
+                         src="figures/svd_diagram.png" alt="Matrix factorization SVD">
+                    <br>
+                    <img width="80%"
+                         src="figures/matrix_factorization_svd.svg" alt="Matrix factorization SVD">
+                  </section>
+
+                  <section data-background="figures/w2v_arrival_ft.png" data-background-size="contain">
+                    <h2>Take Away bits</h2>
+                    <ol>
+                      <li> Word similarity as co-occurrence within same context.
+                      <li> Different way to estimate it but all can be put in a matrix.
+                      <li> The matrix can be low rank factored and dense word representations emerge.
+                      <li> Inner product of word vectors encodes co-occurrence or probability.
+                    </ol>
+                  </section>
+                </section>
+
+                <!-- --------------------------------------------------------------------------->
+	        <section>
+                  <section data-background="figures/w2v_arrival_gif.gif" data-background-size="cover">
+                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Word2vec</h2>
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="margin-right: -100px">
+                      <a href="https://www.ling.upenn.edu/~wlabov/" target="_blank"><img src="figures/TomasMikolov.png" alt="William Labov" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-bottom: -5%" width="160px" ></a><br>
+                      <small>Tomas Mikolov</small>
+                    </div>
+                    <h2>dense embedding with word2vec</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
+                         src="figures/cbow_sg.png" alt="CBOW SG">
+                    <div class="slide-footer">
+                      <a href="https://code.google.com/archive/p/word2vec/">source code</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>w2v: semantic algebra</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
+                         src="figures/w2v_algebra.png" alt="w2v algebra">
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>w2v: relation</h2>
+                    <img style="margin-top: -40px;" width="60%"
+                         src="figures/w2v_relation.png" alt="w2v relation">
+                  </section>
+
+                  <section  data-fullscreen>
+                    <h2>w2v: degree</h2>
+                    <img style="margin-top: -40px;" width="60%"
+                         src="figures/w2v_degree.png" alt="w2v degree">
+                  </section>
+
+                  <section>
+                    <h2>w2v: semantic drift</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
+                         src="figures/w2v_diachronic.png" alt="w2v semantic drift">
+                  </section>
+
+                  <section>
+                    <h2>w2v: semantic drift</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
+                         src="figures/w2v_evolution.png" alt="w2v semantic drift">
+                  </section>
+
+                  <section>
+                    https://www.datcreativity.com/
+                  </section>
+                  <section data-background="figures/w2v_arrival_ft.png" data-background-size="contain">
+                    <h2>Take Away bits</h2>
+                    <ol>
+                      <li> Simple and efficient dense word embedding
+                      <li> Use SGNS unless you know what you're doing
+                        <ol>
+                          But mind this recent result on CBOW: <a href=https://arxiv.org/abs/2012.15332 target="blank_">kōan: A Corrected CBOW Implementation</a>
+                        </ol>
+                      <li> W2v give semantically rich space (even algebra works)
+                      <li> If you're encoding words as BOW in your project you're missing out!
+                    </ol>
+                  </section>
+                </section>
+
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+            <script src="node_modules/reveal.js-verticator/plugin/verticator/verticator.js"></script>
+            <link rel="stylesheet" href="node_modules/reveal.js-verticator/plugin/verticator/verticator.css">
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  width: 960,
+                  height: 700,
+                  center: true,
+                  hash: true,
+                  controls: false,
+                  keyboard: true,
+                  margin: 0.05,
+                  overview: true,
+                  transition: 'slide', // Transition style: none/fade/slide/convex/concave/zoom
+                  transitionSpeed: 'slow', // Transition speed: default/fast/slow
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ Verticator, RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

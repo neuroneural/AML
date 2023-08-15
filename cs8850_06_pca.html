@@ -1,0 +1,1135 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>06: regression and PCA</h3>
+	            <p>
+	          </section>
+
+                                    <section>
+                    <h3>Schedule</h3>
+
+                    <row>
+                      <col50>
+                      <table style="font-size:14px">
+                        <tr>
+                          <th>#</th>
+                          <th>date</th>
+                          <th>topic</th>
+                          <th>description</th>
+                        </tr>
+                        <tr><td>1</td>
+                          <td> 22-Aug-2022 </td>
+                          <td> Introduction </td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>  2 </td>
+                          <td> 24-Aug-2022 </td>
+                          <td> Foundations of learning </td>
+                          <td> </td>
+                        </tr>
+                        <tr><td>  3  </td><td> 29-Aug-2022 </td><td> PAC learnability </td><td>             </td></tr>
+                        <tr><td>  4 </td><td> 31-Aug-2022 </td><td>      Linear algebra (recap) </td><td>   hw1 released   </td></tr>                        
+                        <tr style='background-color: #FBEEC2;'><td>   </td><td> 05-Sep-2022 </td><td> <em>Holiday</em>         </td><td>         </td></tr>
+                        <tr><td>  5 </td><td> 07-Sep-2022 </td><td> Linear learning models </td><td>  </td></tr>
+                        <tr  style='background-color: #E0E4CC;'><td>  6 </td><td> 12-Sep-2022 </td><td> Principal Component Analysis       </td><td> <i class='fa fa-map-marker' style='color: #FA6900;'></i>  project ideas  </td></tr>
+                        <tr><td>  7 </td><td> 14-Sep-2022  </td><td>  Curse of Dimensionality          </td></td></td><td> hw1 due </td></tr>
+<tr><td> 8 </td><td> 19-Sep-2022  </td><td>  Bayesian Decision Theory  </td><td>hw2 release</td></tr>
+<tr><td> 9 </td><td> 21-Sep-2022  </td><td> Parameter estimation: MLE </td><td></td></tr>
+<tr><td> 10 </td><td> 26-Sep-2022 </td><td> Parameter estimation: MAP & NB</td><td>finalize teams</td></tr>
+<tr><td> 11 </td><td> 28-Sep-2022 </td><td> Logistic Regression  </td><td>             </td></tr>
+<tr><td> 12 </td><td> 03-Oct-2022 </td><td> Kernel Density Estimation </td><td>             </td></tr>
+<tr><td> 13 </td><td> 05-Oct-2022 </td><td> Support Vector Machines </td><td>  hw3, hw2 due       </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 10-Oct-2022 </td><td>   * Mid-point projects checkpoint     </td><td>    *    </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 12-Oct-2022 </td><td>   * Midterm: Semester Midpoint       </td><td> exam   </td></tr>
+<tr><td> 14 </td><td> 17-Oct-2022  </td><td>Matrix Factorization</td><td>           </td></tr>
+<tr><td> 15 </td><td> 19-Oct-2022  </td><td>Stochastic Gradient Descent</td><td>      </td></tr>
+</table>
+</col50>
+<col50>
+<table style="font-size:14px; vertical-align: top;">
+  <tr>
+    <th>#</th>
+    <th>date</th>
+    <th>topic</th>
+    <th>description</th>
+  </tr>
+  <tr><td> 16 </td><td> 24-Oct-2022 </td><td> k-means clustering  </td><td> </td></tr>
+  <tr><td> 17 </td><td> 26-Oct-2022 </td><td> Expectation Maximization </td><td> hw4, hw3 due             </td></tr>
+  <tr><td> 18 </td><td> 31-Oct-2022 </td><td> Automatic Differentiation </td><td> </td></tr>
+  <tr><td> 19  </td><td> 02-Nov-2022 </td><td> Nonlinear embedding approaches </td><td>  </td></tr>
+  <tr><td> 20 </td><td> 07-Nov-2022 </td><td> Model comparison I </td><td> </td></tr>
+  <tr><td> 21 </td><td> 09-Nov-2022 </td><td> Model comparison II  </td><td> hw5, hw4 due</td></tr>
+  <tr><td> 22 </td><td> 14-Nov-2022 </td><td> Model Calibration </td><td> </td></tr>
+  <tr><td> 23 </td><td> 16-Nov-2022  </td><td> Convolutional Neural Networks  </td><td>             </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 21-Nov-2022  </td><td> <em>Fall break</em> </td><td>            </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 23-Nov-2022 </td><td> <em>Fall break</em> </td><td>   </td></tr>
+  <tr><td> 24 </td><td> 28-Nov-2022 </td><td> Word Embedding </td><td> hw5 due </td></tr>
+  <tr style='background-color: #FBEEC2;'><td> </td><td> 30-Nov-2022 </td><td> Presentation and exam prep day </td><td> </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 02-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 07-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td> </td><td> 12-Dec-2022 </td><td> * Final Exam    </td><td>   *     </td></tr>
+  <tr><td> </td><td> 15-Dec-2022  </td><td> Grades due   </td><td>             </td></tr>
+</table>
+</col50>
+</row>
+</section>
+
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Linear Regression
+                      <li class="fragment roll-in"> Linear Algebra Refresher
+                      <li class="fragment roll-in"> Spectral Theorem
+                      <li class="fragment roll-in"> Principal Component Analysis
+                      <li class="fragment roll-in"> Dimensionality Reduction Demo
+	            </ul>
+                  </section>
+                </section>
+
+        <!-- -------------------------------------------------------------------------         -->
+        <section>
+
+          <section>
+            <div id="header-right">
+              <img style="margin-bottom: -5%" width="200" src="figures/Galton.png" alt="Galton">
+              <br>
+              <small>Francis Galton</small>
+            </div>
+            <div id="header-left">
+              <img style="margin-bottom: -5%"  width="200"
+                   src="figures/Gauss_engraving.png" alt="Gauss">
+              <br>
+              <small>Carl Friedrich Gauss</small>
+            </div>
+            <h2>Linear regression</h2>
+            <img style="margin-bottom: -2%"  width="200"
+                 src="figures/Legendre_engraving.png" alt="Legendre">
+            <br>
+            <small>Adrien-Marie Legendre</small>
+          </section>
+
+          <section>
+            <h2>Least Mean Squares</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                 src="figures/lms_poor.png" alt="lms poor">
+            <aside class="notes">
+              Recall, that Least Mean Squares was not such a good idea for classification (although it can work in practice, just not guaranteed to find a solution).
+            </aside>
+          </section>
+
+          <section data-fullscreen>
+            <h2>Linear Regression</h2>
+            <div class="fragment" data-fragment-index="0">
+              $f(\vec{w}) = \frac{1}{n} \sum_{i}^{n} (\vec{w}^T\vec{x}_i - y_i)^2$
+            </div>
+            <div class="fragment" data-fragment-index="1">
+              Let us write in matrix form:<br>
+              $f(\vec{w}) =\frac{1}{n}(\bf{X}\vec{w} - \vec{y})^T(\bf{X}\vec{w} - \vec{y})$
+            </div>
+            <div class="fragment" data-fragment-index="2">
+              Expanding:<br>
+              $f(\vec{w}) =\frac{1}{n}(\vec{w}^T\bf{X}^T\bf{X}\vec{w} - 2\vec{w}^T\bf{X}^T\vec{y} + \vec{y}^T\vec{y})$
+            </div>
+            <div class="fragment" data-fragment-index="3" style="margin-top: -1%">
+              Dropping $\vec{y}$:<br>
+              $f(\vec{w}) =\frac{1}{n}(\vec{w}^T\bf{X}^T\bf{X}\vec{w} - 2\vec{w}^T\bf{X}^T\vec{y})$
+            </div>
+            <div class="fragment" data-fragment-index="4" style="margin-top: -1%">
+              Using:<br>
+              $\frac{\partial \vec{x}^T\bf{B}\vec{x}}{\partial \vec{x}} = (\bf{B} + \bf{B}^T)\vec{x}$<br>
+              $\frac{\partial f(\vec{w})}{\partial \vec{w}} =\frac{2}{n}(\bf{X}^T\bf{X}\vec{w} - \bf{X}^T\vec{y})$
+            </div>
+          </section>
+
+          <section>
+            <h2>Minimizing LMS</h2>
+            <div class="fragment" data-fragment-index="0">
+              $\frac{\partial f(\vec{w})}{\partial \vec{w}} =\frac{2}{n}(\bf{X}^T\bf{X}\vec{w} - \bf{X}^T\vec{y})$
+            </div>
+            <div class="fragment" data-fragment-index="1">
+              $\frac{\partial f(\vec{w})}{\partial \vec{w}} = 0 $
+            </div>
+            <div class="fragment" data-fragment-index="2">
+              $\bf{X}^T\bf{X}\vec{w} - \bf{X}^T\vec{y} = 0$<br>
+              $\bf{X}^T\bf{X}\vec{w} = \bf{X}^T\vec{y}$<br>
+              $\vec{w} = (\bf{X}^T\bf{X})^{-1}\bf{X}^T\vec{y}$
+            </div>
+            <div class="fragment" data-fragment-index="3">
+              $\bf{X}^{\dagger} = (\bf{X}^T\bf{X})^{-1}\bf{X}^T$ - pseudoinverse
+            </div>
+            <div class="fragment" data-fragment-index="4">
+              $\bf{X}^{\dagger} = \lim_{\epsilon \to 0}(\bf{X}^T\bf{X} + \epsilon\bf{I})^{-1}\bf{X}^T$ - always exists
+            </div>
+          </section>
+
+          <section>
+            <h2>Least Mean Squares regression</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
+                 src="figures/lms_lregression.svg" alt="lms regression">
+          </section>
+
+          <section>
+            <h3>Least Mean Squares single sample</h3>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
+                 src="figures/lms.svg" alt="lms">
+          </section>
+
+          <section data-fullscreen>
+            <h3>Fitting data: which is correct?</h3>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);"
+                 width="800"  class="reveal"
+                 src="figures/projection_kinds.png" alt="fitting kinds">
+          </section>
+
+          <section>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; text-align: justify; width: 100%">
+              Everyone believes in the Gaussian law of errors. The experimentalists think it is a mathematical theorem, and the mathematicians think it is an established experimental fact.
+<br>
+-Henri Poincaré
+            </blockquote>
+          </section>
+
+          <section data-fullscreen>
+            <h3>Different ways to fit a line</h3>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"  class="reveal"
+                 src="figures/regressions.svg" alt="regressions">
+          </section>
+
+          <section data-fullscreen>
+            <!-- <h3>Change of basis effect</h3> -->
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                 src="figures/rotation_Gaussian.svg" alt="rotations">
+          </section>
+
+          <section data-fullscreen>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"  class="reveal"
+                 src="figures/umap.png" alt="umap">
+          </section>
+
+          <section data-fullscreen>
+            <!-- <h3>Change of basis effect</h3> -->
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                 src="figures/xy_noise.svg" alt="noise plot">
+          </section>
+
+          <section data-fullscreen>
+            <!-- <h3>Change of basis effect</h3> -->
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                 src="figures/PCA_spring.gif" alt="PCA gif">
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Linear Algebra Refresher</h2>
+          </section>
+
+          <section  data-state="header1">
+            <style>.header1 header:after { content: "Inner product"; }</style>
+            <h2>Inner product</h2>
+            Let ${\bf x} = \left[\begin{array}{ccc}1 & 2 &
+            3\end{array}\right]^{\rm T}$. The <b>inner product</b> of ${\bf x}$
+            with itself, or ${\bf x}^{T}{\bf x}$ is a scalar:
+            $$
+            \left[
+            \begin{array}{ccc}
+            1 & 2 & 3
+            \end{array}
+            \right]
+            \left[
+            \begin{array}{c}
+            1\\
+            2\\
+            3
+            \end{array}
+            \right]
+            = 1 \cdot 1 + 2 \cdot 2 + 3 \cdot 3
+            = 14.
+            $$
+          </section>
+
+          <section>
+            <h2>Outer product</h2>
+            The <em>outer product</em> of $\bf{x}$ with itself, or
+            ${\bf x}{\bf x}^{\;{\rm T}}$ is a matrix:
+            <small>
+            \[
+            \left[
+            \begin{array}{c}
+            1\\
+            2\\
+            3
+            \end{array}
+            \right]
+            \left[
+            \begin{array}{ccc}
+            1 & 2 & 3
+            \end{array}
+            \right]
+            =
+            \left[
+            \begin{array}{ccc}
+            1 & 2 & 3\\
+            2 & 4 & 6\\
+            3 & 6 & 9
+            \end{array}
+            \right]
+            \]
+            </small>
+            <br>
+            which was obtained as
+            <br>
+            <small>
+            \[
+            \left[
+            \begin{array}{c}
+            1\\
+            2\\
+            3
+            \end{array}
+            \right]
+            \left[
+            \begin{array}{ccc}
+            1 & 2 & 3
+            \end{array}
+            \right]
+            =
+            \left[
+            \begin{array}{c|c|c}
+            1\left[
+            \begin{array}{c}
+            1\\
+            2\\
+            3
+            \end{array}
+            \right]&
+            2\left[
+            \begin{array}{c}
+            1\\
+            2\\
+            3
+            \end{array}
+            \right]&
+            3\left[
+            \begin{array}{c}
+            1\\
+            2\\
+            3
+            \end{array}
+            \right]
+            \end{array}
+            \right].
+            \]
+            </small>
+          </section>
+        </section>
+        <!-- -------------------------------------------------------------------------         -->
+        <section>
+          <section>
+            <h2>Spectral Theorem</h2>
+          </section>
+
+          <section>
+            <h2>Change of basis</h2>
+            <blockquote>
+            Consider a linear transform, ${\bf P}_{\cal B}$, and its
+            inverse, ${\bf P}^{-1}_{\cal B}$, which map a vector back and forth
+            between its representation in the standard basis and its
+            representation in the basis, ${\cal B}$
+            </blockquote>
+            $$
+            \begin{array}{ccc}
+            & {\bf P}_{\cal B} & \\
+            \vec{u} & \stackrel{\longrightarrow}{\longleftarrow} & \left[\vec{u}\right]_{\cal B}\\
+            & {\bf P}^{-1}_{\cal B} &
+            \end{array}
+            $$
+          </section>
+
+          <section>
+            <h2>Which basis?</h2>
+            <blockquote>
+            Let ${\cal B}$ consist of $N$ basis vectors, $\vec{b}_1 \dots \vec{b}_N$. Since $\left[{\bf u}\right]_{\cal B}$ is the
+            representation of $\vec{u}$ in ${\cal B}$, it follows that
+            </blockquote>
+            \[
+            \vec{u} = \left(\left[\vec{u}\right]_{\cal B}\right)_1 \vec{b}_1 +
+            \left(\left[\vec{u}\right]_{\cal B}\right)_2 \vec{b}_2 + \dots
+            \left(\left[\vec{u}\right]_{\cal B}\right)_N \vec{b}_N.
+            \]
+          </section>
+
+          <section>
+            <h2>But that's a projection</h2>
+            \[
+            \vec{u} = \left(\left[\vec{u}\right]_{\cal B}\right)_1 \vec{b}_1 +
+            \left(\left[\vec{u}\right]_{\cal B}\right)_2 \vec{b}_2 + \dots
+            \left(\left[\vec{u}\right]_{\cal B}\right)_N \vec{b}_N
+            \]
+            <blockquote style="width: 95%;">
+              But this is just the matrix vector product $\vec{u} = {\bf B}\left[\vec{u}\right]_{\cal B}$
+            </blockquote>
+            <div class="fragment" data-fragment-index="0" >
+              \[
+              {\bf B} = \left[\begin{array}{c|c|c|c}{\bf b}_1 & {\bf b}_2 & \dots & {\bf b}_N\end{array}\right]
+              \]
+            </div>
+            <div class="fragment" data-fragment-index="1" >
+              <div class = "column g4">
+                $$
+                \begin{array}{ccc}
+                & {\bf P}_{\cal B} & \\
+                \vec{u} & \stackrel{\longrightarrow}{\longleftarrow} & \left[\vec{u}\right]_{\cal B}\\
+                & {\bf P}^{-1}_{\cal B} &
+                \end{array}
+                $$
+              </div>
+              <div class = "column g6">
+                We see that<p><p>
+                  \[
+                  \begin{array}{lcl }
+                  {\bf P}_{\cal B} &=& {\bf B}^{-1}\\
+                  {\bf P}^{-1}_{\cal B} &=& {\bf B}
+                  \end{array}
+                  \]
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Similarity Transforms</h2>
+            <blockquote>
+              Consider a linear transformation represented in the
+              standard basis by the matrix ${\bf A}$. We seek $\left[{\bf
+              A}\right]_{\cal B}$, <i>i.e.</i>, the representation of the
+              corresponding linear transformation in the basis ${\cal B}$
+            </blockquote>
+            <div class="fragment" data-fragment-index="0" >
+              \[
+              \begin{array}{ccc}
+              \vec{u} & \stackrel{{\bf A}}{\longrightarrow} & {\bf A}\vec{u}\\
+              \uparrow {\bf B} &  & \downarrow {\bf B}^{-1}\\
+              \left[\vec{u}\right]_{\cal B} & \stackrel{\left[{\bf A}\right]_{\cal B}\;\;\;}{\longrightarrow} &
+              \left[{\bf A}\vec{u}\right]_{\cal B}
+              \end{array}
+              \]
+            </div>
+          </section>
+
+          <section>
+            <h2>Similarity Transforms</h2>
+            <div class="fragment" data-fragment-index="0" >
+              \[
+              \begin{array}{ccc}
+              \vec{u} & \stackrel{{\bf A}}{\longrightarrow} & {\bf A}\vec{u}\\
+              \uparrow {\bf B} &  & \downarrow {\bf B}^{-1}\\
+              \left[\vec{u}\right]_{\cal B} & \stackrel{\left[{\bf A}\right]_{\cal B}\;\;\;}{\longrightarrow} &
+              \left[{\bf A}\vec{u}\right]_{\cal B}
+              \end{array}
+              \]
+              The matrix we seek maps $\left[{\bf u}\right]_{\cal B}$ into $\left[{\bf A}{\bf u}\right]_{\cal B}$.
+            </div>
+
+            <div class="fragment" data-fragment-index="1" >
+              \[
+              \left[{\bf A}\right]_{\cal B} = {\bf B}^{-1}{\bf A}{\bf B}.
+              \]
+              ${\bf A}$ and $\left[{\bf A}\right]_{\cal B}$
+              are related by a <i>similarity transform</i>.
+            </div>
+          </section>
+
+          <section>
+            <h2>Basis of eigenvectors</h2>
+            <blockquote>
+              Let ${\bf A}$ be a  representation of a transform in the
+              standard basis and  let the columns of ${\bf  X}$ be the
+              eigenvectors of  ${\bf A}$ (symmetric).  Then  ${\bf X}$
+              and  ${\bf X}^{\rm  T}={\bf  X}^{-1}$ take  us back  and
+              forth  between the  standard  basis and  ${\cal X}$:
+            </blockquote>
+            \[
+            \begin{array}{ccc}  & {\bf  X}^{\rm T}  & \\  {\bf u}  &
+            \stackrel{\longrightarrow}{\longleftarrow}  & \left[{\bf
+            u}\right]_{\cal X}\\ & {\bf X} & \end{array}
+            \]
+          </section>
+
+          <section>
+            <h3>Diagonalization of Symmetric Matrices</h3>
+            <blockquote>
+              The matrix we seek maps $\left[{\bf u}\right]_{\cal X}$
+              into $\left[{\bf A}{\bf u}\right]_{\cal X}$:
+            </blockquote>
+            \[
+            \begin{array}{ccc}
+            {\bf u} & \stackrel{{\bf A}}{\longrightarrow} & {\bf A}{\bf u}\\
+            \uparrow {\bf X} &  & \downarrow {\bf X}^{\rm T}\\
+            \left[{\bf u}\right]_{\cal X} &
+            \stackrel{\left[{\bf A}\right]_{\cal X}\;\;\;}{\longrightarrow} &
+            \left[{\bf A}{\bf u}\right]_{\cal X}
+            \end{array}
+            \]
+            <div class="fragment" data-fragment-index="0" >
+              which is (from the diagram):
+              \[
+              \Lambda = {\bf X}^{\rm T}{\bf A}{\bf X}.
+              \]
+              <small>
+                Note, $\Lambda$ is diagonal with $\Lambda_{ii}=\lambda_i$
+              </small>
+            </div>
+          </section>
+
+
+          <section>
+            <h3>Spectral Theorem for Symmetric Matrices</h3>
+            <blockquote>
+              Any symmetric $N \times N$ matrix, ${\bf A}$, with $N$ distinct
+              eigenvalues, can be factored as follows:
+              \[
+              {\bf A} = {\bf X} \Lambda {\bf X}^{\rm T}
+              \]
+              where $\Lambda$ is $N \times N$ and diagonal, ${\bf X}$ and
+              ${\bf X}^{\rm T}$ are $N \times N$ matrices, and the $i$-th column of
+              ${\bf X}$ (equal to the $i$-th row of ${\bf X}^{\rm T}$) is an <i>
+              eigenvector</i> of ${\bf A}$:
+              \[
+              \lambda_i {\bf x}_i = {\bf A}{\bf x}_i
+              \]
+              with eigenvalue $\Lambda_{ii} = \lambda_i$.
+            </blockquote>
+          </section>
+
+          <section>
+            <h3>Spectral Theorem (note)</h3>
+            <blockquote>
+              Note that ${\bf x}_i$ is orthogonal to ${\bf x}_j$ when $i \neq j$:
+              \[
+              \left({\bf X}{\bf X}^{\rm T}\right)_{ij} = \delta_{ij} =
+              \left\{\begin{array}{ll}1 & {\rm if}\;\;i=j\\
+              0 & {\rm otherwise.}\end{array}
+              \right.
+              \]
+              In other words, ${\bf X}{\bf X}^{\rm T} = {\bf I}$. Consequently,
+              \[
+              {\bf X}^{\rm T} = {\bf X}^{-1}
+              \]
+            </blockquote>
+          </section>
+
+          <section>
+            <h3>Spectral Theorem (cont.)</h3>
+            <blockquote>
+            Let's rewrite ${\bf A} = {\bf X} \Lambda {\bf X}^{\rm T}$ using the definition of matrix product and the fact
+            that $\Lambda$ is diagonal:
+            </blockquote>
+            \begin{eqnarray*}
+            \left({\bf A}\right)_{ij} & = & \sum_{k=1}^N \left({\bf X}\right)_{ik} \Lambda_{kk} \left({\bf X}^{\rm T}\right)_{kj}
+            \end{eqnarray*}
+          </section>
+
+          <section>
+            <h3>Spectral Theorem (cont.)</h3>
+            <div style="font-size:28px">
+            Since ${\bf X} = \left[\begin{array}{c|c|c|c} {\bf x}_1 & {\bf x}_2 & \cdots & {\bf x}_N\end{array}\right]$ and $\Lambda_{kk} = \lambda_k$
+            <div class="fragment" data-fragment-index="0" >
+              \begin{eqnarray*}
+              \left({\bf A}\right)_{ij} & = & \sum_{k=1}^N \left({\bf X}\right)_{ik} \Lambda_{kk} \left({\bf X}^{\rm T}\right)_{kj}
+              \end{eqnarray*}
+            </div>
+            <div class="fragment" data-fragment-index="1" >
+              \begin{eqnarray*}
+              \left({\bf A}\right)_{ij} & = & \sum_{k=1}^N \left({\bf x}_k\right)_i \lambda_k \left({\bf x}_k\right)_j
+              =  \sum_{k=1}^N \left(\lambda_k {\bf x}_k {\bf x}_k^{\rm T}\right)_{ij}
+              \end{eqnarray*}
+            </div>
+            <div class="fragment" data-fragment-index="2" >
+              \begin{eqnarray*}
+              {\bf A} & = & \sum_{k=1}^N \lambda_k {\bf x}_k {\bf x}_k^{\rm T},\text{   where   } \lambda_k {\bf x}_k = {\bf A}{\bf x}_k
+              \end{eqnarray*}
+            </div>
+            </div>
+          </section>
+
+          <section>
+            <h3>Spectral Theorem (cont.)</h3>
+            <div class="fragment" data-fragment-index="0" >
+              The <i>spectral factorization</i> of ${\bf A}$ is:
+              \[
+              {\bf A} = \lambda_1 \vec{x}_1 \vec{x}^{\rm T}_1 +
+              \lambda_2 \vec{x}_2 \vec{x}^{\rm T}_2 + \dots +
+              \lambda_N \vec{x}_N \vec{x}^{\rm T}_N.
+              \]
+            </div>
+            <div class="fragment" data-fragment-index="1" >
+              Note, each $\lambda_n {\bf x}_n {\bf x}^{\rm T}_n$
+              is a rank one matrix<br>
+            </div>
+            <div class="fragment" data-fragment-index="2" >
+              Let ${\bf A}_i = \lambda_i \vec{x}_i \vec{x}^{\rm T}_i$. Now, because $\vec{x}^{\rm T}_i \vec{x}_i = 1$:
+              \begin{eqnarray*}
+              \lambda_i \vec{x}_i & = & \left(\lambda_i \vec{x}_i \vec{x}^{\rm T}_i \right)\vec{x}_i\\
+              & = & {\bf A}_i \vec{x}_i
+              \end{eqnarray*}
+              <b>i.e.</b>, $\vec{x}_i$ is the only eigenvector of ${\bf A}_i$ and its only eigenvalue is $\lambda_i$.
+            </div>
+          </section>
+
+        </section>
+        <!-- -------------------------------------------------------------------------         -->
+        <section>
+          <section>
+            <h2>Principal Component Analysis</h2>
+          </section>
+
+          <section>
+            <h2>Quadratic forms</h2>
+            <div class="fragment" data-fragment-index="0" >
+              Let $f({\bf x}) = {\bf x}^{\;{\rm T}}{\bf A}{\bf x}$ where
+              ${\bf A}={\bf A}^{\rm T}$. In two-dimensions, we have
+              \[
+              {\bf A} = \left[\begin{array}{cc}
+              a & b\\
+              b & c
+              \end{array}\right]\;\;\;{\rm and}\;\;\;
+              {\bf x} = \left[\begin{array}{cc}x & y\end{array}\right]^{\rm T}
+              \]
+            </div>
+            <div class="fragment" data-fragment-index="1" >
+              \[
+              {\bf A}{\bf x} =
+              \left[\begin{array}{cc}
+              a & b\\
+              b & c
+              \end{array}\right]
+              \left[\begin{array}{c}
+              x\\
+              y
+              \end{array}\right]
+              =
+              \left[\begin{array}{c}
+              a x + b y\\
+              b x + c y
+              \end{array}\right]
+              \]
+            </div>
+            <div class="fragment" data-fragment-index="2" >
+              \[
+              {\bf x}^{\;{\rm T}}{\bf A}{\bf x} =
+              \left[\begin{array}{cc}
+              x & y
+              \end{array}\right]
+              \left[\begin{array}{c}
+              a x + b y\\
+              b x + c y
+              \end{array}\right]
+              = a x^2 + 2 b x y + c y^2.
+              \]
+            </div>
+          </section>
+
+          <section>
+            <div id="header-left">
+              <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                   src="figures/paraboloid.svg" alt="paraboloid">
+            </div>
+            <h2>Quadratic forms</h2>
+            When ${\bf A}$ is positive definite, then
+            \[
+            f({\bf x}) = {\bf x}^{\;{\rm T}}{\bf A}{\bf x}
+            \]
+            is a <b>paraboloid</b> and the <b>level curves</b>,
+            \[
+            {\bf x}^{\;{\rm T}}{\bf A}{\bf x} = k
+            \]
+            are <b>ellipses</b>. A matrix is positive definite iff
+            all of its eigenvalues are positive.
+          </section>
+
+          <section>
+            <h3>example</h3>
+            <div class="fragment" data-fragment-index="0" >
+              Let ${\bf A}=\left[\begin{array}{cc}5 & -2\\ -2 & 5\end{array}\right]$. Then
+              ${\bf x}^{\;{\rm T}}A{\bf x}$ equals
+              \[
+              5 x^2 - 4xy + 5y^2
+              \]
+            </div>
+            <div class="fragment" data-fragment-index="1" >
+              <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
+                   src="figures/ellipses.svg" alt="ellipses">
+            </div>
+          </section>
+
+          <section>
+            <h3>Multivariate Gaussian Density</h3>
+            \[
+            G({\bf x}) = \frac{1}{(2\pi)^{K/2} |{\bf C}|^{1/2}}
+            e^{-\frac{1}{2}{\bf x}^{\;{\rm
+            T}} {\bf C}^{-1} {\bf x}}
+            \]
+            <div class="fragment" data-fragment-index="0" >
+              <small>
+              $K$ is the number of dimensions and ${\bf C}$ is the $K
+              \times K$ <b>covariance matrix</b>.
+              </small>
+            </div><br>
+            <div class="fragment" data-fragment-index="1" >
+              <div class = "row">
+                <div class = "column g6">
+                  <div style="display: table-cell; vertical-align: middle;">
+                    In the <em>bivariate</em> case
+                  </div>
+              </div>
+              <div class = "column g6">
+                \[
+                {\bf C} =
+                \left[
+                \begin{array}{cc}
+                \sigma_{xx} & \sigma_{xy}\\
+                \sigma_{xy} & \sigma_{yy}
+                \end{array}
+                \right]
+                \]
+              </div>
+              </div>
+            </div><p>
+            <div class="fragment" data-fragment-index="2" >
+                Note: If ${\bf C}$ is symmetric and positive definite, then
+                ${\bf C}^{-1}$ is also symmetric and positive definite.
+            </div>
+          </section>
+
+          <section>
+            <h3>Covariance Matrix</h3>
+            <blockquote>
+              An $N \times K$ matrix, $X$, where the
+              $n$-th row is the $n$-th sample of a Gaussian distributed vector
+              random variable, ${\bf x} = \left[x, y\right]^T$
+            </blockquote>
+            For example, when $K=2$:
+            \[
+            {\bf X} = \left[
+            \begin{array}{cc}
+            x_1 & y_1\\
+            x_2 & y_2\\
+            \vdots & \vdots\\
+            x_N & y_N
+            \end{array}
+            \right]
+            \]
+          </section>
+
+          <section>
+            <h3>Covariance Matrix</h3>
+            The <b>sample mean</b> of the $N$ samples is
+            \[
+            {\bf \mu} = \frac{1}{N}\sum_{n=1}^N {\bf x}_n.
+            \]
+            We will assume that ${\bf \mu} = \left[0, 0 \right]^{T}$. If this is false, we can always make it true
+            by subtracting ${\bf \mu}$ from each of the samples prior to
+            constructing ${\bf X}$.
+          </section>
+
+          <section>
+            <h3>Covariance Matrix</h3>
+            Observe that
+            <div style="font-size:32px">
+              \begin{eqnarray*}
+              {\bf X}^{\rm T} {\bf X} & = &
+              \sum_{n=1}^N {\bf x}_n {\bf x}_n^{\;{\rm T}}
+              =
+              \left[
+              \begin{array}{cc}
+              x_1 x_1 & x_1 y_1\\
+              x_1 y_1 & y_1 y_1
+              \end{array}
+              \right]
+              +
+              \cdots
+              +
+              \left[
+              \begin{array}{cc}
+              x_N x_N & x_N y_N\\
+              x_N y_N & y_N y_N
+              \end{array}
+              \right]
+              \end{eqnarray*}
+            </div>
+            <div class="fragment" data-fragment-index="0" >
+              Consequently
+              $$
+              \frac{1}{N}{\bf X}^{\rm T} {\bf X} =
+              \left[
+              \begin{array}{cc}
+              \langle xx\rangle & \langle xy\rangle\\
+              \langle xy\rangle & \langle yy\rangle
+              \end{array}
+              \right]
+              =
+              \left[
+              \begin{array}{cc}
+              \sigma_{xx} & \sigma_{xy}\\
+              \sigma_{xy} & \sigma_{yy}
+              \end{array}
+              \right]
+              $$
+              where $\langle\cdot\rangle$ denotes expected value.
+            </div>
+          </section>
+
+          <section>
+            <h3>Isodensity Surfaces</h3>
+            <blockquote>
+            The <b>level surfaces</b> of the multivariate Gaussian
+            distribution, $G({\bf x})$, consist of those points where $G({\bf x})$ has
+            constant value:
+            </blockquote>
+            \[
+            G({\bf x}) = \frac{1}{(2\pi)^{K/2} |{\bf C}|^{1/2}}
+            e^{-\frac{1}{2}{\bf x}^{\;{\rm
+            T}} {\bf C}^{-1} {\bf x}} = P
+            \]
+            <div class="fragment" data-fragment-index="0" >
+            It follows that the level surfaces are <b>ellipsoids</b>:
+            \[
+            {\bf x}^{\;{\rm T}} {\bf C}^{-1} {\bf x} = -2\ln
+            \left[(2\pi)^{K/2} |{\bf C}|^{1/2} P\right]
+            \]
+          </section>
+
+          <section data-fullscreen>
+            <h3>Principal Axes</h3>
+              <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
+                   src="figures/Ellipsoide.svg" alt="Principal axes">
+          </section>
+
+          <section>
+            <h3>Principal Axes Theorem</h3>
+            <blockquote>
+            The <b>principal axes</b> of the ellipsoids
+            forming the level surfaces of the multivariate Gaussian distribution
+            are given by the eigenvectors of its covariance matrix:
+            \[
+            \lambda_k {\bf w}_k = {\bf C} {\bf w}_k
+            \]
+            where $|\lambda_1| > |\lambda_2| > \cdots |\lambda_K|$
+            </blockquote>
+          </section>
+
+          <section>
+            <h3>Diagonalizing the Covariance Matrix</h3>
+            Because the covariance matrix, ${\bf C}$, is real, symmetric,
+            and of full rank, it has $K$ orthogonal eigenvectors. It therefore can
+            be diagonalized as follows:
+            \[
+            {\bf C} = {\bf W}{\bf D}{\bf W}^{\rm T}
+            \]
+            where the $k$-th column of ${\bf W}$ is the eigenvector of ${\bf C}$
+            with the $k$-th largest eigenvalue and ${\bf D}$ is diagonal, with the
+            corresponding eigenvalues on the diagonal:
+            \[
+            D_{kk} = \lambda_k.
+            \]
+          </section>
+
+          <section>
+            <h3>The KL Transform</h3>
+            We can represent the samples of the Gaussian distributed
+            vector random variable, ${\bf x}$, in the basis formed by the
+            eigenvectors, ${\bf w}_k$, of its covariance matrix, ${\bf C}$. This change
+            of basis is termed the <b>Karhunen-Loeve</b> or <b>KL Transform</b>:
+            \[
+            {\bf u} = {\bf W}^{\rm T} {\bf x}
+            \]
+            where ${\bf u} =\left[u, v
+            \right]^{\rm T}$ is the representation of
+            ${\bf x} = \left[x, y\right]^{\rm T}$ in
+            the basis formed by the ${\bf w}_k$.
+          </section>
+
+          <section>
+            <h3>The KL Transform</h3>
+            <div class="fragment" data-fragment-index="0" >
+              <blockquote>
+                <b>Question</b> What is the distribution of the ${\bf u}$?
+              </blockquote>
+            </div>
+            <div class="fragment" data-fragment-index="1" >
+              <blockquote>
+                <b>Answer</b> It is the multivariate Gaussian with covariance
+                matrix, ${\bf D}$:
+                \[
+                \hat{G}({\bf u}) = \frac{1}{(2\pi)^{K/2} |{\bf D}|^{1/2}}
+                e^{-\frac{1}{2}{\bf u}^{\;{\rm
+                T}} {\bf D}^{-1} {\bf u}}.
+                \]
+              </blockquote>
+            </div>
+          </section>
+
+          <section>
+            <h3>The Bivariate Case</h3>
+            <div class="fragment" data-fragment-index="0" >
+            \[
+            {\bf D} = {\bf W}^{\rm T}{\bf C}{\bf W} =
+            \left[\begin{array}{cc}
+            \sigma_{uu} & 0\\
+            0 & \sigma_{vv}
+            \end{array}\right]
+            \]
+            </div>
+            <div class="fragment" data-fragment-index="1" >
+            Since ${\bf D}$ is diagonal,
+            \[
+            |{\bf D}| = \sigma_{uu}\sigma_{vv}
+            \]
+            </div>
+            <div class="fragment" data-fragment-index="2" >
+            and ${\bf D}^{-1}$ has an especially simple form:
+            \[
+            {\bf D}^{-1} = \left[\begin{array}{cc}
+            1/\sigma_{uu} & 0\\
+            0 & 1/\sigma_{vv}
+            \end{array}\right]
+            \]
+            </div>
+          </section>
+
+          <section>
+            <h3>The Bivariate Case (cont.)</h3>
+            <div style="font-size:26px">
+            The Gaussian distribution with covariance <small>$\left[\begin{array}{cc}
+            \sigma_{uu} & 0\\
+            0 & \sigma_{vv}
+                \end{array}\right]$</small> is:
+            </div>
+            \begin{eqnarray*}
+            \hat{G}(u,v) & = & \frac{1}{2\pi \sqrt{\sigma_{uu}\sigma_{vv}}}
+            e^{-\frac{1}{2}(\frac{u^2}{\sigma_{uu}}
+            + \frac{v^2}{\sigma_{vv}})}
+            \end{eqnarray*}
+            <div class="fragment" data-fragment-index="0" >
+              <div style="font-size:26px">
+                Observe that $\hat{G}$ is <b>separable</b>:
+              </div>
+              \[
+              \hat{G}(u,v) =
+              \frac{1}{\sqrt{2\pi\sigma_{uu}}}e^{-\frac{u^2}{2\sigma_{uu}}}
+              \frac{1}{\sqrt{2\pi\sigma_{vv}}}e^{-\frac{v^2}{2\sigma_{vv}}}.
+              \]
+            </div>
+            <div class="fragment" data-fragment-index="1" >
+              <div style="font-size:26px">
+                <blockquote>
+                  Since the joint distribution of $u$ and $v$ can be expressed
+                  as the product of the distribution of $u$ and the distribution of $v$,
+                  we say that $u$ and $v$ are <b>independent</b>.<br>
+                Knowing the value of $u$ tells you nothing about the value of $v$!
+                </blockquote>
+
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h3>Dimensionality reduction</h3>
+          </section>
+        </section>
+
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 1.23,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

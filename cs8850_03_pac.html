@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <link href="css/fontawesome/all.css" rel="stylesheet">
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>03: PAC learning</h3>
+	            <p>
+	          </section>
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Recap: Foundations
+                      <li class="fragment roll-in"> PAC Learning Model
+                      <li class="fragment roll-in"> Learning via Uniform Convergence
+	            </ul>
+                  </section>
+                </section>
+	        <section>
+	          <section>
+                    <h3>Recap: foundations</h3>
+	          </section>
+                  <section>
+                    <h3>Formalized the problem of learning!</h3>
+                    <ul>
+                      <li class="fragment roll-in">Domain Set ${\cal X}$ (all papayas)
+                      <li class="fragment roll-in">Label set ${\cal Y} = \{0,1\}$ (sometimes $\{-1, 1\})$
+                      <li class="fragment roll-in">Training data
+                        <ul>
+                          $S = ((x_1,y_1)\dots (x_m,
+                          y_m))$. <br>Sequence of pairs in
+                          $\cal{X}\times\cal{Y}$
+                        </ul>
+                      <li class="fragment roll-in">The learner's output
+                        <ul>
+                          $h: \cal{X} \rightarrow \cal{Y}$
+                        </ul>
+                      <li class="fragment roll-in">A (simple) data-generation model
+                        <ul>
+                          <li class="fragment roll-in"> $\cal{D}$ - distribution of
+                            papayas
+                          <li class="fragment roll-in"> $f: \cal{X} \rightarrow
+                            \cal{Y}$ - true labeling
+                            function
+                          <li class="fragment roll-in"> $y_i = f(x_i) \forall i$
+                        </ul>
+
+                    </ul>
+                    <aside class="notes">
+                      What we did: formalized the problem of learning! <br>
+                      Domain set is all papayas in the example. <br>
+                      Label set for papayas is $\{0, 1\}$, where 1 - tasty<br>
+                      The sequence $S$ is often called a <i>training set</i><br>
+                      Prediction rule, classifier, hypothesis, predictor<br>
+                      Probability distribution that generates papayas is the environment.
+                      We assume some "correct" labeling function does exist but it is unknown to the learner.
+                      The learner's goal is to figure out this function.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Introduced measures of success</h3>
+                    <div class="fragment" data-fragment-index="0" >
+                      <b>Generalization</b> error, risk, true error of $h$, or loss!
+                      $L_{({\cal D},f)}(h) \stackrel{\text{def}}{=}\mathbb{P}_{x \sim {\cal D}}[h(x) \ne f(x)]$
+                    </div>
+                    <div class="fragment" data-fragment-index="1" >
+                      Empirical error <br>
+                      $L_{S}(h) \stackrel{\text{def}}{=}\frac{\mid\{i:h(x_i) \ne y_i \forall i \in\{1,\dots,m\}\}\mid}{m}$
+                    </div>
+                    <div class="fragment" data-fragment-index="2" >
+                      <blockquote>
+                        Empirical Risk Minimization
+                      </blockquote>
+                    </div>
+
+                    <aside class="notes">
+                      Loss is the assumed true loss here on the whole domain. <br>
+                      Empirical loss is simply a normalized count of incorrect predictions over the training set.<br>
+                      Given a training set $S$, which is a randomly samples subset of ${\cal X}$, what can we optimize?<br>
+                      We can optimize empirical loss: error with respect to the samples $(x_i,y_i) \in S \forall i$.<br>
+                      We may be able to estimate a classifier that does well on the training set, but what we really want is a classifier that does well with respect to the true loss.
+
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Learned about overfitting</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8);" width="350"
+                         src="figures/overfitting2.png" alt="perf">
+                    <div>
+                      $h_S(x) = \begin{cases}
+                      y_i & \text{if } \exists i \in \{1,\dots,m\} s.t. x_i=x\\
+                      0 & \text{otherwise}
+                      \end{cases}
+                      $
+                    </div>
+                    <div>
+                      $L_{S}(h_S) = 0$ yet $L_{\cal D}(h_S) = 1/4$
+                    </div>
+                    <aside class="notes">
+                      For simplicity imagine that our task is as such:
+                      an area 1  square is inscribed into  a 2D square
+                      of  area 4,  elements of  one class  are present
+                      only inside the inscribed square, while elements
+                      of the other class are always outside.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Introduced inductive bias and some assumptions</h3>
+                    <!-- <dev> -->
+                      <!--   $h_S \in \underset{h\in{\cal H}}{\argmin}L_S(h)$ -->
+                      <!-- </dev> -->
+                    <blockquote class="fragment" data-fragment-index="0" style="text-align: left; background-color: #eee8d5; width: 100%;">
+                      <b>The Realizability Assumption:</b> $\exists h^* \in {\cal H} s.t. L_{{\cal D}, f}(h^*)=0 \implies L_S(h^*)=0$
+                    </blockquote>
+                    <blockquote class="fragment" data-fragment-index="1" style="text-align: left; width: 100%;">
+                      <b>The i.i.d. Assumption:</b> Samples in the training set are independent and identically distributed.
+                    </blockquote>
+                    <div>
+                      <blockquote class="fragment" data-fragment-index="2" style="text-align: left; width: 100%;">
+                        $\delta$ - probability of a <b>nonrepresentative sample</b><br>
+                        $\epsilon$ - the <i>accuracy</i> parameter
+                      </blockquote>
+                    </div>
+                    <div>
+                      <blockquote shade class="fragment" data-fragment-index="3" style="text-align: center; width: 100%;">
+                        Failure is when $L_{({\cal D}, f)}>\epsilon$ <br> Success is when $L_{({\cal D}, f)}\le \epsilon$
+                      </blockquote>
+                    </div>
+                    <aside class="notes">
+                      We have introduced:
+                      <ul>
+                        <li>search over limited space of models</li>
+                        <li>assumed that a solution exists</li>
+                        <li>assumed that data is coming to us iid</li>
+                        <li>$\delta$ - probability of getting a bad training sample</li>
+                        <li>$\epsilon$ - accuracy parameter</li>
+                      </ul>
+
+                    </aside>
+                  </section>
+                  <section>
+                    <h3>Upperbounded $\delta$</h3>
+                    ${\cal D}^m(\{S\mid_x : L_{({\cal D}, f)}(h_S) > \epsilon\}) \le |{\cal H}|e^{-\epsilon m}$
+                  </section>
+                </section>
+                <section>
+                  <section>
+                    <h2>PAC Learning Model</h2>
+                    <h4>Probably Approximately Correct</h4>
+                  </section>
+                  <section>
+                    <h3>Upperbounded $\delta$</h3>
+                    ${\cal D}^m(\{S\mid_x : L_{({\cal D}, f)}(h_S) > \epsilon\}) \le |{\cal H}|e^{-\epsilon m}$
+                    <div class="fragment" data-fragment-index="0">
+                      $\delta$ - probability of getting a bad training sample
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                      ${\cal D}^m(\{S\mid_x : L_{({\cal D}, f)}(h_S) > \epsilon\}) = \delta$
+                    </div>
+                    <div class="fragment" data-fragment-index="2">
+                      $\delta  \le |{\cal H}|e^{-\epsilon m}$
+                    </div>
+                    <div class="fragment" data-fragment-index="3">
+                      $1  \le (|{\cal H}|/\delta)e^{-\epsilon m}$
+                    </div>
+                    <div class="fragment" data-fragment-index="4">
+                      $0  \le \ln{(|{\cal H}|/\delta)} - \epsilon m$
+                    </div>
+                    <div class="fragment" data-fragment-index="5">
+                      $\epsilon  \le \frac{\ln{(|{\cal H}|/\delta)}}{m}$
+                    </div>
+                    <div class="fragment" data-fragment-index="6">
+                      $m  \le \frac{\ln{(|{\cal H}|/\delta)}}{\epsilon}$
+                    </div>
+
+                    <aside class="notes">
+                      What is $\delta$?<br>
+                      The probability in question <b>is</b> that $\delta$<br>
+                      Log is a monotonically increasing function.<br>
+                      $\epsilon$ (accuracy parameter or generalization error) is inversely proportional to number of samples $m$.<br>
+                      For fixed $\delta$ and $\epsilon$ what $m$ to take? At least $\ln{|{cal H}|/\delta}/\epsilon$.
+                      Higher will lead to better chances of increasing $1 - \delta$
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Follows</h3>
+                    <blockquote  style="text-align: left; background-color: #eee8d5;">
+                      Given a finite $\cal H$, fixed $\delta \in (0,1)$ and $\epsilon > 0$, and $m \ge \ln{(|{\cal H}|/\delta)}/\epsilon$ for any $f, {\cal D}$ (realizability assumption must hold) with probability at least $1-\delta$ over i.i.d samples $S$ of size $m$, for every ERM hypothesis $h_S$:<br>
+                      $L_{({\cal D}, f)}(h_S) \le \epsilon$
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="right: -20%;">
+                      <img width="110px" style="margin-bottom: -5%"
+                           src="figures/valiant_small.png" alt="Leslie Valiant"><br>
+                      <small>Leslie Valliant</small>
+                    </div>
+                    <h3>PAC Learning</h3>
+                    <h4>Valiant 1984</h4>
+                    <blockquote style="text-align: left; background-color: #eee8d5; width: 100%;">
+                      <b>PAC learnability:</b> ${\cal H}$ is <i>PAC learnable</i> if
+                      $\exists m_{\cal H}: (0, 1)^2 \rightarrow \mathbb{N}$ and a learning algorithm with the following properties:
+                      <br>
+                      <ul>
+                        <li>$\forall \epsilon, \delta \in (0,1), {\cal D}, f$</li>
+                        <li>$\forall  \cal  D$  over  $\cal  X$  and  $\forall
+                          f:{\cal  X} \rightarrow  \{0, 1\}$</li>
+                        <li>when realizability assumption holds</li>
+                        <li>when running on $m \ge m_{\cal H}(\epsilon, \delta)$ i.i.d samples the learning algorithm returns $h_S$ s.t.</li>
+                        <li>$\underset{S\sim{\cal D}}{\PP}[L_{({\cal D},f)}(h_S) \le \epsilon] \ge 1 - \delta$
+                      </ul>
+
+                    </blockquote>
+                    <aside class="notes">
+                      Hypothesis class is the class of models: e.g. linear hyperplanes, polynomial curves, etc.<br>
+                      $m_{\cal H}$ is a function of a point in the unit cube and hypothesis class onto sample number<br>
+
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Sample Complexity</h3>
+                    <span class="fragment" data-fragment-index="0">
+                      $m_{\cal H}(\epsilon, \delta): (0,1)^2 \rightarrow \mathbb{N}$<br>
+                    How many samples are required to guarantee a probably approximately correct solution?
+                    </span>
+                    <br>
+                    <span class="fragment" data-fragment-index="1">
+                    Many $m_{\cal H}$ satisfy the definition, to specify one:
+                    <blockquote style="text-align: left; width: 100%;">
+                      $m_{\cal H}(\epsilon, \delta)$ is the <b>minimal integer</b> that satisfies the requirement of PAC learning with accuracy $\epsilon$ and confidence $\delta$
+                    </blockquote>
+                    </span>
+                    <aside class="notes">
+                      Sample complexity is a function of epsilon and delta, but also of hypothesis class. <br>
+                      What would sample complexity be for finite hypothesis classes?
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Sample Complexity for finite classes</h3>
+                    <div>
+                      $\delta  \le |{\cal H}|e^{-\epsilon m}$
+                    </div>
+                    <div>
+                      $1  \le (|{\cal H}|/\delta)e^{-\epsilon m}$
+                    </div>
+                    <div>
+                      $0  \le \ln{(|{\cal H}|/\delta)} - \epsilon m$
+                    </div>
+                    <div class="fragment" data-fragment-index="0">
+                      $m  \le \frac{\ln{(|{\cal H}|/\delta)}}{\epsilon}$
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                      $m_{\cal H}(\epsilon, \delta)  \le \lceil \frac{\ln{(|{\cal H}|/\delta)}}{\epsilon} \rceil$
+                    </div>
+                    <aside class="notes">
+                      Remember how we have bounded delta. and were able to derive for $m$?
+                      <br>
+                      We know the upper bound but in real life, to be sure we will have to take more samples. The actually needed number of samples can be much smaller, but PAC theory is unable to detect it.
+                      <br>
+                      For infinite classes it is not finiteness (obviously) but a
+                      combinatorial measure that determines their learnability. VC-dimension.
+                      <br>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <div id="header-left">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="110"
+                           src="figures/memory.png" alt="recall">
+                    </div>
+                    <h3>Recall activity</h3>
+                    <ol>
+                      <li class="fragment" data-fragment-index="0">What do we mean by <em>learner</em>?</li>
+                      <div class="fragment" data-fragment-index="1" style="font-style: italic;">
+                        A process of turning training data $S$ into functions (classifiers).
+                      </div>
+                      <li class="fragment" data-fragment-index="2">What is generalization error?</li>
+                      <div class="fragment" data-fragment-index="3" style="font-style: italic;">
+                        Probability of randomly (according to ${\cal D}$) choosing an example $x$ for which $h(x)\ne f(x)$
+                      </div>
+                      <li class="fragment" data-fragment-index="4">What is overfitting?</li>
+                      <div class="fragment" data-fragment-index="5" style="font-style: italic;">
+                        Excellent performance on $S$ and poor in real world.
+                      </div>
+                      <li class="fragment" data-fragment-index="6">What is a fundamental question in learning theory?</li>
+                      <div class="fragment" data-fragment-index="7"  style="font-style: italic;">
+                        Which hypothesis classes ERM$_{\cal H}$ learning will not overfit
+                      </div>
+                    </ol>
+                    <aside class="notes">
+                      Algorithm? Does PAC learnability of a class mean we can readily learn it?<br>
+                      Why it is called generalization><br>
+                      One easiest way to overfit?<br>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <div id="header-left">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="110"
+                           src="figures/swissknife.png" alt="recall">
+                    </div>
+                    <h3>Going more general</h3>
+                    <h4>Beyond Binary Classification</h4>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                         src="figures/linear_regression.png" alt="recall">
+                  </section>
+
+                  <section>
+                    <div id="header-left">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="110"
+                           src="figures/swissknife.png" alt="recall">
+                    </div>
+                    <h3>Going more general</h3>
+                    Removing the Realizability Assumption
+                    <div class="fragment" data-fragment-index="0">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                           src="figures/features_are_useful.jpg" alt="recall">
+                    </div>
+                    <aside class="notes">
+                      How not all features determine the properties we are after.
+                      Imagine we are classifying human gender by peoples silhouettes
+                      Agnostic PAC learning.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Releazing the Realizability Assumption</h3>
+                    <blockquote style="text-align: left; width: 80%">
+                      <b>The Realizability Assumption:</b> $\exists h^* \in {\cal H} s.t. \PP_{x\sim{\cal D}}[h^*(x) = f(x)]=1$
+                    </blockquote>
+                    <s>Target labeling function $f$</s><br>
+                    Enter data-labels generating distribution.
+                    ${\cal D}(x,y) = {\cal D}(y|x){\cal D}(x)$<br>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="300"
+                         src="figures/multimodal.png" alt="recall">
+                    <!-- <aside class="notes"> -->
+                      <!--   Show examples of distributions on the board<br> -->
+                      <!--   Sampling labels first, then Gaussians vs. Sampling x according to the joint then y. -->
+                      <!-- </aside> -->
+                  </section>
+
+                  <section data-vertical-align-top>
+                    <h3>True and Empirical Errors Revisited</h3>
+                    <div class="fragment" data-fragment-index="0" >
+                      Before:
+                      $L_{({\cal D},f)}(h) \stackrel{\text{def}}{=}\mathbb{P}_{x \sim {\cal D}}[h(x) \ne f(x)]$
+                    </div>
+                    <div class="fragment" data-fragment-index="1" >
+                      <blockquote style="text-align: left; width: 100%; font-size: 0.93em">
+                        \begin{align}
+                        L_{\CD}(h) & \def \underset{(x,y)\sim {\CD}}{\PP} [h(x) \ne y]
+                         \def \CD[\{(x,y):h(x)\ne y\}]
+                        \end{align}
+                        <div>
+                          Find a predictor $h$ that minimizes $L_{\CD}(h)$.<br>
+                        </div>
+                        <div>
+                          The learner does not know the data generating $\CD$.
+                        </div>
+                      </blockquote>
+                      <div class="fragment" data-fragment-index="2" style="font-size: 0.95em;">
+                        Empirical risk remains the same <br>
+                        $L_{S}(h) \stackrel{\text{def}}{=}\frac{\mid\{i:h(x_i) \ne y_i \forall i \in\{1,\dots,m\}\}\mid}{m}$
+                      </div>
+                    </div>
+                    <div class="fragment" data-fragment-index="3" style="font-style: italic;">
+                      The goal is to find $h: {\cal X}\rightarrow {\cal Y}$ that (probably approximately) minimizes $L_{\CD}(h)$
+                    </div>
+                    <!-- <aside class="notes"> -->
+                      <!--   Who knows what that predictor is? -->
+                      <!-- </aside> -->
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="right: -10%;">
+                      <img width="200px" style="margin-bottom: -5%"
+                           src="figures/bayes.png" alt="rev. Bayes"><br>
+                      <small>Thomas Bayes</small>
+                    </div>
+                    <h3>The Bayesian Optimal Predictor</h3>
+                    For $\CD$ over ${\cal X}\times \{0,1\}$ the best predictor
+                    <div>
+                      $
+                      f_{\CD}(x) = \begin{cases}
+                      1 & \text{if } \PP[y=1|x] \ge 1/2\\
+                      0 & \text{otherwise}
+                      \end{cases}
+                      $
+                    </div>
+                    <div>
+                      <img width="600"
+                           src="figures/bayesian_decision_1d.png" alt="recall">
+                    </div>
+                    <!-- <aside class="notes"> -->
+                      <!--   Does everyone know why is that? Who can come up here and explain? -->
+                      <!--   Lecture on Bayesian decision theory -->
+                      <!-- </aside> -->
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="right: -20%;">
+                      <img width="200px" style="margin-bottom: -5%"
+                           src="figures/bayes.png" alt="rev. Bayes"><br>
+                      <small>Thomas Bayes</small>
+                    </div>
+                    <h3>The Bayesian Optimal Predictor</h3>
+                    <p>
+                    <p>
+                      <ul>
+                        <li class="fragment roll-in"> No hope to find $h$ with better error: Bayesian error is the optimum.
+                        <li class="fragment roll-in"> Without assumptions on $\CD$ no algorithm can be as good as Bayesian optimum.
+                        <li class="fragment roll-in"> Alas, we do not know $\CD$ and cannot utilize the predictor.
+                        <li class="fragment roll-in"> Instead, search for predictor with error not much larger than the best possible error.
+                      </ul>
+                  </section>
+
+                  <section>
+                    <h3>Agnostic PAC Learning</h3>
+                    <blockquote  style="text-align: left; background-color: #eee8d5; width: 100%;">
+                      ${\cal H}$ is <i>agnostic PAC learnable</i> if
+                      $\exists m_{\cal H}: (0, 1)^2 \rightarrow \mathbb{N}$ and a learning algorithm with the following properties:
+                      <br>
+                      <ul>
+                        <li>$\forall \epsilon, \delta \in (0,1), {\cal D}$ over ${\cal X}\times {\cal Y}$</li>
+                        <li>when running on $m \ge m_{\cal H}(\epsilon, \delta)$ i.i.d samples returns $h_S$ s.t.</li>
+                        <li>$\underset{S\sim{\cal D}}{\PP}[L_{\CD}(h_S) \le \underset{h' \in {\cal H}}{\min} L_{\CD}(h') + \epsilon] \ge 1 - \delta$
+                      </ul>
+                    </blockquote>
+                    <div style="text-align: left;">
+                      We can only hope to get within best error achievable by the hypothesis class.
+                      </div>
+                    <aside class="notes">
+                      Note, when realizability assumption holds we have only epsilon left to limit the loss.<br>
+                      What is the agnostic PAC learning agnostic about?
+
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Multiclass Classification</h3>
+                    ${\cal Y} = \{0,1,\dots,C\}$
+                    <div class="fragment" data-fragment-index="0">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                           src="figures/doc_classify.png" alt="docclass"><br>
+                      document classification
+                    </div>
+                    <aside class="notes">
+                      What is $x$ in this case?
+                    </aside>
+                  </section>
+
+                  <section data-background="figures/eeg_typing.jpg">
+                    <h3 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Multiclass Classification: BCI</h3>
+                    <aside class="notes">
+                      ${\cal Y}$ is 10 digits and 26 letters: 36<br>
+                      What is $x$ in this case?
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Multiclass Classification: next word</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                         src="figures/next_word.png" alt="nextword"><br>
+                    <aside class="notes">
+                      ${\cal Y}$ is all words in vocabulary: 100,000<br>
+                      What is $x$ in this case?
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Regression</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="400"
+                         src="figures/least_squares.png" alt="regression"><br>
+                  </section>
+
+                  <section>
+                    <h3>Regression: history</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                         src="figures/GaussLegendre.png" alt="regression"><br>
+                    Carl Friedrich Gauss <b>vs.</b> Adrien-Marie Legendre<br>
+                    1809 <b>vs.</b> 1805
+                    <aside class="notes">
+                      Legendre 1805, Gauss 1809 (claims 1775)
+                    </aside>
+
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="right: -20%;">
+                      <img width="200px" style="margin-bottom: -5%"
+                           src="figures/Galton.png" alt="rev. Bayes"><br>
+                      <small>Francis Galton</small>
+                    </div>
+                    <h3>Regression: why the name</h3>
+                    <blockquote style="text-align: left; background-color: #eee8d5; width: 100%;">
+                      The term  "regression" was  coined by Francis  Galton in
+                      the   nineteenth  century   to  describe   a  biological
+                      phenomenon.  The  phenomenon  was that  the  heights  of
+                      descendants  of  tall  ancestors tend  to  regress  down
+                      towards  a normal  average (a  phenomenon also  known as
+                      regression toward the mean).
+                    </blockquote>
+                  </section>
+
+                  <section data-background="figures/regressions.jpg">
+                  </section>
+
+                  <section>
+                    <h3>Regression: loss</h3>
+                    <blockquote>
+                      Expected square difference: <br>
+                      $L_{\CD}(h) \def \underset{(x,y)\sim\CD}{\mathbb{E}} (h(x) - y)^2$
+                    </blockquote>
+                    <blockquote>
+                      Mean squared error: <br>
+                      $L_{\CD}(h) \def \frac{1}{m} \sum_{i=1}^{m} (h(x_i) - y_i)^2$
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h3>Generalized Loss Function</h3>
+                    <div class="fragment" data-fragment-index="0">
+                      <blockquote>
+                        For any $\cal H$ and demeaning $Z$ let ${\cal l}: {\cal H}\times Z\rightarrow \mathbb{R}_{+}$
+                      </blockquote>
+                      We call such functions <i>loss functions</i>.
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                      <blockquote>
+                        Redefine the risk function using $\cal l$:<br>
+                        $L_{\CD}(h) \def \underset{z\sim \CD}{\EE}[\loss(h,z)]$
+                      </blockquote>
+                      <blockquote>
+                        Redefine empirical risk as:<br>
+                        $L_{\CD}(h) \def \frac{1}{m}\sum_{i=1}^m[\loss(h,z)]$
+                      </blockquote>
+                    </div>
+
+                    <aside class="notes">
+                      What is Z for classification Z = X x Y?<br>
+                      <!-- Talk about the mean or average loss and how expectation takes care of improbable cases. -->
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>0-1 loss</h3>
+                    $
+                    {\cal l}_{\text{sq}}(h, (x,y)) \def \begin{cases}
+                    0 & \text{if } h(x) = y\\
+                    1 & \text{if } h(x) \ne y
+                    \end{cases}
+                    $
+                    <div>
+                      Note, for a random variable $\alpha \in \{0, 1\}$, $\mathbb{E}_{\alpha\sim \CD}[\alpha] = \PP_{\alpha\sim \CD}[\alpha=1]$
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3>Square Loss</h3>
+                    ${\cal l}_{\text{sq}}(h, (x,y)) \def (h(x) - y)^2$<br>
+                    Useful for regression problems
+                  </section>
+
+                  <section>
+                    <h3>Agnostic PAC Learning for General Loss Function</h3>
+                    <blockquote style="text-align: left; background-color: #eee8d5; width: 100%;">
+                      ${\cal H}$ is <i>agnostic PAC learnable</i> with respect to $Z$ and $\loss: \hclass\times Z \rightarrow \RR_+$if
+                      $\exists m_{\cal H}: (0, 1)^2 \rightarrow \mathbb{N}$ and a learning algorithm with the following properties:
+                      <br>
+                      <ul>
+                        <li>$\forall \epsilon, \delta \in (0,1), {\cal D}$ over $Z$</li>
+                        <li>when running on $m \ge m_{\cal H}(\epsilon, \delta)$ i.i.d samples returns $h_S$ s.t.</li>
+                        <li>$\underset{S\sim{\cal D}}{\PP}[L_{\CD}(h_S) \le \underset{h^\prime \in {\cal H}}{\min} L_{\CD}(h^\prime) + \epsilon] \ge 1 - \delta$,
+                        <li>where $L_{\CD}(h) = \underset{z\sim \CD}{\EE}[\loss(h,z)]$
+                      </ul>
+                    </blockquote>
+                    <aside class="notes">
+                      Note, when realizability assumption holds
+
+                    </aside>
+                  </section>
+
+                </section>
+                <section>
+                  <section>
+                    <h2>Learning via Uniform Convergence</h2>
+                  </section>
+                  <section>
+                    <h3>Learning Algorithm Function</h3>
+                    <ul>
+                      <li>Receive the training set $S$
+                      <li>$\forall h\in\hclass$ evaluate $L_S(h)$
+                      <li>Return $h$ for which $L_S(h)$ is minimized
+                    </ul>
+                    <div class="fragment" data-fragment-index="1">
+                      We hope:<br>
+                      $h = \underset{h\in \hclass}{\argmin} L_S(h)$ is also $h = \underset{h\in \hclass}{\argmin} L_{\CD}(h)$<br>
+                      or is close to it ;)
+                    </div>
+                    <aside class="notes">
+                      Exhaustive enumeration is just an example of case where we are guaranteed to not miss the optimum.<br>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Informally</h3>
+                    <blockquote>
+                      Suffices  to  show  that empirical  risk  $\forall  h\in
+                      \hclass$ is a good approximation of the true risk.
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h3>formal definition</h3>
+                    <blockquote style="text-align: left; background-color: #eee8d5; width: 100%;">
+                      <b>$\epsilon$-representative sample:</b>
+                      A training set is called $\epsilon$-representative (w.r.t. $Z$, $\hclass$, $\loss$, and $\CD$) if<br>
+                      $\forall h\in \hclass, \mid L_S(h) - L_{\CD}(h)\mid \le \epsilon$
+                    </blockquote>
+                    <!-- <aside class="notes"> -->
+                      <!--   The same thing said twice -->
+                      <!-- </aside> -->
+                  </section>
+
+                  <section>
+                    <blockquote style="text-align: left; background-color: #eee8d5; width: 100%;" class="fragment" data-fragment-index="0">
+                      Assume $S$ is $\frac{\epsilon}{2}$-representative (w.r.t. $Z$, $\hclass$, $\loss$, and $\CD$), then output of ERM$_{\hclass}(S)$ ($h_s\in \argmin_{h\in\hclass}L_S(h)$) satisfies:<br>
+                      $L_{\CD}(h_S) \le \underset{h\in\hclass}{\min}L_{\CD}(h)+\epsilon$
+                    </blockquote>
+                    <blockquote style="text-align: left; background-color: #eee8d5; width: 100%;" class="fragment" data-fragment-index="1">
+                      <b>Proof:</b><br>
+                      $L_{\CD}(h_S) \le L_S(h_S) + \frac{\epsilon}{2} \le L_S(h) + \frac{\epsilon}{2}$<br>
+                      $L_S(h) + \frac{\epsilon}{2} \le L_{\CD}(h) + \frac{\epsilon}{2}  + \frac{\epsilon}{2} = L_{\CD}(h) + \epsilon$
+                    </blockquote>
+                    <aside class="notes">
+                      First and last inequality substitution due to $\forall h\in \hclass, \mid L_S(h) - L_{\CD}(h)\mid \le \epsilon$<br>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <blockquote style="text-align: left; background-color: #eee8d5; width: 100%;">
+                      To ensure that  ERM rule is an agnostic  PAC learner, it
+                      suffices  to  show that  with  probability  of at  least
+                      $1-\delta$ over the random choice  of a training set, it
+                      will be an $\epsilon$-representative training set.
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>without a proof</h2>
+                    <blockquote style="text-align: left; background-color: #eee8d5; width: 100%;">
+                      Finite hypothesis classes are agnostic PAC learnable
+                    </blockquote>
+                  </section>
+                  
+                </section>
+                <section>
+                  <section>
+                    <h2>who to blame (mostly)</h2>
+                  </section>
+
+                  <section>
+                    <h3>Vladimir Vapnik and Alexey Chervonenkis 1971</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                         src="figures/VCduo.png" alt="recall"><br>
+                    $\leftarrow$Chervonenkis, Vapnik$\rightarrow$
+                  </section>
+
+                  <section>
+                    <h3>Leslie Valiant 1984</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                         src="figures/LeslieValiant.jpg" alt="recall">
+                  </section>
+
+                </section>
+</section>
+
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/customcontrols/plugin.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 0.93,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+	          customcontrols: {
+		      slideNumberCSS : 'position: fixed; display: block; right: 90px; top: auto; left: auto; width: 50px; bottom: 30px; z-index: 31; font-family: Helvetica, sans-serif; font-size:  12px; line-height: 1; padding: 5px; text-align: center; border-radius: 10px; background-color: rgba(128,128,128,.5)',
+		      controls: [
+			  { icon: '<i class="fa fa-caret-left"></i>',
+			    css: 'position: fixed; right: 60px; bottom: 30px; z-index: 30; font-size: 24px;',
+			    action: 'Reveal.prev(); return false;'
+			  },
+			  { icon: '<i class="fa fa-caret-right"></i>',
+			    css: 'position: fixed; right: 30px; bottom: 30px; z-index: 30; font-size: 24px;',
+			    action: 'Reveal.next(); return false;'
+			  }
+		      ]
+	          },
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      toggleChalkboardButton: false,
+                      toggleNotesButton: false,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      //mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+                  z-index: 100;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

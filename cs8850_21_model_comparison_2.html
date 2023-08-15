@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>22: Model Comparison II</h3>
+	            <p>
+	          </section>
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Cross Validation
+                      <li class="fragment roll-in"> Expected Value (Profit)
+                      <li class="fragment roll-in"> Visualizing Model Performance
+	            </ul>
+                  </section>
+                </section>
+
+                <!-- --------------------------------------------------------------------------->
+	        <section>
+                  <section>
+                    <h2>Cross Validation</h2>
+                  </section>
+
+                  <section>
+                    <h2>5-fold cross validation</h2>
+                      <img width="50%" style="margin-top: -30px;" src="figures/XV_diagram.svg" alt="XV 5 fold">
+                  </section>
+
+                  <section>
+                    <h2>Cross validation results</h2>
+                      <img width="48%" style="margin-top: -30px;"  data-src="figures/XV_bars.png" alt="XV bars">
+                  </section>
+
+                  <section>
+                    <h2>Grid search workflow</h2>
+                    <img style="margin-top: -20px;" width="90%"  width="100%" src="figures/XV_grid_search_workflow.png" alt="cats and mice">
+                    <div class="slide-footer">
+                      <a href="https://scikit-learn.org/stable/modules/cross_validation.html">sklearn extensive examples</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Extra testing data</h2>
+                    <img style="margin-top: -20px;" width="90%" src="figures/XV_grid_search_cross_validation.png" alt="cats and mice">
+                    <div class="slide-footer">
+                      <a href="https://scikit-learn.org/stable/modules/cross_validation.html">sklearn extensive examples</a>
+                    </div>
+                  </section>
+
+
+                  <section>
+                    <h2>Nested Cross Validation</h2>
+                    <img style="margin-top: -20px;" width="80%" data-src="figures/XV_nested_cross_validation.png" alt="cats and mice">
+                    <div class="slide-footer">
+                      <a href="https://scikit-learn.org/stable/auto_examples/model_selection/plot_nested_cross_validation_iris.html#sphx-glr-auto-examples-model-selection-plot-nested-cross-validation-iris-py">sklearn on it</a>
+                    </div>
+                  </section>
+
+
+                  <section>
+                    <h2>Nested Cross Validation</h2>
+                    <img style="margin-top: -20px;"  width="80%" class="contain" data-src="figures/XV_nested_cross_validation.png" alt="cats and mice">
+                    <div class="slide-footer">
+                      <a href="https://scikit-learn.org/stable/auto_examples/model_selection/plot_nested_cross_validation_iris.html#sphx-glr-auto-examples-model-selection-plot-nested-cross-validation-iris-py">sklearn on it</a>
+                    </div>
+                  </section>
+
+
+                  <section>
+                    <h2>Hyperparameter optimization</h2>
+                    <row>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%" src="figures/XV_hyperopt_grid.png" alt="hyperopt" class="fragment" data-fragment-index="0">
+                      </col50>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%" src="figures/XV_hyperopt_random.png" alt="hyperopt" class="fragment" data-fragment-index="1">
+                      </col50>
+                    </row>
+                    <div class="slide-footer">
+                      <a href="http://www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf">Random Search for Hyper-Parameter Optimization</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3>Tools for hyperparameter optimization</h3>
+                    <ul>
+                      <li> <a href="https://github.com/hyperopt/hyperopt">hyperopt</a>
+                      <li> <a href="https://optuna.org/">Optuna</a>
+                      <li> <a href="https://orion.readthedocs.io/en/latest/index.html">Orion</a>
+                    </ul>
+                  </section>
+
+
+                </section>
+
+	        <section>
+                  <section>
+                    <h2>Expected Value (profit)</h2>
+                    <div class="slide-footer">
+                      <a href="http://data-science-for-biz.com/">based on: Data Science for Business (chapter 7)</a>
+                    </div>
+                    <aside class="notes">
+                      Should we just always use Balanced Accuracy?<br>
+                      May be F1 score is the one to always use?<br>
+                      Note, in addition to many possible single number metrics, different cultures call the same things by different names<br>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Statistician view of the world</h2>
+                    <img width="80%" src="figures/Model_selection_erorrs.png" alt="Pregnant">
+                    <aside class="notes">
+                      Now you will never forget what false positive is, right?
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Which Metric is the right one?</h2>
+                    <img style="margin-top: -30px" width="75%" src="figures/Metrics_metrics.png" alt="Metrics">
+                    <div class="slide-footer">
+                      <a href="https://www.wikiwand.com/en/Evaluation_measures_(information_retrieval)">Wikipedia: Evaluation measures (information retrieval)</a>
+                    </div>
+                    <aside class="notes">
+                      Confusion matrix is a really nice tool, but for comparison people need a simple metric, a single number.<br>
+                      All derive from the confusion matrix as you can see on this wikipedia page
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>it depends</h2>
+                    <aside class="notes">
+                      We need predictive models to lead to a decision<br>
+                      Simple accuracy, does not lead us there as it does not take into account the cost (or value) of each of those decisions.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Expected value</h2>
+                    <ul  style="list-style-type: none;">
+                      <li class="fragment roll-in"> Let's denote an outcome $i$ as $o_i$
+                      <li class="fragment roll-in"> The probability of that outcome as $\prob{p}{o_i}$
+                      <li class="fragment roll-in"> And its value as $\prob{v}{o_i}$
+                      <li class="fragment roll-in"> The expected value is nothing but
+                        $$
+                        EV = \sum_i^K \prob{p}{o_i}\cdot\prob{v}{o_i}
+                        $$
+                    </ul>
+                    <aside class="notes">
+                      We need predictive models to lead to a decision<br>
+                      Simple accuracy, does not lead us there as it does not take into account the cost (or value) of each of those decisions.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Example: targeted marketing</h2>
+                    <ul  style="list-style-type: none;">
+                      <li class="fragment roll-in"> A consumer buys the product for $\$200$ and our product- related costs are $\$100$.
+                      <li class="fragment roll-in"> To target the consumer with the offer, we also incur a cost. Let’s say that we mail some flashy marketing materials, and the overall cost including postage is $\$1$, yielding a value (profit) of $\prob{v}{o_R} = \$99$ if the consumer responds (buys the product).
+                      <li class="fragment roll-in"> Now, what about vNR, the value to us if the consumer does not respond? We still mailed the marketing materials, incurring a cost of $\$1$ or equivalently a benefit of $-\$1$.
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Example: targeted marketing</h2>
+                    <h3>shall we target this specific consumer?</h3>
+                    <ul  style="list-style-type: none;">
+                      <li class="fragment roll-in"> $\prob{p}{o_R} \cdot \$99 - [1 - \prob{p}{o_{R}}]\cdot \$1 \gt 0$
+                      <li class="fragment roll-in"> $\prob{p}{o_R} \cdot \$99 \gt [1 - \prob{p}{o_{R}}]\cdot \$1$
+                      <li class="fragment roll-in"> $\prob{p}{o_R} \gt 0.01$
+                      <li class="fragment roll-in">
+                        <blockquote dark style="font-size: 34px;">                           Send marketing materials if probability of responding is $\gt 1\%$
+                        </blockquote>
+                    </ul>
+                    <aside class="notes">
+                      This is how we can use the model that predicts probabilities based on the expected value framework. But how we can choose the best model for that?
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Example: targeted marketing</h2>
+                    <h3>First, convert confusion matrix to probabilities</h3>
+                    <row>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%" src="figures/Metrics_cm_counts.png" alt="hyperopt" class="fragment" data-fragment-index="0">
+                      </col50>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%" src="figures/Metrics_cm_rates.png" alt="hyperopt" class="fragment" data-fragment-index="1">
+                      </col50>
+                    </row>
+                    <aside class="notes">
+                      Assume we've trained a classifier that produces this confusion matrix on 110 test samples<br>
+                      Let's normalize the counts to obtain probabilities of the joint distribution<br>
+                      Divide each by 110<br>
+                      Here is what we will obtain.
+                    </aside>
+
+                  </section>
+
+                  <section>
+                    <h2>Example: targeted marketing</h2>
+                    <h3>Second, estimate the cost benefit matrix</h3>
+                    <row>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%" src="figures/Metrics_cost_benefit.png" alt="CB" class="fragment" data-fragment-index="0">
+                      </col50>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%" src="figures/Metrics_cb_exmaple.png" alt="CB example" class="fragment" data-fragment-index="1">
+                      </col50>
+                    </row>
+                    <aside class="notes">
+                      In fact, it is more convenient to call them all benefits (scratch) and denote the ones that incur costs as negative benefits<br>
+                      FP - if we send the materials, but consumer does not respond: negative one dollar<br>
+                      FN - if we did not send anything when they could have bought, but we did not spend so zero<br>
+                      TP - is the revenue of $200, minus cost of manufacturing $100 and the mailing cost of $1. $99<br>
+                      TN - correctly predicted that they won't buy and did not spend anything, so zero.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Expected Value Calculation</h2>
+                        <img style="margin-top: -30px;" width="75%" src="figures/Metrics_expected_value.png" alt="EV diagram">
+                  </section>
+
+                  <section>
+                    <h2>Example: targeted marketing</h2>
+                    <h3>What's the profit?</h3>
+                    <span style="font-size: 28px;">
+                    \begin{align}
+                    EV = &\, \prob{p}{Y, p} \prob{b}{Y, p} + \prob{p}{N, p} \prob{b}{N, p} + \prob{p}{N, n} \prob{b}{N, n} + \prob{p}{Y, n} \prob{b}{Y, n} \\
+                    = & \fragment{0}{\, \prob{p}{Y| p}\prob{p}{p} \prob{b}{Y, p} + \prob{p}{N|p} \prob{p}{p} \prob{b}{N, p}} \\
+                        & \fragment{0}{+ \prob{p}{N|n} \prob{p}{n} \prob{b}{N, n} + \prob{p}{Y|n} \prob{p}{n} \prob{b}{Y, n}}\\
+                    = &\, \fragment{1}{\prob{p}{p} \left[ \prob{p}{Y| p} \prob{b}{Y, p} + \prob{p}{N|p} \prob{b}{N, p} \right]} \\
+                        & \fragment{1}{+ \prob{p}{n} \left[ \prob{p}{N|n} \prob{b}{N, n} + \prob{p}{Y|n} \prob{b}{Y, n} \right]}\\
+                    =&\, \fragment{2}{0.55 \left[ 0.92\cdot \prob{b}{Y, p} + 0.08\cdot \prob{b}{N, p} \right]} \\
+                    & \fragment{2}{+ 0.45 \left[ 0.86\cdot \prob{b}{N, n} + 0.14\cdot \prob{b}{Y, n} \right]}\\
+                    =&\, \fragment{3}{0.55 \left[ 0.92\cdot99 + 0.08\cdot 0 \right] + 0.45 \left[ 0.86\cdot 0 + 0.14\cdot -1 \right]}\\
+                    =&\, \fragment{4}{\$50.04}
+                    \end{align}
+                    </span>
+                    <aside class="notes">
+                      Before we compute it, let's use chain rule of probability to obtain a convenient and interpretable form<br>
+                    </aside>
+                  </section>
+
+                </section>
+
+
+                <section>
+                  <section>
+                    <h2>Visualizing model performance</h2>
+                    <div class="slide-footer">
+                      <a href="https://www.wikiwand.com/en/Evaluation_measures_(information_retrieval)">based on: Data Science for Business (chapter 7)</a>
+                    </div>
+                    <aside class="notes">
+                      Given many unknowns and domain specific requirements, it is always good to approach the problem knowing as much as we can know. A visual map of model performance would help.<br>
+                      Furthermore, even specialists would have hard time understanding your result if you only show them one number. A figure is worth a thousand metric numbers. Or is it? 1000 measurements can make a good figure, right?
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Remember Expected Value Calculation?</h3>
+                    <img  style="margin-top: -30px;"  width="75%" src="figures/Metrics_expected_value.png" alt="EV diagram">
+                    <aside class="notes">
+                      Where would we take those 1000 numbers from?<br>
+                      Confusion matrix is all we have and it is fixed!
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Remember that Bayesian decision boundary?</h3>
+                    <img style="margin-top: -30px;"  width="92%" src="figures/Metrics_decision_boundary.png" alt="decision boundary">
+                    <aside class="notes">
+                      By using the optimal decision boundary we're minimizing overall risk<br>
+                      But is it optimal if FP and FN are not equally costly?
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Let's move the boundary around until we are happy</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="92%" src="figures/Metrics_inverted_threshold.gif" alt="Cutoffs">
+                    <aside class="notes">
+                      We can change cut offs as we want to... If only we had the models return true probabilities
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>ML models rarely return score that is the true probability</h3>
+                    <blockquote shade style="width: 100%;">
+                      For example, we can use the distance from the decision boundary in all linear classifiers for ranking samples, but not as probability. Even when we're estimating the probability densities directly, we may not be able to get sufficiently representative training sample.
+                    </blockquote>
+                    <aside class="notes">
+
+                    </aside>
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="margin-right: -120px;">
+                        <img width="100"
+                             src="figures/Metrics_confusion_matrix.png" alt="Confusion Matrix">
+                    </div>
+                    <h3>A classifier and confusion matrix</h3>
+                    <blockquote style="background-color: #eee8d5; width: 100%;  font-size: 26px;"  class="fragment" data-fragment-index="0">
+                      With a ranking classifier, a classifier plus a threshold produces a single confusion matrix.
+                    </blockquote>
+                    <img style="margin-top: -20px;" width="80%" src="figures/Metrics_ranking_by_score.png" alt="sorted data"  class="fragment" data-fragment-index="1">
+                    <aside class="notes">
+                      When the threshold changes the confusion matrix may change as well. The numbers of true positives and false positives change.<br>
+
+                    </aside>
+                  </section>
+
+                  <section>
+                    <div id="header-right">
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 150, 1); " width="100"
+                             src="figures/Metrics_confusion_matrix.png" alt="Confusion Matrix">
+                    </div>
+                    <h2>Questions</h2>
+                    <ul  style="list-style-type: none;">
+                      <li class="fragment roll-in"> How do we compare different rankings?
+                      <li class="fragment roll-in"> How do we choose a proper threshold?
+                    </ul>
+                    <aside class="notes">
+                      Note, different classifiers produce different scoring for the same samples, while the true class of the testing data samples stays the same. That means the orders/rankings are also different.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <div id="header-right">
+                        <img width="100" src="figures/Metrics_confusion_matrix.png" alt="Confusion Matrix">
+                    </div>
+                    <h2>Profit Curve</h2>
+                    <blockquote style="background-color: #eee8d5; font-size: 30px;">
+                      With a ranking classifier, we can produce a list of instances and their predicted scores, ranked by decreasing score, and then measure the expected profit that would result from choosing each successive cut-point in the list.
+                    </blockquote>
+                    <div class="slide-footer">
+                      <a href="http://data-science-for-biz.com/">Data Science for Business</a>
+                    </div>
+                    <aside class="notes">
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Profit Curve: example</h2>
+                    <h3>Let's assume our profit margin is small</h3>
+                    <img width="50%" src="figures/Metrics_profit_curve_cm.png" alt="small profit margin"  class="fragment" data-fragment-index="0">
+                    <aside class="notes">
+                      Each offer costs us $5 to make and each accepted offer earns $9, for a profit of $4
+                    </aside>
+                  </section>
+
+                  <section>
+                    <div id="header-left" style="margin-left: -150px; margin-top: -30px">
+                      <img width="300" src="figures/Metrics_ranking_by_score.png" alt="ranking">
+                    </div>
+                    <h2>Profit Curve: example</h2>
+                    <img width="70%" src="figures/Metrics_profit_curve.png" alt="small profit curve">
+                    <aside class="notes">
+                      The curves show that profit can go negative. By working too far down the list and making offers to too many people who won't respond we are spending too much on the cost of the offers<br>
+                      Note, all curves begin and end at the same point. End: we've assigned everyone as responders in all methods. Begin: we've assigned no one as responders. <br>
+                      Classifier 2 produces the maximum profit of $\gt\$200$ at 50% highest ranked consumers - the winner and threshold is clear.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <div id="header-left" style="margin-left: -150px; margin-top: -30px">
+                      <img width="300" src="figures/Metrics_ranking_by_score.png" alt="ranking">
+                    </div>
+                    <h3>Profit Curve on budget: example</h3>
+                    <img width="70%" src="figures/Metrics_profit_curve.png" alt="small profit curve">
+                    <aside class="notes">
+                      Say we have 100,000 total customers and a budget of 40k<br>
+                      Recall, each offer costs 5 dollars so we can target at most 40k/5 = 8,000 customers<br>
+                      8,000 is 8% customers<br>
+                      At this cutoff Classifier 1, not Classifier 2 is the most profitable one.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>problems with Profit Curves</h3>
+                    <ul  style="list-style-type: none;">
+                      <li class="fragment roll-in"> Two critical conditions in profit calculation
+                        <ul  style="list-style-type: disk;">
+                          <li> The class priors
+                          <li> The costs and benefits
+                        </ul>
+                      <li class="fragment roll-in"> If both are known, profit curves may be a good choice to visualize classifier performance
+                      <li class="fragment roll-in"> <alert>In many domains these conditions are either unstable or uncertain</alert>
+                        <ul  style="list-style-type: disk;">
+                          <li> Ex: the amount of fraud changes from place to place and month to month
+                          <li> Ex: marketing campaigns have different budgets and offers may have different costs
+                        </ul>
+                    </ul>
+                    <aside class="notes">
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>A possible solution</h3>
+                    <ul  style="list-style-type: none;">
+                      <li class="fragment roll-in"> Draw a profit curve per condition
+                      <li class="fragment roll-in"> <alert>Difficult to manage, to understand the implications of, and difficult to explain to a stakeholder</alert>
+                    </ul>
+                    <aside class="notes">
+                    </aside>
+                  </section>
+
+                </section>
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+            <script src="node_modules/reveal.js-verticator/plugin/verticator/verticator.js"></script>
+            <link rel="stylesheet" href="node_modules/reveal.js-verticator/plugin/verticator/verticator.css">
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  width: 960,
+                  height: 700,
+                  center: true,
+                  hash: true,
+                  controls: false,
+                  keyboard: true,
+                  margin: 0.05,
+                  overview: true,
+                  transition: 'slide', // Transition style: none/fade/slide/convex/concave/zoom
+                  transitionSpeed: 'slow', // Transition speed: default/fast/slow
+                  
+                  // minScale: 0.01,
+                  // maxScale: 0.93,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ Verticator, RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

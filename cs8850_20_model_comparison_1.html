@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>20: Model Comparison I</h3>
+	            <p>
+	          </section>
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Bias-Variance Trade-off Revisited
+                      <li class="fragment roll-in"> No Free Lunch Theorem
+                      <li class="fragment roll-in"> Problems with Accuracy
+                      <li class="fragment roll-in"> Confusion Matrix
+	            </ul>
+                  </section>
+                </section>
+
+                <!-- --------------------------------------------------------------------------->
+	        <section>
+                  <section>
+                    <h2>Bias-variance trade off revisited</h2>
+                  </section>
+
+                  <section>
+                    <h2>bandwidth selection for kde</h2>
+                    <ul  style="list-style-type: disk; font-size: 22pt">
+                      <li class="fragment roll-in">  Pick $h$ that minimizes the error between
+                        the estimated density and the true density
+                      <li class="fragment roll-in">  Let us use MSE for measuring this error
+                      <li class="fragment roll-in" style="list-style-type: none;">  $E\left[ (\prob{P$_{KDE}$}{\vec{x}} - \prob{P}{\vec{x}})^2 \right] $
+                      <li class="fragment roll-in" style="list-style-type: none;"> $ = E\left[ \prob{P$_{KDE}$}{\vec{x}}^2 - 2 \prob{P$_{KDE}$}{\vec{x}} \prob{P}{\vec{x}} + \prob{P}{\vec{x}}^2\right]$
+                      <li class="fragment roll-in" style="list-style-type: none;"> $ = E\left[ \prob{P$_{KDE}$}{\vec{x}}^2\right] - 2 E\left[\prob{P$_{KDE}$}{\vec{x}}\right] \prob{P}{\vec{x}} + \prob{P}{\vec{x}}^2$
+
+                      <li class="fragment roll-in" style="list-style-type: none;"> Add and subtract $E^2\left[ \prob{P$_{KDE}$}{\vec{x}} \right]$
+                      <li class="fragment roll-in" style="list-style-type: none;">
+                        \begin{align}
+                        =  & E^2\left[ \prob{P$_{KDE}$}{\vec{x}} \right]  - 2 E\left[\prob{P$_{KDE}$}{\vec{x}}\right] \prob{P}{\vec{x}} + \prob{P}{\vec{x}}^2 \\
+                        & + E\left[ \prob{P$_{KDE}$}{\vec{x}}^2\right] - E^2\left[ \prob{P$_{KDE}$}{\vec{x}} \right]
+                        \end{align}
+                      <li class="fragment roll-in" style="list-style-type: none;">
+                        \begin{align}
+                        =  & (E\left[ \prob{P$_{KDE}$}{\vec{x}} \right]  - \prob{P}{\vec{x}})^2 + E\left[ \prob{P$_{KDE}$}{\vec{x}}^2\right] - E^2\left[ \prob{P$_{KDE}$}{\vec{x}}
+ \right]
+                        \end{align}
+                      <li class="fragment roll-in">  This is an example of <em>bias-variance tradeoff</em>
+                    </ul>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Bias-variance tradeoff</h2>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
+                           src="figures/bias_variance_targets.png" alt="bias variance">
+                  </section>
+
+                  <section>
+                    <h2>Bias-Variance Decomposition for MSE </h2>
+                    <row>
+                      <col50>
+                        <ul  style="list-style-type: disk; font-size: 26px">
+                          <li class="fragment roll-in">  MSE as an error measure
+                          <li class="fragment roll-in" style="list-style-type: none;">  $E\left[ (\hat{\theta} - \theta)^2 \right] $
+                          <li class="fragment roll-in" style="list-style-type: none;"> $ = E\left[ \hat{\theta}^2 - 2 \hat{\theta}\theta + \theta^2\right]$
+                          <li class="fragment roll-in" style="list-style-type: none;"> $ = E\left[ \hat{\theta}^2\right] - 2 E\left[\hat{\theta}\right] \theta + \theta^2$
+
+                          <li class="fragment roll-in" style="list-style-type: none;"> Add and subtract $E\left[ \hat{\theta} \right]^2$
+                          <li class="fragment roll-in" style="list-style-type: none;">
+                            \begin{align}
+                            =  & E\left[ \hat{\theta} \right]^2  - 2 E\left[\hat{\theta}\right] \theta + \theta^2 \\
+                            & + E\left[ \hat{\theta}^2\right] - E\left[ \hat{\theta} \right]^2
+                            \end{align}
+                          <li class="fragment roll-in" style="list-style-type: none;">
+                            \begin{align}
+                            =  & (E\left[ \hat{\theta} \right]  - \theta)^2 + E\left[ \hat{\theta}^2\right] - E\left[ \hat{\theta} \right]^2
+                            \end{align}
+                        </ul>
+                      </col50>
+                      <col50>
+                        <ul  style="list-style-type: none; font-size: 26px">
+                          <li class="fragment roll-in"> <i class="far fa-grimace"></i> Is not variance $E\left[ (\hat{\theta} - E\left[\hat{\theta}\right])^2\right]$?
+                          <li class="fragment roll-in"> $E\left[ (\hat{\theta} - E\left[\hat{\theta}\right])^2\right]$
+                          <li class="fragment roll-in"> $= E\left[ \hat{\theta}^2 - 2\hat{\theta}E\left[\hat{\theta}\right] + E\left[\hat{\theta}\right]^2 \right]$
+                          <li class="fragment roll-in"> $= E\left[ \hat{\theta}^2 \right] - 2 E\left[ \hat{\theta}\right]E\left[\hat{\theta}\right] + E\left[\hat{\theta}\right]^2$
+                          <li class="fragment roll-in"> $= E\left[ \hat{\theta}^2 \right] - 2 E\left[\hat{\theta}\right]^2 + E\left[\hat{\theta}\right]^2$
+                          <li class="fragment roll-in"> $= E\left[ \hat{\theta}^2 \right] - E\left[\hat{\theta}\right]^2$
+                        </ul>
+                      </col50>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>if data is all we have</h2>
+                    <h3>how do we know if we're doing well?</h3>
+                    <h3>how do we know which model is better?</h3>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
+                           src="figures/train_validation_test.svg" alt="split">
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Bias-variance tradeoff</h2>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="900"
+                           src="figures/bias_variance_fht.svg" alt="bias variance">
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="margin-right: -120px; margin-top: -20px;">
+                        <img width="270" src="figures/polyfit.gif" alt="polyfit">
+                    </div>
+                    <h2>Bias-variance tradeoff</h2>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="900"
+                           src="figures/model_complexity.png" alt="model complexity">
+                  </section>
+
+
+                  <section>
+                    <h2>Select a model that generalizes best</h2>
+                    <!-- <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width=100%"> -->
+                      <blockquote dark style="font-size: 34px;">
+                      $E\left[ (g(\theta; {\cal D}) - G(\theta))^2 \right] = \mbox{bias of }g + \mbox{ variance of }g$, <br>
+                      where $g$ is estimated and $G$ is true generalization error
+                    </blockquote>
+                    <row>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%" class="fragment" data-fragment-index="0"
+                             src="figures/model_selection_unbiased.svg" alt="unbiased">
+                      </col50>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%" class="fragment" data-fragment-index="1"
+                             src="figures/model_selection_low_variance.svg" alt="low variance">
+                      </col50>
+                    </row>
+                    <div class="slide-footer">
+                      <a href="http://www.jmlr.org/papers/volume11/cawley10a/cawley10a.pdf">On Over-fitting in Model Selection and Subsequent Selection Bias in Performance Evaluation</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Bias-variance tradeoff</h2>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="900"
+                           src="figures/kde_bias_variance.svg" alt="kde bias variance">
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Double-descent curve</h2>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
+                           src="figures/double_descent_curve.svg" alt="double descent">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/pdf/1812.11118.pdf">Reconciling modern machine learning practice
+and the bias-variance trade-of</a>
+                    </div>
+                  </section>
+                </section>
+
+                <!-- --------------------------------------------------------------------------->
+	        <section>
+                  <section>
+                    <h2>No free lunch theorem</h2>
+                  </section>
+
+                  <section data-fullscreen>
+                      <img height="100%"
+                           src="figures/universal_remote.png" alt="remote">
+                  </section>
+
+                  <section data-fullscreen data-background="figures/mousetrap.jpeg">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%"
+                           src="figures/koshki_myshki_lunch.svg" alt="cats and mice">
+                      <div class="slide-footer">
+                        <a href="https://acomics.ru/~rats-n-cats/254">Кошки-мышки (rat's n cats)</a>
+                      </div>
+                  </section>
+
+                  <section>
+                    <blockquote>
+                      "Even  after  the  observation  of  the  frequent
+                      conjunction  of objects,  we have  no reason  to
+                      draw any inference  concerning any object beyond
+                      those of  which we have had  experience."<br> David
+                      Hume,  in A  Treatise of  Human Nature,  Book I,
+                      part 3, Section 12.
+                    </blockquote>
+                  </section>
+
+                  <section data-fullscreen data-background="figures/wolpertspapers_trans.png">
+                    <div id="header-right">
+                        <img style="border:0; box-shadow: 0px 10px 10px rgba(150, 150, 150, 1); " width="200"
+                             src="figures/David-Wolpert.jpg" alt="David Wolpert">
+                    </div>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%"
+                           src="figures/wolpertpapers.png" alt="wolperts">
+                      <div class="slide-footer">
+                      <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.390.9412&rep=rep1&type=pdf">The Lack of A Priori Distinction Between Learning Algorithms</a> and <a href="https://ti.arc.nasa.gov/m/profile/dhw/papers/78.pdf">No Free Lunch Theorems for Optimization</a>
+                    </div>
+                  </section>
+
+
+                  <section>
+                    <h2>No free lunch theorem (simply put)</h2>
+                    <blockquote>
+                      There is not a universally good algorithms that's best on all possible test data!
+                    </blockquote>
+                  </section>
+
+                </section>
+                <!-- --------------------------------------------------------------------------->
+	        <section>
+                  <section>
+                    <h2>Problems with accuracy</h2>
+                  </section>
+
+                </section>
+
+                <!-- --------------------------------------------------------------------------->
+	        <section>
+                  <section>
+                    <h2>Confusion Matrix</h2>
+                  </section>
+
+                  <section>
+                      <img width="100%" src="figures/confusion_insilico.png" alt="insilico">
+                  </section>
+
+                </section>
+
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+            <script src="node_modules/reveal.js-verticator/plugin/verticator/verticator.js"></script>
+            <link rel="stylesheet" href="node_modules/reveal.js-verticator/plugin/verticator/verticator.css">
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 0.93,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ Verticator, RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

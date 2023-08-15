@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>15: Stochastic Gradient Descent</h3>
+	            <p>
+	          </section>
+
+                                    <section>
+                    <h3>Schedule</h3>
+
+                    <row>
+                      <col50>
+                      <table style="font-size:14px">
+                        <tr>
+                          <th>#</th>
+                          <th>date</th>
+                          <th>topic</th>
+                          <th>description</th>
+                        </tr>
+                        <tr><td>1</td>
+                          <td> 22-Aug-2022 </td>
+                          <td> Introduction </td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>  2 </td>
+                          <td> 24-Aug-2022 </td>
+                          <td> Foundations of learning </td>
+                          <td> </td>
+                        </tr>
+                        <tr><td>  3  </td><td> 29-Aug-2022 </td><td> PAC learnability </td><td>             </td></tr>
+                        <tr><td>  4 </td><td> 31-Aug-2022 </td><td>      Linear algebra (recap) </td><td>   hw1 released   </td></tr>
+                        <tr style='background-color: #FBEEC2;'><td>   </td><td> 05-Sep-2022 </td><td> <em>Holiday</em>         </td><td>         </td></tr>
+                        <tr style='background-color: #E0E4CC;'><td>  5 </td><td> 07-Sep-2022 </td><td> Linear learning models </td><td>   </td></tr>
+                        <tr><td>  6 </td><td> 12-Sep-2022 </td><td> Principal Component Analysis       </td><td> project ideas  </td></tr>
+                        <tr><td>  7 </td><td> 14-Sep-2022  </td><td>  Curse of Dimensionality          </td></td></td><td> hw1 due </td></tr>
+<tr><td> 8 </td><td> 19-Sep-2022  </td><td>  Bayesian Decision Theory  </td><td>hw2 release </td></tr>
+<tr><td> 9 </td><td> 21-Sep-2022  </td><td> Parameter estimation: MLE </td><td></td></tr>
+<tr><td> 10 </td><td> 26-Sep-2022 </td><td> Parameter estimation: MAP & NB</td><td>finalize teams</td></tr>
+<tr><td> 11 </td><td> 28-Sep-2022 </td><td> Logistic Regression  </td><td>             </td></tr>
+<tr><td> 12 </td><td> 03-Oct-2022 </td><td> Kernel Density Estimation </td><td>             </td></tr>
+<tr><td> 13 </td><td> 05-Oct-2022 </td><td> Support Vector Machines </td><td> hw3, hw2 due       </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 10-Oct-2022 </td><td>   * Mid-point projects checkpoint     </td><td>    *    </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 12-Oct-2022 </td><td>   * Midterm: Semester Midpoint       </td><td> exam   </td></tr>
+<tr><td> 14 </td><td> 17-Oct-2022  </td><td>Matrix Factorization</td><td>           </td></tr>
+<tr><td> 15 </td><td> 19-Oct-2022  </td><td>Stochastic Gradient Descent</td><td><i class='fa fa-map-marker' style='color: #FA6900;'></i>      </td></tr>
+</table>
+</col50>
+<col50>
+<table style="font-size:14px; vertical-align: top;">
+  <tr>
+    <th>#</th>
+    <th>date</th>
+    <th>topic</th>
+    <th>description</th>
+  </tr>
+  <tr><td> 16 </td><td> 24-Oct-2022 </td><td> k-means clustering  </td><td> </td></tr>
+  <tr><td> 17 </td><td> 26-Oct-2022 </td><td> Expectation Maximization </td><td> hw4, hw3 due             </td></tr>
+  <tr><td> 18 </td><td> 31-Oct-2022 </td><td> Automatic Differentiation </td><td> </td></tr>
+  <tr><td> 19  </td><td> 02-Nov-2022 </td><td> Nonlinear embedding approaches </td><td>  </td></tr>
+  <tr><td> 20 </td><td> 07-Nov-2022 </td><td> Model comparison I </td><td> </td></tr>
+  <tr><td> 21 </td><td> 09-Nov-2022 </td><td> Model comparison II  </td><td> hw5, hw4 due</td></tr>
+  <tr><td> 22 </td><td> 14-Nov-2022 </td><td> Model Calibration </td><td> </td></tr>
+  <tr><td> 23 </td><td> 16-Nov-2022  </td><td> Convolutional Neural Networks  </td><td>             </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 21-Nov-2022  </td><td> <em>Fall break</em> </td><td>            </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 23-Nov-2022 </td><td> <em>Fall break</em> </td><td>   </td></tr>
+  <tr><td> 24 </td><td> 28-Nov-2022 </td><td> Word Embedding </td><td> hw5 due </td></tr>
+  <tr style='background-color: #FBEEC2;'><td> </td><td> 30-Nov-2022 </td><td> Presentation and exam prep day </td><td> </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 02-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 07-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td> </td><td> 12-Dec-2022 </td><td> * Final Exam    </td><td>   *     </td></tr>
+  <tr><td> </td><td> 15-Dec-2022  </td><td> Grades due   </td><td>             </td></tr>
+</table>
+</col50>
+</row>
+</section>
+
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Stochastic Gradient Descent
+	            </ul>
+                  </section>
+                </section>
+                <!-- -------------------------------------------------------------------------         -->
+	        <section>
+                  <section data-background="figures/stochastic_grain.gif">
+                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Stochastic Gradient Descent</h2>
+                    <div class="slide-footer">
+                      heavily based on Sebastian Ruder's slides for <a href="https://arxiv.org/abs/1609.04747">An overview of gradient descent optimization algorithms</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Gradient Descent</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;">
+                      A way to minimize an objective function $\prob{J}{\theta}$
+                    </blockquote>
+                    <ul>
+                      <li> $\prob{J}{\theta}$: Objective function
+                      <li> $\theta \in \RR^d$: parameters of the model
+                      <li> $\eta$: Learning rate that determines the size of steps we take
+                    </ul>
+                    <row>
+                      <col50>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;width: 100%;">
+                          Update Equation
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5; width: 100%;">
+                          $\theta = \theta - \eta \nabla_{\theta} \prob{J}{\theta}$
+                        </blockquote>
+                      </col50>
+                      <col50>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="1000"
+                           src="figures/SGD_minimum.svg" alt="Gradient Descent">
+                      </col50>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>Gradient Descent Variants</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;  width: 100%;">
+                      There are 3 of them
+                    </blockquote>
+                    <ul>
+                      <li class="fragment roll-in"> Batch gradient descent
+                      <li class="fragment roll-in"> Stochastic gradient descent
+                      <li class="fragment roll-in"> Mini-batch gradient descent
+                    </ul>
+                    <br>
+                    <br>
+                    <row>
+                      <col50>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;">
+                          Update Equation
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5;  width: 100%;">
+                          $\theta = \theta - \eta {\color{red} \nabla_{\theta} \prob{J}{\theta}}$
+                        </blockquote>
+                      </col50>
+                      <col50>
+                        <blockquote style="background-color: #eee8d5;  width: 90%;">
+                          <alert>The red term</alert> is different for each method
+                        </blockquote>
+                      </col50>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>Trade Off</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                      Depending on the amount of data
+                    </blockquote>
+                    <ul>
+                      <li> The accuracy of the parameter update
+                      <li> The time is takes to perform an update
+                    </ul>
+                    <br>
+                    <br>
+                    <table>
+                      <tr>
+                        <th> Method </th>
+                        <th> Accuracy </th>
+                        <th> Time </th>
+                        <th> Memory </th>
+                        <th> Online </th>
+                      </tr>
+                      <tr>
+                        <td>Batch</td>
+                        <td><span class="far fa-thumbs-up"/></td>
+                        <td>slow</td>
+                        <td>high</td>
+                        <td><span class="fa fa-times"/></td>
+                      </tr>
+                      <tr>
+                        <td>Stochastic</td>
+                        <td><i class="far fa-thumbs-down"></i></td>
+                        <td>fast</td>
+                        <td>low</td>
+                        <td><span class="far fa-check-circle"/></td>
+                      </tr>
+                      <tr>
+                        <td>Mini-batch</td>
+                        <td><span class="far fa-thumbs-up"/></td>
+                        <td>moderate</td>
+                        <td>moderate</td>
+                        <td><span class="far fa-check-circle"/></td>
+                      </tr>
+                    </table>
+                  </section>
+
+                  <section>
+                    <h2>Batch gradient descent</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width:100%;">
+                      Compute the gradient of $\prob{J}{\theta}$ with respect to the entire dataset
+                    </blockquote>
+                    <row>
+                      <col50>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                          Update Equation
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5;">
+                          $\theta = \theta - \eta \nabla_{\theta} \prob{J}{\theta}$
+                        </blockquote>
+                      </col50>
+                      <col50>
+                        <blockquote style="background-color: #eee8d5;  width: 100%;">
+                          We need to calculate the gradients for the whole dataset to perform <b>just one update</b>.
+                        </blockquote>
+                      </col50>
+                    </row>
+                    <pre><code>
+for i in range(number_of_epochs):
+   gradient = eval_gradient(loss_fun, data, parameters)
+   parameters = parameters - eta * gradient
+                    </code></pre>
+                  </section>
+
+                  <section>
+                    <h2>Batch gradient descent</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;" class="fragment" data-fragment-index="0">
+                      Advantages
+                    </blockquote>
+                    <ul style="font-size: 36px;">
+                      <li class="fragment roll-in" data-fragment-index="1"> We're working with the best possible error surface
+                      <li class="fragment roll-in" data-fragment-index="2"> Guaranteed to converge to a local or global minimum of <b>that</b> surface
+                    </ul>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;" class="fragment" data-fragment-index="3">
+                      Disadvantages
+                    </blockquote>
+                    <ul style="font-size: 36px;">
+                      <li class="fragment roll-in" data-fragment-index="4"> Can be very slow
+                      <li class="fragment roll-in" data-fragment-index="5"> Can be intractable due to memory requirements
+                      <li class="fragment roll-in" data-fragment-index="6"> No online updates
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Stochastic gradient descent</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width:100%;">
+                      Perform a parameter update for each training example $\vec{x}_i$ and the corresponding label $y_i$
+                    </blockquote>
+                    <row>
+                      <col50>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;width: 100%; ">
+                          Update Equation
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5; width: 100%;">
+                          $\theta = \theta - \eta \nabla_{\theta} \prob{J}{\theta; \vec{x}_i; y_i}$
+                        </blockquote>
+                      </col50>
+                      <col50>
+                        <blockquote style="background-color: #eee8d5; width: 90%;">
+                          We need to evaluate the gradient <b>only for a single data sample</b>.
+                        </blockquote>
+                      </col50>
+                    </row>
+                    <pre><code  data-trim data-noescape>
+for i in range(number_of_epochs):
+   np.random.shuffle(data)
+   for example in data:
+       gradient = eval_gradient(loss_fun, example, parameters)
+       parameters = parameters - eta * gradient
+                    </code></pre>
+                  </section>
+
+                  <section>
+                    <h2>Stochastic gradient descent</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;" class="fragment" data-fragment-index="0">
+                      Advantages
+                    </blockquote>
+                    <ul style="font-size: 36px;">
+                      <li class="fragment roll-in" data-fragment-index="1"> It is usually much faster than batch gradient descent.
+                      <li class="fragment roll-in" data-fragment-index="2"> It can be used to learn online.
+                    </ul>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;" class="fragment" data-fragment-index="3">
+                      Disadvantages
+                    </blockquote>
+                    <ul style="font-size: 36px;">
+                      <li class="fragment roll-in"  data-fragment-index="4"> It performs frequent updates with a high variance that cause the objective function to fluctuate heavily.
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>The fluctuations</h2>
+                    <row>
+                      <col50>
+                        <ul style="font-size: 28px;">
+                          <li class="fragment roll-in"> Batch gradient descent converges to the minimum of the basin the parameters are placed in and the fluctuation is small.
+                          <li class="fragment roll-in"> SGD’s fluctuation is large but it enables to jump to new and potentially better local minima.
+                          <li class="fragment roll-in"> However, this ultimately complicates convergence to the exact minimum, as SGD will keep overshooting
+                        </ul>
+                      </col50>
+                      <col50>
+                      <img width="100%"
+                           src="figures/SGD_fluctuations.svg" alt="Fluctuations">
+                      </col50>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>learning rate annealing</h2>
+                    <blockquote style="background-color: #eee8d5;">
+                      When we slowly decrease the learning rate, SGD shows the same convergence behaviour as batch gradient descent
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Mini-batch gradient descent</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width:100%;">
+                      Perform an update on a small sample of data
+                    </blockquote>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                      Update Equation
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5;">
+                      <center>
+                        $\theta = \theta - \eta \nabla_{\theta} \prob{J}{\theta; \vec{x}_{i:i+n}; y_{i:i+n}}$
+                      </center>
+                    </blockquote>
+                      <pre><code  data-trim data-noescape>
+for i in range(number_of_epochs):
+   np.random.shuffle(data)
+   for batch in batch_iterator(data, batch_size=32):
+       gradient = eval_gradient(loss_fun, batch, parameters)
+       parameters = parameters - eta * gradient
+                      </code></pre>
+                  </section>
+
+                  <section>
+                    <h2>Mini-batch gradient descent</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;"  class="fragment" data-fragment-index="0">
+                      Advantages
+                    </blockquote>
+                    <ul style="font-size: 36px;">
+                      <li class="fragment roll-in"  data-fragment-index="1"> Reduces the variance of the parameter updates.
+                      <li class="fragment roll-in"  data-fragment-index="2"> Can make use of highly optimized matrix optimizations common to deep learning libraries that make computing the gradient very efficiently.
+                    </ul>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;"  class="fragment" data-fragment-index="3">
+                      Disadvantages
+                    </blockquote>
+                    <ul style="font-size: 36px;">
+                      <li class="fragment roll-in"  data-fragment-index="4"> We have to set the mini-batch size
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Challenges</h2>
+                    <ul style="font-size: 36px;">
+                      <li class="fragment roll-in"> How to set the learning rate
+                      <li class="fragment roll-in"> How to set the learning rate schedule
+                      <li class="fragment roll-in"> How to change the learning rate per parameter
+                      <li class="fragment roll-in"> How to avoid local minima and saddle points
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h3>Gradient descent optimization algorithms</h3>
+                    <ul>
+                      <li> Momentum
+                      <li> Nesterov accelerated gradient
+                      <li> Adagrad
+                      <li> RMSprop
+                      <li> Adadelta
+                      <li> Adam
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>SGD problems</h2>
+                    <img width="800" src="figures/SGD_ravines.png" alt="Ravines"><br>
+                    <a href="https://distill.pub/2017/momentum/">Let's look at a simple demo</a>
+                  </section>
+
+                  <section data-background="figures/momentum.gif">
+                  </section>
+
+                  <section>
+                    <h2>Momentum</h2>
+                    <blockquote style="background-color: #eee8d5;">
+                      \begin{align*}
+                      \vec{v}_t & = \gamma \vec{v}_{t-1} + \eta \nabla_{\theta} \prob{J}{\theta}\\
+                      \vec{\theta} &= \vec{\theta} - \vec{v}_t \\
+                      \gamma &\simeq 0.9
+                      \end{align*}
+                    </blockquote>
+                    <div class="fragment" data-fragment-index="0" >
+                      Momentum is accumulated the farther the ball rolls downhill
+                      <br>
+                      <a href="https://distill.pub/2017/momentum/">Let's see the demo again</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Nesterov accelerated gradient</h2>
+                    <h3>when we want to do better than that</h3>
+                    <blockquote style="background-color: #eee8d5;">
+                      \begin{align*}
+                      \vec{v}_t & = \gamma \vec{v}_{t-1} + \eta \nabla_{\theta} \prob{J}{\theta - \gamma \vec{v}_{t-1}}\\
+                      \vec{\theta} &= \vec{\theta} - \vec{v}_t \\
+                      \gamma &\simeq 0.9
+                      \end{align*}
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>AdaGrad</h2>
+                    <h3>we want parameter-specific learning rate </h3>
+                    <blockquote style="background-color: #eee8d5;">
+                      \begin{align*}
+                      \vec{v}_t & = \vec{v}_{t-1} + (\nabla_{\theta} \prob{J}{\vec{\theta}})^2\\
+                      \vec{\theta} &= \vec{\theta} - \frac{\eta}{\sqrt{{\prob{diag}{\vec{v}_t} + \epsilon}}} \nabla_{\theta} \prob{J}{\vec{\theta}} \\
+                      \end{align*}
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h3>RMSprop:
+                    stop diminishing learning rate</h3>
+                    <blockquote style="background-color: #eee8d5; width: 100%" class="fragment" data-fragment-index="0" >
+                      \begin{align*}
+                      \vec{g}_t & = \nabla_{\theta} \prob{J}{\vec{\theta}} \\
+                      \prob{E}{\vec{g}^2}_t & = \gamma\prob{E}{\vec{g}^2}_{t-1} + (1-\gamma)\vec{g}_t^2\\
+                      \vec{\theta} &= \vec{\theta} - \frac{\eta}{\sqrt{{\prob{diag}{\prob{E}{\vec{g}^2}_t} + \epsilon}}} \vec{g}_t \\
+                      \end{align*}
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 32px;" class="fragment" data-fragment-index="1" >
+                      \begin{align*}
+                      \mbox{units of}\, \Delta\vec{\theta} \propto \mbox{units of } \vec{g} \propto \mbox{units of } \frac{\partial J}{\partial \vec{\theta}}\propto \frac{1}{\mbox{units of}\, \vec{\theta}}\\
+                      \mbox{but} \quad \Delta\vec{\theta} \propto \mathbf{H}^{-1}\vec{g} \propto \frac{ \frac{\partial J}{\partial \vec{\theta}}}{ \frac{\partial^2 J}{\partial \vec{\theta}^2}} \propto \mbox{units of }\, \vec{\theta}
+                      \end{align*}
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h3>Adadelta:
+                    get everything right</h3> 
+                    <blockquote style="background-color: #eee8d5; width: 100%" >
+                      \begin{align*}
+                      \vec{g}_t & = \nabla_{\theta} \prob{J}{\vec{\theta}} \\
+                      \Delta\vec{\theta}_{t-1} & =  \frac{\eta}{\sqrt{{\prob{diag}{\prob{E}{\vec{g}^2}_{t-1}} + \epsilon}}} \\
+                      \prob{E}{\Delta\vec{\theta}^2}_{t-1} & = \gamma\prob{E}{\Delta\vec{\theta}^2}_{t-2} + (1-\gamma)\Delta\vec{\theta}^2_{t-1}\\
+                      \prob{E}{\vec{g}^2}_t & = \gamma\prob{E}{\vec{g}^2}_{t-1} + (1-\gamma)\vec{g}_t^2\\
+                      \vec{\theta} &= \vec{\theta} -  \frac{{\sqrt{{\prob{diag}{\prob{E}{\Delta\vec{\theta}^2}_{t-1}} + \epsilon}}} }{{\sqrt{{\prob{diag}{\prob{E}{\vec{g}^2}_{t}} + \epsilon}}} }\vec{g}_t \\
+                      \end{align*}
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Adam (adaptive moment)</h2>
+                    <blockquote style="background-color: #eee8d5; font-size:32px">
+                      \begin{align*}
+                      \vec{m}_t & = \beta_1 \vec{m}_{t-1} + (1 - \beta_1) \nabla_{\theta} \prob{J}{\theta}\\
+                      \vec{v}_t & = \beta_2 \vec{v}_{t-1} + (1 - \beta_2) (\nabla_{\theta} \prob{J}{\theta})^2\\
+                      \hat{\vec{m}}_t &= \frac{\vec{m}_t}{1 - \beta_1^t}\\
+                      \hat{\vec{v}}_t &= \frac{\vec{v}_t}{1 - \beta_2^t}\\
+                      \vec{\theta}_{t+1} &= \vec{\theta}_t - \frac{\eta}{\sqrt{\hat{\vec{v}}_t} + \epsilon} \hat{\vec{m}}_t\\
+                      \beta_1 &\simeq 0.9 \quad
+                      \beta_2 \simeq 0.999 \quad
+                      \epsilon \simeq 10^{-8}
+                      \end{align*}
+                    </blockquote>
+                  </section>
+
+
+                  <section>
+                    <h2>Many more</h2>
+                    <ul>
+                      <li> AdaMax
+                      <li> Nadam
+                      <li> AMSgrad
+                      <li> AdamW
+                      <li> QHAdam
+                      <li> AggMo
+                    </ul>
+                    <h2>but use Adam if in doubt</h2>
+                  </section>
+
+                  <section data-background="figures/sgd_approaches.gif" data-background-size="contain">
+                  </section>
+
+                  <section>
+                    <h2>The rise of the SGD</h2>
+                    <img width="1000" src="figures/sgd_table.png" alt="Ravines"><br>
+                    <div class="slide-footer"><a href="https://ai.googleblog.com/2018/12/the-neurips-2018-test-of-time-award.html">
+                        "The Trade-Offs of Large Scale Learning" by Léon Bottou and Olivier Bousquet 2007
+                    </a></div>
+                    <aside class="notes">
+                      Talk about why and how SGD became
+                    </aside>
+                  </section>
+
+                </section>
+
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 0.93,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

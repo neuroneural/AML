@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>16: K-means</h3>
+	            <p>
+                    <div class="slide-footer">
+                      based on Barnabas Pozcos
+                    </div>
+	          </section>
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> MLE for Gaussians
+                      <li class="fragment roll-in"> GMM: Gaussian Mixture Model
+                      <li class="fragment roll-in"> Clustering
+                      <li class="fragment roll-in"> Hard K-means
+                      <li class="fragment roll-in"> Soft K-means
+	            </ul>
+                  </section>
+                </section>
+
+                                <!-- -------------------------------------------------------------------------         -->
+	        <section>
+                  <section>
+                    <h2>MLE for Gaussians</h2>
+                  </section>
+
+                  <section>
+                    <h2>Remember continuous features?</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                         src="figures/gaussian_pink.svg" alt="Gaussian samples">
+                    <div class="fragment" data-fragment-index="0">
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                        Model Likelihoods as Gaussians...
+                      </blockquote>
+                      \begin{align}
+                      \prob{p}{x|\mu,\sigma} &= \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}} = {\cal N}_x(\mu, \sigma)
+                      \end{align}
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>MLE for Gaussian $\mu$ and $\sigma^2$</h2>
+                    $\theta = (\mu, \sigma^2)$ that maximizes the probability of observed data
+                    <span style="font-size: 32px;">
+                    \begin{align}
+                    \hat{\theta}_{MLE} & = \underset{\theta}{\argmax} \prob{P}{D|\theta}\\
+                    & = \underset{\theta}{\argmax} \displaystyle{\prod_{i=1}^n}\prob{P}{x_i|\theta} \color{#dc322f}{\text{    independent draws}}\\
+                    & = \underset{\theta}{\argmax} \displaystyle{\prod_{i=1}^n} \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x_i-\mu)^2}{2\sigma^2}} \color{#dc322f}{\text{    i.i.d}}\\
+                    & = \underset{\theta}{\argmax}  \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{\sum_{i=1}^n(x_i-\mu)^2}{2\sigma^2}}\\
+                    \end{align}
+                    </span>
+                  </section>
+
+                  <section>
+                    <h3>MLE for Gaussian $\mu$ and $\sigma^2$</h3>
+                    <blockquote style="font-size: 30px;">
+                      \begin{align}
+                      \hat{\mu}_{MLE} &= \frac{1}{n} \displaystyle\sum_{i=1}^n x_i\\
+                      \hat{\sigma}^2_{MLE} &= \frac{1}{n} \displaystyle\sum_{i=1}^n (x_i - \hat{\mu}_{MLE})^2\\
+                      \end{align}
+                    </blockquote>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 30px;" class="fragment" data-fragment-index="0">
+                      MLE for $\sigma^2$ of a Gaussian is <b>biased</b>: expected result of estimation is <b>not</b> the true parameter!
+                      $$\hat{\sigma}^2_{unbiased} = \frac{1}{n-1} \displaystyle\sum_{i=1}^n (x_i - \hat{\mu}_{MLE})^2$$
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h3>What if there are multiple Gaussians?</h3>
+                  </section>
+
+                </section>
+
+                  <!-- ------------------------------------------------------------------------- -->
+	        <section>
+                  <section>
+                    <h2>GMM: Gaussian Mixture Model</h2>
+                  </section>
+
+                  <section>
+                    <h2>Density estimation</h2>
+                    <blockquote style="background-color: #eee8d5; width: 100%;"  class="fragment" data-fragment-index="0">
+                      \begin{align}
+                      \prob{p}{\vec{x}_1, \dots, \vec{x}_n|\vec{\theta}} & = \prod_{i=1}^n \prob{p}{\vec{x}_i|\vec{\theta}}
+                      \end{align}
+                    </blockquote>
+                    <ul  style="list-style-type: none; font-size: 22pt">
+                      <li class="fragment roll-in" data-fragment-index="1"> There is a latent parameter $\vec{\theta}$
+                      <li class="fragment roll-in" data-fragment-index="2"> $\forall i \in \{1, 2, \dots, n\}$ draw observed $\vec{x}_i$ from the parametric distribution given $\vec{\theta}$
+                      <li class="fragment roll-in" data-fragment-index="3"> <alert>But what if a Gaussian does not fit the data?</alert>
+                      <li class="fragment roll-in" data-fragment-index="4">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 30px;">
+                          Answer: Mixture modeling or Partitioning algorithms
+                        </blockquote>
+                      <li class="fragment roll-in" data-fragment-index="5">
+                        Different parameters for different regions of the domain $[\vec{\theta}_1, \dots \vec{\theta}_K]$
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Mixture modeling</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 30px;" class="fragment roll-in" data-fragment-index="0">
+                      Key: Soft Assignment
+                    </blockquote>
+                    <ul  style="list-style-type: none; font-size: 22pt">
+                      <li class="fragment roll-in" data-fragment-index="1"> Probability that a sample $\vec{x}_i$ belongs to $k^{\mbox{th}}$ cluster $=\pi_k$
+                      <li class="fragment roll-in" data-fragment-index="2"> $K$ clusters
+                      <li class="fragment roll-in" data-fragment-index="3"> $K$ probabilities $(\pi_1, \dots, \pi_K)$
+                      <li class="fragment roll-in" data-fragment-index="4"> As probabilities they are $\pi_i \ge 0, \sum_{k=1}^K\pi_k=1$
+                      <li class="fragment roll-in" data-fragment-index="5">
+                        \begin{align}
+                        \prob{p}{\vec{x}} & = \sum_{k=1}^K \prob{p}{\vec{x}|y=k}\prob{P}{y=k}
+                        \end{align}
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Gaussian Mixture Model</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 30px; width: 100%;" class="fragment roll-in" data-fragment-index="0">
+                      Mixture of $K$ Gaussain distributions: (Multi-modal distribution)
+                    </blockquote>
+                    <row>
+                      <col70>
+                        <ul  style="list-style-type: none; font-size: 30pt">
+                          <li class="fragment roll-in"> $K$ "components" (modes)
+                          <li class="fragment roll-in"> Component $k$ has an associated $\vec{\mu}_k$
+                          <li class="fragment roll-in"> Component $k$ generates data from $\prob{N}{\vec{\mu}_k, \bm{\Sigma}_k}$
+                          <li class="fragment roll-in"> Each sample is generated as
+                          <li class="fragment roll-in"> Choose component $k$ with probability $\pi_k = \prob{P}{y=k}$
+                          <li class="fragment roll-in"> Sample $\vec{x} \sim \prob{N}{\vec{\mu}_k, \bm{\Sigma}_k}$
+                        </ul>
+                      </col70>
+                      <col30>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="1200"
+                           src="figures/3Gaussians.svg" alt="3 Gaussians">
+                      </col30>
+                    </row>
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="top: -30%; right: -15%">
+                      <img width="300" src="figures/3Gaussians.svg" alt="3 Gaussians">
+                    </div>
+                    <h2>Gaussian Mixture Model</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 30px;  width: 100%;">
+                      Mixture of $K$ Gaussain distributions: (Multi-modal distribution)
+                    </blockquote>
+
+                        \begin{align}
+                        \prob{p}{\vec{x}|y=k} & = \prob{N}{\vec{\mu}_k, \bm{\Sigma}_k}\\
+                        \prob{p}{\vec{x}} & = \sum_{k=1}^K \prob{p}{\vec{x}|y=k}\prob{P}{y=k}
+                        \end{align}
+                    <aside class="notes">
+                      Show:<br>
+                      <ul>
+                        <li> Hidden variable
+                        <li> Observed Data
+                        <li> Mixture component
+                        <li> Mixture proportion
+                      </ul>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Gaussian Mixture Model: Clustering</h2>
+                    <row>
+                      <col50>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 30px; width: 100%"  class="fragment" data-fragment-index="0">
+                      Assuming
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5; width: 100%;  font-size: 28px;"  class="fragment" data-fragment-index="0">
+                      \begin{align}
+                      \mbox{ for simplicity }\bm{\Sigma}_k & = \sigma^2 \bm{I}\\
+                      \prob{p}{\vec{x}|y=k} & = \prob{N}{\vec{\mu}_k, \sigma^2 \bm{I}}\\
+                      \prob{p}{y=k} & = \pi_k\\
+                      \mbox{All parameters } & \vec{\mu}_1, \dots \vec{\mu}_K, \\
+                      &\sigma^2, \\
+                      & \pi_1, \dots, \pi_K \\
+                      \mbox{ are known}
+                      \end{align}
+                    </blockquote>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 28px; width: 100%;"  class="fragment" data-fragment-index="1">
+                      <alert>Given $\vec{x}$, does it belong to cluster $k$ or $z$?</alert>
+                    </blockquote>
+                      </col50>
+                      <col50>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 30px; width: 100%"  class="fragment" data-fragment-index="2">
+                      Decide based on posterior ratio
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5; width: 95%;  font-size: 28px;"  class="fragment" data-fragment-index="2">
+                      \begin{align}
+                      \log\frac{\prob{P}{y=k|\vec{x}}}{\prob{P}{y=z|\vec{x}}} = &\\
+                      \log\frac{\prob{p}{\vec{x}|y=k}\prob{P}{y=k}/\prob{p}{\vec{x}}}{\prob{p}{\vec{x}|y= z}\prob{P}{y=z}/\prob{p}{\vec{x}}} = &\\
+                      \log\frac{\prob{p}{\vec{x}|y=k}\pi_k}{\prob{p}{\vec{x}|y= z}\pi_z} = &\\
+                      \log\frac{\pi_k\exp{\left(\frac{-1}{2\sigma^2}\|\vec{x} - \vec{\mu}_k\|^2\right)}}{\pi_z\exp{\left(\frac{-1}{2\sigma^2}\|\vec{x} - \vec{\mu}_z\|^2\right)}} &\\
+                      \end{align}
+                    </blockquote>
+                      </col50>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>Piecewise linear decision boundary</h2>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="600"
+                           src="figures/pwl_db.png" alt="linear decision boundary">
+                  </section>
+                </section>
+
+                <!-- ------------------------------------------------------------------------- -->
+                <!-- ------------------------------------------------------------------------- -->
+	        <section>
+                  <section data-background="figures/car_clustering_crowd.gif">
+                    <h2  style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Clustering</h2>
+                    <div class="slide-footer">"
+                      <a href="https://i.imgur.com/OYtPl25.gif?noredirect">Source</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>What is clustering?</h2>
+                    <ul  style="list-style-type: none; font-size: 30pt">
+                      <li class="fragment roll-in"> Similar to mixture models: which component does $\vec{x}$ belong to?
+                      <li class="fragment roll-in"> The process of grouping objects into classes by similarity
+                      <li class="fragment roll-in"> High intra-class similarity
+                      <li class="fragment roll-in"> Low inter-class similarity
+                      <li class="fragment roll-in"> Clustering: the most common form of unsupervised learning
+                      <li class="fragment roll-in"> When talked about but still people use: PCA, ICA, NMF, KDE etc. may be even more often.
+                    </ul>
+                  </section>
+
+                  <section data-background="figures/all_simpsons.jpg">
+                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #f3f1f1">Clustering is subjective</h2>
+                  </section>
+
+                  <section>
+                    <h2>Clustering is subjective</h2>
+                    <table style="font-size: 26px; text-align: center;">
+                      <tr>
+                        <td>
+                          <img width="300" src="figures/Simpsons_family.png" alt="Simpsons family">
+                        </td>
+                        <td>
+                          <img width="300" src="figures/simpsons_school.png" alt="Simpsons school">
+                        </td>
+                        <td>
+                          <img width="330" src="figures/simpsons_females.png" alt="Simpsons females">
+                        </td>
+
+                        <td>
+                          <img width="300" src="figures/simpsons_males.png" alt="Simpsons males">
+                        </td>
+
+                      </tr>
+                      <tr >
+                        <td style="font-size: 26px; text-align: center;">Simpson's family</td>
+                        <td style="font-size: 26px; text-align: center;">School employees</td>
+                        <td style="font-size: 26px; text-align: center;">Females</td>
+                        <td style="font-size: 26px; text-align: center;">Males</td>
+                      </tr>
+
+                    </table>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="700"
+                         src="figures/Simpsons_cast.png" alt="Simpsons">
+                  </section>
+
+                  <section>
+                    <h2>What is similarity?</h2>
+                    <img width="700" src="figures/boy_dog.png" alt="similarity">
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 30px;">
+                      Hard to define! ... but we know when we see it
+                    </blockquote>
+
+                  </section>
+                </section>
+
+                <!-- ------------------------------------------------------------------------- -->
+	        <section>
+
+                  <section>
+                    <h2><span class="fragment highlight-red" data-fragment-index="0">Hard </span>K-means clustering</h2>
+                  </section>
+
+                  <section>
+                    <h2>The Problem</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;" class="fragment" data-fragment-index="0">
+                      Given a set of observations $\left( \vec{x}_1, \dots, \vec{x}_n\right)$, where $\vec{x}_i \in \RR^d$
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5; width: 100%;"  class="fragment" data-fragment-index="1">
+                      Partition $n$ observations into $K$ sets $(K\le n)$ $\bm{S} = \{S_1, S_2,\dots, S_K\}$ such that the sets minimize the within-cluster Euclidean squared distances:
+                      \begin{align}
+                      \underset{\bm{S}}{\argmin} \sum_{k=1}^{K}\sum_{\vec{x}_i\in S_k} \|\vec{x}_i - \vec{\mu}_k\|^2
+                      \end{align}
+                      where $\vec{\mu}_k$ is the mean point in set $S_k$ (centroid).
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>The Problem</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                      NP-hard problem in general
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 30px;">
+                      Heuristic solutions:<br>
+                      <ul>
+                        <li> K-means algorithm
+                        <li> GMM
+                      </ul>
+                    </blockquote>
+                    <img style="margin-top: -5%" width="800" src="figures/kmeans_example.png" alt="kmeans">
+                  </section>
+
+                  <section>
+                    <h2>K-means step by step: 1</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="600"
+                         src="figures/kmeans_step1.png" alt="kmeans 1">
+                    <blockquote style="background-color: #eee8d5; width: 100%;">
+                      Guess the clusters
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>K-means step by step: 2</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="600"
+                         src="figures/kmeans_step2.png" alt="kmeans 2">
+                    <blockquote style="background-color: #eee8d5; width: 100%;">
+                      Assign points to the nearest cluster centers (means)
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>K-means step by step: 3</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="600"
+                         src="figures/kmeans_step3.png" alt="kmeans 3">
+                    <blockquote style="background-color: #eee8d5; width: 100%;">
+                      Re-estimate the cluster means using assignment of last step
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>K-means step by step: 4</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="600"
+                         src="figures/kmeans_step4.png" alt="kmeans 4">
+                    <blockquote style="background-color: #eee8d5; width: 100%;">
+                      Assign points to the nearest cluster centers (means)
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>K-means step by step: 5</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="600"
+                         src="figures/kmeans_step5.png" alt="kmeans 5">
+                    <blockquote style="background-color: #eee8d5; width: 100%;">
+                      Re-estimate the cluster means using assignment of last step
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>K-means step by step: 6</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="600"
+                         src="figures/kmeans_step6.png" alt="kmeans 6">
+                    <blockquote style="background-color: #eee8d5; width: 100%;">
+                      Stop when no reassignments are needed
+                    </blockquote>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Another example</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%"
+                         src="figures/kmeans_run_mcKay.svg" alt="kmeans McKay">
+
+                    <div class="slide-footer">
+                        <img width="30" src="figures/mackay_cover.jpg" style="vertical-align: middle;" alt="McKay"> "<a href="https://www.inference.org.uk/itprnn/book.pdf" target="blank_">Information Theory, Inference and Learning Algorithms</a>" David J. C. MacKay
+                      </div>
+                  </section>
+
+                  <section>
+                    <h2>K-means clustering algorithm</h2>
+                    <dl  style="list-style-type: disk; font-size: 26px;">
+                      <dt>Input</dt>
+                      <dd> Data + Desired number of clusters $k$ + distance metric $\prob{d}{\cdot, \cdot}$
+                        \[
+                        \prob{d}{\vec{x}, \vec{y}} = \frac{1}{2}\sum_i(x_i - y_i)^2
+                        \]
+                      </dd>
+                      <dt>Initialization</dt>
+                      <dd> Pick $K$ cluster centers (randomly)
+                      </dd>
+                      <dt>Iterations</dt>
+                      <dd>
+                        <ul>
+                          <li> Decide the class memberships of the $n$ objects by assigning them to the nearest cluster centers
+                          <li> Re-estimate the $K$ cluster centers (aka the centroid or mean), by assuming the memberships found above are correct.
+
+                        </ul>
+                      </dd>
+                      <dt>Termination</dt>
+                      <dd> Exit if none of $n$ objects changed membership in the last iteration (otherwise repeat)
+                      </dd>
+                    </dl>
+                  </section>
+
+                  <section>
+                    <h2>k-means: Iterations</h2>
+                            <blockquote style="background-color: #eee8d5; width: 100%;">
+                              Assignment
+                            </blockquote>
+
+                        <ul style="font-size: 28px;">
+                          <li class="fragment roll-in"> Decide the class memberships of the $n$ objects by assigning them to the nearest cluster centers
+                            \[
+                            \hat{k}_n = \underset{k}{\argmin}  \prob{d}{\hat{\mu}_k, \vec{x}_n}
+                            \]
+                            or, equivalently, use "responsibilities" $r_k^n$ <i class="far fa-square"></i><i class="far fa-square"></i><i class="fas fa-square"></i><i class="far fa-square"></i> indicators, or length $K$ binary vectors for each data sample
+                            \[
+                            r_k^n = \begin{cases}
+                            1 & \text{if } \hat{k}_n = k\\
+                            0 & \text{if } \hat{k}_n \ne k
+                            \end{cases}
+                            \]
+                            <blockquote style="background-color: #eee8d5; width: 100%;">
+                              Break a tie by assigning to the smallest matching $k$
+                            </blockquote>
+                        </ul>
+
+                  </section>
+
+                  <section>
+                    <h2>k-means: Iterations</h2>
+                            <blockquote style="background-color: #eee8d5; width: 100%;">
+                              Update
+                            </blockquote>
+
+                        <ul>
+                          <li class="fragment roll-in"> Re-estimate the $K$ cluster centers (aka the centroid or mean), by assuming the memberships found above are correct.
+                            \begin{align}
+                            \hat{\mu}_k &= \frac{\underset{n}{\sum}r_k^n \vec{x}_n}{R_k}\\
+                            R_k &= \underset{n}{\sum} r_k^n
+                            \end{align}
+
+                        </ul>
+
+                  </section>
+
+                  <section>
+                    <h2>Iterations: once more</h2>
+                    <img width="60%" src="figures/k-means_steps.svg" alt="kmeans Duda">
+                  </section>
+
+                  <section>
+                    <h2>K-means clustering algorithm</h2>
+                    <h3>computational complexity</h3>
+                    <ul  style="list-style-type: disk; font-size: 30pt">
+                      <li class="fragment roll-in"> Computing distance between each of $n$ objects and $K$ clusters ${\cal O}(Kn)$
+                      <li class="fragment roll-in"> Computing cluster centers ${\cal O}(n)$ (each object is added once to some cluster)
+                      <li class="fragment roll-in"> For $l$ iterations total complexity is ${\cal O}(lKn)$
+                      <li class="fragment roll-in"> Is it guaranteed to terminate?
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Seed choice: 1</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="1200"
+                         src="figures/kmeans_seed1.png" alt="kmeans seed 1">
+                  </section>
+
+                  <section>
+                    <h2>Seed choice: 2</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="1200"
+                         src="figures/kmeans_seed2.png" alt="kmeans seed 2">
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Seeds</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="1200"
+                         src="figures/kmeans_2runs_mcKay.svg" alt="kmeans seeds">
+                  </section>
+
+                  <section>
+                    <h2>Objective to optimize</h2>
+                      \begin{align}
+                      \underset{\bm{S}}{\argmin} \sum_{k=1}^{K}\sum_{\vec{x}_i\in S_k} \|\vec{x}_i - \vec{\mu}_k\|^2
+                      \end{align}
+                      where $\vec{\mu}_k$ is the mean point in set $S_k$ (centroid).
+                  </section>
+
+                  <section data-fullscreen>
+                    <div id="header-right" style="right: -3%; top: 10%;">
+                      \begin{align}
+                      \sum_{k=1}^{K}\sum_{\vec{x}_i\in S_k} \|\vec{x}_i - \vec{\mu}_k\|^2
+                      \end{align}
+                    </div>
+                    <h2>How to choose number of clusters?</h2>
+                    <img width="60%" src="figures/kmeans_elbow.png" alt="Elbow">
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Failure mode 1</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="1200"
+                         src="figures/cluster_density.svg" alt="cluster density">
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Failure mode 2</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="1200"
+                         src="figures/kmeans_not_spherical.svg" alt="oblate">
+                  </section>
+
+                  <section data-fullscreen>
+                    <h1>A problem</h1>
+                    <h2>borderline points contribute fully</h2>
+                  </section>
+
+                </section>
+
+                <!-- -->
+                <section>
+                  <section>
+                    <h2><span class="fragment highlight-blue" data-fragment-index="0">Soft </span>K-means clustering</h2>
+                  </section>
+
+                  <section>
+                    <h2>Relax responsibilities</h2>
+                    <ul>
+                     <li class="fragment fade-in-then-semi-out"> Instead of hard "responsibilities" $r_k^n$ <i class="far fa-square"></i><i class="far fa-square"></i><i class="fas fa-square"></i><i class="far fa-square"></i>
+                    <li class="fragment fade-in-then-semi-out"> Make "responsibilities" continuous $r_k^n$ <i class="far fa-square"></i><i class="far fa-square"></i><i class="far fa-square"></i><i class="far fa-square"></i>
+                    <li class="fragment fade-in-then-semi-out"> sum to one to make sure a point is assigned to at least one cluster.
+                    <li class="fragment fade-in-then-semi-out"> We'll need a parameter $\beta$ - stiffness
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>soft k-means: Iterations</h2>
+                            <blockquote style="background-color: #eee8d5; width: 100%;">
+                              Assignment
+                            </blockquote>
+
+                        <ul>
+                          <li class="fragment roll-in"> For each point
+                            compute a soft-assignment  to each cluster
+                            or,  equivalently, compute  "responsibilities"
+                            for  each  data sample
+                            \[
+                            r_k^n  = \frac{e^{-\beta \prob{d}{\hat{\vec{\mu}}_k, \vec{x}_n}}}{\sum_{k'}e^{-\beta \prob{d}{\hat{\vec{\mu}}_{k'}, \vec{x}_n}}}
+                            \]
+                            <blockquote style="background-color: #eee8d5; width: 100%;">
+                              Note $\sum_k r_k^n = 1 \forall n$
+                            </blockquote>
+                        </ul>
+
+                  </section>
+
+                  <section>
+                    <h2>soft k-means: Iterations</h2>
+                            <blockquote style="background-color: #eee8d5; width: 100%;">
+                              Update
+                            </blockquote>
+
+                        <ul>
+                          <li class="fragment roll-in"> Re-estimate the $K$ cluster centers (aka the centroid or mean), by assuming the memberships found above are correct.
+                            \begin{align}
+                            \hat{\mu}_k &= \frac{\underset{n}{\sum}r_k^n \vec{x}_n}{R_k}\\
+                            R_k &= \underset{n}{\sum} r_k^n
+                            \end{align}
+
+                        </ul>
+
+                  </section>
+
+                  <section>
+                    <h2>soft Iterations</h2>
+                    <blockquote style="background-color: #eee8d5; width: 100%;">
+                      Note, lengthscale $\sigma \def 1/\sqrt{\beta}$
+                    </blockquote>
+                    <img style="margin-top: -5%; z-index: 50000;" width="60%" src="figures/soft_kmeans_example.svg" alt="soft kmeans">
+                  </section>
+
+                  <section>
+                    <h2>How can we improve soft k-means?</h2>
+                  </section>
+
+                </section>
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 0.93,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+
+	          <section>
+	            <h2>Advanced Machine Learning</h2>
+                    <h3>07: Curse of Dimensionality</h3>
+	          </section>
+
+                  <section>
+                    <h3>Schedule</h3>
+
+                    <row>
+                      <col50>
+                      <table style="font-size:14px">
+                        <tr>
+                          <th>#</th>
+                          <th>date</th>
+                          <th>topic</th>
+                          <th>description</th>
+                        </tr>
+                        <tr><td>1</td>
+                          <td> 22-Aug-2022 </td>
+                          <td> Introduction </td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>  2 </td>
+                          <td> 24-Aug-2022 </td>
+                          <td> Foundations of learning </td>
+                          <td> </td>
+                        </tr>
+                        <tr><td>  3  </td><td> 29-Aug-2022 </td><td> PAC learnability </td><td>             </td></tr>
+                        <tr><td>  4 </td><td> 31-Aug-2022 </td><td>      Linear algebra (recap) </td><td>   hw1 released   </td></tr>
+                        <tr style='background-color: #FBEEC2;'><td>   </td><td> 05-Sep-2022 </td><td> <em>Holiday</em>         </td><td>         </td></tr>
+                        <tr style='background-color: #E0E4CC;'><td>  5 </td><td> 07-Sep-2022 </td><td> Linear learning models </td><td>   </td></tr>
+                        <tr><td>  6 </td><td> 12-Sep-2022 </td><td> Principal Component Analysis       </td><td> project ideas  </td></tr>
+                        <tr><td>  7 </td><td> 14-Sep-2022  </td><td>  Curse of Dimensionality          </td></td></td><td> <i class='fa fa-map-marker' style='color: #FA6900;'></i> hw1 due </td></tr>
+<tr><td> 8 </td><td> 19-Sep-2022  </td><td>  Bayesian Decision Theory  </td><td>hw2 release</td></tr>
+<tr><td> 9 </td><td> 21-Sep-2022  </td><td> Parameter estimation: MLE </td><td></td></tr>
+<tr><td> 10 </td><td> 26-Sep-2022 </td><td> Parameter estimation: MAP & NB</td><td>finalize teams</td></tr>
+<tr><td> 11 </td><td> 28-Sep-2022 </td><td> Logistic Regression  </td><td>             </td></tr>
+<tr><td> 12 </td><td> 03-Oct-2022 </td><td> Kernel Density Estimation </td><td>             </td></tr>
+<tr><td> 13 </td><td> 05-Oct-2022 </td><td> Support Vector Machines </td><td>  hw3, hw2 due       </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 10-Oct-2022 </td><td>   * Mid-point projects checkpoint     </td><td>    *    </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 12-Oct-2022 </td><td>   * Midterm: Semester Midpoint       </td><td> exam   </td></tr>
+<tr><td> 14 </td><td> 17-Oct-2022  </td><td>Matrix Factorization</td><td>           </td></tr>
+<tr><td> 15 </td><td> 19-Oct-2022  </td><td>Stochastic Gradient Descent</td><td>      </td></tr>
+</table>
+</col50>
+<col50>
+<table style="font-size:14px; vertical-align: top;">
+  <tr>
+    <th>#</th>
+    <th>date</th>
+    <th>topic</th>
+    <th>description</th>
+  </tr>
+  <tr><td> 16 </td><td> 24-Oct-2022 </td><td> k-means clustering  </td><td> </td></tr>
+  <tr><td> 17 </td><td> 26-Oct-2022 </td><td> Expectation Maximization </td><td> hw4, hw3 due             </td></tr>
+  <tr><td> 18 </td><td> 31-Oct-2022 </td><td> Automatic Differentiation </td><td> </td></tr>
+  <tr><td> 19  </td><td> 02-Nov-2022 </td><td> Nonlinear embedding approaches </td><td>  </td></tr>
+  <tr><td> 20 </td><td> 07-Nov-2022 </td><td> Model comparison I </td><td> </td></tr>
+  <tr><td> 21 </td><td> 09-Nov-2022 </td><td> Model comparison II  </td><td> hw5, hw4 due</td></tr>
+  <tr><td> 22 </td><td> 14-Nov-2022 </td><td> Model Calibration </td><td> </td></tr>
+  <tr><td> 23 </td><td> 16-Nov-2022  </td><td> Convolutional Neural Networks  </td><td>             </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 21-Nov-2022  </td><td> <em>Fall break</em> </td><td>            </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 23-Nov-2022 </td><td> <em>Fall break</em> </td><td>   </td></tr>
+  <tr><td> 24 </td><td> 28-Nov-2022 </td><td> Word Embedding </td><td> hw5 due </td></tr>
+  <tr style='background-color: #FBEEC2;'><td> </td><td> 30-Nov-2022 </td><td> Presentation and exam prep day </td><td> </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 02-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 07-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td> </td><td> 12-Dec-2022 </td><td> * Final Exam    </td><td>   *     </td></tr>
+  <tr><td> </td><td> 15-Dec-2022  </td><td> Grades due   </td><td>             </td></tr>
+</table>
+</col50>
+</row>
+</section>
+
+	          <section>
+	            <h3>Outline of this lecture</h3>
+                    <ul>
+	              <li class="fragment roll-in" style="list-style-image: url('figures/watermelon_bullet.png');">Curse of dimensionality
+	            </ul>
+                  </section>
+
+                </section>
+                <!-- -------------------------------------------------------------------------         -->
+	        <section>
+	          <section>
+                    <h2>Curse of dimensionality</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="500"
+                         src="figures/watermelon.png" alt="watermelon cover">
+                    <div class='slide-footer'>
+                      in part based on: <a href="https://habr.com/ru/post/416551/"  target="_blank">a blog post in Russian</a> and <a href="https://www.amazon.com/Art-Doing-Science-Engineering-Learning/dp/1732265178"  target="_blank">The Art of Doing Science and Engineering: Learning to Learn</a>
+                    </div>
+	          </section>
+
+                  <section>
+                    <h3>How much rind?</h3>
+                    <object id="watermelon" data="figures/watermelon.svg#1_0" ></object>
+                  </section>
+
+                  <section>
+                    <h3>Generalized Pythagoras Theorem</h3>
+                    <img width="700" src="figures/CD_GeneralizedPythagoras.png" alt="fraction">
+                    $
+                    D^2 = \sum_{i=1}^{n} x^2_{i}
+                    $
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="right: -20%; top: -10%;">
+                      <img style="margin-bottom: -5%" width="300" src="figures/CD_TrapezoidRule.png" alt="Trapezoid">
+                      <br>
+                      <small>Trapezoid rule</small>
+                    </div>
+                    <h3>Stirling approximation for $n!$</h3>
+                    <ul style="list-style-type: none;">
+                      <li class="fragment roll-in"> $\ln n! = \sum_{k=1}^n \ln k$
+                      <li class="fragment roll-in"> $\int_1^n \ln x dx$
+                      <li class="fragment roll-in"> $\int_1^n \ln x dx = n\ln n -n +1$
+                      <li class="fragment roll-in"> $\int_1^n \ln x dx \sim {1 \over 2}\ln 1 + \ln 2 + \ln 3 + \dots + {1 \over 2}\ln n$
+                      <li class="fragment roll-in"> $\sum_{k=1}^n \ln k \sim n\ln n - n + 1 + {1 \over 2}\ln n$
+                      <li class="fragment roll-in"> $n! \sim Cn^ne^{-n}\sqrt{n}$
+                      <li class="fragment roll-in"> $C = \sqrt{2\pi}$
+                      <li class="fragment roll-in"> $n! \sim n^ne^{-n}\sqrt{2\pi n}$
+                    </ul>
+                    <aside class="notes">
+                      Product is hard to handle and we will use logs<br>
+                      Sum is related to an integral, lets consider one<br>
+                      Show how to integrate by parts<br>
+                      Add ${1 \over 2}\ln n$ to both terms<br>
+                      C is trapezoid rule approximation error<br>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Stirling approximation for $n!$</h3>
+                    <table style="font-size: 32px;">
+                      <thead>
+                        <tr>
+                          <th>$n$</th>
+                          <th>Stirling</th>
+                          <th>True</th>
+                          <th>Stirling/True</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td>0.92214</td>
+                          <td>1</td>
+                          <td>0.92214</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>1.91900</td>
+                          <td>2</td>
+                          <td>0.95950</td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>5.83621</td>
+                          <td>6</td>
+                          <td>0.97270</td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td>23.50618</td>
+                          <td>24</td>
+                          <td>0.97942</td>
+                        </tr>
+                        <tr>
+                          <td>5</td>
+                          <td>118.01917</td>
+                          <td>120</td>
+                          <td>0.98349</td>
+                        </tr>
+                        <tr>
+                          <td>6</td>
+                          <td>710.07818</td>
+                          <td>720</td>
+                          <td>0.98622</td>
+                        </tr>
+                        <tr>
+                          <td>7</td>
+                          <td>4,980.3958</td>
+                          <td>5,040</td>
+                          <td>0.98817</td>
+                        </tr>
+                        <tr>
+                          <td>8</td>
+                          <td>39,902.3955</td>
+                          <td>40,320</td>
+                          <td>0.98964</td>
+                        </tr>
+                        <tr>
+                          <td>9</td>
+                          <td>359,536.87</td>
+                          <td>362,880</td>
+                          <td>0.99079</td>
+                        </tr>
+                        <tr>
+                          <td>10</td>
+                          <td>3,598,695.6</td>
+                          <td>3,628,800</td>
+                          <td>0.99170</td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+
+                    <aside class="notes">
+                      show that f(n) = n + sqrt(n) grows fast leading to ratio of 1 between itself and g(n) = n, while the difference is growing indefinitely as sqrt(n)
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>$\Gamma$ (Gamma) function </h3>
+                    <ul style="list-style-type: none;">
+                      <li class="fragment roll-in"> $\Gamma(n) = \displaystyle\int_0^{\infty} x^{n-1}e^{-x}dx$
+                      <li class="fragment roll-in"> Integration by parts: $\int udv = uv - \int vdu$
+                      <li class="fragment roll-in"> $u=x^{n-1}$, $dv = e^{-x}dx$, $du = (n-1)x^{n-2}dx$, $v = -e^{-x}$
+                      <li class="fragment roll-in"> $\Gamma(n) = -e^{-x}x^{n-1} \displaystyle|_0^{\infty} + (n-1)\int_0^{\infty} x^{n-2}e^{-x}dx$
+                      <li class="fragment roll-in"> $\Gamma(n) = (n-1)\Gamma(n-1)$
+                      <li class="fragment roll-in"> $\Gamma(1) = 1$
+                      <li class="fragment roll-in"> $\Gamma(n) = (n - 1)!$
+
+                    </ul>
+                  </section>
+
+                  <section data-vertical-align-top>
+                    <h3>$\Gamma({1 \over 2})$</h3>
+                    <ul style="list-style-type: none; font-size: 36px;">
+                      <li class="fragment roll-in"> $\Gamma({1 \over 2}) = \displaystyle\int_0^{\infty} x^{-{1 \over 2}}e^{-x}dx$
+                      <li class="fragment roll-in"> Set $x = t^2$, follows $dx = 2tdt$
+                      <li class="fragment roll-in"> $\Gamma({1 \over 2}) = 2 \displaystyle\int_0^{\infty} e^{-t^2}dt = \displaystyle\int_{-\infty}^{\infty} e^{-t^2}dt$
+                      <li class="fragment roll-in"> $\Gamma^2(\frac{1}{2}) = \displaystyle\int_{-\infty}^{\infty}\displaystyle\int_{-\infty}^{\infty} e^{-(x^2+y^2)dxdy}$
+                      <li class="fragment roll-in"> $\Gamma^2(\frac{1}{2}) = \displaystyle\int_{0}^{2\pi}\int_{0}^{\infty} r e^{-r^2} dr d\theta$
+                      <li class="fragment roll-in"> $\Gamma^2(\frac{1}{2}) = \pi $
+                      <li class="fragment roll-in"> $\Gamma(\frac{1}{2}) = \sqrt{\pi} $
+                    </ul>
+
+                    <aside class="notes">
+                      1. integration by parts <br>
+                      2. symmetry of exp(-t^2) <br>
+                      3. circle equation <br>
+                      4. move to polar coordinates <br>
+                      5. integral over theta is 2pi <br>
+                      6. inner integral is also easy and it is -1/2 exp(-r^2). -2r/2 exp(-r^2)dr. and this is 1/2
+                    </aside>
+
+                  </section>
+
+                  <section data-vertical-align-top>
+                    <h3>Hypersphere Volume</h3>
+                    <ul style="list-style-type: none; font-size: 34px;">
+                      <li class="fragment roll-in"> $\mbox{volume} = C_n r^n$
+                      <li class="fragment roll-in"> $C_1 = 2$, $C_2 = \pi$, $C_3 = \frac{4\pi}{3}$
+                      <li class="fragment roll-in"> $\mbox{surface area} = \frac{dV_n(r)}{dr} = n C_n r^{n-1}$
+                      <li class="fragment roll-in"> $\left(\frac{dV_n(r)}{dr}\right)dr = n C_n r^{n-1}dr$
+                      <li class="fragment roll-in" style="font-size: 32px;">
+                        \begin{align}
+                        \Gamma^n\left(\frac{1}{2}\right) = \pi^{n/2} &= \displaystyle \int_0^{\infty} e^{-r^2} \left(\frac{dV_n(r)}{dr}\right)dr \\
+                        & = \frac{nC_n}{2} \displaystyle \int_0^{\infty} e^{-t} t^{n/2-1}dt \\
+                        & = \frac{nC_n}{2} \Gamma\left(\frac{n}{2}\right)\\
+                        & = C_n \Gamma\left(\frac{n}{2} + 1\right)
+                        \end{align}
+                    </ul>
+                    <aside class="notes">
+                      1. substitute r^2 with t in Г(1/2)<br>
+                    </aside>
+
+                  </section>
+
+                  <section>
+                    <h3>hyperSphere Volume</h3>
+                    <row>
+                      <col40 style="font-size: 28px;">
+                    \begin{align}
+                    C_n &= \frac{\pi^{n/2}}{\Gamma(\frac{n}{2} + 1)}\\
+                    C_nr^n & = \frac{(\pi r^2)^k}{k!} \to 0 \\
+                    & \mbox{ as } k\to\infty
+                    \end{align}
+                      </col40>
+                      <col60>
+                    <table style="font-size: 28px;">
+                      <thead>
+                        <tr>
+                          <th>Dimension $n$</th>
+                          <th>Coefficient $C_n$</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td>2</td>
+                          <td>= 2.0000...</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>$\pi$</td>
+                          <td>= 3.14159...</td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>$4\pi/3$</td>
+                          <td>= 4.18879...</td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td>$\pi^2/2$</td>
+                          <td>=4.93480...</td>
+                        </tr>
+                        <tr>
+                          <td>5</td>
+                          <td>$8\pi^2/15$</td>
+                          <td>=5.26379...</td>
+                        </tr>
+                        <tr>
+                          <td>6</td>
+                          <td>$\pi^3/6$</td>
+                          <td>=5.16771...</td>
+                        </tr>
+                        <tr>
+                          <td>7</td>
+                          <td>$16\pi^3/105$</td>
+                          <td>=4.72477...</td>
+                        </tr>
+                        <tr>
+                          <td>8</td>
+                          <td>$\pi^4/24$</td>
+                          <td>=4.05871...</td>
+                        </tr>
+                        <tr>
+                          <td>9</td>
+                          <td>$32\pi^4/945$</td>
+                          <td>=3.29851...</td>
+                        </tr>
+                        <tr>
+                          <td>10</td>
+                          <td>$\pi^5/120$</td>
+                          <td>=2.55016...</td>
+                        </tr>
+                        <tr>
+                          <td>$2k$</td>
+                          <td>$\pi^k/k!$</td>
+                          <td>$\to 0$</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    </col60>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h3>In a general hyper<del>watermelon</del>sphere</h3>
+                    <div class="fragment" data-fragment-index="0" style="font-size: 32px;">
+                      \begin{align}
+                      \frac{C_nr^n - C_nr^n(1-\epsilon)^n}{C_nr^n} &= 1 - (1-\epsilon)^n\\
+                      \frac{V_{rind}}{V_{total}} &= 1 - (1 - r)^d
+                      \end{align}
+                    </div>
+                    <div class="fragment" data-fragment-index="1" >
+                      <object id="rind_plot" data="figures/curse_rind.svg#1_4" width="600"></object>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3>Fraction of volume</h3>
+                    <div class="row">
+                      <div class="col_left4">
+                        \[
+                        \frac{V_{rind}}{V_{total}} = 1 - (1 - \epsilon)^D
+                        \]
+                        <blockquote>
+                          What volume fraction of a hyper-melon does the rind occupy if it takes up an $\epsilon$ fraction of its radius?
+                        </blockquote>
+                      </div>
+                      <div class="col_right">
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 255);" width="700"
+                             src="figures/curse_fraction.png" alt="fraction">
+                      </div>
+                    </div>
+                  </section>
+
+                  <section data-vertical-align-top>
+                    <h3>Gaussian distribution</h3>
+                    <div class="fragment" data-fragment-index="0" style="font-size: 30px;">
+                      \[
+                      G({\bf x}) = \frac{1}{(2\pi)^{K/2} |{\bf C}|^{1/2}}
+                      e^{-\frac{1}{2}{\bf x}^{\;{\rm
+                      T}} {\bf C}^{-1} {\bf x}}
+                      \]
+                    </div>
+                    <div class="fragment" data-fragment-index="1" style="font-size:22px">
+                        What's the probability of a random sample falling on a radius $r$ "shell" around the mean?
+                      <img width="650"
+                           src="figures/curse_normal.png" alt="density estimation">
+                    </div>
+                    <aside class="notes">
+                      Talk about how to integrate probabilities.<br>
+                      Probability of being in a shell around the radius.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>What if the flesh isn't in the center?</h3>
+                    <object id="hypermelon" data="figures/watermelon_target.svg#1_0" ></object>
+                    <div class="fragment" data-fragment-index="10" style="font-size: 30px;">
+                      <em>Question:</em> What is the probability of randomly hitting the flesh?
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3>Local minima and multiple starts</h3>
+                    blackboard
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="right: -20%; top: -30%;">
+                      <img style="margin-bottom: -5%" width="300" src="figures/CD_angleCosineRule.png" alt="Cosines Law">
+                      <br>
+                      <small>Law of cosines</small>
+                    </div>
+
+                    <h3>Angles between vectors</h3>
+                    <ul style="list-style-type: none;">
+                      <li class="fragment roll-in"> $\cos\theta = \frac{1}{\sqrt{n}} \to 0$ and $\theta \to \frac{\pi}{2}$
+                      <li class="fragment roll-in"> $\cos\theta = \frac{\sum_{k=1}^n x_k y_k}{XY}$
+                      <li class="fragment roll-in"> Draw vectors to two random points $(\pm 1, \pm 1, \pm 1. \dots, \pm 1)$
+                      <li class="fragment roll-in"> $\cos\theta = \frac{\sum_{k=1}^n (\pm 1)}{n} \stackrel{a.s.}\to 0$, as $n \to \infty$
+                  </section>
+
+                  <section>
+                    <h3>Angles between vectors</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
+                         src="figures/curse_angles.png" alt="angles">
+                  </section>
+
+                  <section>
+                    <h3>Probability of orthogonality</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
+                         src="figures/prob_orthogonal.svg" alt="angles orth">
+                  </section>
+
+                  <section>
+                    <h3>Estimating probability</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="800"
+                         src="figures/curse_density.png" alt="density estimation">
+                    <div class="fragment" data-fragment-index="0" >
+                      <em>Question:</em> What's the minimum number of samples we need to estimate a $d$ dimensional density in a cube?
+                    </div>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h3>4x4 paradox</h3>
+                      <img width="50%" src="figures/CD_paradoxSphere.png" alt="paradox">
+                  </section>
+
+                  <section>
+                    <h3>Alternative distances</h3>
+                    <row>
+                      <col50>
+                        $L_1$
+                      <img width="700" src="figures/CD_L1_circle.png" alt="L1">
+                      </col50>
+                      <col50>
+                        $L_{\infty}$
+                      <Img width="700" src="figures/CD_LinfCircle.png" alt="Linf">
+                      </col50>
+                    </row>
+
+                  </section>
+
+                  <section>
+                    <h3>Conditions on a metric</h3>
+                    <ol>
+                      <li class="fragment roll-in"> $D(x,y) \ge 0$ (non-negative)
+                      <li class="fragment roll-in"> $D(x,y) = 0$ iff $x=y$ (identity)
+                      <li class="fragment roll-in"> $D(x,y) = D(y,x)$ (symmetry)
+                      <li class="fragment roll-in"> $D(x,y) + D(y,z) \ge D(x,z)$ (triangle inequality)
+                    </ol>
+                  </section>
+
+                  <section>
+                    <h3>Case study: an average human</h3>
+                    <img width="750" src="figures/ww2_pilots.jpg" alt="average human">
+                    <aside class="notes">
+                      1950s - too many incidents and accidents outside warfight<br>
+                      250 harward male hands (white and rich) - no single typical<br>
+                      measured 10-features of 4063 pilots including height, chest circumference, sleeve length<br>
+                      find people within 30% of each parameter range<br>
+                      How many were these?<br>
+                    </aside>
+
+                  </section>
+
+	          <section>
+                    <h2>Reading list</h2>
+                    <ul>
+	              <li style="list-style-image: url('figures/Bishop_PR.jpg');">p. 33 of "Pattern recognition and Machine Learning" by C. Bishop
+	              <li style="list-style-image: url('figures/Hastie_Elements.jpg');">p. 22 of "The Elements of Statistical Learning" by T. Hastie, R. Tibshirani, and J. Friedman
+                      <li style="list-style-image: url('figures/H.png');">Chapter 9 of "The Art of Doing Science and Engineering: Learning to Learn" by R. Hamming
+
+	            </ul>
+
+	          </section>
+
+                </section>
+                <!-- -------------------------------------------------------------------------         -->
+
+
+
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 1.23,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

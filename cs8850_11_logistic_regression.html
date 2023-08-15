@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>10: Logistic Regression</h3>
+	            <p>
+	          </section>
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Naïve Bayes recap
+                      <li class="fragment roll-in"> Defining Logistic Regression
+                      <li class="fragment roll-in"> Solving Logistic Regression
+	            </ul>
+                  </section>
+                </section>
+
+                <section>
+                  <section>
+                    <h2>Naïve Bayes (recap)</h2>
+                  </section>
+
+                  <section>
+                    <h2>Properties and assumptions</h2>
+                    <div class="fragment" data-fragment-index="0">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 30px; width: 100%;">
+                          Features $X_i$ and $X_j$ are conditionally independent given the class label $Y$
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5; width: 100%;">
+                          $\prob{P}{X_i,X_j|Y} = \prob{P}{X_i|Y}\prob{P}{X_j|Y}$
+                        </blockquote>
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                        <blockquote style="width: 100%;">
+                          $\prob{P}{X_1,\dots, X_d|Y} = \prod_{i=1}^d \prob{P}{X_i|Y}$
+                        </blockquote>
+                    </div>
+                    <div class="fragment" data-fragment-index="2">
+                    <blockquote style="background-color: #eee8d5; width: 100%;">
+                      $f_{NB}(\vec{x}) = \underset{y}{\argmax} \prod_{i=1}^d \prob{P}{x_i|y}\prob{P}{y}$
+                    </blockquote><div>
+                    <div class="fragment" data-fragment-index="3">
+                      <blockquote style="background-color: #eee8d5; width: 100%;">
+                        Assume a parametric form for $\prob{P}{X_j|Y}$ and $\prob{P}{Y}$
+                    </blockquote><div>
+                    <div class="fragment" data-fragment-index="4">
+                      Estimate MLE parameters for these functions. <br>
+                      Plug in and operate the NB classifier
+                    </div>
+
+                  </section>
+
+                  <section>
+                    <h2>Gaussian Naïve Bayes</h2>
+                    <div class="fragment" data-fragment-index="0">
+                      <blockquote style="background-color: #eee8d5; width: 100%">
+                        $Y \sim \mbox{Bernoulli}(\pi)$
+                        $\prob{P}{X_i = \vec{x}_i|Y = y_k} = \frac{1}{\sigma_{ik}\sqrt{2\pi}} e^{-\frac{(\vec{x}_i - \mu_{ik})^2}{2\sigma_{ik}^2}}$
+                      </blockquote>
+                      <span style="font-size: 32px;">
+                        Different mean and variance for each class $k$ and each pixel $i$.$^*$
+                      </span>
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;">
+                          Let's assume variance is independent of class: $\sigma_{ik} = \sigma_{i}$
+                        </blockquote>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Gaussian NB  as a linear classifier</h2>
+                    <blockquote style="background-color: #eee8d5; width: 100%">
+                        $\prob{P}{X_i = \vec{x}_i|Y = y_k} = \frac{1}{\sigma_{ik}\sqrt{2\pi}} e^{-\frac{(\vec{x}_i - \mu_{ik})^2}{2\sigma_{ik}^2}}$
+                    </blockquote>
+                    <ul  style="list-style-type: none; font-size: 36px; ">
+                      <li class="fragment roll-in"> For simplicity consider 2 class problem $\sigma_{i,0} = \sigma_{i, 1}$
+                      <li class="fragment roll-in"> Decision boundary:
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 30px;">
+                          $\prod_{i=1}^d \prob{P}{x_i|y=0}\prob{P}{y=0} = \prod_{i=1}^d \prob{P}{x_i|y=1}\prob{P}{y=1}$
+                    </blockquote>
+                      <li class="fragment roll-in"> Equivalently:
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 30px;">
+                          $\log\frac{\prod_{i=1}^d \prob{P}{x_i|y=0}\prob{P}{y=0}}{\prod_{i=1}^d \prob{P}{x_i|y=1}\prob{P}{y=1}} = 0$
+                          $\log\frac{\prod_{i=1}^d \prob{P}{x_i|y=0}\prob{P}{y=0}}{\prod_{i=1}^d \prob{P}{x_i|y=1}\prob{P}{y=1}}= \log\frac{1 - \pi}{\pi} +\sum_{i=1}^d \log\frac{\prob{P}{x_i|y=0}}{\prob{P}{x_i|y=1}}$
+                    </blockquote>
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Gaussian NB  as a linear classifier</h2>
+                    <ul  style="list-style-type: none; font-size: 36px; ">
+                      <li class="fragment roll-in"> Decision boundary:
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 30px;">
+                          $\log\frac{\prod_{i=1}^d \prob{P}{x_i|y=0}\prob{P}{y=0}}{\prod_{i=1}^d \prob{P}{x_i|y=1}\prob{P}{y=1}} = 0$
+                          $\log\frac{\prod_{i=1}^d \prob{P}{x_i|y=0}\prob{P}{y=0}}{\prod_{i=1}^d \prob{P}{x_i|y=1}\prob{P}{y=1}}= \log\frac{1 - \pi}{\pi} +\sum_{i=1}^d \log\frac{\prob{P}{x_i|y=0}}{\prob{P}{x_i|y=1}}$
+                    </blockquote>
+                      <li class="fragment roll-in"> If you do the algebra:
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 30px;">
+                          $\log\frac{1 - \pi}{\pi} +\sum_{i=1}^d \frac{\mu^2_{i,1} - \mu^2_{i,0}}{2\sigma_i^2} + \sum_{i=1}^d \frac{\mu_{i,1} - \mu_{i,0}}{2\sigma_i^2} x_i = w_0 + \sum_{i=1}^d w_i x_i$
+                    </blockquote>
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Generative vs. Discriminative</h2>
+                    <ul  style="list-style-type: none; font-size: 36px; ">
+                      <li class="fragment roll-in"> Generative classifiers (such as Naïve Bayes)
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 30px;">
+                          <ul>
+                            <li> Assume a functional form  for $\prob{P}{x,y}$ (or $\prob{P}{x|y}$ and $\prob{P}{y}$)
+                            <li> Estimate parameters of $\prob{P}{x|y}$ and $\prob{P}{y}$ from training data
+                            <li> Able to <b>generate</b> samples from a trained model
+                          </ul>
+                    </blockquote>
+                      <li class="fragment roll-in"> Note:
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 30px;">
+                          $\underset{y}{\argmax} \prob{P}{x|y}\prob{P}{y} = \underset{y}{\argmax} \prob{P}{y|x}$
+                        </blockquote>
+                      <li class="fragment roll-in"> Let's learn $\prob{P}{y|x}$ directly!
+                      <li class="fragment roll-in"> Or learn the decision boundary directly
+                    </ul>
+                  </section>
+
+                </section>
+
+
+                <section>
+                  <section>
+                    <h2>Defining Logistic regression</h2>
+                  </section>
+
+                  <section>
+                    <h3>And the winner is...</h3>
+                    <div class="fragment" data-fragment-index="0" >
+                      <img width="100%" style="margin-top:-2%;" src="figures/LR_polyssifier.svg" alt="LR poly">
+                    </div>
+                    <div class='slide-footer'>
+                      according to an autoML tool: <a href="https://github.com/alvarouc/polyssifier" target="_blank">polyssifier</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3>Example</h3>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="1200"
+                           src="figures/loan_prediction.png" alt="loan prediction">
+                    <div class='slide-footer'>
+                      from <a href="https://youtu.be/zAULhNrnuL4" target="_blank">Brandon Foltz</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3>Problem definition</h3>
+                    Logistic regression seeks to
+                    <ul style="font-size: 36px;">
+                      <li class="fragment roll-in"> <em>Model</em> the probability of an event occuring depending on the values of the independent variables, which can be categorical or numerical
+                      <li class="fragment roll-in"> <em>Estimate</em> the probability that an event occurs for a randomly selected observation versus the probability that the event does not occur
+                      <li class="fragment roll-in"> <em>Predict</em> the effect of a series of variables on a binary response variable
+                        <li class="fragment roll-in"> <em>Classify</em> observations by estimating the probability that an observation is in a particular category (e.g. approved or not approved for a loan)
+                    </ul>
+                    <div class='slide-footer'>
+                      from <a href="https://youtu.be/zAULhNrnuL4" target="_blank">Brandon Foltz</a>
+                    </div>
+                  </section>
+
+
+                  <section>
+                    <h3>Our data in 1D</h3>
+                  </section>
+
+                  <section>
+                  <div id="header-right" style="right: -10%; z-index: 1500;" class="fragment" data-fragment-index="1">
+                    <img width="200px" style="margin-bottom: -5%;"
+                         src="figures/DavidCox.png" alt="Cox"><br>
+                    <small>Sir David Cox</small>
+                    </div>
+                    <h3>Why not SVM?</h3>
+                    <div class="fragment" data-fragment-index="0">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="1200"
+                             src="figures/Marty1955.jpg" alt="Marty 1955">
+                    </div>
+                    <aside class="notes">
+                      Marty McFly discovers that he is in 1955. Good year for statistics, in just 3 years David Cox publishes logistic regression, while SVM was not ready until the 70s
+                    </aside>
+                  </section>
+
+                  <section>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="400"
+                         src="figures/leydenjar.png" alt="Leyden Jar">
+                    <div class="slide-footer">
+                      for further examples cf. T. Kuhn "The Structure of Scientific Revolutions"
+                    </div>
+                  </section>
+
+                  <section>
+                    <row>
+                      <col50>
+                        <h3>Odds</h3>
+                        <table style="font-size:28px">
+                          <tr>
+                            <th>Probability</th>
+                            <th>Corresponding odds</th>
+                          </tr>
+                          <tr>
+                            <td>0.5</td>
+                            <td>50:50 or 1</td>
+                          </tr>
+                          <tr>
+                            <td>0.9</td>
+                            <td>90:10 or 9</td>
+                          </tr>
+                          <tr>
+                            <td>0.999</td>
+                            <td>999:1 or 999</td>
+                          </tr>
+                          <tr>
+                            <td>0.01</td>
+                            <td>1:99 or 0.0101</td>
+                          </tr>
+                          <tr>
+                            <td>0.001</td>
+                            <td>1:999 or 0.001001</td>
+                          </tr>
+                        </table>
+                      </col50>
+                      <col50>
+                        <div class="fragment" data-fragment-index="0" >
+                        <h3>Log-Odds</h3>
+                        <table style="font-size:28px">
+                          <tr>
+                            <th>Log-odds</th>
+                            <th>Probability</th>
+                          </tr>
+                          <tr>
+                            <td>0</td>
+                            <td>0.5</td>
+                          </tr>
+                          <tr>
+                            <td>2.19</td>
+                            <td>0.9</td>
+                          </tr>
+                          <tr>
+                            <td>6.9</td>
+                            <td>0.999</td>
+                          </tr>
+                          <tr>
+                            <td>-4.6</td>
+                            <td>0.01</td>
+                          </tr>
+                          <tr>
+                            <td>-6.9</td>
+                            <td>0.001</td>
+                          </tr>
+                        </table>
+                        </div>
+                      </col50>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h3>Linear Fit to Log-Odds</h3>
+                    \begin{array}{ll}
+                    \log\left(\frac{p_+}{1-p_+}\right) &= kx + b\\
+                    &= w_1 x + w_0 \\
+                    &= \vec{w}^T\vec{x} \\
+                    \end{array}
+                    <div class="fragment" data-fragment-index="1" style="font-size: 30px; margin-top: -30px;">
+                      \begin{array}{ll}
+                      \log\left(\frac{\prob{P}{G=1|X=x}}{\prob{P}{G=K|X=x}}\right) &= \vec{w}_1^T\vec{x}\\
+                      \log\left(\frac{\prob{P}{G=2|X=x}}{\prob{P}{G=K|X=x}}\right) &= \vec{w}_2^T\vec{x}\\
+                      &\vdots \\
+                      \log\left(\frac{\prob{P}{G=K-1|X=x}}{\prob{P}{G=K|X=x}}\right) &= \vec{w}_{K-1}^T\vec{x}\\
+                      \end{array}
+                    </div>
+                    <aside class="notes">
+                      degrees of freedom are n-1<br>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>What's the probability?</h3>
+                    <div class='row'>
+                      <div class='col_left5'>
+                        <ul style="list-style-type: none;">
+                          <li class="fragment roll-in"> $\log\left(\frac{p_+}{1-p_+}\right) = \vec{w}^T\vec{x}$
+                          <li class="fragment roll-in"> $\frac{p_+}{1-p_+} = e^{\vec{w}^T\vec{x}}$
+                          <li class="fragment roll-in"> $p_+ = e^{\vec{w}^T\vec{x}}(1-p_+)$
+                          <li class="fragment roll-in"> $p_+ = e^{\vec{w}^T\vec{x}}-p_+e^{\vec{w}^T\vec{x}}$
+                          <li class="fragment roll-in"> $p_++p_+e^{\vec{w}^T\vec{x}} = e^{\vec{w}^T\vec{x}}$
+                          <li class="fragment roll-in"> $p_+(1+e^{\vec{w}^T\vec{x}}) = e^{\vec{w}^T\vec{x}}$
+                          <li class="fragment roll-in"> $p_+ = \frac{e^{\vec{w}^T\vec{x}}}{1+e^{\vec{w}^T\vec{x}}}$
+                          <li class="fragment roll-in"> $p_+ = \frac{1}{1+e^{-\vec{w}^T\vec{x}}}$
+                        </ul>
+                      </div>
+                      <div class='col_right'>
+                        <div class="fragment" data-fragment-index="8" >
+                          <img width="900" src="figures/Logistic-curve.svg" alt="logistic curve">
+                        </div>
+                      </div>
+                    </div>
+                    <aside class="notes">
+                      the reference class (the negative) is uncertain<br>
+                      log of 1 is zero<br>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>What's the probability when it is interesting?</h3>
+                    <ul style="list-style-type: none;">
+                      <li class="fragment roll-in"> $\prob{P}{G=k|X=x} = \frac{e^{\vec{w}_k^T\vec{x}}}{1+\sum_i^{K-1}e^{\vec{w}_i^T\vec{x}}}, k = 1, \dots, K-1$
+                      <li class="fragment roll-in"> $\prob{P}{G=K|X=x} = \frac{1}{1+\sum_i^{K-1}e^{\vec{w}_i^T\vec{x}}}$
+                  </section>
+
+                  <section>
+                    <h2>Softmax!</h2>
+                    \[
+                    \sigma(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}}
+                    \]
+                    <img width="500" src="figures/linear_softmax.svg" alt="linear softmax">
+                  </section>
+
+                  <section>
+                  <div id="header-right" style="right: -10%; z-index: 1500;">
+                                        \[
+                    \sigma(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}}
+                    \]
+                  </div>
+                    <h2>Softmax!</h2>
+                    <img width="80%" src="figures/laplace_softmax0.svg" alt="Laplace0 softmax">
+                    <img width="80%" src="figures/laplace_softmax1.svg" alt="Laplace1 softmax">
+                    <img width="80%" src="figures/laplace_softmax2.svg" alt="Laplace2 softmax">
+                  </section>
+
+                </section>
+
+                <section>
+                  <section>
+                    <h2>Solving Logistic regression</h2>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>An alternative perspective on log odds</h2>
+                    What's posterior probability of class $c_1$ given a sample $\vec{x}$?
+                    <div class="fragment" data-fragment-index="0">
+                    \[
+                    \prob{p}{c_1|\vec{x}} = \frac{\prob{p}{\vec{x}|c_1}\prob{p}{c_1}}{\prob{p}{\vec{x}|c_1}\prob{p}{c_1} + \prob{p}{\vec{x}|c_2}\prob{p}{c_2}}
+                    \]
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                      Let's introduce $a = \ln\frac{\prob{p}{\vec{x}|c_1}\prob{p}{c_1}}{\prob{p}{\vec{x}|c_2}\prob{p}{c_2}}$
+                    </div>
+                    <div class="fragment" data-fragment-index="2">
+                      \[
+                      \prob{p}{c_1|\vec{x}} = \frac{1}{1+\exp{(-a)}} = \sigma(a)
+                      \]
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Logistic Sigmoid</h2>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="800" src="figures/logistic_sigmoid.svg" alt="sigmoid">
+                    <blockquote style="background-color: #eee8d5; font-size:30px;">
+                        Nice properties of logistic sigmoid
+                      <row>
+                        <col50>
+                          \begin{align}
+                          \sigma{(-a)} &= 1 - \sigma{(a)}\\
+
+                          \end{align}
+                        </col50>
+                        <col50>
+                          $a = \ln{(\frac{\sigma}{1 - \sigma})} \color{#dc322f}{\text{  log odds???}}$<br>
+                          $\frac{d\sigma}{d a} =\sigma(1-\sigma)$
+                        </col50>
+                      </row>
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h3>Maximum likelihood estimate</h3>
+                    <span style="font-size: 36px;">
+                    \begin{align}
+                    {\cal l}(\vec{w}) &= \underset{\vec{w}}{\argmax} \prod_i^N P_{\vec{w}}(c_k | x_i)\\
+                    {\cal l}(\vec{w}) &= \underset{\vec{w}}{\argmax} \prod_{i:\vec{x}_i \in c_1}^N P_{\vec{w}}(c_1 | x_i)\prod_{i:\vec{x}_i \in c_2}^N P_{\vec{w}}(c_2 | x_i)\\
+                    {\cal l}(\vec{w}) &= \underset{\vec{w}}{\argmax} \prod_{i:\vec{x}_i \in c_1}^N \sigma \prod_{i:\vec{x}_i \in c_2}^N (1 - \sigma)\\
+                    {\cal l}(\vec{w}) &= \underset{\vec{w}}{\argmax}  \prod_i^N \sigma_i^{l_1}(1 - \sigma_i)^{1-l_1}\\
+                    \end{align}
+                    </span>
+                  </section>
+
+                  <section>
+                    <h3>Negative Log likelihood</h3>
+                    \begin{align}
+                    {\cal l}(\vec{w}) &= \underset{\vec{w}}{\argmax}  \prod_i^N \sigma_i^{l_1}(1 - \sigma_i)^{1-l_1}\\
+                    \ell(\vec{w}) &= - \sum_i^N ({l_i}\ln(\sigma_i) + (1-l_i)\ln(1 - \sigma_i))\\
+                    \end{align}
+                  </section>
+
+                  <section>
+                    <h2>Cross Entropy (recap)</h2>
+                    <blockquote>
+                    \[
+                    H_{p,q} = -\sum_{i=1}^n p_X(x_i) \log q_X(x_i)
+                    \]
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h3>Negative Log likelihood: How to solve for $\vec{w}$?</h3>
+                    \begin{align}
+                    \ell(\vec{w}) &= - \sum_i^N ({l_i}\ln(\sigma_i) + (1-l_i)\ln(1 - \sigma_i))\\
+                    \nabla_{\vec{w}} \ell &= \sum_i^N (\sigma_i - l_i)\vec{x}_i\\
+                    \nabla_{\vec{w}} \ell &= {\bf X}^T (\vec{\sigma} - \vec{l}) \stackrel{\text{set}}{=} 0\\
+                    \end{align}
+                  </section>
+
+                  <section>
+                    <h3>Taylor expansion</h3>
+                    \[
+                    f(x) = f(a)+\frac {f^\prime(a)}{1!} (x-a)+ \frac{f''(a)}{2!} (x-a)^2+ \cdots
+                    \]
+                    \[
+                    f(x) = \sum_{n=0} ^ {\infty} \frac {f^{(n)}(a)}{n!} (x-a)^{n}
+                    \]
+                  </section>
+
+                  <section>
+                    <h3>Taylor expansion</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                         src="figures/SinTaylor.svg" alt="Taylor">
+                  </section>
+
+                  <section>
+                    <h3>Newton-Raphson method</h3>
+                    \begin{align}
+                    \ell(\vec{w} + \Delta) & = \ell(\vec{w}) + \ell^{\prime}(\vec{w})\Delta + \frac{1}{2}\ell^{\prime\prime}(\vec{w})\Delta^2\\
+                    \frac{\partial \ell(\vec{w} + \Delta)}{\partial \Delta} & \stackrel{set}{=} 0 \\
+                    \ell^{\prime}(\vec{w}) + \ell^{\prime\prime}(\vec{w})\Delta &= 0\\
+                    \Delta &= - \frac{\ell^{\prime}(\vec{w})}{\ell^{\prime\prime}(\vec{w})}\\
+                    \vec{w}_{new} & = \vec{w}_{old} + \Delta = \vec{w}_{old}- \frac{\ell^{\prime}(\vec{w})}{\ell^{\prime\prime}(\vec{w})}\\
+                    \vec{w}_{new} & = \vec{w}_{old} - {\bf H}^{-1}\nabla_\vec{w}\ell
+                    \end{align}
+                  </section>
+
+                  <section>
+                    <h3>Hessian</h3>
+                    <span style="font-size: 36px;">
+                    \[
+                    \mathbf H = \begin{bmatrix}
+                    \dfrac{\partial^2 f}{\partial w_1^2} & \dfrac{\partial^2 f}{\partial w_1\,\partial w_2} & \cdots & \dfrac{\partial^2 f}{\partial w_1\,\partial w_n} \\[2.2ex]
+                    \dfrac{\partial^2 f}{\partial w_2\,\partial w_1} & \dfrac{\partial^2 f}{\partial w_2^2} & \cdots & \dfrac{\partial^2 f}{\partial w_2\,\partial w_n} \\[2.2ex]
+                    \vdots & \vdots & \ddots & \vdots \\[2.2ex]
+                    \dfrac{\partial^2 f}{\partial w_n\,\partial w_1} & \dfrac{\partial^2 f}{\partial w_n\,\partial w_2} & \cdots & \dfrac{\partial^2 f}{\partial w_n^2}
+                    \end{bmatrix}
+                    \]
+                    </span>
+                  </section>
+
+                  <section>
+                    <h3>Newton-Raphson update for linear regression</h3>
+                    <div class="fragment" data-fragment-index="0">
+                      $f(\vec{w}) = \sum_{i}^{n} (\vec{w}^T\vec{x}_i - y_i)^2$
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                      Let us write in matrix form:<br>
+                      $f(\vec{w}) = (\bf{X}\vec{w} - \vec{y})^T(\bf{X}\vec{w} - \vec{y})$
+                    </div>
+                    <div class="fragment" data-fragment-index="2">
+                      The gradient:<br>
+                      $\nabla_\vec{w}f = \bf{X}^T\bf{X}\vec{w} - \bf{X}^T\vec{y}$
+                    </div>
+                    <div class="fragment" data-fragment-index="3">
+                      The Hessian:<br>
+                      $\nabla^2_\vec{w}f = \bf{X}^T\bf{X}$
+                    </div>
+                    <div class="fragment" data-fragment-index="4">
+                      $\vec{w}_{new}  = \vec{w}_{old} - (\bf{X}^T\bf{X})^{-1}(\bf{X}^T\bf{X}\vec{w}_{old} - \bf{X}^T\vec{y})$
+                    </div>
+                    <div class="fragment" data-fragment-index="5">
+                      $\vec{w}_{new}  = \vec{w}_{old} - \vec{w}_{old} + (\bf{X}^T\bf{X})^{-1}\bf{X}^T\vec{y}$
+                    </div>
+                    <div class="fragment" data-fragment-index="6">
+                      $\vec{w}_{new}  = (\bf{X}^T\bf{X})^{-1}\bf{X}^T\vec{y}$
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3>Newton-Raphson update for logistic regression</h3>
+                    <ul style="list-style-type: none;">
+                      <li class="fragment roll-in"> $\nabla_{\vec{w}} \ell = {\bf X}^T (\vec{\sigma} - \vec{l})$
+                      <li class="fragment roll-in"> ${\bf H} = \nabla\nabla_{\vec{w}} \ell = {\bf X}^T{\bf W}{\bf X}$
+                      <li class="fragment roll-in"> ${\bf W}_{i,i} = \sigma_i(1-\sigma_i)$
+                      <li class="fragment roll-in"> $\vec{w}_{new} = \vec{w}_{old} - (\bf{X}^T\bf{W}\bf{X})^{-1}\bf{X}^T(\vec{\sigma} - \vec{l})$
+                      <li class="fragment roll-in"> bring $(\bf{X}^T\bf{W}\bf{X})^{-1}$ out
+                      <li class="fragment roll-in"> $\vec{w}_{new} = (\bf{X}^T\bf{W}\bf{X})^{-1}(\bf{X}^T\bf{W}\bf{X}\vec{w}_{old} - \bf{X}^T(\vec{\sigma} - \vec{l}))$
+                      <li class="fragment roll-in"> $\vec{z} = \bf{X}\vec{w}_{old} - \bf{W}^{-1}(\vec{\sigma} - \vec{l})$
+                      <li class="fragment roll-in"> $\vec{w}_{new} = (\bf{X}^T\bf{W}\bf{X})^{-1}\bf{X}^T\bf{W}\vec{z}$
+                    </ul>
+                  </section>
+
+                </section>
+
+                <!-- <section> -->
+                <!--   <h2>Take home points</h2> -->
+                <!-- </section> -->
+
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 1.23,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

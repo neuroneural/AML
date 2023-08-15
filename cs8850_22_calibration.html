@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>23: Model Calibration</h3>
+	            <p>
+	          </section>
+
+                  <section>
+                    <h3>Schedule</h3>
+
+                    <row>
+                      <col50>
+                      <table style="font-size:14px">
+                        <tr>
+                          <th>#</th>
+                          <th>date</th>
+                          <th>topic</th>
+                          <th>description</th>
+                        </tr>
+                        <tr><td>1</td>
+                          <td> 22-Aug-2022 </td>
+                          <td> Introduction </td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>  2 </td>
+                          <td> 24-Aug-2022 </td>
+                          <td> Foundations of learning </td>
+                          <td> </td>
+                        </tr>
+                        <tr><td>  3  </td><td> 29-Aug-2022 </td><td> PAC learnability </td><td>             </td></tr>
+                        <tr><td>  4 </td><td> 31-Aug-2022 </td><td>      Linear algebra (recap) </td><td>   hw1 released   </td></tr>
+                        <tr style='background-color: #FBEEC2;'><td>   </td><td> 05-Sep-2022 </td><td> <em>Holiday</em>         </td><td>         </td></tr>
+                        <tr style='background-color: #E0E4CC;'><td>  5 </td><td> 07-Sep-2022 </td><td> Linear learning models </td><td>   </td></tr>
+                        <tr><td>  6 </td><td> 12-Sep-2022 </td><td> Principal Component Analysis       </td><td> project ideas  </td></tr>
+                        <tr><td>  7 </td><td> 14-Sep-2022  </td><td>  Curse of Dimensionality          </td></td></td><td> hw1 due </td></tr>
+<tr><td> 8 </td><td> 19-Sep-2022  </td><td>  Bayesian Decision Theory  </td><td>hw2 release </td></tr>
+<tr><td> 9 </td><td> 21-Sep-2022  </td><td> Parameter estimation: MLE </td><td></td></tr>
+<tr><td> 10 </td><td> 26-Sep-2022 </td><td> Parameter estimation: MAP & NB</td><td>finalize teams</td></tr>
+<tr><td> 11 </td><td> 28-Sep-2022 </td><td> Logistic Regression  </td><td>             </td></tr>
+<tr><td> 12 </td><td> 03-Oct-2022 </td><td> Kernel Density Estimation </td><td>             </td></tr>
+<tr><td> 13 </td><td> 05-Oct-2022 </td><td> Support Vector Machines </td><td> hw3, hw2 due       </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 10-Oct-2022 </td><td>   * Mid-point projects checkpoint     </td><td>    *    </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 12-Oct-2022 </td><td>   * Midterm: Semester Midpoint       </td><td> exam   </td></tr>
+<tr><td> 14 </td><td> 17-Oct-2022  </td><td>Matrix Factorization</td><td>           </td></tr>
+<tr><td> 15 </td><td> 19-Oct-2022  </td><td>Stochastic Gradient Descent</td><td>  </td></tr>
+</table>
+</col50>
+<col50>
+<table style="font-size:14px; vertical-align: top;">
+  <tr>
+    <th>#</th>
+    <th>date</th>
+    <th>topic</th>
+    <th>description</th>
+  </tr>
+  <tr><td> 16 </td><td> 24-Oct-2022 </td><td> k-means clustering  </td><td> </td></tr>
+  <tr><td> 17 </td><td> 26-Oct-2022 </td><td> Expectation Maximization </td><td> hw4, hw3 due             </td></tr>
+  <tr><td> 18 </td><td> 31-Oct-2022 </td><td> Automatic Differentiation </td><td> </td></tr>
+  <tr><td> 19  </td><td> 02-Nov-2022 </td><td> Nonlinear embedding approaches </td><td>  </td></tr>
+  <tr><td> 20 </td><td> 07-Nov-2022 </td><td> Model comparison I </td><td> </td></tr>
+  <tr><td> 21 </td><td> 09-Nov-2022 </td><td> Model comparison II  </td><td> hw5, hw4 due</td></tr>
+  <tr><td> 22 </td><td> 14-Nov-2022 </td><td> Model Calibration </td><td> <i class='fa fa-map-marker' style='color: #FA6900;'></i>   </td></tr>
+  <tr><td> 23 </td><td> 16-Nov-2022  </td><td> Convolutional Neural Networks  </td><td>  by a guest lecturer           </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 21-Nov-2022  </td><td> <em>Fall break</em> </td><td>            </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 23-Nov-2022 </td><td> <em>Fall break</em> </td><td>   </td></tr>
+  <tr><td> 24 </td><td> 28-Nov-2022 </td><td> Word Embedding </td><td> hw5 due </td></tr>
+  <tr style='background-color: #FBEEC2;'><td> </td><td> 30-Nov-2022 </td><td> Presentation and exam prep day </td><td> </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 02-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 07-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td> </td><td> 12-Dec-2022 </td><td> * Final Exam    </td><td>   *     </td></tr>
+  <tr><td> </td><td> 15-Dec-2022  </td><td> Grades due   </td><td>             </td></tr>
+</table>
+</col50>
+</row>
+</section>
+                  
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Receiver Operator Characteristics
+                      <li class="fragment roll-in"> Model Calibration
+	            </ul>
+                  </section>
+                </section>
+
+                <section>
+                  <section>
+                    <h1> ROC </h1>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Receiver Operator Characteristics</h2>
+                    <img style="margin-top: -20px;" width="1000" src="figures/ww2_pilots.jpg" alt="ww2">
+                    <div class="slide-footer">
+                      <a href="https://www.sciencedirect.com/science/article/abs/pii/S016786550500303X">An introduction to ROC analysis</a><br>
+                      <a href="http://data-science-for-biz.com/">Data Science for Business</a>
+                    </div>
+
+                    <aside class="notes">
+                      Introduced during WW2 for radars detecting enemy planes.
+                    </aside>
+                  </section>
+
+                  <section  data-fullscreen>
+                    <h2>Receiver Operator Characteristics</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="45%" src="figures/Metrics_ROC.png" alt="ROC">
+                    <div class="slide-footer">
+                      <a href="https://www.sciencedirect.com/science/article/pii/B9781558600362500473">Signal detection theory: valuable tools for evaluating inductive learning</a>
+                    </div>
+                    <aside class="notes">
+                      Argued by Spackman in 1989 to be a good tool for classifier performance evaluation and it took off.
+                    </aside>
+                  </section>
+
+                  <section  data-fullscreen>
+                    <h2>ROC: each point is a classifier</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="45%" src="figures/Metrics_ROC_curve.png" alt="ROC curve">
+                    <aside class="notes">
+                      Each threshold value produces a different point in the ROC space
+                    </aside>
+                  </section>
+
+                  <section  data-fullscreen>
+                    <h2>ROC construction</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="800" src="figures/Metrics_ROC_construction.png" alt="ROC construction">
+                    <aside class="notes">
+                      Each threshold value produces a different point in the ROC space
+                    </aside>
+                  </section>
+
+                  <section  data-fullscreen>
+                    <h2>Area Under the Curve (AUC)</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="600" src="figures/Metrics_AUC.png" alt="AUC">
+                    <blockquote style="background-color: #eee8d5; font-size: 28px;">
+                      The AUC is equivalent to the Mann-Whitney-Wilcoxon ordering measure (1945) and Gini Coefficient (1999; 2005). All are <b>equivalent to probability that a randomly chosen positive instance will be ranked higher than a randomly chosen negative instance.</b>
+                    </blockquote>
+
+                  </section>
+
+                </section>
+                <section>
+                  <section>
+                    <h2>On Calibration of Modern Neural Networks</h2>
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/pdf/1706.04599.pdf">On Calibration of Modern Neural Networks</a>
+                    </div>
+                    <aside class="notes">
+                      As we have discussed already, one of the most important if not <b>the</b> most important features of a model is the confidence scores that align with the actual probability of guessing incorrectly.<br>
+                      The reason is, that we often need classifiers and pattern recognition algorithms to automate something that is currently done by humans. Even humans are not perfect and we do not expect the algorithms be. However, instead of waiting for a method that perform really great on all possible input cases, we can accept predictions only if the confidence is higher than a level that we are happy with.<br>
+                      Yet, not always the confidence score return by the models corresponds to probability of guessing correctly.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Confidence calibration</h2>
+                    <blockquote style="background-color: #eee8d5;" class="fragment" data-fragment-index="0">
+                      the problem of predicting probability estimates representative of the true correctness likelihood
+                    </blockquote>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3;" class="fragment" data-fragment-index="1">
+                      Why do it?
+                    </blockquote>
+                    <ul  style="list-style-type: disk;">
+                      <li class="fragment" data-fragment-index="2"> The probability associated with the predicted class label should reflect its ground truth correctness
+                      <li class="fragment" data-fragment-index="3"> Model interpretability
+                    </ul>
+                    <aside class="notes">
+                      Confidence calibration is... (press and read)<br>
+                      Then we know when to trust the model and when to route to a human. <br>
+                      Then we know which cases are consistently harder for the model
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>What's perfect calibration?</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3;">
+                      Supervised multi-class classification:
+                    </blockquote>
+                    <ul  style="list-style-type: disk;">
+                      <li class="fragment roll-in"> The input $X \in \mathcal{X}$ and label $Y \in \mathcal{Y} = {1, ..., K}$
+                      <li class="fragment roll-in"> Follow $\pi(X,Y) = \pi(Y|X)\pi(X)$
+                      <li class="fragment roll-in"> The Neural Network $h(X) = (\hat{Y},\hat{P})$
+                    </ul>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3;">
+                      The <b>perfect calibration</b> is
+                    </blockquote>
+                    \begin{equation}
+                    \mathbb{P}(\hat{Y}=Y |\hat{P}=P) = p, \forall p \in [0,1]
+                    \end{equation}
+                    <aside class="notes">
+                      Let's consider the supervised classification problem.<br>
+                      Multidimentional input data from multiple classes follows the joint data-label distribution that can be decomposed into the data prior (evidence) and conditional (which in this form we usually call posterior)<br>
+                      A neural network takes feature vector as an input and returns class prediction y and confidence p (hat)<br>
+                      For a perfect calibration we need the probability of correct result at a given confidence to be equal to that confidence.<br>
+                      How to assess whether a model is perfectly calibrated?
+                    </aside>
+                  </section>
+
+
+                  <section>
+                    <h3>Reliability diagrams/Calibration plots</h3>
+                    <ul>
+                      <li class="fragment roll-in"><b>Reliability Diagrams</b> are a visual representation of model calibration (DeGroot & Fienberg, 1983; Niculescu-Mizil & Caruana, 2005)
+                      <li class="fragment roll-in"> These diagrams plot expected sample accuracy as a function of confidence
+                      <li class="fragment roll-in"> If the model is perfectly calibrated – $\mathbb{P}(\hat{Y}=Y |\hat{P}=P) = p, \forall p \in [0,1]$ – then the diagram should plot the identity function. Any deviation from a perfect diagonal represents miscalibration.
+                    </ul>
+                    <div class="slide-footer">
+                      <a href="https://www.jstor.org/stable/2987588?seq=1">
+                        DeGroot & Fienberg, 1983</a>;<br>
+                      <a href="https://www.cs.cornell.edu/~alexn/papers/calibration.icml05.crc.rev3.pdf">
+                        Niculescu-Mizil & Caruana, 2005
+                        </a>
+                    </div>
+                    <aside class="notes">
+                      (just read the slide)
+                    </aside>
+                  </section>
+
+                  <section  data-vertical-align-top>
+                    <h2>Calibration plots</h2>
+                    <img style="margin-top: -20px;" width="70%" src="figures/sklearn_calibrate.png" alt="confidence calibration">
+                    <div class="slide-footer">
+                      <a href="https://scikit-learn.org/stable/modules/calibration.html">As implemented in sklearn</a>
+                    </div>
+                    <aside class="notes">
+                      Here is an example of this diagram! 4 popular classifiers implemented in Sklearn are compared on an MNIST dataset<br>
+                      Notice that logistic regression is closer to the perfect calibration. Why? (pause) Right! Because it is designed to model probability distribution in the training data.<br>
+                      Note, in the frequency plot that is also assigns input data almost uniformly into all confidence bins. Compare to SVM, which tends to be unsure and assign score closer to 0.5. Does it tell us which model is more accurate on the overall dataset? No, it does not!
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Modern best performing models are <alert>lying</alert></h3>
+                    <row>
+                      <col70>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="800" src="figures/modern_vs_old.png" alt="modern vs old">
+                      </col70>
+                      <col30>
+                      <ul style="font-size: 28px;">
+                        <li>  a 5-layer LeNet (LeCun et al., 1998) is <span class="fa fa-thumbs-o-up"/>
+                        <li> a 110-layer ResNet (He et al., 2016) on the CIFAR-100 dataset is <span class="fa fa-thumbs-o-down"/>
+                      </ul>
+                      </col30>
+                    </row>
+                    <aside class="notes">
+                      Plots, similar to the sklearn example, but now let's compare CNN of the past (LeNet of 1998) and a powerful Residual Network with 110 layers. LeNet is better calibrated, as you can see from the confidence plots, and from the top plot it is clear that ResNet tends to be overconfident: many more samples are in the high confidence bins.
+                    </aside>
+                  </section>
+
+
+                  <section>
+                    <h3>Expected accuracy and average confidence</h3>
+                    <ul  style="list-style-type: disk; font-size: 32px;">
+                      <li class="fragment roll-in">  Let $B_m$ be the set of indices $\in I_m=(\frac{m-1}{M}, \frac{m}{M}]$. The expected accuracy of $B_m$ is
+                        \begin{equation*}
+                        acc(B_m) = \frac{1}{|B_m|}\sum_{i \in B_m} \mathbf{1}(\hat{y}_i=y_i)
+                        \end{equation*}
+                      <li class="fragment roll-in">  The average confidence within bin $B_m$ is defined as:
+                        \begin{equation*}
+                        conf(B_m) = \frac{1}{|B_m|} \sum_{i \in B_m} \hat{p}_i
+                        \end{equation*}
+                      <li class="fragment roll-in">  $acc(B_m)$ and $conf(B_m)$ approximate the left-hand and right-hand sides of $\mathbb{P}(\hat{Y}=Y |\hat{P}=P) = p, \forall p \in [0,1]$ respectively for bin $B_m$
+                      <li class="fragment roll-in">  A <i>perfectly calibrated model</i> will have $acc(B_m) = conf(B_m)$
+                    </ul>
+                    <aside class="notes">
+
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Expected Calibration Error</h2>
+                    <ul  style="list-style-type: disk;">
+                      <li class="fragment roll-in">  The <b>Expected Calibration Error</b> (ECE) is used to summarize calibration as statistics.
+                      <li class="fragment roll-in">  One notion of miscalibration is the difference in expectation between confidence and accuracy
+                        \begin{equation}
+                        \mathbb{E}_{\hat{P}} \Big[\Big|\mathbb{P}(\hat{Y}=Y |\hat{P}=P) - p \Big|\Big]
+                        \end{equation}
+                      <li class="fragment roll-in">  It is approximates by (<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4410090/">Naeini et al., 2015</a>) as:
+                        \begin{equation}
+                        ECE = \sum_{m=1}^M \frac{|B_m|}{n} \Big| acc(B_m) - conf(B_m)\Big|
+                        \end{equation}
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Mamixum Calibration Error</h2>
+                    <ul  style="list-style-type: disk;">
+                      <li class="fragment roll-in">  For high-risk application we may wish to minimize the worst-case
+deviation between confidence and accuracy
+                        \begin{equation}
+                        \max\limits_{p\in[0,1]} \Big[\Big|\mathbb{P}(\hat{Y}=Y |\hat{P}=P) - p \Big|\Big]
+                        \end{equation}
+                      <li class="fragment roll-in">  <b>The Mamixum Calibration Error</b> (MCE) is defined as:
+                        \begin{equation}
+                        MCE = \max\limits_{m\in{1,\dots,M}} \Big| acc(B_m) - conf(B_m)\Big|
+                        \end{equation}
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Negative log likelihood</h2>
+                    <ul  style="list-style-type: disk; font-size: 34px;">
+                      <li class="fragment roll-in">  Negative log likelihood is a standard measure of a probabilistic model’s quality (<a href="https://web.stanford.edu/~hastie/ElemStatLearn/">Friedman et al., 2001</a>)
+                      <li class="fragment roll-in">  It is also referred to as the cross entropy loss in the context of deep learning
+                      <li class="fragment roll-in">  Given a probabilistic model $\pi(Y|X)$ and $n$ samples, $NLL$ is defined as:
+                        \begin{equation}
+                        \mathcal{L} = - \sum_{i=1}^n log(\hat{\pi}(y_i|\mathbf{x}_i))
+                        \end{equation}
+                      <li class="fragment roll-in">  It is a standard result (<a href="https://web.stanford.edu/~hastie/ElemStatLearn/">Friedman et al., 2001</a>) that, in expectation, NLL is minimized if and only if $\hat{\pi}(Y|X)$  recovers the ground truth conditional distribution $\pi(Y|X)$.
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>What affects calibration</h2>
+                    <ul  style="list-style-type: disk;">
+	              <li class="fragment roll-in">  <b>Increasing depth and width</b> <alert>may reduce classification error</alert> - <b>negatively affect model calibration</b>
+	              <li class="fragment roll-in">  The models trained <b>with Batch Normalization</b> <alert>tend to be more miscalibrated</alert>
+	              <li class="fragment roll-in">  The training <b>with less weight decay</b> <alert>has a negative impact on calibration</alert>.
+                    </ul>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%" src="figures/hp_effects_on_calibration.png" alt="calibration effecects">
+                  </section>
+
+                  <section data-vertical-align-top>
+                    <h2>NLL and Calibration</h2>
+                    <ul  style="list-style-type: disk; font-size: 32px;">
+                      <li class="fragment roll-in">  The network learns better classification accuracy at the expense of well-modeled probabilities.
+                      <li class="fragment roll-in">  These high capacity models are not necessarily immune from overfitting, but rather, overfitting manifests in probabilistic error rather than classification error.
+                    </ul>
+                    <img style="margin-top: -10px;" width="65%" src="figures/NLL_calibration.png" alt="NLL calibration">
+                    <aside class="notes">
+                      How is it possible that a model has better predictive performance (higher accuracy) is poorly calibrated. It does look like overfitting is to blame. This type of overfitting does not affect classification error but affects probabilistic error.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Calibration Methods</h2>
+                    <ul  style="list-style-type: disk;">
+                      <li class="fragment roll-in">  Histogram binning (<a href="https://cseweb.ucsd.edu/~elkan/kddbianca.pdf">Zadrozny & Elkan, 2001</a>)
+                      <li class="fragment roll-in">  Isotonic regression (<a href="https://dl.acm.org/doi/10.1145/775047.775151">Zadrozny & Elkan, 2002</a>)
+                      <li class="fragment roll-in">  Bayesian Binning into Quantiles (BBQ) (<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4410090/">Naeini et al., 2015</a>)
+                      <li class="fragment roll-in">  Platt scaling (<a href="https://www.researchgate.net/publication/2594015_Probabilistic_Outputs_for_Support_Vector_Machines_and_Comparisons_to_Regularized_Likelihood_Methods">Platt et al., 1999</a>, <a href="https://www.cs.cornell.edu/~alexn/papers/calibration.icml05.crc.rev3.pdf">Niculescu-Mizil & Caruana, 2005</a>)
+                    </ul>
+                  </section>
+
+
+                  <section>
+                    <h2>Histogram Binning</h2>
+                    <ul  style="list-style-type: disk; font-size: 34px;">
+                      <li class="fragment roll-in">  All uncalibrated predictions $\hat{p}^i$ are divided into mutually exclusive bins $B_1 , . . . , B_M $.
+                      <li class="fragment roll-in">  Each bin is assigned a calibrated score $\theta_m$, i.e. if $\hat{p}_i$ is assigned to bin $B_m$, then $\hat{q}^i = \theta_m$
+                      <li class="fragment roll-in">  At test time, if prediction $\hat{p}_{te}$ falls into bin $B_m$, then the calibrated prediction $\hat{q}_{te}$ is $\theta_m$.
+                      <li class="fragment roll-in" style="list-style-type: none;">
+                        \begin{align}
+                        \underset{\theta_1,\dots,\theta_M}{\min} \sum_{m=1}^M \sum_{i=1}^n \mathbf{1}(a_m\le\hat{p}_i \lt a_{m+1})(\theta_m - y_i)^2
+                        \end{align}
+                    </ul>
+                    <aside class="notes">
+                      Given fixed bins bound-aries, the solution results in thetas that correspond to the average number of positive-class samples in each bin.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Isotonic Regression</h2>
+                    \begin{align*}
+                    \underset{M, \theta_1,\dots,\theta_M, \\ a_1, \dots, a_{M+1}}{\min} \sum_{m=1}^M \sum_{i=1}^n \mathbf{1}(a_m\le\hat{p}_i \lt a_{m+1})(\theta_m - y_i)^2\\
+                    \text{subject to } 0=a_1\le a_2\le \dots \le a_{M+1} = 1,\\
+                    \theta_1 \le \theta_2 \le \dots \le \theta_M
+                    \end{align*}
+                    <aside class="notes">
+                      Similar to histogram binning but now the bin boundaries are also optimized
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Bayesian Binning into Quantiles (BBQ)</h2>
+                    <ul  style="list-style-type: disk; font-size: 34px;">
+                      <li class="fragment roll-in">  BBQ marginalizes out all – possible binning schemes to produce $\hat{q}$
+                      <li class="fragment roll-in">  BBQ performs Bayesian averaging of the probabilities produced by each scheme
+                        \begin{align*}
+                        \mathbb{P}(\hat{q}_{te} | \hat{p}_{te}, D) = \sum_{s\in\mathcal{S}} \mathbb{P}(\hat{q}_{te}, S=s | \hat{p}_{te}, D) \\
+                        = \sum_{s\in\mathcal{S}} \mathbb{P}(\hat{q}_{te}  | \hat{p}_{te},S=s, D) \mathbb{P}(S=s | D),
+                        \end{align*}
+                        where $\mathbb{P}(\hat{q}_{te}  | \hat{p}_{te},S=s, D)$ is a the calibrated probability under scheme $s$                                                                                                                                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Platt Scaling</h2>
+                    <ul  style="list-style-type: disk; font-size: 34px;">
+                      <li class="fragment roll-in">  Platt scaling (<a href="https://www.cs.cornell.edu/~alexn/papers/calibration.icml05.crc.rev3.pdf">Niculescu-Mizil & Caruana, 2005</a>), learns scalar parameters $a, b \in \mathbb{R}$ and
+                        outputs $\hat{q} = \sigma(az_i + b)$ as the calibrated probability
+                      <li class="fragment roll-in">   $a$ and $b$ is optimized over NLL loss
+                      <li class="fragment roll-in">  The parameters of NN should be fixed
+                    </ul>
+                    <aside class="notes">
+                      Pass model output through a sigmoid
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Binning for multiclass case</h2>
+                    <ul  style="list-style-type: disk; font-size: 34px;">
+                      <li class="fragment roll-in">  Treating the problem as K one-versus-all problems
+                      <li class="fragment roll-in">  Form a binary calibration problem where the label is $\mathbf{1}(y_i = k)$ and the predicted probability is $\sigma(z)_{SM}^{(k)}$
+                      <li class="fragment roll-in">  Obtain $[\hat{q}_i^{(1)}, . . . , \hat{q}_i^{(K)}]$
+                      <li class="fragment roll-in">  Predict $\hat{y}_{i}' = \argmax [\hat{q}_i^{(1)}, . . . , \hat{q}_i^{(K)}]$
+                      <li class="fragment roll-in">  New confidence is $\hat{q}_i' = \frac{max[\hat{q}_i^{(1)}, . . . , \hat{q}_i^{(K)}]}{\sum_{j=1}^L \hat{q}_i^{(j)}} $
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Scaling for multiclass case</h2>
+                    <ul  style="list-style-type: disk; font-size: 34px;">
+                      <li class="fragment roll-in">  Let $\mathbf{z}_i$ be the logits vector produced before the softmax layer for input $\mathbf{x}_i$. Matrix scaling applies a linear transformation $\mathbf{W}\mathbf{z}_i + \mathbf{b}$ to the logits
+                        \begin{align*}
+                        \hat{q}_i = \max\limits_{k} \sigma_{SM}(\mathbf{W}\mathbf{z}_i + \mathbf{b})^{(k)}\\
+                        \hat{y}_{i}' = \argmax\limits_{k} (\mathbf{W}\mathbf{z}_i + \mathbf{b})^{(k)}
+                        \end{align*}
+                      <li class="fragment roll-in">  $\mathbf{W}$ is restricted to be diagonal matrix, because of quadratic grows of parameters with number of classes
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Temperature Scaling</h2>
+                    <ul  style="list-style-type: disk; font-size: 30px;">
+                      <li class="fragment roll-in">  The simplest extension of Platt scaling, uses a single scalar parameter $T > 0$ for all classes
+                      <li class="fragment roll-in">  Given the logit vector $\mathbf{z}_i$, the new confidence prediction is
+                        \begin{equation*}
+                        \hat{q}_i = \max\limits_k \sigma_{SM} \Big(\frac{\mathbf{z}_i}{T}\Big) ^ {(k)}
+                        \end{equation*}
+                      <li class="fragment roll-in">   $T$ “softens” the softmax (i.e. raises the output entropy) with $T > 1$.
+                      <li class="fragment roll-in">  As $T \rightarrow \inf$, the probability $\hat{q}_i$ approaches $1/K$, which represents maximum uncertainty.
+                      <li class="fragment roll-in">  With $T = 1$, we recover the original probability $\hat{p}_i$.
+                      <li class="fragment roll-in">  As $T \rightarrow 0$, the probability collapses to a point mass (i.e. $\hat{q}_i = 1$)
+                      <li class="fragment roll-in">  $T$ is optimized with respect to NLL on the validation set
+                      <li class="fragment roll-in">  Prediction $\hat{y}_{i}^{\prime}$ remains unchanged, since $T$ does not change the maximum of the softmax function, temperature scaling does not affect the model’s accuracy.
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Resutls: Expected calibration error</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%" src="figures/calibration_results_table.svg" alt="ECE table">
+                  </section>
+
+                  <section>
+                    <h2>Results: Reliability diagrams</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%" src="figures/calibration_results_figures.png" alt="Reliability diagrams">
+                  </section>
+
+                  <section data-vertical-align-top>
+                    <h2>Bibliography</h2>
+                    <ol  style="font-size: 22px; width: 90%;">
+                      <li>
+                        <a href="https://arxiv.org/pdf/1906.09551.pdf">
+                          Zhang Z, Dalca AV, Sabuncu MR. Confidence Calibration for Convolutional Neural Networks Using Structured Dropout. arXiv preprint arXiv:1906.09551. 2019 Jun 23.</a>
+                      <li>
+                        <a href="https://arxiv.org/pdf/2002.09437.pdf">
+                          Mukhoti J, Kulharia V, Sanyal A, Golodetz S, Torr PH, Dokania PK. Calibrating Deep Neural Networks using Focal Loss. arXiv preprint arXiv:2002.09437. 2020 Feb 21.
+                        </a>
+                      <li>
+                        <a href="https://arxiv.org/pdf/1708.02002.pdf">
+                          Lin TY, Goyal P, Girshick R, He K, Dollár P. Focal loss for dense object detection. InProceedings of the IEEE international conference on computer vision 2017 (pp. 2980-2988).
+                        </a>
+                      <li>
+                        <a href="https://arxiv.org/pdf/1701.06548.pdf">
+                          Pereyra G, Tucker G, Chorowski J, Kaiser Ł, Hinton G. Regularizing neural networks by penalizing confident output distributions. arXiv preprint arXiv:1701.06548. 2017 Jan 23.
+                        </a>
+                      <li>
+                        <a href="https://arxiv.org/pdf/1906.02629.pdf">
+                          When Does Label Smoothing Help?
+                        </a>
+                      <li>
+                        <a href="http://proceedings.mlr.press/v80/kumar18a/kumar18a.pdf">
+                          Kumar A, Sarawagi S, Jain U. Trainable calibration measures for neural networks from kernel mean embeddings. InInternational Conference on Machine Learning 2018 Jul 3 (pp. 2805-2814).
+                        </a>
+                      <li>
+                        <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5351887/">
+                          Naeini MP, Cooper GF. Binary classifier calibration using an ensemble of near isotonic regression models. In2016 IEEE 16th International Conference on Data Mining (ICDM) 2016 Dec 12 (pp. 360-369). IEEE.
+                        </a>
+                      <li>
+                        <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4410090/">
+                          Naeini MP, Cooper G, Hauskrecht M. Obtaining well calibrated probabilities using bayesian binning. InTwenty-Ninth AAAI Conference on Artificial Intelligence 2015 Feb 21.
+                        </a>
+                      <li>
+                        <a href="http://proceedings.mlr.press/v77/leathart17a/leathart17a.pdf">
+                          Leathart T, Frank E, Holmes G, Pfahringer B. Probability calibration trees. arXiv preprint arXiv:1808.00111. 2018 Jul 31.
+                        </a>
+                      <li>
+                        <a href="https://papers.nips.cc/paper/8635-verified-uncertainty-calibration.pdf">
+                          Kumar A, Liang PS, Ma T. Verified uncertainty calibration. InAdvances in Neural Information Processing Systems 2019 (pp. 3787-3798).
+                        </a>
+                      <li>
+                        <a href="https://github.com/gpleiss/temperature_scaling">https://github.com/gpleiss/temperature_scaling</a>
+                    </ol>
+                  </section>
+</section>
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+            <script src="node_modules/reveal.js-verticator/plugin/verticator/verticator.js"></script>
+            <link rel="stylesheet" href="node_modules/reveal.js-verticator/plugin/verticator/verticator.css">
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  width: 960,
+                  height: 700,
+                  center: true,
+                  hash: true,
+                  controls: false,
+                  keyboard: true,
+                  margin: 0.05,
+                  overview: true,
+                  transition: 'slide', // Transition style: none/fade/slide/convex/concave/zoom
+                  transitionSpeed: 'slow', // Transition speed: default/fast/slow
+                  // hash: true,
+                  // margin: 0.01,
+                  // minScale: 0.01,
+                  maxScale: 1.23,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ Verticator, RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

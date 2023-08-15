@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+		<section>
+		  <section>
+		    <p>
+		      <h2>Advanced Machine Learning</h2>
+                      <h3>01: Introduction</h3>
+		    <p>
+		  </section>
+	          <section>
+		    <h3>Outline of the lecture</h3>
+                    <ul>
+		      <li class="fragment roll-in">Introductions
+                      <li class="fragment roll-in">Why Machine Learning?
+                      <li class="fragment roll-in">What is machine learning?
+                      <li class="fragment roll-in">History of ML
+                      <li class="fragment roll-in">Reinforcement Learning
+                      <li class="fragment roll-in">Course Overview
+		    </ul>
+                  </section>
+                </section>
+
+		<section>
+		  <section>
+                    <h1>Introductions</h1>
+		  </section>
+		  <section>
+                    <h2>Instructor</h2>
+                    <row>
+		      <col70>
+                        <h3>Sergey Plis, Ph.D.</h3>
+                        <ul  style="list-style-type: none; ">
+                        <li>Department of Computer Science,
+                        <li>Georgia State University
+                        <li>55 Park Place, office 1821
+                        <li>Office hours: MW 13:15-14:15 <em>but ask anything in slack</em> and by appointment
+                        <li>Email: <a href="mailto:splis@gsu.edu">splis@gsu.edu</a>
+                        </ul>
+		      </col70>
+                      <col30>
+                          <img src="figures/SergeyPlis.jpg" alt="Sergey Plis" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+                      </col30>
+                    </row>
+		  </section>
+
+		  <section>
+		    <h2>Teaching Assistant</h2>
+                    <row>
+		      <col70>
+                      <h3>Thanmayee Jetti</h3>
+                      <ul  style="list-style-type: none; ">
+                      <li>Department of Computer Science,
+                      <li>Georgia State University
+                      <li> TBD
+                      <li>Office hours: by appointment
+                      <li>Email: <a href="mailto:tjetti1@student.gsu.edu">tjetti1@student.gsu.edu</a>
+                      </ul>
+                      </col70>
+                      <col30>
+                        <img src="figures/ELMO.svg" alt="" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+                      </col30>
+</row>
+		  </section>
+		</section>
+
+                <section>
+                  <section>
+                    <h1>Why Machine Learning?</h1>
+                  </section>
+                  <section data-vertical-align-top data-background-iframe="https://joshworth.com/dev/pixelspace/pixelspace_solarsystem.html"
+                           data-background-interactive>
+                    <h3>Philosophical reason</h3>
+                    <div class='slide-footer'>
+                      <a href="https://joshworth.com/dev/pixelspace/pixelspace_solarsystem.html">Source</a>
+                    </div>
+                  </section>
+
+                  <section data-vertical-align-top>
+                    <h3>Pragmatic reason</h3>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255,
+                                                0.8);" width="700" src="figures_ccd/lesion.jpg"
+                         alt="loop"><br>
+                    brain imaging for  brain
+                    disorder understanding
+                  </section>
+
+                  <section>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255,
+                                                0.8);" width="700" src="figures_ccd/moredata.jpg"
+                         alt="loop"><br>
+                    lets collect more data at the finest resolution
+                  </section>
+
+
+                  <section>
+                    <h3>Problem</h3>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255,
+                                                0.8);" width="700" src="figures_ccd/overload.jpg"
+                         alt="loop"><br>
+                    high dimensional data is not
+                    easy to see through
+                  </section>
+
+                  <section>
+                    <h3>Desired Solution</h3>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255,
+                                                0.8);" width="700" src="figures_ccd/rreading.png"
+                         alt="loop"><br>
+                    automatically extract
+                    meaning from data
+                  </section>
+
+                  <section  data-state="brightside">
+            <h3>Desired Solution</h3>
+            <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                        rgba(150, 150, 255, 0.8); margin-top:-20pt;"
+                 width="70%"
+                 src="figures/DALLE_bald_reading_robot2.png"
+                 alt="loop"><br>
+            <h3>
+            automatically extract meaning from data
+            </h3>
+            <div class="slide-footer" style="font-size:9pt;">
+              The image is generated by OpenAI DALL-E from the prompt "a bald child robot with a concentrated but slightly smiling face is reading a book about human brain surrounded by a pile of reading material comics style"
+            </div>
+          </section>
+
+		  <section data-background="figures/jobnews.png"
+			   data-background-transition="zoom"
+			   data-background-size="contain">
+                  </section>
+		  <section data-background="figures/automation.jpg"
+			   data-background-transition="zoom"
+			   data-background-size="cover">
+                  </section>
+		  <section data-background="figures/job.jpg"
+			   data-background-transition="zoom"
+			   data-background-size="cover">
+                  </section>
+		  <section data-background="figures/threat.png"
+			   data-background-transition="zoom"
+			   data-background-size="contain">
+                  </section>
+		  <section data-background="figures/skynet.gif"
+			   data-background-transition="zoom"
+			   data-background-size="cover">
+                  </section>
+		  <section data-background="figures/threat.png"
+			   data-background-transition="zoom"
+			   data-background-size="contain">
+                  </section>
+		  <section data-background="figures/paperclip.jpg"
+			   data-background-transition="zoom"
+			   data-background-size="cover">
+                  </section>
+                </section>
+
+                <section>
+                  <section>
+                    <h1>What is machine learning?</h1>
+                  </section>
+                  <section>
+                    <h3>What is learning?</h3>
+                    <blockquote style="text-align: left; width: 100%;" class="fragment" data-fragment-index="1">
+                      Learning   is   acquiring  new,   or   modifying
+                      existing, knowledge,  behaviors, skills, values,
+                      or  preferences  and  may  involve  synthesizing
+                      different types of  information.  The ability to
+                      learn is possessed by humans and animals.
+                    </blockquote>
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8);" width="50%" src="figures/thinking-robot_t.gif" alt="loop">
+                    <div class='slide-footer' style="text-align: left;">
+                      <ul>
+                      <li><a href="http://en.wikipedia.org/wiki/Learning">http://en.wikipedia.org/wiki/Learning</a><br>
+                      <li><a href="https://digilite.ca/guide-to-building-your-own-ai-chatbot/">gif source</a>
+                      </ul>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Machine Learning</h2>
+                    <blockquote style="text-align: left; width: 100%;">
+                      Arthur    Samuel   (1959).     Machine
+                      Learning:  Field of  study that  gives
+                      computers the ability to learn without
+                      being clearly programmed
+                    </blockquote>
+                    <div class='slide-footer' style="text-align: left;">
+                      <ul>
+                      <li><a href="https://en.wikipedia.org/wiki/Arthur_Samuel">https://en.wikipedia.org/wiki/Arthur_Samuel</a><br>
+                      </ul>
+                    </div>                    
+                    
+                  </section>
+                  <section>
+                    <h2>Machine Learning</h2>
+                    <blockquote style="text-align: left; width: 100%;" width="100%">
+                      Tom    Mitchell   (1998)    Well-posed
+                      Learning  Problem: A  computer program
+                      is  said to  learn  from experience  E
+                      with respect  to some task T  and some
+                      performance   measure    P,   if   its
+                      performance  on T,  as measured  by P,
+                      improves with experience E.
+                    </blockquote>
+                  </section>
+                  <section>
+                    <h3>ML as a Scientific Discipline</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8);" width="500"
+
+                         src="figures/venn_ml.png" alt="Venn
+                                                        diagramm">
+                                                        </section>
+                  <section>
+                    <h3>ML combines</h3>
+                    <ul>
+                      <li class="fragment roll-in">Discrete Mathematics
+                      <li class="fragment roll-in">Linear Algebra
+                      <li class="fragment roll-in">Statistics
+                      <li class="fragment roll-in">Calculus
+                      <li class="fragment roll-in">Optimization Theory
+                    </ul>
+                    <p>
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8);" width="50%" src="figures/bot_build.gif" alt="loop">
+                  </section>
+                  <section>
+                    <h3>ML draws from</h3>
+                    <ul>
+                      <li class="fragment roll-in">Artificial Intelligence
+                      <li class="fragment roll-in">Bayesian Methods
+                      <li class="fragment roll-in">Computational Complexity
+                      <li class="fragment roll-in">Optimization Theory
+                      <li class="fragment roll-in">Information theory
+                      <li class="fragment roll-in">Philosophy
+                      <li class="fragment roll-in">Psychology and neurobiology
+                    </ul>
+                    <p>
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8);" width="50%" src="figures/bot_build.gif" alt="loop">
+
+                  </section>
+
+                  <section>
+                    <h3>Learning tasks</h3>
+                    <ul>
+                      <li class="fragment roll-in">Classification
+                      <li class="fragment roll-in">Regression
+                      <li class="fragment roll-in">Ranking
+                      <li class="fragment roll-in">Clustering
+                      <li class="fragment roll-in">Dimensionality reduction
+                      <li class="fragment roll-in">Manifold learning
+                      <li class="fragment roll-in">Causal Learning
+                    </ul>
+                    <p>
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8); bottom: 0 !important" width="60%" src="figures/bot_dog.gif" alt="loop">
+
+                  </section>
+
+                  <section>
+                    <h3>Learning Scenarios</h3>
+                    <ul>
+                      <li class="fragment roll-in">Supervised learning
+                      <li class="fragment roll-in">Semi-supervised learning
+                      <li class="fragment roll-in">Active learning
+                      <li class="fragment roll-in">Online learning
+                      <li class="fragment roll-in">Unsupervised learning
+                      <li class="fragment roll-in">Reinforcement learning!
+                    </ul>
+                  </section>
+		</section>
+
+		<section>
+		  <section>
+                    <h1>history of ML</h1>
+		    <h2>extremely brief and biased</h2>
+		  </section>
+		  <section
+                    data-state="darkside">How did we get to this point?</section>
+                  <section>
+		    <h2>1966</h2>
+                    <blockquote style="width: 100%;">
+                      Marvin Minsky  (MIT, Turing Award 1969)  hired a
+                      first  year undergraduate  student and  assigned
+                      him a problem to  solve over the summer: connect
+                      a camera  to a computer  and get the  machine to
+                      describe what it sees.
+                    </blockquote>
+
+                    <div class="slide-footer">
+                      <a href=http://www.lyndonhill.com/opinion-cvlegends.html>Urban legends in Computer Science</a>
+                    </div>
+                  </section>
+		  <section data-background="figures/impossible.png"
+			   data-background-transition="zoom"
+			   data-background-size="contain">
+                  </section>
+                  <section>
+                    <h2>ImageNet Challenge</h2>
+		    <ul style="list-style-type: square;
+			       list-style-position: inside;
+			       font-size:40px;">
+		      <!-- font-variant: small-caps; -->
+		      <!-- font-weight: bold;"> -->
+		      <li>14,192,122 million images, 21841 thousand categories</li>
+		      <li>Image found via web searches for WordNet noun synsets</li>
+		      <li>Hand verified using  Mechanical Turk </li>
+		      <li>Bounding boxes for query object labeled</li>
+                      <li>New data for validation and testing each year</li>
+                  </section>
+		  <section data-background="figures/imagenet.png"
+			   data-background-transition="zoom"
+                           data-vertical-align-top
+			   data-background-size="contain">
+                    <h2>50 years later</h2>
+                  </section>
+		  <section data-background="figures/perceptron.png"
+			   data-background-transition="zoom"
+                           data-vertical-align-top
+			   data-background-size="contain">
+                    <h2>Perceptron 1958</h2>
+                  </section>
+		  <section data-background="figures/perceptron-pla-14-steps.gif"
+			   data-background-transition="zoom"
+			   data-background-size="contain">
+                  </section>
+		  <section data-background="figures/FF.png"
+			   data-background-transition="zoom"
+                           data-vertical-align-top
+			   data-background-size="contain">
+                    <h3>Stacked perceptrons</h3>
+                  </section>
+		  <section data-background="figures/deepff.png"
+			   data-background-transition="zoom"
+                           data-vertical-align-top
+			   data-background-size="contain">
+                    <h3>Deep Neural Net</h3>
+                  </section>
+		  <section data-background="figures/vgg.png"
+			   data-background-transition="zoom"
+                           data-vertical-align-top
+			   data-background-size="contain">
+                    <h3>Convolutional Neural Network</h3>
+                  </section>
+		  <section data-background="figures/seq2seq.png"
+			   data-background-transition="zoom"
+                           data-vertical-align-top
+			   data-background-size="contain">
+                    <h3>Recurrent Neural Network</h3>
+                  </section>
+		  <section>
+                    <h3>Supervised learning</h3>
+                    $(x_i, y_i)$
+                  </section>
+                </section>
+
+                <section>
+                  <section data-state="brightside">
+                    <h1>Reinforcement learning</h1>
+                  </section>
+                  <section>
+                    <h4>Reinforcement Learning on Atari</h4>
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8);" width="500"
+                         class="reveal"  src="figures_ccd/joystik.png" alt="david">
+                  </section>
+
+                  <section>
+                    <h3>DQN on Atari</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8);" width="500"
+                         class="reveal"  src="figures_ccd/net.png" alt="david">
+                  </section>
+
+                  <section>
+                    <h3>Results DQN on Atari (2015)</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8);" width="500"
+                         class="reveal"  src="figures_ccd/histgrm.png" alt="david">
+
+                  </section>
+
+                  <section data-background-iframe="https://www.youtube.com/embed/V1eYniJ0Rnk?autoplay=1&controls=0&rel=0&modestbranding=1&showinfo=0">
+                  </section>
+
+                  <section data-background-iframe="https://www.youtube.com/embed/v7T5El42QGE?autoplay=1&controls=0&rel=0&modestbranding=1&showinfo=0">
+                  </section>
+
+                  <section data-background-iframe="https://www.youtube.com/embed/aKRve2r2C9I?autoplay=1&controls=0&rel=0&modestbranding=1&showinfo=0">
+                  </section>
+                </section>
+
+                <section>
+                  <section>
+                    <h1>Course Overview</h1>
+                  </section>
+                  <section>
+                    <h2>What we'll cover</h2>
+                    <ul>
+		      <li class="fragment roll-in">Basics of Learning Theory
+                      <li class="fragment roll-in">Most important (or more advanced) algorithms
+                      <li class="fragment roll-in">Sprinkled with what the field recently learned on top of the "classical"
+                        ML
+                        <ul>
+                          <li class="fragment roll-in">SGD is too powerful to ignore
+                          <li class="fragment roll-in">Local minima are not as bad
+                          <li class="fragment roll-in">Bias-variance trade off is an
+                            incomplete story
+                          <li class="fragment roll-in">Reinforcement learning is not dead
+                        </ul>
+		      </li>
+		    </ul>
+                    <div class='slide-footer'>
+                      Subject to change
+                    </div>
+                  </section>
+                  <section data-background="figures/Foundationsan_overview.png" data-background-size="contain">
+                  </section>
+
+                  <section data-background="figures/schedule_fall_2022_aml.png" data-background-size="contain">
+                  </section>
+
+
+                  <section>
+                    <h2>Grade Split</h2>
+                    <ul>
+                      <li> 25% - Homework
+                      <li> 25% - Midterm exam
+                      <li> 25% - Final exam
+                      <li> 25% - Project
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Relative Ranking</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8);" width="100"
+                         class="reveal"  src="figures/competition_time.gif" alt="competition">
+                    Send me your private nicknames ASAP if you have not done so
+                  </section>
+
+                  <section>
+                    <h2>prerequisites</h2>
+                    <ul>
+                      <li class="fragment roll-in">Ability to program in your
+                        favorite language
+                      <li class="fragment roll-in">Ability to program in python
+                      <li class="fragment roll-in">Basic   knowledge   of   calculus,
+                        linear algebra, optimization theory,
+                        probability, and statistics
+                    </ul>
+                  </section>
+                  <section>
+                    <h2>Textbooks</h2>
+                    "Understanding Machine Learning" Shai
+                    Shalev-Shwartz and Shai Ben-David
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8);" width="100"
+                         class="reveal"  src="figures/understanding_cover.jpg" alt="UML">
+                  </section>
+                  <section>
+                    <h2>Textbooks</h2>
+                    "Pattern Recognition and ML" C. M. Bishop
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8);" width="100%"
+                         class="contain"  src="figures/bishop_cover.png" alt="BISH">
+                  </section>
+                  <section>
+                    <h2>Textbooks</h2>
+                    "Deep Learning" I. Goodfellow,
+                    Y. Bengio, A. Courville
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8);" width="100"
+                         class="reveal"  src="figures/dl_cover.jpg" alt="DL">
+                  </section>
+                  <section>
+                    <h2>Textbooks</h2>
+                    "Information Theory, Inference and
+                    Learning Algorithms" David MacKay
+                    <br>
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8);" width="300"
+                         class="reveal"
+                         src="figures/mackay_cover.jpg"
+                         alt="Information Theory">
+                  </section>
+                  <section>
+                    <h2>Textbooks</h2>
+                    "Data Science for Business"
+                    <br>
+                    <img style="border:0; box-shadow: 0px 0px 0px
+                                rgba(150, 150, 255, 0.8);" width="300"
+                         class="reveal" src="figures/dsbusiness_cover.jpg" alt="DS">
+                  </section>
+
+                </section>
+
+                <section>
+                  <section>
+                    <h1>The Project!</h1>
+                  </section>
+
+                  <section data-background="figures/lean_startup.png">
+                    <h2>Lean startup</h2>
+                  </section>
+
+                  <section data-background="figures/ml-development-cycle.png">
+<!--
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="900"
+                         src="figures/ml-development-cycle.png" alt="ML cycle">
+ -->
+                  </section>
+
+                  <section>
+                    <h3>Anatomy of the project</h3>
+                    <object id="mlproject" data="figures/project_components.svg#0" width="730"></object>
+                  </section>
+
+                  <section>
+                    <h3>Milestones</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Submit project ideas each (<em>deadline September 7th</em>)
+                      <li class="fragment roll-in"> Form teams (4-6 people each team) (<em>deadline September 21th</em>)
+                      <li class="fragment roll-in"> Present your team, your problem, and your idea how to solve it (<em>October 5th</em>)
+                      <li class="fragment roll-in"> Submit a report (a paper NeurIPS style) (<em>deadline December 5th</em>)
+                      <li class="fragment roll-in"> Present the project to the class (<em>either 28th or 30th of November</em>)
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h3>Deliverables</h3>
+                    The project is complete if by <em>December 5th deadline</em> you submit:
+                    <ul>
+                      <li class="fragment roll-in"> NeurIPS style formatted report
+                      <li class="fragment roll-in"> Link to github with the code
+                      <li class="fragment roll-in"> Slides of the final presentation
+                      <li class="fragment roll-in"> Bonus points:
+                        <ul>
+                          <li> A link to a kanban board with all tasks and people who completed them
+                          <li> Kaggle leaderboard of a competition you were a part of for this project
+                          <li> State of the art result possibly fit for NeurIPS (prize: help with the paper submission)
+                        </ul>
+                    </ul>
+                    <div class="slide-footer" style="font-size:8pt;">
+                      have you missed learning how to use your tools? check this out: <a href="https://missing.csail.mit.edu/" target="_blank">https://missing.csail.mit.edu/</a>
+                    </div>
+                  </section>
+
+                </section>
+
+                <section>
+                  <h2>Pre test!</h2>
+                </section>
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="lib/css/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 1.23,
+                  center: true,
+
+                  controls: false,
+                  keyboard: true,
+
+                  // hash: true,
+                  // margin: 0.01,
+                  // minScale: 0.01,
+                  // maxScale: 0.93,
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

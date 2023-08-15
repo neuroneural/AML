@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>10: Naive Bayes</h3>
+	            <p>
+	          </section>
+                  <section>
+                    <h3>Schedule</h3>
+
+                    <row>
+                      <col50>
+                      <table style="font-size:14px">
+                        <tr>
+                          <th>#</th>
+                          <th>date</th>
+                          <th>topic</th>
+                          <th>description</th>
+                        </tr>
+                        <tr><td>1</td>
+                          <td> 22-Aug-2022 </td>
+                          <td> Introduction </td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>  2 </td>
+                          <td> 24-Aug-2022 </td>
+                          <td> Foundations of learning </td>
+                          <td> </td>
+                        </tr>
+                        <tr><td>  3  </td><td> 29-Aug-2022 </td><td> PAC learnability </td><td>             </td></tr>
+                        <tr><td>  4 </td><td> 31-Aug-2022 </td><td>      Linear algebra (recap) </td><td>   hw1 released   </td></tr>
+                        <tr style='background-color: #FBEEC2;'><td>   </td><td> 05-Sep-2022 </td><td> <em>Holiday</em>         </td><td>         </td></tr>
+                        <tr style='background-color: #E0E4CC;'><td>  5 </td><td> 07-Sep-2022 </td><td> Linear learning models </td><td>   </td></tr>
+                        <tr><td>  6 </td><td> 12-Sep-2022 </td><td> Principal Component Analysis       </td><td> project ideas  </td></tr>
+                        <tr><td>  7 </td><td> 14-Sep-2022  </td><td>  Curse of Dimensionality          </td></td></td><td> hw1 due </td></tr>
+<tr><td> 8 </td><td> 19-Sep-2022  </td><td>  Bayesian Decision Theory  </td><td>hw2 release </td></tr>
+<tr><td> 9 </td><td> 21-Sep-2022  </td><td> Parameter estimation: MLE </td><td></td></tr>
+<tr><td> 10 </td><td> 26-Sep-2022 </td><td> Parameter estimation: MAP & NB</td><td><i class='fa fa-map-marker' style='color: #FA6900;'></i>finalize teams</td></tr>
+<tr><td> 11 </td><td> 28-Sep-2022 </td><td> Logistic Regression  </td><td>             </td></tr>
+<tr><td> 12 </td><td> 03-Oct-2022 </td><td> Kernel Density Estimation </td><td>             </td></tr>
+<tr><td> 13 </td><td> 05-Oct-2022 </td><td> Support Vector Machines </td><td>  hw3, hw2 due       </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 10-Oct-2022 </td><td>   * Mid-point projects checkpoint     </td><td>    *    </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 12-Oct-2022 </td><td>   * Midterm: Semester Midpoint       </td><td> exam   </td></tr>
+<tr><td> 14 </td><td> 17-Oct-2022  </td><td>Matrix Factorization</td><td>           </td></tr>
+<tr><td> 15 </td><td> 19-Oct-2022  </td><td>Stochastic Gradient Descent</td><td>      </td></tr>
+</table>
+</col50>
+<col50>
+<table style="font-size:14px; vertical-align: top;">
+  <tr>
+    <th>#</th>
+    <th>date</th>
+    <th>topic</th>
+    <th>description</th>
+  </tr>
+  <tr><td> 16 </td><td> 24-Oct-2022 </td><td> k-means clustering  </td><td> </td></tr>
+  <tr><td> 17 </td><td> 26-Oct-2022 </td><td> Expectation Maximization </td><td> hw4, hw3 due             </td></tr>
+  <tr><td> 18 </td><td> 31-Oct-2022 </td><td> Automatic Differentiation </td><td> </td></tr>
+  <tr><td> 19  </td><td> 02-Nov-2022 </td><td> Nonlinear embedding approaches </td><td>  </td></tr>
+  <tr><td> 20 </td><td> 07-Nov-2022 </td><td> Model comparison I </td><td> </td></tr>
+  <tr><td> 21 </td><td> 09-Nov-2022 </td><td> Model comparison II  </td><td> hw5, hw4 due</td></tr>
+  <tr><td> 22 </td><td> 14-Nov-2022 </td><td> Model Calibration </td><td> </td></tr>
+  <tr><td> 23 </td><td> 16-Nov-2022  </td><td> Convolutional Neural Networks  </td><td>             </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 21-Nov-2022  </td><td> <em>Fall break</em> </td><td>            </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 23-Nov-2022 </td><td> <em>Fall break</em> </td><td>   </td></tr>
+  <tr><td> 24 </td><td> 28-Nov-2022 </td><td> Word Embedding </td><td> hw5 due </td></tr>
+  <tr style='background-color: #FBEEC2;'><td> </td><td> 30-Nov-2022 </td><td> Presentation and exam prep day </td><td> </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 02-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 07-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td> </td><td> 12-Dec-2022 </td><td> * Final Exam    </td><td>   *     </td></tr>
+  <tr><td> </td><td> 15-Dec-2022  </td><td> Grades due   </td><td>             </td></tr>
+</table>
+</col50>
+</row>
+</section>
+
+                  
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> MAP Estimation
+                      <li class="fragment roll-in"> The Naive Bayes Classifier
+	            </ul>
+                  </section>
+                </section>
+
+                                <!-- -------------------------------------------------------------------------         -->
+	        <section>
+	          <section>
+                    <h2>MAP estimation</h2>
+                    <div class="row">
+                      <div class="col50">
+                        I suspect the coin is biased
+                      </div>
+                      <div class="col">
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="250"
+                             src="figures/hand_flipping.png" alt="flipping">
+                      </div>
+                    </div>
+	          </section>
+
+                  <section>
+                    <h3>What about the knowledge we already have?</h3>
+                    <div class="fragment" data-fragment-index="0" style="width: 100%; font-size: 32px;">
+                      We know the coin is “close” to 50-50. What can we do now?
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                      Follow the Bayesian way ...
+                    </blockquote>
+                    </div>
+                    <div class="fragment" data-fragment-index="2">
+                    <blockquote style="background-color: #eee8d5; width: 100%">
+                      Rather than estimating a single $\theta$, obtain a distribution over possible values of $\theta$
+                    </blockquote>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="1000"
+                         src="figures/MAP_bias.svg" alt="priors">
+                    </div>
+                  </section>
+
+                  <section data-vertical-align-top>
+                    <h2>Prior distribution</h2>
+                    What kind of prior distribution do we want to use?
+                    <ul>
+                      <li class="fragment roll-in" data-fragment-index="1"> Represents expert knowledge (<b style="color: #dc322f;">philosophical approach</b>)
+                      <li class="fragment roll-in" data-fragment-index="2"> Simple posterior form (<b style="color: #dc322f;">engineering approach</b>)
+                    </ul>
+                    <div class="fragment" data-fragment-index="3">
+                    <div class="row">
+                      <div class="col50">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                          Uninformative priors:
+                        </blockquote>
+                        <ul style="font-size: 32px;">
+                          <li> Uniform distribution
+                        </ul>
+                      </div>
+                      <div class="col">
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="80%"
+                             src="figures/uniform_prior.svg" alt="uniform prior">
+                      </div>
+                    </div>
+                    </div>
+                    <div class="fragment" data-fragment-index="4" style="margin-top: -8%;">
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 34px;">
+                      Conjugate priors:
+                    </blockquote>
+                    <ul style="font-size: 32px;">
+                      <li class="fragment roll-in"> Closed-form representation of posterior
+                      <li class="fragment roll-in"> $\prob{P}{\theta}$ and $\prob{P}{\theta|{\cal D}}$ have the same form
+                    </ul>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Bayes rule (revisited)</h2>
+                    <div class="row">
+                      <div class="col50">
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="1000"
+                             src="figures/bayes.png" alt="Bayes">
+                    </div>
+                    <div class="col">
+                    <blockquote style="background-color: #eee8d5;">
+                      Bayes, Thomas (1763): An essay towards solving a problem in the doctrine of chances. Philosophical Transactions of the Royal Society of London, 53:370-418
+                    </blockquote>
+                    </div>
+                    </div>
+                    <div class="slide-footer">
+                      It is on the homework
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Chain Rule & Bayes rule</h2>
+                    <div class="fragment" data-fragment-index="0">
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                        Chain rule:
+                      </blockquote>
+                      <blockquote style="background-color: #eee8d5; width: 100%;">
+                        $\prob{P}{X,Y} = \prob{P}{X|Y}\prob{P}{Y} = \prob{P}{Y|X}\prob{P}{X}$
+                      </blockquote>
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                        Bayes rule:
+                      </blockquote>
+                      <blockquote style="background-color: #eee8d5; text-align: center;">
+                        $\prob{P}{X|Y} = \frac{\prob{P}{Y|X}\prob{P}{X}}{\prob{P}{Y}}$
+                      </blockquote>
+                    </div>
+                    <div class="fragment" data-fragment-index="2">
+                      Bayes rule is important for reverse conditioning
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Bayesian Learning</h2>
+                     <li class="fragment roll-in"> Use Bayes rule
+                        <blockquote>
+                          $
+                          \prob{P}{\theta|{\cal D}} = \frac{\prob{P}{{\cal D}|\theta}\prob{P}{\theta}}{\prob{P}{\vec{{\cal D}}}}
+                          $
+                        </blockquote>
+                     <li class="fragment roll-in"> Or equivalently
+                      <blockquote style="background-color: #eee8d5; text-align: center;">
+                       $
+                       \prob{P}{\theta|{\cal D}} \propto \prob{P}{{\cal D}|\theta}\prob{P}{\theta}
+                       $
+                       </blockquote>
+                      <li class="fragment roll-in"> Which is, as we know:
+                        <blockquote>
+                          $
+                          \mbox{posterior} \propto \mbox{likelihood}\times\mbox{prior}
+                          $
+                        </blockquote>
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>MLE vs. MAP</h2>
+                    <ul style="list-style-type: none;">
+                     <li class="fragment roll-in">
+                       <blockquote style="width: 100%; font-size: 34px;">
+                         <b>Maximum Likelihood estimation (MLE)</b><br>
+                         Choose value that maximizes the probability of observed data<br>
+                          $
+                         \hat{\theta}_{MLE} = \underset{\theta}{\argmax} \prob{P}{{\cal D}|\theta}
+                          $
+                        </blockquote>
+                     <li class="fragment roll-in">
+                       <blockquote style="background-color: #eee8d5; text-align: center; font-size:34px; width: 100%;">
+                         <b>Maximum <em>a posteriori</em> (MAP) estimation</b>
+                         Choose value that is most probable given observed data and
+                         prior belief
+                       \begin{align}
+                         \hat{\theta}_{MAP} & = \underset{\theta}{\argmax} \prob{P}{\theta|{\cal D}}\\
+                         & = \underset{\theta}{\argmax} \prob{P}{{\cal D}|\theta}\prob{P}{\theta}
+                       \end{align}
+                       </blockquote>
+                      <!-- <li class="fragment roll-in">                          -->
+                      <!--   <blockquote style="font-size:10px; background-color: #93a1a1; color: #dc322f; "> -->
+                      <!--     When is MAP same as MLE? -->
+                      <!--   </blockquote>                           -->
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>MAP for Binomial distribution</h2>
+                    <div class="fragment" data-fragment-index="0">
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                        <b>Coin flip problem</b>: Binomial likelihood
+                      </blockquote>
+                      <blockquote style="background-color: #eee8d5; text-align: center;">
+                        $\prob{P}{{\cal D}|\theta} = {n \choose \alpha_H} \theta^{\alpha_H} (1-\theta)^{\alpha_T}$
+                      </blockquote>
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                        If the prior is Beta distribution,
+                      </blockquote>
+                      <blockquote style="font-size: 30px; width: 100%;">
+                        \begin{align}
+                        \prob{P}{\theta} &= \frac{1}{\prob{B}{\beta_H,\beta_T}} \theta^{\beta_H-1}(1-\theta)^{\beta_T-1} \sim \prob{Beta}{\beta_H,\beta_T}\\
+                        \prob{B}{x,y} &= \int_0^1 t^{x-1}(1-t)^{y-1}dt = \frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}
+                        \end{align}
+                      </blockquote>
+                    </div>
+                    <div class="fragment" data-fragment-index="2">
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                        posterior is Beta distribution
+                      </blockquote>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>MAP for Binomial distribution</h2>
+                    <div class="row">
+                      <div class="col50">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                          Binomial likelihood
+                        </blockquote>
+                        <blockquote style="font-size: 30px; width: 100%;">
+                          $\prob{P}{{\cal D}|\theta} = {n \choose \alpha_H} \theta^{\alpha_H} (1-\theta)^{\alpha_T}$
+                        </blockquote>
+                      </div>
+                      <div class="col">
+                          <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                            Beta prior
+                          </blockquote>
+                          <blockquote style="font-size: 30px">
+                            $
+                            \prob{P}{\theta} \sim \prob{Beta}{\beta_H,\beta_T}
+                            $
+                          </blockquote>
+                      </div>
+                    </div>
+                    <div class="fragment" data-fragment-index="0">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                          Beta posterior
+                        </blockquote>
+                        <blockquote style="font-size: 30px">
+                          $\prob{P}{\theta|{\cal D}} = \prob{Beta}{\beta_H+\alpha_H, \beta_T + \alpha_T}$
+                        </blockquote>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                          $\prob{P}{\theta}$ and $\prob{P}{\theta|{\cal D}}$ have the same form: Conjugate prior
+                        </blockquote>
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                      $\hat{\theta}_{MAP} = \frac{\alpha_H+\beta_H -1}{\alpha_H + \beta_H + \alpha_T + \beta_T -2}$
+                    </div>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Beta distribution</h2>
+                    More concentrated as values of $\alpha, \beta$ increase<br>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="50%"
+                         src="figures/Beta_distribution_pdf.svg" alt="beta">
+                  </section>
+
+                  <section>
+                    <h2>Beta conjugate prior</h2>
+                    <row style="font-size:30px">
+                      <col40>
+                        $\prob{P}{\theta} \sim \prob{Beta}{\beta_H,\beta_T}$
+                      </col40>
+                      <col>
+                      $\prob{P}{\theta|{\cal D}} = \prob{Beta}{\beta_H+\alpha_H, \beta_T + \alpha_T}$
+                      </col>
+                    </row>
+                    <div class="fragment" data-fragment-index="0">
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="1000"
+                         src="figures/beta_concentrate.svg" alt="beta"><br>
+                    $n = \alpha_H + \alpha_T$ increases $\rightarrow$
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                          As we get more samples, effect of prior “washes out”
+                        </blockquote>
+                    </div>
+                  </section>
+
+                  <section>
+                    <div id="header-right">
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="110"
+                             src="figures/dice1.svg" alt="dice">
+                    </div>
+                    <h2>Multinomial distribution</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%">
+                      <b>Example:</b> Dice roll problem (6 outcomes instead of 2)
+                    </blockquote>
+
+                    <ul style="list-style-type: none;">
+                      <li class="fragment roll-in" style="font-size:32px">
+                         Likelihood is $\sim \prob{Multinomial}{\theta=\{\theta_1,\theta_2,\dots,\theta_k\}}$
+                       <blockquote style="font-size:32px; text-align: center;">
+                          $
+                         \prob{P}{{\cal D}|\theta} = \theta^{\alpha_1}_1\theta^{\alpha_2}_2,\dots,\theta^{\alpha_k}_k
+                          $
+                       </blockquote>
+                      <li class="fragment roll-in" style="font-size:32px">
+                        If prior is the Dirichlet distribution:
+                       <blockquote style="font-size:32px; text-align: center;">
+                          $
+                         \prob{P}{\theta} = \frac{\prod_{i=1}^k\theta_i^{\beta_i-1}}{\prob{B}{\beta_1, \beta_2, \dots, \beta_k}}
+                          $
+                        </blockquote>
+                      <li class="fragment roll-in" style="font-size:32px">
+                        the posterior is the Dirichlet distribution:
+                       <blockquote style="font-size:32px; width: 100%;">
+                          \[
+                         \prob{P}{\theta|{\cal D}} = \prob{Dirichlet}{\beta_1+\alpha_1, \dots, \beta_k+\alpha_k}
+                          \]
+                        </blockquote>
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Bayes rule (practice again)</h2>
+                  </section>
+
+                  <section>
+                    <h2>Fruits in boxes (homework)</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="600"
+                         src="figures/brown_boxes.png" alt="boxes">
+                  </section>
+
+                  <section>
+                    <h2>AIDS test</h2>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                          Data
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5;">
+                          <ul>
+                            <li> Approximately <span style="color: #dc322f;">0.1%</span> are infected
+                            <li> Test detects <span style="color: #dc322f;">all</span> infections (no false negatives)
+                            <li> Test reports positive for <span style="color: #dc322f;">1%</span> of healthy
+                          </ul>
+                        </blockquote>
+                        <row>
+                    <col40 style="font-size:20pt;">
+                    <ul>
+                      <li class="fragment roll-in"> $+$ - tested positively
+                      <li class="fragment roll-in"> $\prob{P}{AIDS} = 0.001$
+                      <li class="fragment roll-in"> $\prob{P}{\overline{AIDS}} = 0.999$
+                      <li class="fragment roll-in"> $\prob{P}{+|AIDS} = 1$
+                      <li class="fragment roll-in"> $\prob{P}{+|\overline{AIDS}} = 0.01$
+                      <li class="fragment roll-in"> $\prob{P}{AIDS|+} \approx 9\%$
+                    </ul>
+                    </col40>
+                    <col>
+                    <span style="font-size: 20pt; text-align: left;">
+                      \begin{align}
+                      \prob{P}{+} & = \prob{P}{+|AIDS}\prob{P}{AIDS}\\
+                      & + \prob{P}{+|\overline{AIDS}}\prob{P}{\overline{AIDS}}\\
+                      \prob{P}{AIDS|+} &= \frac{\prob{P}{+|AIDS}\prob{P}{AIDS}}{\prob{P}{+}}
+                      \end{align}
+                    </span>
+                    </col>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>Improve the diagnosis</h2>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%; ">
+                          Use a follow-up test!
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 32px;">
+                          <ul>
+                            <li> Test 2 reports positive for <span style="color: #dc322f;">90%</span> of infected
+                            <li> Test 2 reports positive for <span style="color: #dc322f;">5%</span> of healthy people
+                          </ul>
+                        </blockquote>
+                        <row>
+                    <col40 style="font-size:20pt;">
+                    <ul>
+                      <li class="fragment roll-in" data-fragment-index="0"> $+_1, +_2$ - tested positively
+                      <li class="fragment roll-in" data-fragment-index="1"> $\prob{P}{AIDS} = 0.001$
+                      <li class="fragment roll-in" data-fragment-index="2"> $\prob{P}{\overline{AIDS}} = 0.999$
+                      <li class="fragment roll-in" data-fragment-index="3"> $\prob{P}{+_1,+_2|AIDS}$
+                      <li class="fragment roll-in" data-fragment-index="4"> $\prob{P}{+_1, +_2|\overline{AIDS}}$
+                      <li class="fragment roll-in" data-fragment-index="5"> $\prob{P}{AIDS|+_1, +_2} \approx 64%\%$
+                    </ul>
+                    </col40>
+                    <col>
+                    <span style="font-size: 22px; text-align: left;">
+                      \begin{align}
+                      \prob{P}{+_1,+_2} & = \prob{P}{+_1,+_2|AIDS}\prob{P}{AIDS}\\
+                      & + \prob{P}{+_1,+_2|\overline{AIDS}}\prob{P}{\overline{AIDS}}\\
+                      \prob{P}{AIDS|+_1, +_2} &= \frac{\prob{P}{+_1,+_2|AIDS}\prob{P}{AIDS}}{\prob{P}{+_1,+_2}}
+                      \end{align}
+                    </span>
+                    </col>
+                    </row>
+
+                        <div class="fragment" data-fragment-index="6">
+                          <blockquote style="background-color: #eee8d5; width: 100%;">
+                            <ul style="list-style-type: none; font-size: 32px;">
+                              <li> Outcomes are not independent but test 1 and 2 are <b>conditionally independent</b>
+                               $\prob{P}{t_1,t_2|a} = \prob{P}{t_1|a} \prob{P}{t_2|a}$
+                            </ul>
+                          </blockquote>
+                        </div>
+
+                  </section>
+
+
+                </section>
+                <!-- -------------------------------------------------------------------------         -->
+                <section>
+                  <section>
+                    <h2>The Naïve Bayes Classifier</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="900"
+                         src="figures/Spam_can.png" alt="spam">
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Detector for spam filtering</h2>
+                    <row>
+                      <col50>
+                        <ul>
+                          <li> date
+                          <li> time
+                          <li> recipient path
+                          <li> IP number
+                          <li> sender
+                          <li> encoding
+                          <li> many more features
+                        </ul>
+                      </col50>
+                      <col>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="900"
+                         src="figures/email_text.svg" alt="email">
+                      </col>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>The Naïve Bayes Assumptions</h2>
+                    <div class="fragment" data-fragment-index="0">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                          Features $X_i$ and $X_j$ are conditionally independent given the class label $Y$
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5;">
+                          $\prob{P}{X_i,X_j|Y} = \prob{P}{X_i|Y}\prob{P}{X_j|Y}$
+                        </blockquote>
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                        <blockquote>
+                          $\prob{P}{X_1,\dots, X_d|Y} = \prod_{i=1}^d \prob{P}{X_i|Y}$
+                        </blockquote>
+                    </div>
+                    <div class="fragment" data-fragment-index="2">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                          How many parameters to estimate?
+                        </blockquote>
+                        $\mathbf{X}$ is a binary vector where each position encodes presence or absence of a feature. $\mathbf{Y}$ has K classes.
+                    </div>
+                    <div class="fragment" data-fragment-index="2">
+                        <blockquote style="background-color: #eee8d5;">
+                          $(2^d - 1)K$ vs. $(2-1)dK$
+                        </blockquote>
+                    </div>
+                    <aside class="notes">
+                    <ul>
+                      <li> Can evaluate and estimate likelihoods and priors independently for each point
+	              <li> Free to choose any form of likelihood (and prior) that fits the job
+                    </ul>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>The Naïve Bayes Classifier</h2>
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 32px;">
+                      Given:
+                      <ul>
+                        <li> Class prior $\prob{P}{Y}$
+                        <li> $d$ conditionally independent features $X_1, X_2, \dots, X_d$ given the class label $Y$
+                        <li> For each $X_i$, we have the conditional likelihood $\prob{P}{X_i|Y}$
+                      </ul>
+                    </blockquote>
+                    <div class="fragment" data-fragment-index="0">
+                    <blockquote style="background-color: #eee8d5; width: 100%;  font-size: 32px;">
+                      Decision rule:
+                      \begin{align}
+                      f_{NB}(\vec{x}) &= \underset{y}{\argmax} \prob{P}{x_1,\dots,x_d|y}\prob{P}{y} \\
+                      &= \underset{y}{\argmax} \prod_{i=1}^d \prob{P}{x_i|y}\prob{P}{y}\\
+                      \end{align}
+                    </blockquote>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>The Naïve Bayes for discrete features</h2>
+                    Training data: $\{(\vec{x}^j,y^j)\}_{j=1}^n \vec{x}^j = (x_1^j, \dots, x_d^j)$<br>
+                    $n$ d-dimensional features plus class labels
+                    <blockquote style="background-color: #eee8d5; width: 100%;">
+                      $f_{NB}(\vec{x}) = \underset{y}{\argmax} \prod_{i=1}^d \prob{P}{x_i|y}\prob{P}{y}$
+                    </blockquote>
+                    <div class="fragment" data-fragment-index="0">
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;">
+                        Estimate probabilities with relative frequencies!
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5; width: 100%;">
+                          <ul style="list-style-type: none;">
+                            <li> For class prior $\prob{P}{y} = \frac{\{\#j:y^j = y\}}{n}$
+                            <li> For likelihood $\frac{\prob{P}{x_i,y}}{\prob{P}{y}} = \frac{\{\#j:\vec{x}_i^j = x_i, y^j=y\}/n}{\{\#j:y^j = y\}/n}$
+                          </ul>
+                        </blockquote>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Text Classification</h2>
+                    <ul style="list-style-type: none;">
+                      <li class="fragment roll-in"> Ex1. Classify e-mails: $y \in \{ \mbox{Spam}, \mbox{NotSpam} \}$
+	              <li class="fragment roll-in"> Ex2. Classify articles into topics
+	              <li class="fragment roll-in"> What are the features of $\mathbf{X}$?
+	              <li class="fragment roll-in"> Full text!
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Text Classification: naïvely</h2>
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 30px;">
+                      <ul>
+	                <li class="fragment roll-in" data-fragment-index="0"> Fix max_len of an article and encode positions $\mathbf{X} = \{X_1, \dots, X_{1000}\}$
+	                <li class="fragment roll-in" data-fragment-index="1"> $X_i$ is a word at $i^{th}$ position. $X_i \in \{0, \dots, D\}$, where $D$ is the size of the vocabulary (say 50,000 words).
+	                <li class="fragment roll-in" data-fragment-index="2"> $\prob{P}{\mathbf{X}|Y}$ is large
+	                <li class="fragment roll-in" data-fragment-index="3"> Need to estimate $K D^{1000} = K 50000^{1000}$ parameters
+                      </ul>
+                    </blockquote>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;" class="fragment" data-fragment-index="4">
+                        Naive Bayes to the rescue!
+                      </blockquote>
+                    <blockquote style="background-color: #eee8d5; font-size: 30px; width: 100%;" class="fragment" data-fragment-index="5">
+                      <ul>
+                        <li class="fragment roll-in" > $\prob{P}{X_i^j|y}$ probability of word $j$ at position $i$ for class $y$
+                        <li class="fragment roll-in" > Need to estimate $DK1000 = 50000K1000$ parameters
+                      </ul>
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="right: -10%; top: -10%;">
+                        <img style="" width="110"
+                             src="figures/small_bow.png" alt="bow">
+                    </div>
+
+                    <h2>Text Classification: bag of words</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;" class="fragment" data-fragment-index="0">
+                      Word order and positions do not matter! Only presence
+                      </blockquote>
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 30px;" class="fragment" data-fragment-index="1">
+                      <ul>  
+	                <li class="fragment roll-in" data-fragment-index="1"> $D=2 \implies$ $X_i$ is binary again
+	                <li class="fragment roll-in" data-fragment-index="2"> $\mathbf{X}$ is vocabulary-length (say 50000) binary vector.
+                        <li class="fragment roll-in" data-fragment-index="3"> Need to estimate $DK50000 = 50000K$ parameters
+                      </ul>
+                    </blockquote>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;" class="fragment" data-fragment-index="4">
+                      Works really well in practice!
+                    </blockquote>
+                    <div class="slide-footer">
+                      <a href="https://faculty.cc.gatech.edu/~isbell/reading/papers/Rish.pdf" target="_blank">An empirical study of the naive Bayes classifier</a>
+                    </div>
+                  </section>
+
+
+                  <section>
+                    <h2>Insufficient training data</h2>
+                    <ul style="list-style-type: none;">
+                      <li class="fragment roll-in"> What if you never see $x_i = v$ for $y = k$?
+	              <li class="fragment roll-in">                     <blockquote style="background-color: #eee8d5; width: 100%; font-size: 30px;">
+                          No word "Luxury", when $y = \mbox{NoSpam}$ in the dataset<br>
+                          $\prob{P}{\mbox{Luxury} = 1, \mbox{NoSpam}} = 0 \implies \prob{P}{\mbox{Luxury} = 1| \mbox{NoSpam}} = 0$
+                          </blockquote>
+                    </ul>
+                    <ul  style="list-style-type: none;">
+                      <li class="fragment roll-in"> $\prob{P}{\mbox{Luxury}=1, X_2, \dots, X_n| Y} = $
+                    <li class="fragment roll-in"> $\prob{P}{\mbox{Luxury}=1| Y} \prod_{i=2}^n \prob{P}{X_i|Y} =$
+                    <li class="fragment roll-in"> $0$
+                    <li class="fragment roll-in"> Now what?
+                  </section>
+
+                  <section>
+                    <h2>The Naïve Bayes Properties</h2>
+                    <ul>
+                      <li class="fragment roll-in"> The counts seemed confusing but it is just a consequence of our choice of the likelihood and prior
+	              <li class="fragment roll-in"> Conveniently estimated everything relative to individual points
+	              <li class="fragment roll-in"> Need to watch out for empty label-feature combinations in the data
+	              <li class="fragment roll-in"> Need to evaluate log probabilities, as products of small numbers lead to problems                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>What if the features are continuous?</h2>
+                    <div class="fragment" data-fragment-index="0">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;">
+                          Character recognition: $\vec{x}_{ij}$ is intensity at pixel $(i,j)$
+                        </blockquote>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="1000"
+                             src="figures/digits_mnist.svg" alt="mnist">
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                        Gaussian Naïve Bayes
+                      </blockquote>
+                      <blockquote style="background-color: #eee8d5; width: 100%">
+                        $\prob{P}{X_i = \vec{x}_i|Y = y_k} = \frac{1}{\sigma_{ik}\sqrt{2\pi}} e^{-\frac{(\vec{x}_i - \mu_{ik})^2}{2\sigma_{ik^2}}}$
+                      </blockquote>
+                      <span style="font-size: 32px;">
+                        Different mean and variance for each class $k$ and each pixel $i$.$^*$
+                      </span>
+                      <div class="slide-footer">
+                        Sometimes we can assume that variance is independent of $Y \rightarrow \sigma_i$, or $X_i \rightarrow \sigma_k$ or both $\sigma$
+                      </div>
+                    </div>
+                    <aside class="notes">
+                      Sometimes assume variance<br>
+                      • is independent of Y (i.e., si),<br>
+                      • or independent of Xi (i.e., sk)<br>
+                      • or both (i.e., s)
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Example: classifying mental states</h2>
+                    <row>
+                      <col50>
+                        <ul>
+                          <li> resolution around $1^3$ mm
+                          <li> 1 image per 2 seconds
+                          <li> about $15,000$ voxels per "frame"
+                          <li> non-invasive and safe
+                          <li> measures Blood Oxygenation Level Dependent (BOLD) response
+                        </ul>
+                      </col50>
+                      <col>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="350"
+                             src="figures/mri.gif" alt="MRI">
+                      </col>
+                    </row>
+                    <div class="slide-footer">
+                      <a href="https://link.springer.com/article/10.1023%2FB%3AMACH.0000035475.85309.1b">Learning to Decode Cognitive States from Brain Images</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>P(Brain Activity | Word Category)</h2>
+                    Pairwise classification accuracy $78-99\%$ on 12 participants<br>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="600"
+                         src="figures/Mitchell_activations.png" alt="Mitchell">
+                    <div class="slide-footer">
+                      <a href="https://link.springer.com/article/10.1023%2FB%3AMACH.0000035475.85309.1b">Learning to Decode Cognitive States from Brain Images</a>
+                    </div>
+                  </section>
+
+                </section>
+
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 1.23,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

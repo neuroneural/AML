@@ -1,0 +1,951 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>13: Support Vector Machines</h3>
+	            <p>
+	          </section>
+
+                                    <section>
+                    <h3>Schedule</h3>
+
+                    <row>
+                      <col50>
+                      <table style="font-size:14px">
+                        <tr>
+                          <th>#</th>
+                          <th>date</th>
+                          <th>topic</th>
+                          <th>description</th>
+                        </tr>
+                        <tr><td>1</td>
+                          <td> 22-Aug-2022 </td>
+                          <td> Introduction </td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>  2 </td>
+                          <td> 24-Aug-2022 </td>
+                          <td> Foundations of learning </td>
+                          <td> </td>
+                        </tr>
+                        <tr><td>  3  </td><td> 29-Aug-2022 </td><td> PAC learnability </td><td>             </td></tr>
+                        <tr><td>  4 </td><td> 31-Aug-2022 </td><td>      Linear algebra (recap) </td><td>   hw1 released   </td></tr>
+                        <tr style='background-color: #FBEEC2;'><td>   </td><td> 05-Sep-2022 </td><td> <em>Holiday</em>         </td><td>         </td></tr>
+                        <tr style='background-color: #E0E4CC;'><td>  5 </td><td> 07-Sep-2022 </td><td> Linear learning models </td><td>   </td></tr>
+                        <tr><td>  6 </td><td> 12-Sep-2022 </td><td> Principal Component Analysis       </td><td> project ideas  </td></tr>
+                        <tr><td>  7 </td><td> 14-Sep-2022  </td><td>  Curse of Dimensionality          </td></td></td><td> hw1 due </td></tr>
+<tr><td> 8 </td><td> 19-Sep-2022  </td><td>  Bayesian Decision Theory  </td><td>hw2 release </td></tr>
+<tr><td> 9 </td><td> 21-Sep-2022  </td><td> Parameter estimation: MLE </td><td></td></tr>
+<tr><td> 10 </td><td> 26-Sep-2022 </td><td> Parameter estimation: MAP & NB</td><td>finalize teams</td></tr>
+<tr><td> 11 </td><td> 28-Sep-2022 </td><td> Logistic Regression  </td><td>             </td></tr>
+<tr><td> 12 </td><td> 03-Oct-2022 </td><td> Kernel Density Estimation </td><td>             </td></tr>
+<tr><td> 13 </td><td> 05-Oct-2022 </td><td> Support Vector Machines </td><td><i class='fa fa-map-marker' style='color: #FA6900;'></i>  hw3, hw2 due       </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 10-Oct-2022 </td><td>   * Mid-point projects checkpoint     </td><td>    *    </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 12-Oct-2022 </td><td>   * Midterm: Semester Midpoint       </td><td> exam   </td></tr>
+<tr><td> 14 </td><td> 17-Oct-2022  </td><td>Matrix Factorization</td><td>           </td></tr>
+<tr><td> 15 </td><td> 19-Oct-2022  </td><td>Stochastic Gradient Descent</td><td>      </td></tr>
+</table>
+</col50>
+<col50>
+<table style="font-size:14px; vertical-align: top;">
+  <tr>
+    <th>#</th>
+    <th>date</th>
+    <th>topic</th>
+    <th>description</th>
+  </tr>
+  <tr><td> 16 </td><td> 24-Oct-2022 </td><td> k-means clustering  </td><td> </td></tr>
+  <tr><td> 17 </td><td> 26-Oct-2022 </td><td> Expectation Maximization </td><td> hw4, hw3 due             </td></tr>
+  <tr><td> 18 </td><td> 31-Oct-2022 </td><td> Automatic Differentiation </td><td> </td></tr>
+  <tr><td> 19  </td><td> 02-Nov-2022 </td><td> Nonlinear embedding approaches </td><td>  </td></tr>
+  <tr><td> 20 </td><td> 07-Nov-2022 </td><td> Model comparison I </td><td> </td></tr>
+  <tr><td> 21 </td><td> 09-Nov-2022 </td><td> Model comparison II  </td><td> hw5, hw4 due</td></tr>
+  <tr><td> 22 </td><td> 14-Nov-2022 </td><td> Model Calibration </td><td> </td></tr>
+  <tr><td> 23 </td><td> 16-Nov-2022  </td><td> Convolutional Neural Networks  </td><td>             </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 21-Nov-2022  </td><td> <em>Fall break</em> </td><td>            </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 23-Nov-2022 </td><td> <em>Fall break</em> </td><td>   </td></tr>
+  <tr><td> 24 </td><td> 28-Nov-2022 </td><td> Word Embedding </td><td> hw5 due </td></tr>
+  <tr style='background-color: #FBEEC2;'><td> </td><td> 30-Nov-2022 </td><td> Presentation and exam prep day </td><td> </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 02-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 07-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td> </td><td> 12-Dec-2022 </td><td> * Final Exam    </td><td>   *     </td></tr>
+  <tr><td> </td><td> 15-Dec-2022  </td><td> Grades due   </td><td>             </td></tr>
+</table>
+</col50>
+</row>
+</section>
+
+
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Max Margin Classifiers
+                      <li class="fragment roll-in"> Lagrange Duality
+                      <li class="fragment roll-in"> Dual Formulation of SVM
+                      <li class="fragment roll-in"> Support Vector Machines
+	            </ul>
+                  </section>
+                </section>
+                <!-- -------------------------------------------------------------------------         -->
+                <section>
+                  <section data-background="figures/svm_meeting2.png" data-background-size="cover" data-vertical-align-top>
+                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Max Margin Classifiers</h2>
+	          </section>
+
+                  <section>
+                    <h3>bayesian decision boundary</h3>
+                    <div class="row">
+                    <div class="col_right">
+                    <ul  style="list-style-type: none; font-size: 22pt">
+                      <li class="fragment roll-in" data-fragment-index="0"> If $\prob{P}{\omega_1|\vec{x}} \gt \prob{P}{\omega_2|\vec{x}}$, decide $\omega_1$
+                      <li class="fragment roll-in" data-fragment-index="0"> If $\prob{P}{\omega_1|\vec{x}} \lt \prob{P}{\omega_2|\vec{x}}$, decide $\omega_2$
+                      <li class="fragment roll-in" data-fragment-index="0"> $\prob{P}{error|\vec{x}} = \min[\prob{P}{\omega_1|\vec{x}}, \prob{P}{\omega_2|\vec{x}}]$
+                    </ul>
+                    </div>
+                    <div class="col_left5">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                           src="figures/posterior_ratio.svg" alt="posterior">
+                    </div>
+                    </div>
+                    <div class="fragment" data-fragment-index="0">
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;" >
+                      Minimizing the Bayes error is the optimal strategy if we know the posterior exactly!
+                    </blockquote>
+                    </div>
+                    <aside class="notes">
+                      Just a refresher on the Bayesian decision boundary
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Decision boundary: 2 classes</h2>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="650"
+                           src="figures/kde_decision_boundary.svg" alt="kde decision boundary">
+                      <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22px; text-align: left;">
+                        In the general case we need to non-parametrically estimate the densities
+                      </blockquote>
+                      <blockquote style="background-color: #eee8d5; width: 100%; font-size: 26px;"  class="fragment" data-fragment-index="0">
+                        $\prob{P$_{KDE}$}{\vec{x}} = \frac{1}{Nh^d} \sum_{n=1}^N \prob{K}{\frac{\vec{x} - \vec{x}^n}{h}}$, where $\prob{K}{\vec{x}} = (2\pi)^{-d/2}e^{-\frac{1}{2}\vec{x}^T\vec{x}}$
+                      </blockquote>
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 24px; width: 100%;"   class="fragment" data-fragment-index="1">
+                        Decision boundary is sensitive to outliers!
+                      </blockquote>
+                    <div class="slide-footer">
+                      this derivation of SVM is due to Tong and Koller <a href="https://ai.stanford.edu/~koller/Papers/Tong+Koller:AAAI00.pdf" target="_blank">Restricted Bayes-Optimal Classifiers</a> 2000
+                    </div>
+                    <aside class="notes">
+                      We need to model the class posteriors non-parametrically based on data. In this case the variance of the estimated decision boundary is high as it becomes sensitive to the outliers.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Restricted Bayes optimal classifier</h2>
+                      <blockquote style="background-color: #eee8d5; width: 100%; font-size: 32px; text-align: left;">
+                        <b>Definition:</b> Given a joint distribution $\prob{P$_{KDE}$}{\vec{x}|C}$ and a set of classifiers $\cal H$, we say that $h^*$ is a restricted Bayes optimal classifier with respect to $\cal H$ and ${\rm P}_{KDE}$ is $h^* \in {\cal H}$ and for all $h\in {\cal H}$, $\prob{error}{h^*:{\rm P}_{KDE}} \le \prob{error}{h: {\rm P}_{KDE}}$
+                      </blockquote>
+                    <aside class="notes">
+                      Read the definition. Point out the P is our estimated density whose variance we are trying to reduce
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Restricted Decision boundary</h2>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
+                           src="figures/kde_bumpy.png" alt="kde tuning">
+                    <div class="slide-footer">
+                      this derivation of SVM is due to Tong and Koller <a href="https://ai.stanford.edu/~koller/Papers/Tong+Koller:AAAI00.pdf" target="_blank">Restricted Bayes-Optimal Classifiers</a> 2000
+                    </div>
+                    <aside class="notes">
+                      Tell the story that when we are reducing the kernel width, we eventually obtain delta functions centered at each data point.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Max-margin hyperplane is Bayes optimal</h3>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
+                           src="figures/svm_max_margin.svg" alt="max margin">
+                    <div class="slide-footer">
+                      this derivation of SVM is due to Tong and Koller <a href="https://ai.stanford.edu/~koller/Papers/Tong+Koller:AAAI00.pdf" target="_blank">Restricted Bayes-Optimal Classifiers</a> 2000
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Max-margin Classifier</h2>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
+                           src="figures/svm_max_margin2.svg" alt="max margin">
+                  </section>
+
+                  <section>
+                    <h2>A Hyperplane</h2>
+                    <row>
+                      <col40>
+                        <ul>
+                          <li class="fragment roll-in"> $r_{\color{red}{\vec{x}}} = \frac{|\vec{w}^T{\color{red} \vec{x}} + b|}{\|\vec{w}\|}$
+                          <li class="fragment roll-in"> $r_{\color{red}{\vec{x}}} = \frac{{\color{red}{y}}(\vec{w}^T{\color{red} \vec{x}} + b)}{\|\vec{w}\|}$
+                        </ul>
+                      </col40>
+                      <col60>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
+                           src="figures/tiltedplane.png" alt="hyperplane">
+                      </col60>
+                    </row>
+                    <aside class="notes">
+                      talk about bias and distance. normalized vs unnormalized w. shortest distance and projection.
+                      $x = x_p + r\frac{w}{\|w\|}$
+                    </aside>
+                  </section>
+
+
+                  <section>
+                    <h2>Decision "Surface"</h2>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="500"
+                           src="figures/decision_line.svg" alt="decision line">
+                      <div class="fragment" data-fragment-index="0">
+                        $\underset{\vec{w},b}{\argmax}  \{ \frac{1}{\|\vec{w}\|} \underset{i}{\min} \left[ y_i(\vec{w}^T\vec{x}_i+b)\right] \}$
+                      </div>
+                    <aside class="notes">
+                      What's the distance<br>
+                      What's the minimal distance<br>
+                      Maximize the minimal distance
+                    </aside>
+                  </section>
+
+
+                  <section>
+                    <h2>Observation</h2>
+                    <blockquote style="background-color: #eee8d5;">
+                      The distance does not depend on $\|\vec{w}\|$
+                    </blockquote>
+                        <ul style="list-style-type: none; line-height: 100px; font-size: 32px;">
+                          <li class="fragment roll-in"> $r_i = \frac{y_i(\vec{w}^T{\vec{x}_i} + b)}{\|\vec{w}\|}$
+                          <li class="fragment roll-in"> Scaling by $k$
+                          <li class="fragment roll-in">
+                            $\frac{y_i(k\vec{w}^T{\vec{x}_i} + kb)}{\|k\vec{w}\|} = \frac{k y_i(\vec{w}^T{\vec{x}_i} + b)}{k \|\vec{w}\|} = \frac{y_i(\vec{w}^T{\vec{x}_i} + b)}{\|\vec{w}\|}$
+                          <li class="fragment roll-in"> We are free to set $y_i(\vec{w}^T{\vec{x}_i} + b)$ to whatever we want!
+                          <li class="fragment roll-in"> Let's set it to $y_*(\vec{w}^T{\vec{x}_*} + b) = 1$ for the nearest point
+                        </ul>
+                    <aside class="notes">
+                      Maximize the minimal distance
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Linear SVM Classifier</h2>
+                    <row>
+                      <col>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
+                           src="figures/svm_formulation.svg" alt="max margin">
+                      </col>
+                      <col60>
+                        <ul  style="list-style-type: none; font-size: 26px">
+                          <li class="fragment roll-in" data-fragment-index="0"> The gap is distance between parallel hyperplanes
+                            \begin{align}
+                            \vec{w}^T\vec{x} + b &= -1\\
+                            \vec{w}^T\vec{x} + b &= 1\\
+                            \end{align}
+                          <li class="fragment roll-in" data-fragment-index="1"> The gap is distance between parallel hyperplanes
+                            \begin{align}
+                            \vec{w}^T\vec{x} + (b + 1) &= 0\\
+                            \vec{w}^T\vec{x} + (b - 1) &= 0\\
+                            \end{align}
+                          <li class="fragment roll-in" data-fragment-index="2"> $D = |b_1 - b_2|/\|\vec{w}\|$
+                          <li class="fragment roll-in" data-fragment-index="3"> $D = 2/\|\vec{w}\|$
+                        </ul>
+                      </col60>
+                    </row>
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment" data-fragment-index="4">
+                      To maximize the gap, need to minimize $\|\vec{w}\|$ or equivalently $\frac{1}{2}\|\vec{w}\|^2$ ($\frac{1}{2}\vec{w}^T\vec{w}$)
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Linear SVM Classifier</h2>
+                    <row>
+                      <col>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
+                           src="figures/svm_constraints.svg" alt="max margin">
+                      </col>
+                      <col50>
+                        <ul  style="list-style-type: none; font-size: 26px">
+                          <li class="fragment roll-in" data-fragment-index="0"> Instances must be correctly classified
+                            \begin{align}
+                            \vec{w}^T\vec{x}_i + b & \le -1 \mbox{ if } y_i = -1\\
+                            \vec{w}^T\vec{x}_i + b & \ge +1 \mbox{ if } y_i = +1\\
+                            \end{align}
+                          <li class="fragment roll-in" data-fragment-index="1"> Equivalently
+                            $y_i(\vec{w}^T\vec{x}_i + b) \ge 1$
+                        </ul>
+                      </col50>
+                    </row>
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment" data-fragment-index="2">
+                      Want to minimize $\frac{1}{2}\|\vec{w}\|^2$ subject to $y_i(\vec{w}^T\vec{x}_i + b) \ge 1$ for $i=1,\dots, N$
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment" data-fragment-index="3">
+                      Classify new instance $\vec{x}$ as $f(\vec{x}) = \mbox{sign}(\vec{w}^T\vec{x} + b)$
+                    </blockquote>
+
+                  </section>
+
+                  <section>
+                    <h2>Linear SVM: primal formulation</h2>
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment" data-fragment-index="0">
+                      Minimize $\frac{1}{2}\|\vec{w}\|^2$ subject to $y_i(\vec{w}^T\vec{x}_i + b) - 1 \ge 0$ for $i=1,\dots, N$
+                    </blockquote>
+                    <ul  style="list-style-type: none; font-size: 22pt">
+                      <li class="fragment roll-in" data-fragment-index="1"> Primal formulation of linear SVM
+                      <li class="fragment roll-in" data-fragment-index="2"> It is a convex quadratic programming (QP) optimization problem with $d$ variables and $N$ constraints
+                    </ul>
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment" data-fragment-index="0">
+                      \begin{align}
+                      \underset{\vec{w} \in \RR^m}{\argmin} \vec{w}^T {\mathbf Q} \vec{w} & + \vec{w}^T\vec{c} + \epsilon \\
+                      {\mathbf A}\vec{w} & \le \vec{b} \\
+                      {\mathbf A} \in \RR^{n\times m}, \vec{w} & \in \RR^m, \vec{b}\in \RR^n\\
+                      {\mathbf C}\vec{w} & = \vec{d} \\
+                      {\mathbf C} \in \RR^{s\times m}, \vec{d} &\in \RR^s\\
+
+                      \end{align}
+                    </blockquote>
+                  </section>
+
+                </section>
+
+                <!-- -------------------------------------------------------------------------         -->
+                <section>
+                  <section>
+                    <h2>Lagrange Duality</h2>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                           src="figures/lagrange.jpeg" alt="Lagrange"><br>
+                      Joseph-Louis Lagrange
+                      <div class="slide-footer">
+                        <img width="30" src="figures/bishop_cover.png" style="vertical-align: middle;" alt="BISH"> c.f. Appendix E: Lagrange Multipliers "<a href="https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf" target="blank_">Pattern Recognition and ML</a>" C. M. Bishop
+
+                      </div>
+	          </section>
+
+                  <section>
+                    <h2>Lagrange Duality: general form</h2>
+                    <row>
+                      <col40>
+                        <ul  style="list-style-type: none; font-size: 24px;">
+                          <li> minimize $f(x)$
+                          <li> subject to
+                          <li> $c_1(x) \ge 0$
+                          <li> $\vdots$
+                          <li> $c_C(x) \ge 0$
+                          <li> $g_1(x) \le 0$
+                          <li> $\vdots$
+                          <li> $g_G(x) \le 0$
+                          <li> $h_1(x) = 0$
+                          <li> $\vdots$
+                          <li> $h_H(x) = 0$
+                        </ul>
+                      </col40>
+                      <col>
+                      <ul  style="list-style-type: none; font-size: 24px;">
+                        <li> minimize$_x$ and maximize$_{\alpha_i, \lambda_i, \mu_i}$ <alert>saddle point</alert>
+                        <li> \begin{align}
+                          \Lambda(x, \alpha, \lambda, \mu) & = f(x) - \sum_{i=1}^{C} \alpha_ic_i(x) \\
+                          &+ \sum_{i=1}^{G} \lambda_i g_i(x) - \sum_{i=1}^{H} \mu_i h_i(x)
+                          \end{align}
+                        <li> subject to
+                        <li> $\alpha_i, \lambda_i, \mu_i \ge 0$
+                      </ul>
+                      </col>
+                    </row>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                      Necessary optimality conditions
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5;  font-size: 38px;">
+                      $\frac{\partial\Lambda}{\partial x} = 0$;
+                      $\frac{\partial\Lambda}{\partial \alpha} = 0$;
+                      $\frac{\partial\Lambda}{\partial \lambda} = 0$;
+                      $\frac{\partial\Lambda}{\partial \mu} = 0$;
+                    </blockquote>
+	          </section>
+
+                  <section>
+                    <h3>Karush-Kuhn-Tucker (KKT) conditions</h3>
+                      <img width="800" src="figures/KKT_wikipedia.png" alt="KKT">
+                  </section>
+
+                  <section>
+                    <h3>Interactive Demo</h3>
+
+                  </section>
+
+                  <section>
+                    <h3>Lagrange Duality: example 1</h3>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                      $\min_x x^2$ <br>
+                      s.t. $x \ge b$
+                    </blockquote>
+                    <row>
+                      <col40>
+                        $\min_x x^2$
+                        <br>
+                        <br>
+                        <img width="900" src="figures/x2_none.svg" alt="x^2">
+                        $x^* = 0$
+                      </col40>
+                      <col40>
+                        $\min_x x^2$<br>
+                         s.t. $x\ge -1$
+                        <img width="900" src="figures/x2_left.svg" alt="x^2">
+                        $x^* = 0$
+                      </col40>
+                      <col40>
+                        $\min_x x^2$<br>
+                         s.t. $x\ge 1$
+                        <img width="900" src="figures/x2_right.svg" alt="x^2">
+                        $x^* = 1$
+                      </col40>
+
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>Lagrange Duality: example 1</h2>
+                    <row>
+                      <col50>
+                        <img width="900" src="figures/x2_right.svg" alt="x^2">
+                      </col50>
+                      <col60>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;  width: 100%;">
+                          $\min_x x^2$<br>
+                          s.t. $x \ge b$ or $x-b\ge 0$
+                        </blockquote>
+                          Let's move the constraint to the objective Lagrangian
+                        <blockquote style="background-color: #eee8d5; width: 100%;">
+                          $L(x, \alpha) = x^2 - \alpha(x-b)$<br>
+                          s.t. $\alpha \ge 0$
+                        </blockquote>
+                      </col60>
+                    </row>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;  width: 100%;">
+                      Solve: $\min_x \max_{\alpha} L(x, \alpha)$<br>
+                      s.t. $\alpha \ge 0$
+                    </blockquote>
+                  </section>
+
+                  <section data-vertical-align-top>
+                    <h2>Lagrange Duality: example 1</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;  width: 100%;">
+                      Solve: $\min_x \max_{\alpha} L(x, \alpha)$<br>
+                      s.t. $\alpha \ge 0$
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Lagrange Duality: example 2</h2>
+                    <h4>Find the largest area rectangle inside an ellipse</h4>
+                    <row>
+                      <col50>
+                        <div class="fragment" data-fragment-index="0">
+                          <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="400"
+                               src="figures/ellipse1.png" alt="rectangle 1">
+                        </div>
+                      </col50>
+                      <col>
+                        <div class="fragment" data-fragment-index="1">
+                          <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="400"
+                               src="figures/ellipse2.png" alt="rectangle 2">
+                        </div>
+                      </col>
+                    </row>
+	          </section>
+
+                  <section>
+                    <h2>Lagrange Duality: example 2</h2>
+                    <h4>Find the largest area rectangle inside an ellipse</h4>
+                    <row>
+                      <col40>
+                        <div class="fragment" data-fragment-index="0">
+                          <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="400"
+                               src="figures/rect_axes.png" alt="rectangle">
+                        </div>
+                        <div class="fragment" data-fragment-index="2">
+                          <ul  style="list-style-type: none; ">
+                            <li> maximize the area $4xy$
+                            <li> subject to
+                            <li> $\frac{x^2}{a^2} + \frac{y^2}{b^2} \le 1$
+                          </ul>
+                        </div>
+                      </col40>
+                      <col60>
+                        <div class="fragment" data-fragment-index="1">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                          Ellipse equation
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5;"><center>
+                            $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$
+                          </center>
+                        </blockquote>
+                        </div>
+                        <div class="fragment" data-fragment-index="3">
+                          <ul  style="list-style-type: none; font-size: 28px; ">
+                            <li> maximize
+                            <li> $\Lambda(x,y,\alpha) = 4xy - \alpha (\frac{x^2}{a^2} + \frac{y^2}{b^2} - 1)$
+                            <li> subject to
+                            <li> $\alpha \ge 0$
+                          </ul>
+                        </div>
+                    <div class="fragment" data-fragment-index="4">
+                      <alert>Let's solve it</alert>
+                    </div>
+                      </col60>
+                    </row>
+
+	          </section>
+
+                  <section>
+                    <h2>Lagrange Duality: example 2</h2>
+                    <h4>Find the largest area rectangle inside an ellipse</h4>
+                    <row>
+                      <col60>
+                        <div class="fragment" data-fragment-index="0">
+                          <ul  style="list-style-type: none; ">
+                            <li> $\frac{\partial \Lambda}{\partial x} = 4y + \frac{2\alpha x}{a^2} = 0$
+                            <li> $\frac{\partial \Lambda}{\partial y} = 4x + \frac{2\alpha y}{b^2} = 0$
+                            <li> $\frac{\partial \Lambda}{\partial \alpha} = \frac{x^2}{a^2} + \frac{y^2}{b^2} - 1 = 0$
+                          </ul>
+                        </div>
+                      </col60>
+                      <col50>
+                        <div class="fragment" data-fragment-index="1">
+                          <ul  style="list-style-type: none; ">
+                            <li> $x = \frac{a}{\sqrt{2}}$
+                            <li> $y = \frac{b}{\sqrt{2}}$
+                            <li> $\alpha = 2ab$
+                          </ul>
+                        </div>
+                      </col50>
+                    </row>
+	          </section>
+
+                  <section>
+                    <h2>Lagrange Duality: example 2</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;">
+                      Main point
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5; width: 100%; text-align: left;">
+                      Using Lagrangian multipliers and KKT conditions can convert a constrained problem into an unconstrained problem.
+                    </blockquote>
+                  </section>
+
+                </section>
+                <!-- -------------------------------------------------------------------------         -->
+                <section>
+                  <section data-background="figures/duality.png">
+                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Dual formulation of SVM</h2>
+                    <div class="slide-footer">
+                      <a href="https://spanishpeaksarts.org/duality/">image source</a>
+                    </div>
+	          </section>
+
+                  <section>
+                    <h2>Linear SVM: dual formulation</h2>
+                    <blockquote style="background-color: #eee8d5; left: 2%; width: 97%; font-size: 22pt" class="fragment" data-fragment-index="0">
+                      Minimize $\frac{1}{2}\|\vec{w}\|^2$ subject to $y_i(\vec{w}^T\vec{x}_i + b) - 1 \ge 0$ for $i=1,\dots, N$
+                    </blockquote>
+
+                    <ul  style="list-style-type: none; font-size: 22pt">
+                      <li class="fragment roll-in" data-fragment-index="0"> Can be recast as a "dual formulation"
+                      <li class="fragment roll-in" data-fragment-index="1"> It is also a convex quadratic programming (QP) optimization problem with $N$ variables $(\alpha_i, i=1, \dots, N)$, where $N$ is the number of samples
+                      <li class="fragment roll-in" data-fragment-index="2">
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment"  data-fragment-index="2">
+                          Minimize $\Lambda(\vec{w}, b, \alpha) = \frac{1}{2}\|\vec{w}\|^2 - \sum_{i=1}^N \alpha_i (y_i(\vec{w}^T\vec{x}_i + b) - 1)$
+                        </blockquote>
+                      <li class="fragment roll-in" data-fragment-index="3">
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment"  data-fragment-index="2">
+                          $\frac{\partial\Lambda(\vec{w}, b, \alpha)}{\partial \vec{w}} = \vec{w} - \sum_{i=1}^N \alpha_i y_i\vec{x}_i = 0 \implies \vec{w} = \sum_{i=1}^N \alpha_i y_i \vec{x}_i$
+                        </blockquote>
+
+                      <li class="fragment roll-in" data-fragment-index="4">
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment"  data-fragment-index="2">
+                          Maximize $\sum_{i=1}^N \alpha_i - \frac{1}{2} \sum_{i,j=1}^N \alpha_i\alpha_j y_i y_j \vec{x}_i^T\vec{x}_j$ subject to $\alpha_i \ge 0$ and $\sum_{i=1}^N \alpha_i y_i = 0$
+                        </blockquote>
+                      <li class="fragment roll-in" data-fragment-index="5"> Since $\vec{w} = \sum_{i=1}^N \alpha_i y_i \vec{x}_i$
+                      <li class="fragment roll-in" data-fragment-index="6"> The final classifier is $f(\vec{x}) = \mbox{sign}(\sum_{i=1}^N \alpha_i y_i \vec{x}_i\vec{x} + b)$
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Linear SVM: problems and solutions</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;">
+                      The data may not be linearly separable
+                    </blockquote>
+
+                    <ul  style="list-style-type: disk;">
+                      <li class="fragment roll-in"> $\phi(\vec{x})$: map the data into higher dimensions and hope for the best
+                      <li class="fragment roll-in"> Soft-margin: allow some error
+                    </ul>
+                  </section>
+
+	        </section>
+                <!-- -------------------------------------------------------------------------         -->
+	        <section>
+                  <section>
+                    <h2>Support Vector Machines</h2>
+                  </section>
+
+                  <section>
+                    <h2>Max Margin Classifiers</h2>
+                    <row>
+                      <col60>
+                        <ul style="list-style-type: disk; font-size: 26px;">
+                          <li class="fragment roll-in" data-fragment-index="0">  Given two classes $A$ and $B$<br>
+                            Data is a set of labeled examples $\{(\vec{x}_i,y_i)\}_{i=1}^N$
+                          <li class="fragment roll-in" data-fragment-index="1"> Bayesian Decision Boundary: <em>Distributions are known</em>
+                            \begin{align}\nonumber
+                            g(\vec{x}) = P(A|\vec{x}) - P(B|\vec{x}) =0
+                            \end{align}
+                          <li class="fragment roll-in" data-fragment-index="2">  Maximum Margin Hyperplane: <em>Only data is given</em>
+                        </ul>
+                      </col60>
+                      <col>
+                      <div style="position:relative; width:640px; height:480px; margin:0 auto;">
+                        <img class="fragment fade-out" data-fragment-index="2" width="640" height="400" src="figures/BD.png" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
+                        <img class="fragment fade-in" data-fragment-index="2" width="640" height="400" src="figures/MMargin.svg" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
+                      </div>
+                      </col>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>Mapping to Higher Dimensions</h2>
+                    <row>
+                      <col60>
+                        <ul style="list-style-type: disk; font-size: 26px;">
+                          <li class="fragment roll-in" data-fragment-index="0"> A two class problem:<br> <alert>not separable by a line</alert>
+                          <li class="fragment roll-in" data-fragment-index="1"> Map each point into a higher dimensional space:
+      \begin{align}
+        \nonumber \vec{\eta}_i = \Phi(\vec{x}_i)
+      \end{align}
+                          <li class="fragment roll-in" data-fragment-index="2"> Choose $\Phi$ so the data becomes linearly separable
+      \begin{align}
+        \nonumber \Phi(\vec{x}) = (x_1^2,\sqrt{2}x_1x_2,x_2^2)
+      \end{align}
+                        </ul>
+                      </col60>
+                      <col>
+                      <div style="position:relative; width:640px; height:480px; margin:0 auto;">
+                        <img class="fragment current-visible" data-transition="slide fade-out" data-fragment-index="0" width="640" height="480" src="figures/2class.png" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
+                        <img class="fragment current-visible" data-transition="slide fade-out" data-fragment-index="1" width="640" height="480" src="figures/features3D_3.png" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
+                        <img class="fragment current-visible" data-transition="slide fade-out" data-fragment-index="2" width="640" height="480" src="figures/features3D_2.png" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
+                      </div>
+                      </col>
+                    </row>
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="top: -13%">
+                      <img width="250"
+                           src="figures/hat_trick_trans.gif" alt="trick">
+                    </div>
+                    <h2>Kernel Trick</h2>
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment" data-fragment-index="0">
+                      Appropriate mappings are hard to construct. What to do?
+                    </blockquote>
+                    <ul  style="list-style-type: square; font-size: 22pt">
+                      <li class="fragment roll-in" data-fragment-index="1"> Dimensions can be many <alert>even $\infty$</alert>! Have to compute very expensive inner product?
+                      <li class="fragment roll-in" data-fragment-index="2"> Avoid it by defining Hilbert spaces with kernels (and Mercer's theorem)
+                        \begin{align}\nonumber
+                        \langle\Phi(\vec{x}),\Phi(\vec{y})\rangle &=&
+                        \vec{k}(\vec{x},\vec{y})\\ \nonumber
+                        (x_1^2,\sqrt{2}x_1x_2,x_2^2) (y_1^2,\sqrt{2}y_1y_2,y_2^2)^T  &=&
+                        (\vec{x}\cdot\vec{y})^2  \\\nonumber
+                        x_1^2y_1^2 + 2x_1x_2y_1y_2 + x_2^2y_2^2 &=& (x_1y_1 + x_2y_2)^2
+                        \end{align}
+                      <li class="fragment roll-in" data-fragment-index="3"> Take a linear algorithm, replace inner products with kernels and get a nonlinear algorithm as a result!
+                    </ul>
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="top: -13%">
+                      <img width="250"
+                           src="figures/hat_trick_trans.gif" alt="trick">
+                    </div>
+                    <h2>Kernel Trick for SVM</h2>
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment"  data-fragment-index="0">
+                      Maximize $\sum_{i=1}^N \alpha_i - \frac{1}{2} \sum_{i,j=1}^N \alpha_i\alpha_j y_i y_j \vec{x}_i^T\vec{x}_j$<br> subject to $\alpha_i \ge 0$ and $\sum_{i=1}^N \alpha_i y_i = 0$ <br>
+                      The final classifier is $f(\vec{x}) = \mbox{sign}(\sum_{i=1}^N \alpha_i y_i \vec{x}_i\vec{x} + b)$
+                    </blockquote>
+
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment"  data-fragment-index="1">
+                      Maximize $\sum_{i=1}^N \alpha_i - \frac{1}{2} \sum_{i,j=1}^N \alpha_i\alpha_j y_i y_j K(\vec{x}_i,\vec{x}_j)$<br> subject to $\alpha_i \ge 0$ and $\sum_{i=1}^N \alpha_i y_i = 0$ <br>
+                      The final classifier is $f(\vec{x}) = \mbox{sign}(\sum_{i=1}^N \alpha_i y_i K(\vec{x}_i, \vec{x}) + b)$
+                    </blockquote>
+
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment"  data-fragment-index="1">
+                      Maximize $\vec{\alpha}^T\vec{1} - \frac{1}{2} \vec{\alpha}^T\vec{y}^T{\bm G}\vec{y} \vec{\alpha}$<br> subject to $\vec{\alpha} \ge 0$ and $\vec{\alpha}^T \vec{y} = 0$ <br>
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Mercer's theorem</h2>
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment"  data-fragment-index="0">
+                      $K(\vec{x}, \vec{y})$ is a kernel function iff it is symmetric (i.e. $K(\vec{x}, \vec{y}) = K(\vec{y}, \vec{x})$) and positive semidefinite (i.e. $\vec{x}^T{\bm G}\vec{x} \ge 0, \forall \vec{x} \in \RR^n$)
+                    </blockquote>
+                    <div class="fragment"  data-fragment-index="1" style=" font-size: 32px;">
+                      Creating kernels is an art but some generative rules can help
+                    </div>
+                    <ol  style="list-style-type: ; font-size: 22pt">
+                      <li class="fragment roll-in" data-fragment-index="1"> An inner product is a kernel $K(\vec{x},\vec{y}) = \vec{x}^T\vec{y}$
+                      <li class="fragment roll-in" data-fragment-index="2"> A constant is a kernel $K(\vec{x},\vec{y}) = 1$
+                      <li class="fragment roll-in" data-fragment-index="3"> Kernel product is a kernel $K(\vec{x},\vec{y}) = K_1(\vec{x},\vec{y})K_2(\vec{x},\vec{y})$
+                      <li class="fragment roll-in" data-fragment-index="4"> $\forall \psi: X \to \RR$ product of $\psi$ is a kernel $K(\vec{x},\vec{y}) = \psi(\vec{x})\psi(\vec{y})$
+                      <li class="fragment roll-in" data-fragment-index="5"> Nonnegatively weighted linear combination of kernels is a kernel  $K(\vec{x},\vec{y}) = \alpha_1K_1(\vec{x},\vec{y}) + \alpha_2K_2(\vec{x},\vec{y}), {\rm s.t. } \alpha_i \ge 0$
+                      <li class="fragment roll-in" data-fragment-index="5">  and a few more
+                    </ol>
+                  </section>
+
+                  <section data-background="figures/kernel_panic.gif">
+                    <h3 style="text-shadow: 4px 4px 4px #002b36; color: #fff1f1">Kernels do not guarantee linear separabillity</h3>
+	          </section>
+
+                  <section>
+                    <h2>Soft Margin SVM</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;" class="fragment"  data-fragment-index="0">
+                    Let's introduce slack variables $\xi_i \ge 0$ allowing mistakes
+                    </blockquote>
+                    <row class="fragment"  data-fragment-index="0">
+                      <col50>
+                        $y_i(\vec{w}^T\vec{x} + b) \ge 1 - \xi_i$
+                      </col50>
+                      <col50>
+                        <img width="300" src="figures/slack_variables.png" alt="slack">
+                      </col50>
+                    </row>
+
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment"  data-fragment-index="1">
+                      Maximize $\vec{\alpha}^T\vec{1} - \frac{1}{2} \vec{\alpha}^T\vec{y}^T{\bm G}\vec{y} \vec{\alpha}$<br> subject to $C \ge \vec{\alpha} \ge 0$ and $\vec{\alpha}^T \vec{y} = 0$ <br>
+                    </blockquote>
+	          </section>
+
+                  <section>
+                    <h2>Soft Margin SVM</h2>
+                      <img width="800" class="reveal" src="figures/soft_margin.png" alt="soft margin">
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt">
+                      Changing the constraints: $y_i(\vec{w}^T\vec{x} + b) \ge 1 - \xi_i$<br>
+                      Modifies the primal problem: $C\sum_{i=1}^N \xi_i + \frac{1}{2}\|\vec{w}\|^2$
+                    </blockquote>
+                  </section>
+
+                </section>
+
+	        <section>
+                  <section>
+                    <h2>Take home points</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;" class="fragment"  data-fragment-index="0">
+                    Advantages
+                    </blockquote>
+
+                    <ol  style="list-style-type: ; font-size: 32px;">
+                      <li class="fragment roll-in" data-fragment-index="1"> Quadratic programming with a single optimum (efficient)
+                      <li class="fragment roll-in" data-fragment-index="2"> Sparse solutions based on supports
+                      <li class="fragment roll-in" data-fragment-index="3"> Great generalization thanks to the max margin!
+                    </ol>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;" class="fragment"  data-fragment-index="4">
+                    Disadvantages
+                    </blockquote>
+
+                    <ol  style="list-style-type: ; font-size: 32px">
+                      <li class="fragment roll-in" data-fragment-index="5"> Sensitive to noise and outliers in data
+                      <li class="fragment roll-in" data-fragment-index="6"> Making or choosing kernel for the task is an art
+                      <li class="fragment roll-in" data-fragment-index="7"> Dependence on soft-margin hyperparameter
+                    </ol>
+                  </section>
+                </section>
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 1.23,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

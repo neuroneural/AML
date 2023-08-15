@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>09: Maximum Likelihood Estimation</h3>
+	            <p>
+	          </section>
+                  <section>
+                    <h3>Schedule</h3>
+
+                    <row>
+                      <col50>
+                      <table style="font-size:14px">
+                        <tr>
+                          <th>#</th>
+                          <th>date</th>
+                          <th>topic</th>
+                          <th>description</th>
+                        </tr>
+                        <tr><td>1</td>
+                          <td> 22-Aug-2022 </td>
+                          <td> Introduction </td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>  2 </td>
+                          <td> 24-Aug-2022 </td>
+                          <td> Foundations of learning </td>
+                          <td> </td>
+                        </tr>
+                        <tr><td>  3  </td><td> 29-Aug-2022 </td><td> PAC learnability </td><td>             </td></tr>
+                        <tr><td>  4 </td><td> 31-Aug-2022 </td><td>      Linear algebra (recap) </td><td>   hw1 released   </td></tr>
+                        <tr style='background-color: #FBEEC2;'><td>   </td><td> 05-Sep-2022 </td><td> <em>Holiday</em>         </td><td>         </td></tr>
+                        <tr style='background-color: #E0E4CC;'><td>  5 </td><td> 07-Sep-2022 </td><td> Linear learning models </td><td>   </td></tr>
+                        <tr><td>  6 </td><td> 12-Sep-2022 </td><td> Principal Component Analysis       </td><td> project ideas  </td></tr>
+                        <tr><td>  7 </td><td> 14-Sep-2022  </td><td>  Curse of Dimensionality          </td></td></td><td> hw1 due </td></tr>
+<tr><td> 8 </td><td> 19-Sep-2022  </td><td>  Bayesian Decision Theory  </td><td>hw2 release </td></tr>
+<tr><td> 9 </td><td> 21-Sep-2022  </td><td> Parameter estimation: MLE </td><td><i class='fa fa-map-marker' style='color: #FA6900;'></i></td></tr>
+<tr><td> 10 </td><td> 26-Sep-2022 </td><td> Parameter estimation: MAP & NB</td><td>finalize teams</td></tr>
+<tr><td> 11 </td><td> 28-Sep-2022 </td><td> Logistic Regression  </td><td>             </td></tr>
+<tr><td> 12 </td><td> 03-Oct-2022 </td><td> Kernel Density Estimation </td><td>             </td></tr>
+<tr><td> 13 </td><td> 05-Oct-2022 </td><td> Support Vector Machines </td><td>  hw3, hw2 due       </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 10-Oct-2022 </td><td>   * Mid-point projects checkpoint     </td><td>    *    </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 12-Oct-2022 </td><td>   * Midterm: Semester Midpoint       </td><td> exam   </td></tr>
+<tr><td> 14 </td><td> 17-Oct-2022  </td><td>Matrix Factorization</td><td>           </td></tr>
+<tr><td> 15 </td><td> 19-Oct-2022  </td><td>Stochastic Gradient Descent</td><td>      </td></tr>
+</table>
+</col50>
+<col50>
+<table style="font-size:14px; vertical-align: top;">
+  <tr>
+    <th>#</th>
+    <th>date</th>
+    <th>topic</th>
+    <th>description</th>
+  </tr>
+  <tr><td> 16 </td><td> 24-Oct-2022 </td><td> k-means clustering  </td><td> </td></tr>
+  <tr><td> 17 </td><td> 26-Oct-2022 </td><td> Expectation Maximization </td><td> hw4, hw3 due             </td></tr>
+  <tr><td> 18 </td><td> 31-Oct-2022 </td><td> Automatic Differentiation </td><td> </td></tr>
+  <tr><td> 19  </td><td> 02-Nov-2022 </td><td> Nonlinear embedding approaches </td><td>  </td></tr>
+  <tr><td> 20 </td><td> 07-Nov-2022 </td><td> Model comparison I </td><td> </td></tr>
+  <tr><td> 21 </td><td> 09-Nov-2022 </td><td> Model comparison II  </td><td> hw5, hw4 due</td></tr>
+  <tr><td> 22 </td><td> 14-Nov-2022 </td><td> Model Calibration </td><td> </td></tr>
+  <tr><td> 23 </td><td> 16-Nov-2022  </td><td> Convolutional Neural Networks  </td><td>             </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 21-Nov-2022  </td><td> <em>Fall break</em> </td><td>            </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 23-Nov-2022 </td><td> <em>Fall break</em> </td><td>   </td></tr>
+  <tr><td> 24 </td><td> 28-Nov-2022 </td><td> Word Embedding </td><td> hw5 due </td></tr>
+  <tr style='background-color: #FBEEC2;'><td> </td><td> 30-Nov-2022 </td><td> Presentation and exam prep day </td><td> </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 02-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 07-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td> </td><td> 12-Dec-2022 </td><td> * Final Exam    </td><td>   *     </td></tr>
+  <tr><td> </td><td> 15-Dec-2022  </td><td> Grades due   </td><td>             </td></tr>
+</table>
+</col50>
+</row>
+</section>
+
+
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Independence
+                      <li class="fragment roll-in"> Parameter estimation: MLE
+                      <li class="fragment roll-in"> MLE and KL-divergence
+	            </ul>
+                  </section>
+                </section>
+
+                <!-- -------------------------------------------------------------------------         -->
+	        <section>
+	          <section>
+                    <h2>Independence</h2>
+                    <div class='slide-footer'>
+                      based on Barnabas Poczos' slides
+                    </div>
+                    <aside class="notes">
+                      <ul>
+                        <li> just a template
+                      </ul>
+                    </aside>
+	          </section>
+
+                  <section>
+                    <h2>Independence</h2>
+                    <blockquote>
+                      <b>Independent random variables:</b>
+                      \begin{align}
+                      \prob{P}{X,Y} &= \prob{P}{X}\prob{P}{Y}\\
+                      \prob{P}{X|Y} &= \prob{P}{X}
+                      \end{align}
+                    </blockquote>
+                    <ul style="list-style-type: none;">
+                      <li class="fragment roll-in"> $Y$ and $X$ don't contain information about each other.
+                      <li class="fragment roll-in"> Observing $Y$ does not help predicting $X$.
+                      <li class="fragment roll-in"> Observing $X$ does not help predicting $Y$.
+                    </ul>
+                    <ul style="list-style-type: none; font-size: 32px;">
+                      <li class="fragment roll-in"> <b>Examples:</b>
+                      <li class="fragment roll-in"> <b>Independent:</b> winning on roulette this week and next week
+                      <li class="fragment roll-in"> <b>Dependent:</b> Russian roulette
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>inependent/dependent</h2>
+                    <div class="row">
+                      <div class="col_left5">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="1200"
+                           src="figures/independent_samples.png" alt="independent">
+                      </div>
+                      <div class="col_right">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="450"
+                           src="figures/dependent_samples.png" alt="dependent">
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Conditionally Independent</h2>
+                    <div class="fragment" data-fragment-index="0">
+                      <blockquote>
+                        <b>Conditionally independent:</b><br>
+                        $$\prob{P}{X,Y|Z} = \prob{P}{X|Z}\prob{P}{Y|Z}$$
+                        Knowing $Z$ makes $X$ and $Y$ independent
+                      </blockquote>
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                      <blockquote  style="font-size:28px">
+                        <ul style="list-style-type: none;">
+                          <li class="fragment roll-in" data-fragment-index="1"> <b>Examples:</b>
+                          <li class="fragment roll-in" data-fragment-index="2"> <b>Dependent:</b> shoe size and reading skills in kids
+                          <li class="fragment roll-in" data-fragment-index="3"> <b>Conditionally Independent:</b> shoe size and readnig skills given <b>age</b>
+                        </ul>
+                      </blockquote>
+                    </div>
+                    <div class="fragment" data-fragment-index="4" >
+                      <row>
+                        <col70>
+                          <blockquote  style="font-size:30px; width: 100%; text-align: left;">
+                            <b>Storks deliver babies:</b>
+                            Highly statistically significant correlation ($p=0.008$) exists between stork populations and human birth rates across Europe
+                          </blockquote>
+                        </col70>
+                        <col30>
+                          <img style="width: 100%; margin-top: -7%;" src="figures/stork_baby.png" alt="stork">
+                        </col30>
+                      </row>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Conditionally Independent</h2>
+                    <blockquote  style="font-size:32px; width: 100%; text-align: left;">
+                      <b>London taxi drivers:</b>
+                      A survey has pointed out a positive and significant correlation between the number of accidents and wearing coats. They concluded that coats could hinder movements of drivers and be the cause of accidents. A new law was prepared to prohibit drivers from wearing coats when driving.
+                    </blockquote>
+                    <div class="fragment" data-fragment-index="1" style="font-size:32px">
+                      <em>Finally another study pointed out that people wear coats when it rains...</em>
+                    </div>
+                  </section>
+
+
+                  <section>
+                    <h2>Correlation $\ne$ Causation</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="450" class="reveal"
+                         src="figures/causation_correlation.png" alt="correlation is not causation">
+                    <div class='slide-footer'>
+                      xkcd.com
+                    </div>
+                  </section>
+
+                </section>
+                <!-- -------------------------------------------------------------------------         -->
+                <section>
+                  <section>
+                    <h2>Parameter estimation: MLE</h2>
+                    <h3>a machine learning problem</h3>
+                    <div class="row">
+                      <div class="col_left5">
+                        Estimating probabilities
+                      </div>
+                      <div class="col_right">
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="250"
+                             src="figures/hand_flipping.png" alt="flipping">
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Flipping a coin</h2>
+                    <blockquote style="font-size:36px">
+                      I have a coin, if I flip it, what's the probability it will fall with head up?
+                    </blockquote>
+                    <div class="fragment" data-fragment-index="0">
+                      Let us flip it a few times to estimate the probability:
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="600"
+                             src="figures/coin_row.png" alt="a flip">
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                      <blockquote>
+                        The estimated probability is $\frac{3}{5}$. "Frequency of heads"
+                      </blockquote>
+                    </div>
+                    <aside class="notes">
+                      <ul>
+                        <li> Don't tell me the class is difficult, we're only working with pocket change problems here. Easy
+                      </ul>
+                    </aside>
+
+                  </section>
+
+                  <section>
+                    <h2>Flipping a coin</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="600"
+                         src="figures/coin_row.png" alt="a flip">
+                    <blockquote>
+                      The estimated probability is $\frac{3}{5}$. "Frequency of heads"
+                    </blockquote>
+                    <ol>
+                      <li class="fragment roll-in" data-fragment-index="0"> Why frequency of heads???
+                      <li class="fragment roll-in" data-fragment-index="1"> How good is this estimation???
+                      <li class="fragment roll-in" data-fragment-index="2"> Why is this a machine learning problem???
+                    </ol>
+                    <div class="fragment" data-fragment-index="3 ">
+                      Let's go ahead and answer these questions
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3>QUESTION 1: Why frequency of heads???</h3>
+                    <ul class="fa-ul">
+                      <li class="fragment roll-in"><i class="fa-li fa fa-thumbs-o-up"></i> Frequency of heads is exactly the <b>maximum likelihood estimator</b> (MLE) for this problem
+                      <li class="fragment roll-in"><i class="fa-li fa fa-thumbs-o-up"></i> MLE has nice properties
+                      <li class="fragment roll-in"><i class="fa-li fa fa-thumbs-o-down"></i> and bad ones too, but that's another story
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Maximum Likelihood Estimation</h2>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>MLE for Bernoulli distribution</h2>
+                    <blockquote>
+                      Data $D = $ <img style="vertical-align: middle;" height="100" src="figures/coin_row.png" alt="a flip">
+                      $D = \{x_i\}_{i=1}^n, x_i \in \{\text{H}, \text{T}\}$
+                    </blockquote>
+                    <span style="font-size: 32px;">
+                      $\prob{P}{\text{Heads}} = \theta, \prob{P}{\text{Tails}} = 1-\theta$
+                    </span>
+                    <div class="fragment" data-fragment-index="0">
+                      <blockquote style="background-color: #eee8d5; font-size: 34px;">
+                        Flips are <b>i.i.d.</b>:
+                        <ul>
+                          <li><b>Independent</b> events
+                          <li><b>Identically distributed</b> according to Bernoulli distribution
+                        </ul>
+                      </blockquote>
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 34px;">
+                        MLE: Choose $\theta$ that maximizes the probability of observed data
+                      </blockquote>
+                    </div>
+                    <aside class="notes">
+                      <ul>
+                        <li> discuss the likelihood on the blackboard: function of theta
+                      </ul>
+                    </aside>
+
+                  </section>
+
+                  <section>
+                    <h2>Maximum Likelihood Estimation</h2>
+                      <blockquote style="background-color: #93a1a1; width: 100%; color: #fdf6e3; font-size: 34px;">
+                        MLE: Choose $\theta$ that maximizes the probability of observed data
+                      </blockquote>
+                      <div class="fragment" data-fragment-index="0" style="font-size: 34px;">
+                        \begin{align}
+                        \hat{\theta}_{MLE}
+                        &\fragment{1}{ = \underset{\theta}{\argmax} \prob{P}{D|\theta}}\\
+                        &\fragment{2}{ = \underset{\theta}{\argmax} \displaystyle{\prod_{i=1}^n}\prob{P}{x_i|\theta} \color{#dc322f}{\text{    independent draws}}}\\
+                        &\fragment{3}{ = \underset{\theta}{\argmax} \displaystyle{\prod_{i:x_i=H}^{\alpha_H}}\theta  \displaystyle{\prod_{j:x_j=T}^{\alpha_T}}(1-\theta) \color{#dc322f}{\stackrel{\text{identically}}{\text{distributed}}}}\\
+                        &\fragment{4}{ = \underset{\theta}{\argmax} \theta^{\alpha_H} (1-\theta)^{\alpha_T}}\\
+                        \end{align}
+                      </div>
+                      <blockquote style="background-color: #93a1a1; width: 100%; color: #fdf6e3; font-size: 34px;">
+               $J(\theta) =  \theta^{\alpha_H} (1-\theta)^{\alpha_T}$
+                      </blockquote>
+                  </section>
+
+                  <section>
+                    <!-- <h2>Maximum Likelihood Estimation</h2>                     -->
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                        MLE: Choose $\theta$ that maximizes the probability of observed data
+                      </blockquote>
+                      <div class="fragment" data-fragment-index="0" style="font-size: 30px;">
+                        \begin{align}
+                        \hat{\theta}_{MLE} & = \underset{\theta}{\argmax} \prob{P}{D|\theta}\\
+                        J(\theta) & =  \theta^{\alpha_H} (1-\theta)^{\alpha_T}\\
+                        \frac{\partial J(\theta)}{\partial \theta} &= \alpha_H \theta^{\alpha_H-1} (1-\theta)^{\alpha_T} - \alpha_T \theta^{\alpha_H} (1-\theta)^{\alpha_T-1} \stackrel{\text{set}}{=} 0
+                        \end{align}
+                        \begin{align}
+                        (\alpha_H(1 - \theta) - \alpha_T\theta)\theta^{\alpha_h-1}(1-\theta)^{\alpha_T-1} &= 0\\
+                        \alpha_H(1 - \theta) - \alpha_T\theta &= 0\\
+                        \hat{\theta}_{MLE} &= \frac{\alpha_H}{\alpha_H + \alpha_T}\\
+                        \end{align}
+                      </div>
+                      <div class="fragment" data-fragment-index="1">
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                        That's exactly "Frequency of heads" <i class="far fa-hand-point-up"></i>
+                      </blockquote>
+                      </div>
+                  </section>
+
+                  <section>
+                    <h2>Flipping a coin</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="600"
+                         src="figures/coin_row.png" alt="a flip">
+                    <blockquote>
+                      The estimated probability is $\frac{3}{5}$. "Frequency of heads"
+                    </blockquote>
+                    <ol>
+                      <li> <i class="far fa-hand-point-up"></i> Why frequency of heads???
+                      <li> <b>How good is this estimation???</b>
+                      <li> Why is this a machine learning problem???
+                    </ol>
+                  </section>
+
+                  <section>
+                    <h3>Question2: How good is this estimation???</h3>
+                    $$
+                    \hat{\theta}_{MLE} = \frac{\alpha_H}{\alpha_H + \alpha_T}
+                    $$
+                  </section>
+
+                  <section>
+                    <h2>How many flips do I need ?</h2>
+                    <ul style="list-style-type: none;">
+                      <li class="fragment roll-in" data-fragment-index="0">I flipped the coins 5 times: 3 heads, 2 tails
+                        $$
+                        \hat{\theta}_{MLE} = \frac{3}{5}
+                        $$
+                      <li class="fragment roll-in" data-fragment-index="1"> What if I flipped 26 heads and 24 tails?
+                        $$
+                        \hat{\theta}_{MLE} = \frac{26}{50}
+                        $$
+                    </ul>
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;" class="fragment" data-fragment-index="2">
+                        Which estimator should we trust more? <i class="fas fa-meh-rolling-eyes"></i>
+                      </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Simple bound</h2>
+                    Let $\theta^*$ be the true parameter.
+                    <div class="fragment" data-fragment-index="0">
+                      For $n = \alpha_H + \alpha_T$, and $\hat{\theta}_{MLE} = \frac{\alpha_H}{\alpha_H + \alpha_T}$
+                    </div>
+                    <div class="fragment" data-fragment-index="1">
+                      For any $\epsilon \gt 0$:
+                    </div>
+                    <div class="fragment" data-fragment-index="2">
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                        Hoeffding's inequality:
+                      </blockquote>
+                      <blockquote>
+                        \begin{align}
+                        \prob{P}{|\hat{\theta} - \theta^*| \ge \epsilon} \le 2e^{-2n\epsilon^2}
+                        \end{align}
+                      </blockquote>
+                    </div>
+                    <aside class="notes">
+                      <ul>
+                        <li> In Hoeffding's inequality the bound is divided by $(a-b)^2$ for the interval where the parameter is defined
+                      </ul>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>PAC learning</h2>
+                    I want to know the coin parameter $\theta$, within $\epsilon = 0.1$ error with probability at least $1-\delta = 0.95$
+                    <ul style="list-style-type: none;">
+                      <li class="fragment roll-in"> How many flips do I need?
+                      <li class="fragment roll-in">
+                        \begin{align}
+                        \prob{P}{|\hat{\theta} - \theta^*| \ge \epsilon} & \le 2e^{-2n\epsilon^2} \le \delta
+                        \end{align}
+                      <li class="fragment roll-in"> How many samples do I need?
+                      <li class="fragment roll-in">
+                        \begin{align}
+                        n & \ge \frac{\ln (2/\delta)}{2\epsilon^2} \approx 185
+                        \end{align}
+                    </ul>
+                    <aside class="notes">
+                      <ul>
+                        <li> Derive the number of flips as
+                        <li> $e^{-2n\epsilon^2} \le \delta/2$
+                        <li> $-2n\epsilon^2 \le \ln(\delta/2)$ take a log
+                        <li> divide by $-2\epsilon^2$ flipping the inequality because of the negative sign
+                        <li> $n \le \frac{\ln(\delta/2)}{-2\epsilon^2}$ pull the negative into the logarithm
+                        <li> arrive at the value of bound and plug in 0.05 for delta and 0.1 for epsilon
+                      </ul>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Flipping a coin</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="600"
+                         src="figures/coin_row.png" alt="a flip">
+                    <blockquote>
+                      The estimated probability is $\frac{3}{5}$. "Frequency of heads"
+                    </blockquote>
+                    <ol>
+                      <li> <i class="far fa-hand-point-up"></i> Why frequency of heads???
+                      <li> <i class="far fa-hand-point-up"></i> How good is this estimation???
+                      <li> <b>Why is this a machine learning problem???</b>
+                    </ol>
+                  </section>
+
+                  <section>
+                    <h3>Question2: Why is this an ML problem???</h3>
+                    <blockquote style="width: 100%; background-color: #93a1a1; color: #fdf6e3; font-size: 38px;" class="fragment" data-fragment-index="1">
+                      Machine Learning is the study of algorithms that
+
+                    <ul>
+                      <li> improve their performance
+                      <li> at some task
+                      <li> with experience
+                    </ul>
+                    </blockquote>
+
+                    <ul>
+                      <li class="fragment roll-in"> improves: accuracy of the predicted probability
+                      <li class="fragment roll-in"> task: predicting the probability of heads
+                      <li class="fragment roll-in"> experience: the more flips the better the estimate
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>What about continuous features?</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                         src="figures/gaussian_pink.svg" alt="Gaussian samples">
+                    <div class="fragment" data-fragment-index="0">
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                        Let us try Gaussians...
+                      </blockquote>
+                      \begin{align}
+                      \prob{p}{x|\mu,\sigma} &= \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}} = {\cal N}_x(\mu, \sigma)
+                      \end{align}
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>MLE for Gaussian $\mu$ and $\sigma^2$</h2>
+                    $\theta = (\mu, \sigma^2)$ that maximizes the probability of observed data
+                    <span style="font-size: 32px;">
+                    \begin{align}
+                    \hat{\theta}_{MLE} & = \underset{\theta}{\argmax} \prob{P}{D|\theta}\\
+                    & = \underset{\theta}{\argmax} \displaystyle{\prod_{i=1}^n}\prob{P}{x_i|\theta} \color{#dc322f}{\text{    independent draws}}\\
+                    & = \underset{\theta}{\argmax} \displaystyle{\prod_{i=1}^n} \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x_i-\mu)^2}{2\sigma^2}} \color{#dc322f}{\text{    i.i.d}}\\
+                    & = \underset{\theta}{\argmax}  \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{\sum_{i=1}^n(x_i-\mu)^2}{2\sigma^2}}\\
+                    \end{align}
+                    </span>
+                  </section>
+
+                  <section>
+                    <h2>Derive $\hat{\mu}_{MLE}$ </h2>
+                    <aside class="notes">
+                      <ul>
+                        <li> Derive the mu in one way
+                        <li> Talk about log likelihood and derive in this way as well
+                        <li> Mention how I consistently made mistakes and got lucky in the video and importantly, I was not corrected by any of my students :(
+                      </ul>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>MLE for Gaussian $\mu$ and $\sigma^2$</h3>
+                    <blockquote style="font-size: 30px;">
+                      \begin{align}
+                      \hat{\mu}_{MLE} &= \frac{1}{n} \displaystyle\sum_{i=1}^n x_i\\
+                      \hat{\sigma}^2_{MLE} &= \frac{1}{n} \displaystyle\sum_{i=1}^n (x_i - \hat{\mu}_{MLE})^2\\
+                      \end{align}
+                    </blockquote>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 30px;" class="fragment" data-fragment-index="0">
+                      MLE for $\sigma^2$ of a Gaussian is <b>biased</b>: expected result of estimation is <b>not</b> the true parameter!
+                      $$\hat{\sigma}^2_{unbiased} = \frac{1}{n-1} \displaystyle\sum_{i=1}^n (x_i - \hat{\mu}_{MLE})^2$$
+                    </blockquote>
+                    <aside class="notes">
+                      <ul>
+                        <li> Because sample mean needs to be used in the variance estimator the estimator converges to $\frac{n-1}{n} \sigma^2$
+                      </ul>
+                    </aside>
+
+                  </section>
+
+                  <section>
+                    <h2>Refresher: Exponential Family</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
+                         src="figures/Gaussian_ductape.png" alt="Gaussian duct tape">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/0911.4863" target="_blank">Statistical exponential families: A digest with flash cards</a>
+                    </div>
+                    <aside class="notes">
+                      <ul>
+                        <li> The complete family can be expressed as $\prob{x|\eta} = h(x) g(\eta) \exp{\eta^Tu(x)}$
+                        <li> $\eta$ - "natural parameters" of a distribution
+                        <li> $g(\eta)$ is a normalization constant that ensures that $\int h(x)\exp{\eta^Tu(x)}dx = 1$
+                        <li> Express Bernoulli as an exponential family distribution $\theta^H(1-\theta)^H = \exp{H\ln{\theta} + (1-H)\ln{1-\theta)}} = (1-\theta) \exp{\ln{\frac{\theta}{1-\theta}}H}$
+                      </ul>
+                    </aside>
+
+                  </section>
+                </section>
+
+                <section>
+                  <section>
+                    <h2>MLE and KL-divergence</h2>
+                  </section>
+                                    <section>
+                    <h2>How to measure Information</h2>
+                    <ul style="font-size: 36px;">
+                    <li class="fragment roll-in"> Messages are strings of characters from a fixed alphabet.
+                    <li class="fragment roll-in"> The amount of information contained in a message should be a
+                      function of the total number of possible messages.
+                    <li class="fragment roll-in"> If you have an alphabet with $s$ symbols, then there are
+                      $s^\ell$ messages of length, $\ell$.
+                    <li class="fragment roll-in"> The amount of information contained in two messages should be
+                      the sum of the information contained in the individual messages.
+                    <li class="fragment roll-in"> The amount of information in $\ell$ messages of length one
+                      should equal the amount of information in one message of length $\ell$.
+                    </ul>
+                    <aside class="notes">
+                      <ul>
+                        <li> In communication we exchange signals to convey messages
+                        <li> Intuitively, a message is not always equal to another message
+                        <li> Colloquially we speak of the messages conveying some information, but what is information and how can we measure it?
+                          <li> If you think about it for some time, you'll arrive at the following requirements on this hypothetical information measure under the following assumptions.
+                      </ul>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Hartley's Information (1928)</h2>
+                    <blockquote style="width: 100%">
+                      The only function which satisfies these requirements:
+                      \[
+                      \ell \log(s) = \log(s^\ell)
+                      \]
+                    </blockquote>
+                  </section>
+                  <section>
+                    <h2>Shannon's entropy (1948)</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;" class="fragment" data-fragment-index="0">
+                      Let $X$ be a discrete random variable with $n$ outcomes,
+                      $\{x_1,...,x_n\}$. The probability that the outcome will be $x_i$ is
+                      $p(x_i)$. The <emph>average information</emph> (or  <emph>entropy</emph>)
+                      contained in a message about the outcome of $X$ is:
+                    </blockquote>
+                    <blockquote class="fragment" data-fragment-index="1">
+                    \[
+                    H_p = -\sum_{i=1}^n p_X(x_i) \log p_X(x_i)
+                    \]
+                    </blockquote>
+                    <aside class="notes">
+von Neumann told him firmly: "You should call it entropy, for two reasons. In the first place your uncertainty function has been used in statistical mechanics under that name, so it already has a name. In the second place, and more important, no one really knows what entropy really is, so in a debate you will always have the advantage."
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Cross Entropy</h2>
+                    <blockquote>
+                    \[
+                    H_{p,q} = -\sum_{i=1}^n p_X(x_i) \log q_X(x_i)
+                    \]
+                    </blockquote>
+                    <aside class="notes">
+                      Number of bits needed to send a message containing symbols drawn from probability distribution p, when we use a code that was designed to minimize the length of the messages drawn from probability distribution q
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Kullback-Leibler (KL) divergence</h2>
+                    <blockquote class="fragment" data-fragment-index="0">
+                    \[
+                    D_{\rm KL} (P\|Q) = \int P(x) \log \frac{P(x)}{Q(x)}
+                    \]
+                    </blockquote>
+                    <blockquote class="fragment" data-fragment-index="1">
+                    \[
+                    D_{\rm KL} (P\|Q) = \EE_{X\sim P} \left[ \log \frac{P(x)}{Q(x)} \right]
+                    \]
+                    </blockquote>
+                    <div class="fragment" data-fragment-index="2">
+                    \[
+                    D_{\rm KL} (P\|Q) = \EE_{X\sim P} \log P(x) - \EE_{X\sim P} \log Q(x)
+                    \]
+                    </blockquote>
+                    </div>
+                    <aside class="notes">
+                      Is an extra Number of bits needed to send a message containing symbols drawn from probability distribution p, when we use a code that was designed to minimize the length of the messages drawn from probability distribution q <br>
+                      Cross entropy
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>KL divergence is not symmetric</h3>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 150, 1); " width="100%"
+                           src="figures/bimodal_KL.png" alt="KLD">
+                  </section>
+
+                  <section>
+                    <h3>MLE is KL-divergence minimization</h3>
+                    <ul  style="list-style-type: none;">
+                      <li class="fragment roll-in">
+                        $
+                        \hat{\theta}_{MLE} = \underset{\theta}{\argmax} \prob{Q}{D|\theta}
+                        $
+                      <li class="fragment roll-in">
+                        $
+                        \hat{\theta}_{MLE} = \underset{\theta}{\argmax} \prod_{i=1}^{n} \prob{Q}{x_i|\theta}
+                        $
+                      <li class="fragment roll-in">
+                        $
+                        \hat{\theta}_{MLE} = \underset{\theta}{\argmax} \sum_{i=1}^{n} \log \prob{Q}{x_i|\theta}
+                        $
+                      <li class="fragment roll-in">
+                        $
+                        \hat{\theta}_{MLE} = \underset{\theta}{\argmax} \EE_{X\sim P} \log \prob{Q}{X|\theta}
+                        $
+                      <li class="fragment roll-in">
+                        $
+                        D_{\rm KL} (P\|Q) = \EE_{X\sim P} \log P(x) - \EE_{X\sim P} \log Q(x)
+                        $
+
+                    </ul>
+                  </section>
+
+                </section>
+
+
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 1.23,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

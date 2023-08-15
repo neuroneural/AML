@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+     <link href="css/fontawesome-free-6.1.1-web/css/all.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>04: Linear Algebra Recap</h3>
+	            <p>
+	          </section>
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Linear Algebra from scratch <i class="fa-solid fa-baby"></i>
+                      <li class="fragment roll-in"> Linear Algebra In Pictures
+                      <li class="fragment roll-in"> A short demo
+	            </ul>
+                  </section>
+                </section>
+
+                <section>
+                  		  <section>
+                    <h1>Linear Algebra</h1>
+                    <h2><em>from scratch</em></h2>
+		  </section>
+          <section>
+            <h2>Document-term table</h2>
+            <img src="figures/01_venom_table.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -100px">
+              <img src="figures/01_venom_table.svg" alt="venom table" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-bottom: -5%" width="260px" ><br>
+            </div>
+            <h2>Written as a matrix</h2>
+            <img src="figures/02_venom_table.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="70%">
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -170px">
+              <img src="figures/02_venom_table.svg" alt="venom table" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-bottom: -5%" width="260px" ><br>
+            </div>
+            <div id="header-left" style="margin-left: -150px; margin-top: -30px">
+              <img width="300" src="figures/04_docs2words.svg" alt="ranking">
+            </div>
+            <h2>Some operations on documents</h2>
+            <img src="figures/03_venom_operations.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -170px">
+              <img src="figures/05_transpose.svg" alt="venom table" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-bottom: -5%" width="260px" ><br>
+            </div>
+            <div id="header-left" style="margin-left: -150px; margin-top: -30px">
+              <img width="300" src="figures/07_terms2docs.svg" alt="ranking">
+            </div>
+            <h2>Some operations on words</h2>
+            <img src="figures/06_term_selection.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+          <section>
+            <h2>Movie preferences</h2>
+            <img src="figures/08_movie_prefs.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+
+          <section>
+            <h2>Factoring a matrix</h2>
+            <img src="figures/09_factor_matrix.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+
+          <section>
+            <div id="header-right" style="margin-right: -100px">
+              <img src="figures/09_factor_matrix.svg" alt="venom table" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-bottom: -5%" width="260px" ><br>
+            </div>
+            <h2>Factoring a matrix</h2>
+            <img src="figures/10_factor_matrix.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+          <section>
+            <h2>Your turn!</h2>
+            <h3>factor this as a product of 2 vectors</h3>
+            <img src="figures/11_full_rank_to_approximate.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -100px">
+              <img src="figures/11_full_rank_to_approximate.svg" alt="venom table" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-bottom: -5%" width="260px" ><br>
+            </div>
+            <h2>Is this your solution?</h2>
+            <img src="figures/12_outer_product.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -100px">
+              <img src="figures/11_full_rank_to_approximate.svg" alt="venom table" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-bottom: -5%" width="260px" ><br>
+            </div>
+            <h2>How about this?</h2>
+            <img src="figures/13_outer_product2.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+          <section>
+            <h2>Matrix factorization problem</h2>
+            <img src="figures/14_NMF.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+                  <section>
+                    <h2>Additive features</h2>
+                    <row>
+                      <col60>
+                        <ul style="list-style-type: disk; font-size: 26pt">
+                          <li class="fragment roll-in" data-fragment-index="0"> Features are non- negative and only add up
+                          <li class="fragment roll-in" data-fragment-index="1"> Features are unknown: data comes as their combination
+                        </ul>
+                      </col60>
+                      <col>
+                      <div style="position:relative; width:640px; height:800px; margin:0 auto;">
+                        <img class="fragment current-visible" data-transition="slide fade-out" data-fragment-index="0" width="640" src="figures/addfeatures.png" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
+                        <img class="fragment current-visible" data-transition="slide fade-out" data-fragment-index="1" width="640" src="figures/fullface.png" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
+                      </div>
+                      </col>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>Multiplicative updates</h2>
+                    <row style="font-size: 32px;">
+                      <col50>
+                      <ul  style="list-style-type: square;">
+                        <li class="fragment roll-in" data-fragment-index="0"> Setting the learning rates:
+                          \begin{align}
+                          \bm{\eta}_{\bm{H}} &= \frac{\bm{H}}{\bm{W}^T\bm{W}\bm{H}}\\
+                          \bm{\eta}_{\bm{W}} &= \frac{\bm{W}}{\bm{W}^T\bm{H}\bm{H}^T}\\
+                          \end{align}
+                        <li class="fragment roll-in" data-fragment-index="1">Results in updates:
+                          \begin{align*}
+                          \bm{H} &=& \bm{H}\odot \frac{\bm{W}^{T}\bm{X}}
+                          {\bm{W}^{T}\bm{W}\bm{H}}\\
+                          \bm{W} &=& \bm{W}\odot \frac{\bm{X}\bm{H}^{T}}
+                          {\bm{W}\bm{H}\bm{H}^{T}}
+                          \end{align*}
+                      </ul>
+                    </col50>
+                    <col50>
+                      <div class="fragment roll-in" data-fragment-index="2">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width:100%;">
+                          Advantages:
+                        </blockquote>
+                        <ul>
+                          <li> automatic non-negativity constraint satisfaction
+                          <li> adaptive learning rate
+                          <li> no parameter setting
+                        </ul>
+                      </div>
+                    </col50>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>the movie ranking</h2>
+                    <img src="figures/08_movie_prefs.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+                    <img src="figures/15_movie_matrix.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="30%">
+                  </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -100px">
+              <img src="figures/15_movie_matrix.svg" alt="venom table" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-top: -30%" width="260px" ><br>
+            </div>
+            <h2>Rank 1 factorization</h2>
+            <img src="figures/16_rank1_factorization.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -170px">
+              <img src="figures/15_movie_matrix.svg" alt="venom table" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-top: -40%" width="260px" ><br>
+            </div>
+            <h2>Rank 1 factorization: residuals</h2>
+            <img src="figures/17_rank1_factorization_residual.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -170px">
+              <img src="figures/15_movie_matrix.svg" alt="venom table" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-top: -40%" width="260px" ><br>
+            </div>
+            <h2>Rank 2 factorization</h2>
+            <img src="figures/18_rank2_factorization.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -170px">
+              <img src="figures/15_movie_matrix.svg" alt="venom table" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-top: -40%" width="260px" ><br>
+            </div>
+            <h2>genres</h2>
+            <img src="figures/19_genres.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+          <section>
+            <h2>digression: matrix multiplication</h2>
+            <img src="figures/20_component_mmul.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="30%">
+            <img src="figures/21_movie_mmul.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+          <section>
+            <h2>digression: matrix multiplication</h2>
+            <img src="figures/22_normal_mmul.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+          <section>
+            <h2>digression: matrix multiplication</h2>
+            <img src="figures/23_outer_mmul.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
+          </section>
+
+          <section>
+            <h2>Genres</h2>
+            <img src="figures/24_rank2_mmul.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="70%">
+          </section>
+
+                </section>
+
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+            <script src="node_modules/reveal.js-verticator/plugin/verticator/verticator.js"></script>
+            <link rel="stylesheet" href="node_modules/reveal.js-verticator/plugin/verticator/verticator.css">
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  width: 960,
+                  height: 700,
+                  center: true,
+                  hash: true,
+                  controls: false,
+                  keyboard: true,
+                  margin: 0.05,
+                  overview: true,
+                  transition: 'slide', // Transition style: none/fade/slide/convex/concave/zoom
+                  transitionSpeed: 'slow', // Transition speed: default/fast/slow
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ Verticator, RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>17: Expectation Maximization</h3>
+	            <p>
+	          </section>
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Do we even need EM for GMM?
+                      <li class="fragment roll-in"> GMM estimation: a hack
+                      <li class="fragment roll-in"> MLE via EM
+	            </ul>
+                  </section>
+                </section>
+
+                <!-- -------------------------------------------------------------------------         -->
+	        <section>
+                  <section>
+                    <h2>Do we even need EM for GMM?</h2>
+                  </section>
+
+                  <section>
+                    <h2>Gaussian Mixture Model</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3;">
+                      Likelihood:
+                      $
+                      \sum_{k=1}^K \pi_k\prob{N}{\vec{x}|\vec{\mu}_k, \bm{\Sigma}_k}
+                      $
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5; font-size: 32px;">
+                      \begin{align}
+                      \mbox{ for simplicity }\bm{\Sigma}_k & = \sigma^2 \bm{I}\\
+                      \prob{p}{\vec{x}|y=k} & = \prob{N}{\vec{\mu}_k, \sigma^2 \bm{I}}\\
+                      \prob{p}{y=k} & = \pi_k\\
+                      \mbox{parameters: } & \vec{\mu}_1, \dots \vec{\mu}_K, \\
+                      &\sigma^2, \\
+                      & \pi_1, \dots, \pi_K
+                      \end{align}
+                    </blockquote>
+                    <alert  class="fragment" data-fragment-index="0">But do we even need the hidden variables?</alert>
+                    <aside class="notes">
+                      Class: how else beside what we covered last lecture can we find the likelihood?
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Maximum (Log) Likelihood Estimation</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; font-size: 28pt;">
+                      \begin{align}
+                      \ln{ \prob{p}{\bm{X}|\{\vec{\mu}_k\}, \{\bm{\Sigma}_k\}}} &= \sum_{n=1}^N\ln\{\sum_{k=1}^K \pi_k\prob{N}{\vec{x}_n|\vec{\mu}_k, \sigma_k\bm{I}} \}
+                      \end{align}
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Difficult to optimize</h2>
+                    <ul  style="list-style-type: none; font-size: 30px">
+                      <li class="fragment fade-in-then-semi-out"> Remember the exponential family?
+                        \[
+                        \prob{p}{\vec{x}|\vec{\eta}} = \prob{h}{\vec{x}}\prob{g}{\vec{\eta}}e^{\vec{\eta}^T\prob{u}{\vec{x}}}
+                        \]
+                      <li class="fragment fade-in-then-semi-out"> How easy the $\log$-likelihood was back then
+                        \begin{align}
+                        \log{\cal L} & = \sum \log \prob{p}{\vec{x}|\vec{\eta}}\\
+                        & = \sum \log \prob{h}{\vec{x}} + \sum \log \prob{g}{\vec{\eta}} + \sum \vec{\eta}^T\prob{u}{\vec{x}}
+                        \end{align}
+                      <li class="fragment fade-in-then-semi-out"> But $\sum \prob{p}{\vec{x}|\vec{\eta}}$ is not in the exponential familly
+                      <li class="fragment fade-in-then-semi-out">
+                        \begin{align}
+                      \ln{ \prob{p}{\bm{X}| \{\vec{\mu}\}, \{\bm{\Sigma}\}}} &= \sum_{n=1}^N\ln\{\sum_{k=1}^K \pi_k\prob{N}{\vec{x}_n|\vec{\mu}_k, \sigma_k\bm{I}} \}
+                      \end{align}
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Another problem (common to MLE)</h2>
+                    <ul  style="list-style-type: none; font-size: 30pt">
+                      <li class="fragment roll-in"> Suppose $K = 2$
+                      <li class="fragment roll-in"> Suppose one $\vec{\mu}_k = \vec{x}_i$
+                      <li class="fragment roll-in"> What's going to happen with our MLE?
+                        \begin{align}
+                        {\cal N}(x | \mu, \sigma_k) &= \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x_i-\mu_k)^2}{2\sigma_k^2}}
+                        \end{align}
+                    </ul>
+                  </section>
+
+                  <section data-vertical-align-top>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 150, 1); " width="700"
+                           src="figures/MLE_collapse.svg" alt="MLE collapse">
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 28px;">
+                        \begin{align}
+                        {\cal N}(x | \mu, \sigma_k) &= \frac{1}{\sqrt{2\pi}}\frac{1}{\sigma_k^2}\\
+                        \sigma_k &\to 0
+                        \end{align}
+                    </blockquote>
+                  </section>
+
+                </section>
+                <!-- -------------------------------------------------------------------------         -->
+                <section>
+                  <section>
+                    <h2>GMM estimation: a hack</h2>
+                  </section>
+
+                  <section>
+                    <h2>Mixture of 2 Gaussians</h2>
+                    <ul  style="list-style-type: none; font-size: 30pt">
+                      <li class="fragment fade-in-then-semi-out">
+                        \begin{align}
+                        \prob{p}{x_n|\mu_1, \mu_2, \sigma} &= \sum_{k=1}^2 \pi_k\prob{N}{x_n|\mu_k, \sigma}
+                        \end{align}
+                      <li class="fragment fade-in-then-semi-out">
+                        \begin{align}
+                        \prob{p}{x_n|\mu_1, \mu_2, \sigma} &= \sum_{k=1}^2 \pi_k\frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{(x-\mu_k)^2}{2\sigma^2}\right)}
+                        \end{align}
+                      <li class="fragment fade-in-then-semi-out"> Let's assume $\pi_1 = \pi_2 = 1/2$ and packing parameters to $\vec{\theta} = \{\mu_1, \mu_2, \sigma\}$
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Mixture of 2 Gaussians</h2>
+                    <h3>assuming known $\mu_k$ and $\sigma$</h3>
+                    \begin{align}
+                    \prob{P}{k=1|x_n,\vec{\theta}} & = \frac{1}{1 + \exp{\left[-(w_1x_n+w_0)\right]}}\\
+                    \prob{P}{k=2|x_n,\vec{\theta}} & = \frac{1}{1 + \exp{\left[+(w_1x_n+w_0)\right]}}
+                    \end{align}
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3;" class="fragment" data-fragment-index="0">
+                      recall logistic regression and softmax!
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Mixture of 2 Gaussians</h2>
+                    <h3>assuming known $\sigma$ but not $\mu_k$</h3>
+                    <ul  style="list-style-type: none; font-size: 28px">
+                      <li class="fragment fade-in-then-semi-out">
+                        \begin{align}
+                        \prob{p}{x_n|\mu_1, \mu_2, \sigma} &= \sum_{k=1}^2 \pi_k\frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{(x-\mu_k)^2}{2\sigma^2}\right)}
+                        \end{align}
+                      <li class="fragment fade-in-then-semi-out">
+                        \begin{align}
+                        \prob{p}{\bm{X}|\mu_1, \mu_2, \sigma} &= \underset{n}{\prod} \prob{p}{x_n|\mu_1, \mu_2, \sigma}
+                        \end{align}
+                      <li class="fragment fade-in-then-semi-out"> As you'll show, log-likelihood derivative is
+                        \begin{align}
+                        \frac{\partial {\cal L}}{\partial \mu_k} &= \sum_n \prob{P}{k|x_n,\vec{\theta}} \frac{x-\mu_k}{\sigma^2}
+                        \end{align}
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Mixture of 2 Gaussians</h2>
+                    <h3>assuming known $\sigma$ but not $\mu_k$</h3>
+                    <ul  style="list-style-type: none; font-size: 30pt">
+                      <li class="fragment fade-in-then-semi-out"> As you'll show, log-likelihood derivative is
+                        \begin{align}
+                        \frac{\partial {\cal L}}{\partial \mu_k} &= \sum_n \prob{P}{k|x_n,\vec{\theta}} \frac{x-\mu_k}{\sigma^2}
+                        \end{align}
+                      <li class="fragment fade-in-then-semi-out"> As you'll show next$^{*}$
+                        \begin{align}
+                        \frac{\partial^2 {\cal L}}{\partial^2 \mu_k} &= -\sum_n \prob{P}{k|x_n,\vec{\theta}} \frac{1}{\sigma^2}
+                        \end{align}
+
+                    </ul>
+                    <div class="slide-footer">
+                      Ignore $\frac{\partial}{\partial \mu_k}\prob{P}{k|x_n,\vec{\theta}}$
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Mixture of 2 Gaussians</h2>
+                    <h3>assuming known $\sigma$ but not $\mu_k$</h3>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%;" class="fragment" data-fragment-index="0">
+                      Using the good old Newton-Raphson update: $\mu = \mu - \frac{\partial {\cal L}}{\partial \mu_k}/\frac{\partial^2 {\cal L}}{\partial^2 \mu_k}$
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5; width: 100%;" class="fragment" data-fragment-index="1">
+                      You will show
+                      \[
+                      \mu_k = \frac{\sum_n \left(\prob{P}{k|x_n,\vec{\theta}} x_n\right)}{\sum_n \prob{P}{k|x_n,\vec{\theta}} }
+                      \]
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Compare to soft k-means: Iterations</h2>
+                    <blockquote style="background-color: #eee8d5; width: 100%;">
+                      Update
+                    </blockquote>
+                    <ul>
+                      <li> Re-estimate the $K$ cluster centers (aka the centroid or mean), by assuming the memberships found above are correct.
+                        \begin{align}
+                        \hat{\mu}_k &= \frac{\underset{n}{\sum}r_k^n \vec{x}_n}{R_k}\\
+                        R_k &= \underset{n}{\sum} r_k^n
+                        \end{align}
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>GMMs and k-means</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%;" class="fragment" data-fragment-index="0">
+                      <ul>
+                        <li> responsibilities are posteriors over latents
+                        <li> update is maximization of the likelihood
+                      </ul>
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5; width: 100%;" class="fragment" data-fragment-index="1">
+                      Both "hacky" approaches to solve a latent variable problem use the same general technique
+                    </blockquote>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%;" class="fragment" data-fragment-index="2">
+                      Expectation Maximization: a meta-algorithm
+                    </blockquote>
+
+                  </section>
+                </section>
+                <!-- -------------------------------------------------------------------------         -->
+	        <section>
+                  <section data-background="figures/EM_paper_transparent.png"
+                           data-background-size="contain" data-transition="zoom" data-transition-speed="slow">
+                      <!-- <img style="border:0; box-shadow: 1px 1px 10px rgba(150, 150, 150, 1); " width="1200" -->
+                      <!--      src="figures/EM_paper.png" alt="EM paper"> -->
+                      <div class="slide-footer" style="text-shadow: 1px 1px 10px rgba(50, 50, 50, 1);">
+                        <a href="https://web.mit.edu/6.435/www/Dempster77.pdf">Maximum Likelihood from Incomplete Data via the EM Algorithm</a>
+                      </div>
+                  </section>
+
+                  <section data-background="figures/EM_paper_transparent.png"
+                           background-size="cover" data-transition="zoom" data-transition-speed="slow">
+                    <h3 style="text-shadow: 1px 1px 10px rgba(50, 50, 50, 1); color: #ff6f6f;">too important to simply skim!</h3>
+                      <img style="border:0; box-shadow: 1px 1px 10px rgba(150, 150, 150, 1); " width="1200" class="reveal"
+                           src="figures/EM_praise.png" alt="EM paper">
+                  </section>
+
+                  <section>
+                    <h2>Convexity</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1200"
+                         src="figures/EM_convex.svg" alt="Convexity">
+                  </section>
+
+                  <section>
+                    <h2>Shades of Convex</h2>
+                    <row>
+                      <col30>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%;">
+                          Convex
+                        </blockquote>
+                        <img width="100%" src="figures/just_convex.png" alt="convex">
+                      </col30>
+                      <col30>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%;">
+                          Strictly convex
+                        </blockquote>
+                        <img width="100%" src="figures/strictly_convex.png" alt="strictly convex">
+                      </col30>
+                      <col30>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%;">
+                          Strongly convex
+                        </blockquote>
+                        <img width="100%" src="figures/strongly_convex.png" alt="strongly convex">
+                      </col30>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>Convexity</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3;">
+                      Theorem:
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5;">
+                      if $f(x)$ is twice differentiable on $[a,b]$ and $f^{\prime \prime}(x) \ge 0$ on $[a,b]$ then $f(x)$ is convex on $[a,b]$.
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Convexity of logarithm</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3;">
+                      Theorem:
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5;">
+                      $-\ln(x)$ is strictly convex on $(0, \infty)$
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Jensen's inequality</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3;">
+                      Theorem:
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5;">
+                      Let $f$ be a convex function on an interval $I$. If $x_1, x_2, \dots, x_n \in I$ with $\lambda_1, \lambda_2, \dots, \lambda_n \ge 0$ and $\sum_{i=1}^n\lambda_i=1$
+                      \begin{align}
+                      f\left(\sum_{i=1}^n\lambda_ix_i\right) & \le \sum_{i=1}^n \lambda_i f(x_i)
+                      \end{align}
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Thanks to Jensen's inequality</h2>
+                    <blockquote style="background-color: #eee8d5;">
+                      \begin{align}
+                      \ln\left(\sum_{i=1}^n\lambda_ix_i\right) & \le \sum_{i=1}^n \lambda_i \ln{(x_i)}
+                      \end{align}
+                    </blockquote>
+                    <alert  class="fragment" data-fragment-index="0">Now we are ready</alert>
+                  </section>
+
+
+                  <section>
+                    <h3>Derivation of EM algorithm</h3>
+                    <ul  style="list-style-type: none; font-size: 30pt">
+                      <li class="fragment roll-in"> Our goal is to maximize the likelihood function:
+                        \[
+                        \prob{L}{\vec{\theta}} = \ln \prob{P}{\bm{X}|\vec{\theta}}
+                        \]
+                      <li class="fragment roll-in"> Equivalently if at step $n$ we have $\vec{\theta}_n$, we want such $\vec{\theta}$
+                        \[
+                        \prob{L}{\vec{\theta}} \gt \prob{L}{\vec{\theta}_n}
+                        \]
+                      <li class="fragment roll-in"> Yet, equivalently we want to maximize
+                        \[
+                        \prob{L}{\vth} - \prob{L}{\vec{\theta}_n} = \ln\prob{P}{\bm{X}|\vec{\theta}} - \ln\prob{P}{\bm{X}|\vec{\theta}_n}
+                        \]
+                      <li class="fragment roll-in">
+                        <alert>Looks difficult!</alert>
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Introducing random variables $\vec{z}$</h2>
+                    <ul  style="list-style-type: none; font-size: 30pt">
+                      <li class="fragment roll-in">
+                        \[
+                        \prob{P}{\bm{X}|\vec{\theta}} = \sum_{\vec{z}} \prob{P}{\bm{X}|\vec{z}, \vth}\prob{P}{\vec{z}|\vth}
+                        \]
+                      <li class="fragment roll-in">
+                        \[
+                        \prob{L}{\vth} - \prob{L}{\vec{\theta}_n} = \ln\prob{P}{\bm{X}|\vec{\theta}} - \ln\prob{P}{\bm{X}|\vec{\theta}_n}
+                        \]
+                      <li class="fragment roll-in"> Becomes
+                        \[
+                        \prob{L}{\vth} - \prob{L}{\vec{\theta}_n} = \ln \sum_{\vec{z}} \prob{P}{\bm{X}|\vec{z}, \vth}\prob{P}{\vec{z}|\vth} - \ln\prob{P}{\bm{X}|\vec{\theta}_n}
+                        \]
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Modifying the objective</h2>
+                      <img width="850" src="figures/EM_rearrangement1.svg" alt="EM objective">
+                  </section>
+
+                  <section>
+                    <h2>Define the lower bound</h2>
+                    \begin{align}
+                    {\cal L}(\vth|\vth_n) & \def \prob{L}{\vth_n} + \Delta(\vth|\vth_n)\\
+                    \prob{L}{\vth} & \ge {\cal L}(\vth|\vth_n)\\
+                    \end{align}
+                  </section>
+
+                  <section>
+                    <h3>When $\prob{L}{\vth} = {\cal L}(\vth|\vth_n)$</h3>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 150, 1); " width="1000"
+                           src="figures/EM_lower_bound.svg" alt="EM lower bound">
+                  </section>
+
+                  <section>
+                    <h3>What happens when we optimize $\cal L$</h3>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 150, 1); " width="1000"
+                           src="figures/EM_iterative_lower_bounding.svg" alt="EM figure iterative">
+                  </section>
+
+                  <section>
+                    <h3>What happens when we optimize $\cal L$</h3>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 150, 1); " width="1000"
+                           src="figures/EM_EM.svg" alt="EM formally">
+                  </section>
+
+                  <section>
+                    <h3>Kullback-Leibler divergence</h3>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 150, 1); " width="1000"
+                           src="figures/bimodal_KL.png" alt="KLD">
+                  </section>
+
+                  <section>
+                    <h3>Yet another view of EM (ELBO)</h3>
+                  </section>
+
+                </section>
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 0.93,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

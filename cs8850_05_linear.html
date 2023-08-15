@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>05: Linear models</h3>
+	            <p>
+	          </section>
+
+                  <section>
+                    <h3>Schedule</h3>
+
+                    <row>
+                      <col50>
+                      <table style="font-size:14px">
+                        <tr>
+                          <th>#</th>
+                          <th>date</th>
+                          <th>topic</th>
+                          <th>description</th>
+                        </tr>
+                        <tr><td>1</td>
+                          <td> 22-Aug-2022 </td>
+                          <td> Introduction </td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>  2 </td>
+                          <td> 24-Aug-2022 </td>
+                          <td> Foundations of learning </td>
+                          <td> </td>
+                        </tr>
+                        <tr><td>  3  </td><td> 29-Aug-2022 </td><td> PAC learnability </td><td>             </td></tr>
+                        <tr><td>  4 </td><td> 31-Aug-2022 </td><td>      Linear algebra (recap) </td><td>   hw1 released   </td></tr>                        
+                        <tr style='background-color: #FBEEC2;'><td>   </td><td> 05-Sep-2022 </td><td> <em>Holiday</em>         </td><td>         </td></tr>
+                        <tr style='background-color: #E0E4CC;'><td>  5 </td><td> 07-Sep-2022 </td><td> Linear learning models </td><td>   <i class='fa fa-map-marker' style='color: #FA6900;'></i>   </td></tr>
+                        <tr><td>  6 </td><td> 12-Sep-2022 </td><td> Principal Component Analysis       </td><td> project ideas  </td></tr>
+                        <tr><td>  7 </td><td> 14-Sep-2022  </td><td>  Curse of Dimensionality          </td></td></td><td> hw1 due </td></tr>
+<tr><td> 8 </td><td> 19-Sep-2022  </td><td>  Bayesian Decision Theory  </td><td>hw2 release</td></tr>
+<tr><td> 9 </td><td> 21-Sep-2022  </td><td> Parameter estimation: MLE </td><td></td></tr>
+<tr><td> 10 </td><td> 26-Sep-2022 </td><td> Parameter estimation: MAP & NB</td><td>finalize teams</td></tr>
+<tr><td> 11 </td><td> 28-Sep-2022 </td><td> Logistic Regression  </td><td>             </td></tr>
+<tr><td> 12 </td><td> 03-Oct-2022 </td><td> Kernel Density Estimation </td><td>             </td></tr>
+<tr><td> 13 </td><td> 05-Oct-2022 </td><td> Support Vector Machines </td><td>  hw3, hw2 due       </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 10-Oct-2022 </td><td>   * Mid-point projects checkpoint     </td><td>    *    </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 12-Oct-2022 </td><td>   * Midterm: Semester Midpoint       </td><td> exam   </td></tr>
+<tr><td> 14 </td><td> 17-Oct-2022  </td><td>Matrix Factorization</td><td>           </td></tr>
+<tr><td> 15 </td><td> 19-Oct-2022  </td><td>Stochastic Gradient Descent</td><td>      </td></tr>
+</table>
+</col50>
+<col50>
+<table style="font-size:14px; vertical-align: top;">
+  <tr>
+    <th>#</th>
+    <th>date</th>
+    <th>topic</th>
+    <th>description</th>
+  </tr>
+  <tr><td> 16 </td><td> 24-Oct-2022 </td><td> k-means clustering  </td><td> </td></tr>
+  <tr><td> 17 </td><td> 26-Oct-2022 </td><td> Expectation Maximization </td><td> hw4, hw3 due             </td></tr>
+  <tr><td> 18 </td><td> 31-Oct-2022 </td><td> Automatic Differentiation </td><td> </td></tr>
+  <tr><td> 19  </td><td> 02-Nov-2022 </td><td> Nonlinear embedding approaches </td><td>  </td></tr>
+  <tr><td> 20 </td><td> 07-Nov-2022 </td><td> Model comparison I </td><td> </td></tr>
+  <tr><td> 21 </td><td> 09-Nov-2022 </td><td> Model comparison II  </td><td> hw5, hw4 due</td></tr>
+  <tr><td> 22 </td><td> 14-Nov-2022 </td><td> Model Calibration </td><td> </td></tr>
+  <tr><td> 23 </td><td> 16-Nov-2022  </td><td> Convolutional Neural Networks  </td><td>             </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 21-Nov-2022  </td><td> <em>Fall break</em> </td><td>            </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 23-Nov-2022 </td><td> <em>Fall break</em> </td><td>   </td></tr>
+  <tr><td> 24 </td><td> 28-Nov-2022 </td><td> Word Embedding </td><td> hw5 due </td></tr>
+  <tr style='background-color: #FBEEC2;'><td> </td><td> 30-Nov-2022 </td><td> Presentation and exam prep day </td><td> </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 02-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 07-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td> </td><td> 12-Dec-2022 </td><td> * Final Exam    </td><td>   *     </td></tr>
+  <tr><td> </td><td> 15-Dec-2022  </td><td> Grades due   </td><td>             </td></tr>
+</table>
+</col50>
+</row>
+</section>
+                  
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Linear decision boundary
+                      <li class="fragment roll-in"> Perceptron
+                      <li class="fragment roll-in"> Perceptron extensions
+                      <li class="fragment roll-in"> Non-separable case
+	            </ul>
+                  </section>
+                </section>
+
+ <!-- -------------------------------------------------------------------------         -->
+        <section>
+          <section data-background="figures/motorneuron.jpg">
+            <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Linear Decision Boundary</h2>
+          </section>
+
+          <section>
+            <h2>A Hyperplane</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
+                 src="figures/perceptron.png" alt="perceptron">
+            <aside class="notes">
+              Line equation on the board<br>
+              talk about orthogonality<br>
+              talk about the value should be the same for all points wx_1+b = wx_2+b<br>
+            <aside>
+          </section>
+
+          <section>
+            <h2>A Hyperplane</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="500"
+                 src="figures/tiltedplane.png" alt="hyperplane">
+            <aside class="notes">
+              talk about bias and distance. normalized vs unnormalized w. shortest distance and projection.
+              $x = x_p + r\frac{w}{\|w\|}$
+            <aside>
+          </section>
+
+
+          <section>
+            <h2>An example!</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                 src="figures/iris.png" alt="iris">
+            <div class="slide-footer">
+              <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set" target="blank_">about the dataset</a>
+              </div>
+            <aside class="notes">
+              linearly separable, separating vector
+<br>
+              The Iris flower data set or Fisher's Iris data set is a multivariate data set introduced by the British statistician, eugenicist, and biologist Ronald Fisher in his 1936 paper The use of multiple measurements in taxonomic problems as an example of linear discriminant analysis.[1] It is sometimes called Anderson's Iris data set because Edgar Anderson collected the data to quantify the morphologic variation of Iris flowers of three related species.[2] Two of the three species were collected in the Gaspé Peninsula "all from the same pasture, and picked on the same day and measured at the same time by the same person with the same apparatus".[3] Fisher's paper was published in the journal, the Annals of Eugenics, creating controversy about the continued use of the Iris dataset for teaching statistical techniques today.<br>
+
+The data set consists of 50 samples from each of three species of Iris (Iris setosa, Iris virginica and Iris versicolor). Four features were measured from each sample: the length and the width of the sepals and petals, in centimeters. Based on the combination of these four features, Fisher developed a linear discriminant model to distinguish the species from each other.
+            <aside>
+          </section>
+
+          <section>
+            <h2>Solution region</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
+                 src="figures/solution_region.png" alt="solution region">
+            <div class="slide-footer">
+              <a href="https://www.wiley.com/en-us/Pattern+Classification%2C+2nd+Edition-p-9780471056690" target="blank_">Pattern Classification</a>
+              </div>
+
+
+            <aside class="notes">
+              linearly separable, separating vector, sign, can use -1, 1 labels and not worry about the sign
+            <aside>
+          </section>
+
+          <section>
+            <h2>Example: linear separability</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700" class="reveal"
+                 src="figures/example_separable.png" alt="separable and not">
+            <aside class="notes">
+              linearly separable
+            <aside>
+          </section>
+
+        </section>
+
+ <!-- -------------------------------------------------------------------------         -->
+        <section>
+          <section data-background="figures/RosenblattPerceptronMarkI.jpg">
+            <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Perceptron</h2>
+          </section>
+
+          <section>
+            <h2>A Hyperplane</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
+                 src="figures/perceptron.png" alt="perceptron">
+            <aside class="notes">
+              Line equation on the board<br>
+              talk about orthogonality<br>
+              talk about the value should be the same for all points wx_1+b = wx_2+b<br>
+            </aside>
+          </section>
+
+          <section>
+            <div id="header-right" style="right: -20%;">
+              <img width="140px" style="margin-bottom: -5%"
+                   src="figures/Cajal-Restored.jpg" alt="Santiago Ramón y Cajal"><br>
+              <small>Ramon y Cajal</small>
+            </div>
+            <h2>A Neuron</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="400"
+                 src="figures/neuron_cahal.png" alt="cahal">
+
+            <div class='slide-footer'>
+              <a href="https://en.wikipedia.org/wiki/Neuron#History" target="blank_">Neuron discovery</a>
+            </div>
+            <aside class="notes">
+              The neuron's place as the primary functional unit of the nervous system was first recognized in the late 19th century through the work of the Spanish anatomist Santiago Ramón y Cajal
+            </aside>
+          </section>
+
+          <section>
+            <h2>A Perceptron</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                 src="figures/two_neurons.png" alt="perceptron">
+            <aside class="notes">
+            </aside>
+          </section>
+
+          <section>
+            <h2>Criterion (objective)</h2>
+            $$ J(\vec{w}) = -\sum_{\text{incorrect } i} l_i\vec{w}^Tx_i$$
+            $\vec{w}$ - parameters of our model (the perceptron)
+          </section>
+
+          <section>
+            <h2>Batch Perceptron</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);"
+                 width="1000"
+                 src="figures/perceptron.svg" alt="perceptron batch">
+            <br>
+            ${\cal Y}$ is the set of samples misclassified by $\vec{w}$
+          </section>
+
+          <section>
+            <h2>Stochastic Perceptron</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150,
+                        150, 255, 1);" width="800"
+                 src="figures/perceptron_s.svg" alt="perceptron stochastic">
+          </section>
+
+          <section>
+            <h3>Stochastic Algorithm Convergence theorem</h3>
+            <blockquote style="text-align: left; width: 100%">
+              If the training samples are linearly separable then the sequence of weight vectors in line 4 of Algorithm 2 will terminate at a solution vector.
+            </blockquote>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
+                 src="figures/perceptron_s.svg" alt="perceptron stochastic">
+          </section>
+          <section>
+            <h3>Proof</h3>
+            <div class="fragment" data-fragment-index="0" >
+              Let us show that for any solution $\widetilde{\vec{w}}$ the following holds:
+              $$\|\vec{w}_{k+1} - \widetilde{\vec{w}}\| \le \|\vec{w}_{k} - \widetilde{\vec{w}}\| $$
+            </div>
+            <aside class="notes">
+              not true in general but true for sufficiently long w
+            </aside>
+          </section>
+
+          <section>
+            <div id="header-right">
+              <div class="fragment" data-fragment-index="1" >
+                <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="300"
+                     src="figures/solution_region.png" alt="solution region">
+              </div>
+            </div>
+
+            <h2>Proof (1/3)</h2>
+            <div style="font-size:32px">
+              <div class="fragment" data-fragment-index="0" >
+                $\vec{w}_{k+1} = \vec{w}_k + l_k \vec{x}_k$
+              </div>
+              <div class="fragment" data-fragment-index="1" >
+                $l_k \widetilde{\vec{w}}^T\vec{x}_k > 0$
+              </div>
+
+              <div class="fragment" data-fragment-index="2" >
+                $\vec{w}_{k+1} - \alpha \widetilde{\vec{w}} = (\vec{w}_k - \alpha \widetilde{\vec{w}}) + l_k \vec{x}_k$
+              </div>
+
+              <div class="fragment" data-fragment-index="3" >
+                $\|\vec{w}_{k+1} - \alpha \widetilde{\vec{w}}\|^2 = \|(\vec{w}_k - \alpha \widetilde{\vec{w}}) + l_k \vec{x}_k\|^2$
+              </div>
+
+              <div class="fragment" data-fragment-index="4" >
+                $\|\vec{w}_{k+1} - \alpha \widetilde{\vec{w}}\|^2 = \|\vec{w}_k - \alpha \widetilde{\vec{w}}\|^2 + 2(\vec{w}_k - \alpha \widetilde{\vec{w}})^T\vec{x}_kl_k  + \|l_k \vec{x}_k\|^2$
+              </div>
+
+              <div class="fragment" data-fragment-index="5" >
+                $\|\vec{w}_{k+1} - \alpha \widetilde{\vec{w}}\|^2 = \|\vec{w}_k - \alpha \widetilde{\vec{w}}\|^2 + 2\vec{w}_k^T\vec{x}_kl_k  - 2\alpha \widetilde{\vec{w}}^T\vec{x}_kl_k + \|l_k \vec{x}_k\|^2$
+              </div>
+
+              <div class="fragment" data-fragment-index="6" >
+                $\vec{w}_{k}^Tl_k \vec{x}_k \le 0$ since $\vec{x}_k$ was misclassified
+              </div>
+
+              <div class="fragment" data-fragment-index="7" >
+                $\|\vec{w}_{k+1} - \alpha \widetilde{\vec{w}}\|^2 \le \|\vec{w}_k - \alpha \widetilde{\vec{w}}\|^2 - 2 \alpha \widetilde{\vec{w}}^Tl_k \vec{x}_k + \|l_k \vec{x}_k\|^2$
+              </div>
+            </div>
+
+            <aside class="notes">
+              let alpha be a positive scale factor
+            </aside>
+          </section>
+
+          <section>
+            <h3>Proof (2/3)</h3>
+            <div style="font-size:32px">
+              <div class="fragment" data-fragment-index="0" >
+                $\|\vec{w}_{k+1} - \alpha \widetilde{\vec{w}}\|^2 \le \|\vec{w}_k - \alpha \widetilde{\vec{w}}\|^2 - 2 \alpha \widetilde{\vec{w}}^Tl_k \vec{x}_k + \|l_k \vec{x}_k\|^2$
+              </div>
+              <div class="fragment" data-fragment-index="1" >
+                $\beta^2 = \underset{k}{\max}\|l_k \vec{x}_k\|^2 =  \underset{k}{\max} \|\vec{x}_k\|^2$
+              </div>
+              <div class="fragment" data-fragment-index="2" >
+                $\gamma = \underset{k}{\min}\left[ \widetilde{\vec{w}}^T \vec{x}_kl_k\right] > 0$
+              </div>
+              <div class="fragment" data-fragment-index="3" >
+                $\|\vec{w}_{k+1} - \alpha \widetilde{\vec{w}}\|^2 \le \|\vec{w}_k - \alpha \widetilde{\vec{w}}\|^2 - 2 \alpha \gamma + \beta^2$
+              </div>
+              <div class="fragment" data-fragment-index="4" >
+                $\alpha = \frac{\beta^2}{\gamma}$
+              </div>
+              <div class="fragment" data-fragment-index="5" >
+                $\|\vec{w}_{k+1} - \alpha \widetilde{\vec{w}}\|^2 \le \|\vec{w}_k - \alpha \widetilde{\vec{w}}\|^2 - \beta^2$<br>
+                The distance to solution is reduced by at least $\beta^2$ at each iteration.
+              </div>
+
+            </div>
+
+            <aside class="notes">
+              let alpha be a positive scale factor
+            </aside>
+          </section>
+
+          <section>
+            <h3>Proof (3/3)</h3>
+            <div style="font-size:32px">
+
+              <div class="fragment" data-fragment-index="0" >
+                $\|\vec{w}_{k+1} - \alpha \widetilde{\vec{w}}\|^2 \le \|\vec{w}_k - \alpha \widetilde{\vec{w}}\|^2 - \beta^2$<br>
+                The distance to solution is reduced by at least $\beta^2$ at each iteration.
+              </div>
+              <div class="fragment" data-fragment-index="1" >
+                After $k$ iterations:<br>
+                $\|\vec{w}_{k+1} - \alpha \widetilde{\vec{w}}\|^2 \le \|\vec{w}_1 - \alpha \widetilde{\vec{w}}\|^2 - k\beta^2$
+              </div>
+
+              <div class="fragment" data-fragment-index="2" >
+                The distance cannot become negative, so no more than $k_0$ iterations:<br>
+                $k_0 = \frac{\|\vec{w}_1 - \alpha \widetilde{\vec{w}}\|^2}{\beta^2}$
+              </div>
+
+              <div class="fragment" data-fragment-index="3" >
+                Setting initial paramters to zero $\vec{w}_1 = \vec{0}$:<br>
+                $k_0 = \frac{\alpha^2\|\widetilde{\vec{w}}\|^2}{\beta^2} = \frac{\beta^2\|\widetilde{\vec{w}}\|^2}{\gamma^2} = \frac{\underset{i}{\max} \|\vec{x}_i\|^2\|\widetilde{\vec{w}}\|^2}{\underset{i}{\min}\left[l_i\vec{x}_i^T\widetilde{\vec{w}}\right]}$
+              </div>
+
+            </div>
+
+            <aside class="notes">
+              let alpha be a positive scale factor
+            </aside>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Perceptron Extensions</h2>
+          </section>
+
+          <section>
+            <h2>Margin</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700" class="reveal"
+                 src="figures/margin.png" alt="solution region">
+            <aside class="notes">
+              linearly separable, separating vector
+            <aside>
+          </section>
+
+          <section >
+            <div id="header-right" style="right: -20%; top: -10%;">
+              <img width="300px" style="margin-bottom: -5%"
+                   src="figures/effect_of_margin_perceptron.svg" alt="margin">
+            </div>
+            <div id="header-left" style="left: -20%; top: -8%;">
+              <img width="410px" style="margin-bottom: -5%"
+                   src="figures/perceptron_s.svg" alt="stochastic p">
+            </div>
+
+            <h2>Perceptron with Margin</h2>
+            <div>
+              <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
+                   src="figures/perceptron_m.svg" alt="perceptron margin">
+            </div>
+          </section>
+
+          <section>
+            <h3>Perceptron Relaxation</h3>
+            Define the loss as
+            $$
+            J_r(\vec{w}) = \frac{1}{2} \underset{\text{incorrect}}{\sum} \frac{(\vec{w}^T\vec{x}l - b)^2}{\|l\vec{x}\|^2}
+            $$
+            <div class="fragment" data-fragment-index="0" >
+              Then the gradient is
+              $$
+              \nabla_{\vec{w}} J_r = \underset{\text{incorrect}}{\sum} \frac{\vec{w}^T\vec{x}l - b}{\|l\vec{x}\|^2}\vec{x}l
+              $$
+            </div>
+
+          </section>
+
+          <section>
+            <h2>Perceptron Relaxation</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                 src="figures/perceptron_r.svg" alt="perceptron relaxed">
+          </section>
+
+          <section>
+            <h3>Perceptron Relaxation: interpretation</h3>
+            $$
+            r(k) = \frac{b - \vec{w}_k^T\vec{x}_kl_k}{\|\vec{x}_kl_k\|}
+            $$
+            <div class="fragment" data-fragment-index="0" >
+              <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="500"
+                   src="figures/relaxation_interpretation.png" alt="relaxation move">
+            </div>
+          </section>
+
+        </section>
+
+        <!-- -------------------------------------------------------------------------         -->
+        <section>
+          <section data-background="figures/XOR.svg">
+            <h2>Non-separable case</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="500"
+                 src="figures/XOR.svg" alt="XOR">
+          </section>
+
+          <section data-fullscreen>
+            <h2>Separable example</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1500"
+                 src="figures/perceptron_convergent.svg" alt="separable">
+          </section>
+
+          <section data-fullscreen>
+            <h2>Multiple restarts</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="25%"
+                 src="figures/perceptron_restarts.svg" alt="separable">
+          </section>
+
+          <section  data-background="figures/perceptron_xor.svg">
+            <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Non-separable example</h2>
+            <img style="border:100; box-shadow: 4px 4px 4px #002b36;" width="60%"
+                 src="figures/perceptron_xor.svg" alt="non-separable">
+          </section>
+
+          <section  data-background="figures/perceptron_xor.svg">
+            <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">AI winter</h2>
+            <img style="border:100; box-shadow: 4px 4px 4px #002b36;" width="35%"
+                 src="figures/Papert_Minsky_Perceptrons_cover.jpg" alt="non-separable">
+          </section>
+
+
+          <section>
+            <h2>What we usually encounter</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="500"
+                 src="figures/not_seperable.png" alt="non separable">
+          </section>
+
+          <section>
+            <h2>Criterion (objective/loss)</h2>
+            $$ J(\vec{w}) = -\sum_{\text{incorrect } i} l_i\vec{w}^T\vec{x}_i$$
+            $\vec{w}$ - parameters of our model (the perceptron)
+            $$ J_{\text{MSE}}(\vec{w}) = \frac{1}{2}\sum_{\forall i} (\vec{w}^T\vec{x}_i - b_i)^2$$
+            $$ \nabla_{\vec{w}} J_{\text{MSE}} = \sum_{\forall i} (\vec{w}^T\vec{x}_i - b_i)\vec{x}_i$$
+          </section>
+
+          <section>
+            <h2>Least Mean Squares</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
+                 src="figures/lms.svg" alt="lms">
+          </section>
+
+          <section>
+            <h2>Least Mean Squares</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                 src="figures/lms_poor.png" alt="lms poor">
+          </section>
+
+        </section>
+
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 1.23,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

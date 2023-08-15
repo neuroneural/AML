@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="css/theme/aml.css" id="theme">
+
+    <!--  1KB grid - 12 columns, 60 pixels each, with 20 pixel gutter -->
+    <style>
+      /* .g1{width:60px;}.g2{width:140px;}.g3{width:220px;}.g4{width:300px;}.g5{width:380px;}.g6{width:460px;}.g7{width:540px;}.g8{width:620px;}.g9{width:700px;}.g10{width:780px;}.g11{width:860px;}.g12{width:940px;} */
+      /* .column{overflow:hidden;float:left;display:inline;margin:0 10px;} */
+      /* .row{width:960px;overflow:hidden;margin:0 auto;}.row .row{width:auto;display:inline-block;margin:0 -10px;} */
+      .row {
+          display: flex;
+          width: 100%;
+          margin:0 auto;
+          overflow:hidden;
+      }
+      .col80 {
+          width: 85%;
+          overflow:hidden;
+      }
+      .col50 {
+          width: 50%;
+          overflow:hidden;
+      }
+      .col40 {
+          width: 40%;
+          overflow:hidden;
+      }
+      .col30 {
+          width: 30%;
+          overflow:hidden;
+      }
+      .col20 {
+          width: 20%;
+          overflow:hidden;
+      }
+
+      .col {
+          flex: 1;
+      }
+
+      row {
+          display: flex;
+          width: 100%;
+          margin:0 auto;
+          overflow:hidden;
+      }
+      col80 {
+          width: 85%;
+          overflow:hidden;
+      }
+      col70 {
+          width: 70%;
+          overflow:hidden;
+      }
+      col60 {
+          width: 60%;
+          overflow:hidden;
+      }
+      col50 {
+          width: 50%;
+          overflow:hidden;
+      }
+      col40 {
+          width: 40%;
+          overflow:hidden;
+      }
+      col30 {
+          width: 30%;
+          overflow:hidden;
+      }
+      col20 {
+          width: 20%;
+          overflow:hidden;
+      }
+      col10 {
+          width: 10%;
+          overflow:hidden;
+      }
+      col {
+          flex: 1;
+      }
+      alert {
+          color: red;
+      }
+
+    </style>
+
+    <style>
+      defhead {
+          background-color: #93a1a1;
+          color: #fdf6e3;
+          font-size: 38px;
+      }
+      .darker
+      {
+          color: red;
+          background-color: #eee8d5;
+      }
+
+      .banner
+      {
+          display: block;
+          width: 100%;
+      }
+    </style>
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+	        <section>
+
+	          <section>
+	            <h2>Advanced Machine Learning</h2>
+                    <h3>14: Gradients</h3>
+	          </section>
+
+	          <section>
+	            <h3>Outline of this lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Stochastic Gradient Descent
+	              <li class="fragment roll-in"> Matrix Factorization (recap)
+	            </ul>
+                  </section>
+
+                </section>
+                <!-- -------------------------------------------------------------------------         -->
+	        <section>
+                  <section>
+                    <h2>Matrix Factorization (recap)</h2>
+                  </section>
+
+                  <section>
+                    <h2>Various matrix factorization methods</h2>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="1000"
+                           src="figures/factorizations.svg" alt="methods">
+                  </section>
+
+                  <section>
+                    <h2>Effect of sparsity parameter</h2>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="1400"
+                           src="figures/sparsity_demo.svg" alt="sparse NMF">
+
+                  </section>
+
+                  <section>
+                    <h2>Things to have in mind</h2>
+                    <row  style="font-size: 32px;">
+                      <col50 class="fragment roll-in" data-fragment-index="0">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                          Principal Component Analysis
+                        </blockquote>
+                        <ul style="font-size: 28px;">
+                          <li class="fragment roll-in" data-fragment-index="1"> Finds orthogonal axes of maximal variance
+                          <li class="fragment roll-in" data-fragment-index="2"> Uses full rank transform
+                          <li class="fragment roll-in" data-fragment-index="3"> Can be used for compression when lower variance axes are dropped at reconstruction
+                          <li class="fragment roll-in" data-fragment-index="4"> Frequently used to pre-process data
+                        </ul>
+                      </col50>
+                      <col50 class="fragment roll-in" data-fragment-index="5">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                          Independent Component Analysis
+                        </blockquote>
+                        <ul style="font-size: 28px;">
+                          <li class="fragment roll-in" data-fragment-index="6"> A blind source separation problem
+                          <li class="fragment roll-in" data-fragment-index="7"> Finds a linear transform that maximizes statistical independence of sources
+                          <li class="fragment roll-in" data-fragment-index="8"> Resulting basis is not orthogonal
+                          <li class="fragment roll-in" data-fragment-index="9"> Noise is often independent of the rest of data
+                        </ul>
+                      </col50>
+                    </row>
+                    <row style="font-size: 32px;">
+                      <col50 class="fragment roll-in" data-fragment-index="10">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                          Nonnegative Matrix Factorization
+                        </blockquote>
+                        <ul style="font-size: 28px;">
+                          <li class="fragment roll-in" data-fragment-index="11"> Additive features $\to$ nonnegative problem
+                          <li class="fragment roll-in" data-fragment-index="12"> Low rank approximation
+                          <li class="fragment roll-in" data-fragment-index="13"> Multiplicative updates
+                          <li class="fragment roll-in" data-fragment-index="14"> Nonnegativity leads to sparse solution
+                        </ul>
+                      </col50>
+                      <col50 class="fragment roll-in" data-fragment-index="15">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                          Dictionary Learning
+                        </blockquote>
+                        <ul style="font-size: 28px;">
+                          <li class="fragment roll-in" data-fragment-index="16"> Overcomplete dictionary
+                          <li class="fragment roll-in" data-fragment-index="17"> Sparse representation of samples
+                          <li class="fragment roll-in" data-fragment-index="18"> Only a few bases are involved in encoding each sample
+                          <li class="fragment roll-in" data-fragment-index="19"> uses explicit sparsity constraint
+                        </ul>
+                      </col50>
+                    </row>
+                  </section>
+
+                </section>
+
+                <!-- -------------------------------------------------------------------------         -->
+	        <section>
+                  <section>
+                    <h2>Stochastic Gradient Descent</h2>
+                    <div class="slide-footer">
+                      heavily based on Sebastian Ruder's slides for <a href="https://arxiv.org/abs/1609.04747">An overview of gradient descent optimization algorithms</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Gradient Descent</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                      A way to minimize an objective function $\prob{J}{\theta}$
+                    </blockquote>
+                    <ul>
+                      <li> $\prob{J}{\theta}$: Objective function
+                      <li> $\theta \in \RR^d$: parameters of the model
+                      <li> $\eta$: Learning rate that determines the size of steps we take
+                    </ul>
+                    <row>
+                      <col50>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                          Update Equation
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5;">
+                          $\theta = \theta - \eta \nabla_{\theta} \prob{J}{\theta}$
+                        </blockquote>
+                      </col50>
+                      <col50>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="1000"
+                           src="figures/SGD_minimum.svg" alt="Gradient Descent">
+                      </col50>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>Gradient Descent Variants</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                      There are 3 of them
+                    </blockquote>
+                    <ul>
+                      <li class="fragment roll-in"> Batch gradient descent
+                      <li class="fragment roll-in"> Stochastic gradient descent
+                      <li class="fragment roll-in"> Mini-batch gradient descent
+                    </ul>
+                    <br>
+                    <br>
+                    <row>
+                      <col50>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                          Update Equation
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5;">
+                          $\theta = \theta - \eta {\color{red} \nabla_{\theta} \prob{J}{\theta}}$
+                        </blockquote>
+                      </col50>
+                      <col50>
+                        <blockquote style="background-color: #eee8d5;">
+                          <alert>The red term</alert> is different for each method
+                        </blockquote>
+                      </col50>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>Trade Off</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                      Depending on the amount of data
+                    </blockquote>
+                    <ul>
+                      <li> The accuracy of the parameter update
+                      <li> The time is takes to perform an update
+                    </ul>
+                    <br>
+                    <br>
+                    <table>
+                      <tr>
+                        <th> Method </th>
+                        <th> Accuracy </th>
+                        <th> Time </th>
+                        <th> Memory </th>
+                        <th> Online </th>
+                      </tr>
+                      <tr>
+                        <td>Batch</td>
+                        <td><span class="fa fa-thumbs-o-up"/></td>
+                        <td>slow</td>
+                        <td>high</td>
+                        <td><span class="fa fa-times"/></td>
+                      </tr>
+                      <tr>
+                        <td>Stochastic</td>
+                        <td><span class="fa fa-thumbs-o-down"/></td>
+                        <td>fast</td>
+                        <td>low</td>
+                        <td><span class="far fa-check-circle"/></td>
+                      </tr>
+                      <tr>
+                        <td>Mini-batch</td>
+                        <td><span class="fa fa-thumbs-o-up"/></td>
+                        <td>moderate</td>
+                        <td>moderate</td>
+                        <td><span class="far fa-check-circle"/></td>
+                      </tr>
+                    </table>
+                  </section>
+
+                  <section>
+                    <h2>Batch gradient descent</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width:100%;">
+                      Compute the gradient of $\prob{J}{\theta}$ with respect to the entire dataset
+                    </blockquote>
+                    <row>
+                      <col50>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                          Update Equation
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5;">
+                          $\theta = \theta - \eta \nabla_{\theta} \prob{J}{\theta}$
+                        </blockquote>
+                      </col50>
+                      <col50>
+                        <blockquote style="background-color: #eee8d5;">
+                          We need to calculate the gradients for the whole dataset to perform <b>just one update</b>.
+                        </blockquote>
+                      </col50>
+                    </row>
+                    <pre><code>
+for i in range(number_of_epochs):
+   gradient = eval_gradient(loss_fun, data, parameters)
+   parameters = parameters - eta * gradient
+                    </code></pre>
+                  </section>
+
+                  <section>
+                    <h2>Batch gradient descent</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                      Advantage
+                    </blockquote>
+                    <ul style="font-size: 28px;">
+                      <li class="fragment roll-in"> We're working with the best possible error surface
+                      <li class="fragment roll-in"> Guaranteed to converge to a local or global minimum of <b>that</b> surface
+                    </ul>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                      Disadvantages
+                    </blockquote>
+                    <ul style="font-size: 28px;">
+                      <li class="fragment roll-in"> Can be very slow
+                      <li class="fragment roll-in"> Can be intractable due to memory requirements
+                      <li class="fragment roll-in"> No online updates
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Stochastic gradient descent</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width:100%;">
+                      Perform a parameter update for each training example $\vec{x}_i$ and the corresponding label $y_i$
+                    </blockquote>
+                    <row>
+                      <col50>
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                          Update Equation
+                        </blockquote>
+                        <blockquote style="background-color: #eee8d5;">
+                          $\theta = \theta - \eta \nabla_{\theta} \prob{J}{\theta; \vec{x}_i; y_i}$
+                        </blockquote>
+                      </col50>
+                      <col50>
+                        <blockquote style="background-color: #eee8d5;">
+                          We need to evaluate the gradient <b>only for a single data sample</b>.
+                        </blockquote>
+                      </col50>
+                    </row>
+                    <pre><code>
+for i in range(number_of_epochs):
+   np.random.shuffle(data)
+   for example in data:
+       gradient = eval_gradient(loss_fun, example, parameters)
+       parameters = parameters - eta * gradient
+                    </code></pre>
+                  </section>
+
+                  <section>
+                    <h2>Stochastic gradient descent</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                      Advantage
+                    </blockquote>
+                    <ul style="font-size: 28px;">
+                      <li class="fragment roll-in"> It is usually much faster than batch gradient descent.
+                      <li class="fragment roll-in"> It can be used to learn online.
+                    </ul>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                      Disadvantages
+                    </blockquote>
+                    <ul style="font-size: 28px;">
+                      <li class="fragment roll-in"> It performs frequent updates with a high variance that cause the objective function to fluctuate heavily.
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>The fluctuations</h2>
+                    <row>
+                      <col50>
+                        <ul style="font-size: 28px;">
+                          <li class="fragment roll-in"> Batch gradient descent converges to the minimum of the basin the parameters are placed in and the fluctuation is small.
+                          <li class="fragment roll-in"> SGD’s fluctuation is large but it enables to jump to new and potentially better local minima.
+                          <li class="fragment roll-in"> However, this ultimately complicates convergence to the exact minimum, as SGD will keep overshooting
+                        </ul>
+                      </col50>
+                      <col>
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="800"
+                           src="figures/SGD_fluctuations.svg" alt="Fluctuations">
+                      </col>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>learning rate annealing</h2>
+                    <blockquote style="background-color: #eee8d5;">
+                      When we slowly decrease the learning rate, SGD shows the same convergence behaviour as batch gradient descent
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Mini-batch gradient descent</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width:100%;">
+                      Perform an update on a small sample of data
+                    </blockquote>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                      Update Equation
+                    </blockquote>
+                    <blockquote style="background-color: #eee8d5;">
+                      <center>
+                        $\theta = \theta - \eta \nabla_{\theta} \prob{J}{\theta; \vec{x}_{i:i+n}; y_{i:i+n}}$
+                      </center>
+                      <pre><code>
+for i in range(number_of_epochs):
+   np.random.shuffle(data)
+   for batch in batch_iterator(data, batch_size=32):
+       gradient = eval_gradient(loss_fun, batch, parameters)
+       parameters = parameters - eta * gradient
+                      </code></pre>
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Mini-batch gradient descent</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                      Advantage
+                    </blockquote>
+                    <ul style="font-size: 28px;">
+                      <li class="fragment roll-in"> Reduces the variance of the parameter updates.
+                      <li class="fragment roll-in"> Can make use of highly optimized matrix optimizations common to deep learning libraries that make computing the gradient very efficiently.
+                    </ul>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
+                      Disadvantages
+                    </blockquote>
+                    <ul style="font-size: 28px;">
+                      <li class="fragment roll-in"> We have to set the mini-batch size
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Challenges</h2>
+                    <ul style="font-size: 28px;">
+                      <li class="fragment roll-in"> How to set the learning rate
+                      <li class="fragment roll-in"> How to set the learning rate schedule
+                      <li class="fragment roll-in"> How to change the learning rate per parameter
+                      <li class="fragment roll-in"> How to avoid local minima and saddle points
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Gradient descent optimization algorithms</h2>
+                    <ul>
+                      <li> Momentum
+                      <li> Nesterov accelerated gradient
+                      <li> Adagrad
+                      <li> Adadelta
+                      <li> RMSprop
+                      <li> Adam
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>SGD problems</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="1000"
+                         src="figures/SGD_ravines.png" alt="Ravines"><br>
+                    <a href="https://distill.pub/2017/momentum/">Let's look at a simple demo</a>
+                  </section>
+
+                  <section>
+                    <h2>Momentum</h2>
+                    <blockquote style="background-color: #eee8d5;">
+                      \begin{align*}
+                      \vec{v}_t & = \gamma \vec{v}_{t-1} + \eta \nabla_{\theta} \prob{J}{\theta}\\
+                      \vec{\theta} &= \vec{\theta} - \vec{v}_t \\
+                      \gamma &\simeq 0.9
+                      \end{align*}
+                    </blockquote>
+                    <div class="fragment" data-fragment-index="0" >
+                      Momentum is accumulated the farther the ball rolls downhill
+                      <br>
+                      <a href="https://distill.pub/2017/momentum/">Let's see the demo again</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Nesterov accelerated gradient</h2>
+                    <h3>when we want to do better than that</h3>
+                    <blockquote style="background-color: #eee8d5;">
+                      \begin{align*}
+                      \vec{v}_t & = \gamma \vec{v}_{t-1} + \eta \nabla_{\theta} \prob{J}{\theta - \gamma \vec{v}_{t-1}}\\
+                      \vec{\theta} &= \vec{\theta} - \vec{v}_t \\
+                      \gamma &\simeq 0.9
+                      \end{align*}
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h2>Adam</h2>
+                    <blockquote style="background-color: #eee8d5; font-size:32px">
+                      \begin{align*}
+                      \vec{m}_t & = \beta_1 \vec{m}_{t-1} + (1 - \beta_1) \nabla_{\theta} \prob{J}{\theta}\\
+                      \vec{v}_t & = \beta_2 \vec{v}_{t-1} + (1 - \beta_2) (\nabla_{\theta} \prob{J}{\theta})^2\\
+                      \hat{\vec{m}}_t &= \frac{m_t}{1 - \beta_1^t}\\
+                      \hat{\vec{v}}_t &= \frac{v_t}{1 - \beta_2^t}\\
+                      \vec{theta}_{t+1} &= \theta_t - \frac{\eta}{\sqrt{\hat{\vec{v}}_t} + \epsilon} \hat{\vec{m}}_t\\
+                      \beta_1 &\simeq 0.9\\
+                      \beta_2 &\simeq 0.999\\
+                      \epsilon &\simeq 10^{-8}\\
+                      \end{align*}
+                    </blockquote>
+                  </section>
+
+
+                  <section>
+                    <h2>Many more but use Adam if in doubt</h2>
+                  </section>
+
+                  <section>
+                    <h2>The rise of the SGD</h2>
+                    <div class="slide-footer"><a href="https://ai.googleblog.com/2018/12/the-neurips-2018-test-of-time-award.html">
+                        "The Trade-Offs of Large Scale Learning" by Léon Bottou and Olivier Bousquet 2007
+                    </a></div>
+                    <aside class="notes">
+                      Talk about why and how SGD became
+                    </aside>
+                  </section>
+
+                </section>
+                <!-- -------------------------------------------------------------------------         -->
+                <section>
+                  <section>
+                    <h2>Deeper models and gradients</h2>
+	          </section>
+
+	        </section>
+                <!-- -------------------------------------------------------------------------         -->
+                <section>
+                  <section>
+                    <h2>Back propagation: the classical presentation</h2>
+	          </section>
+
+	        </section>
+                <!-- -------------------------------------------------------------------------         -->
+                <section>
+                  <section>
+                    <h2>Algorithmic Differentiation</h2>
+	          </section>
+
+	        </section>
+                <!-- -------------------------------------------------------------------------         -->
+                <section>
+                  <section>
+                    <div id="header-right">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="200"
+                           src="figures/rogers.jpg" alt="Rogers">
+                    </div>
+                    <h2>Reverse Mode AD</h2>
+                    <h3>by Dr. Silva</h3>
+	          </section>
+
+                  <section>
+                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment" data-fragment-index="0">
+                      \begin{align}
+                      y &= \log(\sin(x^2))
+                      \end{align}
+                    </blockquote>
+
+                    <row>
+                        <col80>
+                        <ul  style="list-style-type: none; font-size: 22pt">
+                            <li class="fragment roll-in" data-fragment-index="1"> Traces:
+                            <li class="fragment roll-in" data-fragment-index="2"> Primal
+                            <li class="fragment roll-in" data-fragment-index="3"> Tangent Derivative
+                            <li class="fragment roll-in" data-fragment-index="4"> Cotangent Derivative
+                          </ul>
+                        </col80>
+                        <col80>
+                          <ul  style="list-style-type: none; font-size: 22pt">
+                              <li class="fragment roll-in" data-fragment-index="1"> Direction:
+                              <li class="fragment roll-in" data-fragment-index="2"> $\leftarrow$ Forward
+                              <li class="fragment roll-in" data-fragment-index="3"> $\leftarrow$ Forward
+                              <li class="fragment roll-in" data-fragment-index="4"> $\rightarrow$ Reverse
+                          </ul>
+                        </col80>
+                      </row>
+
+                  </section>
+
+                  <section>
+                      <h3>Computation Graph</h3>
+                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;" >
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                           src="figures/graph.png" alt="computational graph">
+                      </blockquote>
+
+                      <ul  style="list-style-type: none; font-size: 22pt">
+                          <li class="fragment roll-in" data-fragment-index="0"> Following precedence rules
+                          <li class="fragment roll-in" data-fragment-index="1"> binary/n-ary operators allowed $\rightarrow$ DAG (tree)
+                          <li class="fragment roll-in" data-fragment-index="1"> $y =$ root, $x =$ leaves
+                      </ul>
+                  </section>
+
+                  <section>
+                      <h3>Intermediate Variables: $z_i$</h3>
+                      <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment" data-fragment-index="0">
+                          \begin{align}
+                          x &\\
+                          z_1 &= x^2\\
+                          z_2 &= sin(z_1)\\
+                          z_3 &= log(z_2)\\
+                          y &= z_3\\
+                          \end{align}
+                      </blockquote>
+                  </section>
+
+                  <section>
+                      <h3>Adjoint: $\bar{z_i} = \frac{\partial y}{\partial z_i}$</h3>
+                  </section>
+
+                  <section>
+                    <h3>Example</h3>
+                    <ul>
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+                      <li class="fragment roll-in"> board
+
+                    </ul>
+                  </section>
+
+                </section>
+
+                <!-- -------------------------------------------------------------------------         -->
+                <section>
+                  <section>
+                    <h2>SGD with second order approximation</h2>
+	          </section>
+
+
+                </section>
+
+              </div>
+
+            </div>
+
+            <script src="js/reveal.js"></script>
+
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+              Reveal.initialize({
+                  controls: true,
+                  progress: true,
+                  slideNumber: true,
+                  //slideNumber: 'c / t',
+                  margin: 0.05,
+
+                  width: 1128,
+                  height: 840,
+
+
+                  // Bounds for smallest/largest possible scale to apply to content
+                  minScale: 0.2,
+                  maxScale: 0.9,
+                  history: true,
+                  center: true,
+
+                  transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+                  // Settings for pdf printing
+                  pdfSeparateFragments: false,
+                  pdfMaxPagesPerSlide: 1,
+                  //          pdfPageHeightOffset: -10,
+                  showNotes: false, //"separate-page",
+
+                  math: {
+                      // mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 10,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      src: "chalkboards/chalkboard_sgd.json",
+                      readOnly: false,
+                      //     toggleChalkboardButton: { left: "30px", bottom: "30px", top: "auto", right: "auto" },
+                      //     toggleNotesButton: { left: "30px", bottom: "30px", top: "auto", right: "auto" },
+                      //     transition: 800,
+                      theme: "blackboard",
+                      //     background: [ 'rgba(127,127,127,.1)',  path + 'img/blackboard.png' ],
+                      //     grid: { color: 'rgb(50,50,10,0.5)', distance: 80, width: 2},
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  anything: [
+		      {className: "animate",  initialize: (function(container, options){
+			  Reveal.addEventListener( 'fragmentshown', function( event ) {
+			      if (typeof event.fragment.beginElement === "function" ) {
+				  event.fragment.beginElement();
+			      }
+			  });
+			  Reveal.addEventListener( 'fragmenthidden', function( event ) {
+			      if (event.fragment.hasAttribute('data-reverse') ) {
+				  var reverse = event.fragment.parentElement.querySelector('[id=\"' + event.fragment.getAttribute('data-reverse') + '\"]');
+				  if ( reverse && typeof reverse.beginElement === "function" ) {
+				      reverse.beginElement();
+				  }
+			      }
+			  });
+			  if ( container.getAttribute("data-svg-src") ) {
+			      var xhr = new XMLHttpRequest();
+			      xhr.onload = function() {
+				  if (xhr.readyState === 4) {
+				      var svg = container.querySelector('svg');
+				      container.removeChild( svg );
+				      container.innerHTML = xhr.responseText + container.innerHTML;
+				      if ( svg ) {
+					  container.querySelector('svg').innerHTML = container.querySelector('svg').innerHTML + svg.innerHTML;
+				      }
+				  }
+				  else {
+				      console.warn( "Failed to get file. ReadyState: " + xhr.readyState + ", Status: " + xhr.status);
+				  }
+			      };
+			      xhr.open( 'GET', container.getAttribute("data-svg-src"), true );
+			      xhr.send();
+			  }
+		      }) },
+                  ],
+                  // Optional reveal.js plugins
+                  dependencies: [
+                      { src: 'lib/js/classList.js', condition:
+                        function() { return !document.body.classList; } },
+                      { src: 'plugin/math/math.js', async: true },
+                      { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                      { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                      { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+                      { src: 'plugin/zoom-js/zoom.js', async: true },
+                      { src: 'plugin/notes/notes.js', async: true },
+                      { src: 'plugin/chalkboard/chalkboard.js' },
+                      { src: 'plugin/fullscreen/fullscreen.js' },
+                      { src: 'plugin/anything.js' },
+                  ],
+                  keyboard: {
+                      67: function() { RevealChalkboard.toggleNotesCanvas() },	// toggle notes canvas when 'c' is pressed
+                      66: function() { RevealChalkboard.toggleChalkboard() },	// toggle chalkboard when 'b' is pressed
+                      46: function() { RevealChalkboard.clear() },	// clear chalkboard when 'DEL' is pressed
+                      8: function() { RevealChalkboard.reset() },	// reset chalkboard data on current slide when 'BACKSPACE' is pressed
+                      68: function() { RevealChalkboard.download() },	// downlad recorded chalkboard drawing when 'd' is pressed
+                      88: function() { RevealChalkboard.colorNext() },	// cycle colors forward when 'x' is pressed
+                      89: function() { RevealChalkboard.colorPrev() },	// cycle colors backward when 'y' is pressed
+                  },
+
+              });
+
+              Reveal.configure({ slideNumber: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','css/theme/night.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','css/theme/solarized.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <!-- <div id="footer-left"> -->
+                <!--   <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200" -->
+                <!--        src="figures/valentino.png" alt="robot learning"> -->
+                <!-- </div> -->
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

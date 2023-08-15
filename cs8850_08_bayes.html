@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+	              <h2>Advanced Machine Learning</h2>
+                      <h3>08: Bayesian Decision Theory</h3>
+	            <p>
+	          </section>
+
+                  <section>
+                    <h3>Schedule</h3>
+
+                    <row>
+                      <col50>
+                      <table style="font-size:14px">
+                        <tr>
+                          <th>#</th>
+                          <th>date</th>
+                          <th>topic</th>
+                          <th>description</th>
+                        </tr>
+                        <tr><td>1</td>
+                          <td> 22-Aug-2022 </td>
+                          <td> Introduction </td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>  2 </td>
+                          <td> 24-Aug-2022 </td>
+                          <td> Foundations of learning </td>
+                          <td> </td>
+                        </tr>
+                        <tr><td>  3  </td><td> 29-Aug-2022 </td><td> PAC learnability </td><td>             </td></tr>
+                        <tr><td>  4 </td><td> 31-Aug-2022 </td><td>      Linear algebra (recap) </td><td>   hw1 released   </td></tr>
+                        <tr style='background-color: #FBEEC2;'><td>   </td><td> 05-Sep-2022 </td><td> <em>Holiday</em>         </td><td>         </td></tr>
+                        <tr style='background-color: #E0E4CC;'><td>  5 </td><td> 07-Sep-2022 </td><td> Linear learning models </td><td>   </td></tr>
+                        <tr><td>  6 </td><td> 12-Sep-2022 </td><td> Principal Component Analysis       </td><td> project ideas  </td></tr>
+                        <tr><td>  7 </td><td> 14-Sep-2022  </td><td>  Curse of Dimensionality          </td></td></td><td> hw1 due </td></tr>
+<tr><td> 8 </td><td> 19-Sep-2022  </td><td>  Bayesian Decision Theory  </td><td>hw2 release <i class='fa fa-map-marker' style='color: #FA6900;'></i> </td></tr>
+<tr><td> 9 </td><td> 21-Sep-2022  </td><td> Parameter estimation: MLE </td><td></td></tr>
+<tr><td> 10 </td><td> 26-Sep-2022 </td><td> Parameter estimation: MAP & NB</td><td>finalize teams</td></tr>
+<tr><td> 11 </td><td> 28-Sep-2022 </td><td> Logistic Regression  </td><td>             </td></tr>
+<tr><td> 12 </td><td> 03-Oct-2022 </td><td> Kernel Density Estimation </td><td>             </td></tr>
+<tr><td> 13 </td><td> 05-Oct-2022 </td><td> Support Vector Machines </td><td>  hw3, hw2 due       </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 10-Oct-2022 </td><td>   * Mid-point projects checkpoint     </td><td>    *    </td></tr>
+<tr style='background-color: #E5DDCB;'><td>   </td><td> 12-Oct-2022 </td><td>   * Midterm: Semester Midpoint       </td><td> exam   </td></tr>
+<tr><td> 14 </td><td> 17-Oct-2022  </td><td>Matrix Factorization</td><td>           </td></tr>
+<tr><td> 15 </td><td> 19-Oct-2022  </td><td>Stochastic Gradient Descent</td><td>      </td></tr>
+</table>
+</col50>
+<col50>
+<table style="font-size:14px; vertical-align: top;">
+  <tr>
+    <th>#</th>
+    <th>date</th>
+    <th>topic</th>
+    <th>description</th>
+  </tr>
+  <tr><td> 16 </td><td> 24-Oct-2022 </td><td> k-means clustering  </td><td> </td></tr>
+  <tr><td> 17 </td><td> 26-Oct-2022 </td><td> Expectation Maximization </td><td> hw4, hw3 due             </td></tr>
+  <tr><td> 18 </td><td> 31-Oct-2022 </td><td> Automatic Differentiation </td><td> </td></tr>
+  <tr><td> 19  </td><td> 02-Nov-2022 </td><td> Nonlinear embedding approaches </td><td>  </td></tr>
+  <tr><td> 20 </td><td> 07-Nov-2022 </td><td> Model comparison I </td><td> </td></tr>
+  <tr><td> 21 </td><td> 09-Nov-2022 </td><td> Model comparison II  </td><td> hw5, hw4 due</td></tr>
+  <tr><td> 22 </td><td> 14-Nov-2022 </td><td> Model Calibration </td><td> </td></tr>
+  <tr><td> 23 </td><td> 16-Nov-2022  </td><td> Convolutional Neural Networks  </td><td>             </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 21-Nov-2022  </td><td> <em>Fall break</em> </td><td>            </td></tr>
+  <tr style='background-color: #FBEEC2;'><td>  </td><td> 23-Nov-2022 </td><td> <em>Fall break</em> </td><td>   </td></tr>
+  <tr><td> 24 </td><td> 28-Nov-2022 </td><td> Word Embedding </td><td> hw5 due </td></tr>
+  <tr style='background-color: #FBEEC2;'><td> </td><td> 30-Nov-2022 </td><td> Presentation and exam prep day </td><td> </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 02-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td>  </td><td> 07-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
+  <tr style='background-color: #E5DDCB;'><td> </td><td> 12-Dec-2022 </td><td> * Final Exam    </td><td>   *     </td></tr>
+  <tr><td> </td><td> 15-Dec-2022  </td><td> Grades due   </td><td>             </td></tr>
+</table>
+</col50>
+</row>
+</section>
+                  
+                  
+	          <section>
+	            <h3>Outline for the lecture</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Preliminaries
+                      <li class="fragment roll-in"> The Bayesian View
+                      <li class="fragment roll-in">
+	            </ul>
+                  </section>
+                </section>
+                <!-- -------------------------------------------------------------------------         -->
+                <section>
+                  <section>
+                    <h2>Preliminaries</h2>
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width=100%; text-align: justify;">
+                    Probability theory is nothing but common sense
+                    reduced to calculation<br>
+                    - Pierre-Simon Laplace, 1812
+                    </blockquote>
+                  </section>
+
+                  <section>
+                    <h3>Deductive and plausible reasoning</h3>
+                    <aside class="notes">
+                      talk about
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Random Variables</h3>
+                    <aside class="notes">
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Probability Distributions</h3>
+                    <aside class="notes">
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Probability Distributions</h3>
+                    <aside class="notes">
+                    </aside>
+                  </section>
+
+                </section>
+                <!-- -------------------------------------------------------------------------         -->
+                <section>
+                  <section>
+                    <h2>The Bayesian view</h2>
+                    <div class="slide-footer">
+                      closely follows Duda, R. O., Hart, P. E., & Stork, D. G. (2012). Pattern classification. John Wiley & Sons.
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Bayesian decision theory</h2>
+                    <blockquote>
+                      <b>Definition:</b>   Quantify   the   trade-offs
+                      between  various classification  decisions based
+                      on  probabilities and  the costs  that accompany
+                      such decisions
+                    </blockquote>
+                    <b>Assumptions:</b>
+                    <ul>
+                      <li class="fragment roll-in"> The decision problem is posed in probabilistic terms
+                      <li class="fragment roll-in"> All relevant probability values are known
+                    </ul>
+                  </section>
+
+                  <section data-background="figures/fish_sorting.gif" data-state="header1">
+                    <style>.header1 header:after { content: "Fish sorting machine"; }</style>
+                  </section>
+
+                  <section>
+                    <h2>The Prior</h2>
+                    <ul>
+                      <li class="fragment roll-in"> $\omega$ is a random variable: fish type
+                      <li class="fragment roll-in"> $\omega\in \{\omega_1, \omega_2\}$ $\omega_1$ - salmon, $\omega_2$ - sea bass
+                      <li class="fragment roll-in"> $\prob{P}{\omega_1}$ - the <em>a priory</em> probability (prior) that fish is a salmon
+                      <li class="fragment roll-in"> $\prob{P}{\omega_2}$ - the <em>a priory</em> probability (prior) that fish is a sea bass
+                      <li class="fragment roll-in">
+                        <blockquote>
+                          Gives us the knowledge of how likely we are to get salmon before we see any fish
+                        </blockquote>
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Priors-only decision rule</h2>
+                    <blockquote>
+                      How do we make a decision between $\omega_1$ and $\omega_2$ if all we know is the priors $\prob{P}{\omega_1}$ and $\prob{P}{\omega_2}$?
+                    </blockquote>
+                    <div class="fragment" data-fragment-index="0" >
+                      <ul style="list-style-type: none;">
+                        <li class="fragment roll-in">
+                          <table>
+                            <tr>
+                              <th>decide</th>
+                              <th>if</th>
+                            </tr>
+                            <tr>
+                              <td>salmon</td>
+                              <td>$\prob{P}{\omega_1} \gt \prob{P}{\omega_2}$</td>
+                            </tr>
+                            <tr>
+                              <td>sea bass</td>
+                              <td>$\prob{P}{\omega_1} \lt \prob{P}{\omega_2}$</td>
+                            </tr>
+                          </table>
+                        <li class="fragment roll-in"> Thus minimize your probability of being incorrect
+                      </ul>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3>$\prob{P}{\mbox{meet}} \gt \prob{P}{\overline{\mbox{meet}}}\rightarrow\mbox{shoot}$</h3>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="900" class="reveal"
+                         src="figures/bart.jpg" alt="holistic assassin">
+                  </section>
+
+                  <section>
+                    <h2>Decide based just on the prior</h2>
+                    <ul style="list-style-type: none;">
+                      <li class="fragment roll-in"> If $\prob{P}{\omega_1} \gg \prob{P}{\omega_2}$, you are right most of the time when deciding $\omega_1$
+                      <li class="fragment roll-in"> If $\prob{P}{\omega_1} = \prob{P}{\omega_2}$, you are taking a random guess when deciding $\omega_1$
+                      <li class="fragment roll-in"> No other decision rule can yield larger (expected) probability of being right
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Use observations to increase our chances</h2>
+                    <div class="row">
+                      <div class="col_left5">
+                        <ul>
+                          <li> If we know the <em>class conditional probability density</em> $\prob{P}{\vec{x}|\omega_i}$ we can make better decisions
+                          <li> For example, $\vec{x}$ is the observed lightness of a fish
+                        </ul>
+                      </div>
+                      <div class="col_right">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                           src="figures/likelihood.png" alt="likelihood">
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="right: -10%;">
+                      <img width="200px" style="margin-bottom: -5%"
+                           src="figures/bayes.png" alt="rev. Bayes"><br>
+                      <small>Thomas Bayes</small>
+                    </div>
+                    <h2>Bayes theorem</h2>
+                    <ul>
+                      <li class="fragment roll-in"> Use the observed feature(s) $\vec{x}$ and the Bayes theorem
+                        <blockquote style="background-color: #eee8d5; font-size: 28px;" >
+                          \[
+                          \prob{P}{\omega_i|\vec{x}} = \frac{\prob{P}{\vec{x}|\omega_i}\prob{P}{\omega_i}}{\prob{P}{\vec{x}}}
+                          \]
+                        </blockquote>
+                      <li class="fragment roll-in"> In "plain English"
+                        <blockquote style="background-color: #eee8d5; font-size: 28px;">
+                          \[
+                          \mbox{posterior} = \frac{\mbox{likelihood}\times\mbox{prior}}{\mbox{evidence}}
+                          \]
+                        </blockquote>
+                      <li class="fragment roll-in"> Evidence for $C$ classes
+                          $
+                          \prob{P}{\vec{x}} = \sum_i^C\prob{P}{\vec{x}|\omega_i}\prob{P}{\omega_i}
+                          $
+                    </ul>
+                    <aside class="notes">
+                      explain how we got there
+                    </aside>
+                  </section>
+
+                  <section data-fullscreen>
+                    <div id="header-right" style="right: -0%;">
+                      <div style="font-size:22px">
+                        \[
+                        \prob{P}{\omega_i|\vec{x}} = \frac{\prob{P}{\vec{x}|\omega_i}\prob{P}{\omega_i}}{\prob{P}{\vec{x}}}
+                        \]
+                      </div>
+                    </div>
+
+                    <h2>Put this to numbers</h2>
+                    <blockquote style="text-align: left; background-color: #eee8d5; font-size:30px;">
+                      One   person  in   200,000   has  a   particular
+                      Progressive    multifocal    leukoencephalopathy
+                      (PML).   There  is  a diagnostic  test  for  the
+                      disease. It is correct 99% of time. Your test is
+                      positive what's the probability you have PML?
+                    </blockquote>
+                    <row>
+                    <col50 style="font-size:20pt;">
+                    <ul>
+                      <li class="fragment roll-in"> $\vec{x}$ - tested positively
+                      <li class="fragment roll-in"> $\prob{P}{+|PML} = 0.99$
+                      <li class="fragment roll-in"> $\prob{P}{+|\overline{PML}} = 0.01$
+                      <li class="fragment roll-in"> $\prob{P}{PML} = \frac{1}{200,000}$
+                      <li class="fragment roll-in"> $\prob{P}{\overline{PML}} = \frac{199999}{200,000}$
+                      <li class="fragment roll-in"> $\prob{P}{PML|+} \approx 0.05\%$
+                    </ul>
+                    </col50>
+                    <col50 style="font-size:20pt; text-align: left;">
+                      \begin{align}
+                      \prob{P}{+} & = \prob{P}{+|PML}\prob{P}{PML}\\
+                      & + \prob{P}{+|\overline{PML}}\prob{P}{\overline{PML}}\\
+                      \prob{P}{PML|+} &= \frac{\prob{P}{+|PML}\prob{P}{PML}}{\prob{P}{+}}
+                      \end{align}
+                    </col50>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h3>Decide based on posterior</h3>
+                    <div class="row">
+                    <div class="col_right">
+                    <ul  style="list-style-type: none; font-size: 22pt">
+                      <li class="fragment roll-in"> If $\prob{P}{\omega_1|\vec{x}} \gt \prob{P}{\omega_2|\vec{x}}$, decide $\omega_1$
+                      <li class="fragment roll-in"> If $\prob{P}{\omega_1|\vec{x}} \lt \prob{P}{\omega_2|\vec{x}}$, decide $\omega_2$
+                      <li class="fragment roll-in"> $\prob{P}{error|\vec{x}} = \min[\prob{P}{\omega_1|\vec{x}}, \prob{P}{\omega_2|\vec{x}}]$
+                    </ul>
+                    </div>
+                    <div class="col_left5">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                           src="figures/posterior_ratio.svg" alt="posterior">
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3>General Bayesian Decision Theory</h3>
+                    <ul>
+                      <li class="fragment roll-in"> Multiple features in $\vec{x}$
+                      <li class="fragment roll-in"> More than two states of nature (classes)
+                      <li class="fragment roll-in"> Allow actions (also refusal to act)
+                      <li class="fragment roll-in"> Loss function more general that probability of error
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h3>General Bayesian Decision Theory: formally</h3>
+                    <ul style="line-height:100%;">
+                      <li class="fragment roll-in"> $\Omega = \{ \omega_1, \omega_2, \dots, \omega_C\}$ $c$ categories
+                      <li class="fragment roll-in"> $\vec{x} = \{x_1, x_2, \dots, x_d\}$ $d$-dimensional feature vector
+                      <li class="fragment roll-in"> $\vec{\alpha} = \{\alpha_1, \alpha_2, \dots, \alpha_A\}$ set of actions
+                      <li class="fragment roll-in"> $\lambda(\alpha_i|\omega_i)$ loss incurred for taking action $\alpha_i$ in case of $\omega_i$
+                      <li class="fragment roll-in"> Conditional risk
+                        \begin{array}
+                        \prob{R}{\alpha_i|\vec{x}} = \sum_j^C \lambda(\alpha_i|\omega_j)\prob{P}{\omega_j|\vec{x}}
+                        \end{array}
+                      <li class="fragment roll-in" style="font-size: 22pt;"> Total risk
+                        \begin{array}
+                        \prob{R}{\vec{x}} = \sum_i^A \prob{R}{\alpha_i|\vec{x}}
+                        \end{array}
+                    </ul>
+                  </section>
+
+
+                  <section>
+                    <div id="header-right">
+                        <div style="font-size:22px">
+                          \[
+                          \prob{N}{\mu, \sigma} = \frac{1}{\sigma\sqrt{2\pi}} e^{ -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2 }
+                          \]
+                        </div>
+                    </div>
+                    <h3>Assignment</h3>
+                    <blockquote>
+                      Draw probability densities and find the decision regions for the following classes:
+                    </blockquote>
+                    <ul  style="list-style-type: none; font-size: 22pt; ">
+                      <li> $\Omega = \{ \omega_1, \omega_2\}$
+                      <li> $\prob{P}{x|\omega_1} \sim \prob{N}{20, 4}$
+                      <li> $\prob{P}{x|\omega_2} \sim \prob{N}{15, 2}$
+                      <li> $\prob{P}{\omega_1} = \frac{1}{3}$
+                      <li> $\prob{P}{\omega_2} = \frac{2}{3}$
+                      <li> Classify $x = 17$
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h2>Maximum A Posteriori</h2>
+                    <h3>The poor man's Bayes</h3>
+                    <div class="fragment" data-fragment-index="0">
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="1000"
+                         src="figures/beta_concentrate.svg" alt="beta">
+                    $n = \alpha_H + \alpha_T$ increases $\rightarrow$
+                    </div>
+                    <ul>
+                      <li class="fragment roll-in"> Potentially, can know all there's to know about posterior
+	              <li class="fragment roll-in"> But chose to go for a single parameter estimate
+                    </ul>
+                    <aside class="notes">
+                      is just estimating a point parameter - the maximum of posterior<br>
+                      kinda not fully Bayesian<br>
+                      The prior and posterior are in the parameter domain<br>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Can estimate full distributions</h2>
+                    <h3>need to resort to sampling</h3>
+                    <div class="fragment" data-fragment-index="0">
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="700"
+                         src="figures/posterior_smapling.png" alt="sampling">
+                    </div>
+                    <aside class="notes">
+                      Bayesian approach can estimate distributions<br>
+                      If we construct our posterior using a chain rule, we can sample from the components and generate samples from the posterior <br>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Choosing conjugate priors</h2>
+                    <h3>striving for simple analytical forms</h3>
+                    <div class="fragment" data-fragment-index="0">
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" width="600"
+                         src="figures/Dirichlet-3d-panel.png" alt="Dirichlet">
+                    </div>
+                    <aside class="notes">
+                      Prior defines a distribution over likelihoods - also distributions<br>
+                      Sample hyperparameters - get a newdistribution
+                    </aside>
+                  </section>
+                </section>
+
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 1.23,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS8850</h4></div>
+                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/valentino.png" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

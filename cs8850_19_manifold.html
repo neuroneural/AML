@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+	<section>
+	  <section>
+	    <p>
+	      <h2>Advanced Machine Learning</h2>
+              <h3>19: Manifold Learning</h3>
+	    <p>
+	  </section>
+	  <section>
+	    <h3>Outline for the lecture</h3>
+            <ul>
+              <li class="fragment roll-in"> Motivation
+              <li class="fragment roll-in"> Multidimensional Scaling
+              <li class="fragment roll-in"> LLE
+              <li class="fragment roll-in"> IsoMap
+              <li class="fragment roll-in"> t-SNE
+              <li class="fragment roll-in"> Random Projections
+	    </ul>
+          </section>
+        </section>
+
+	<section>
+	  <section>
+	    <h2>Motivation</h2>
+	  </section>
+
+	  <section>
+	    <h2>Data is inherently low dimensional</h2>
+	  </section>
+
+	  <section data-background="figures/split_screen_semantic.gif">
+	    <h2 shadows>millions of dimensions <i class="far fa-hand-point-up"></i></h2>
+	  </section>
+
+	  <section data-background="figures/brain_activity.gif" data-vertical-align-top>
+	    <h2 shadows>millions of inputs</h2>
+	  </section>
+
+	  <section>
+	    <h2>Exploratory data analysis</h2>
+            <ul>
+              <li class="fragment roll-in"> Find hidden low dimensional structure in the data
+              <li class="fragment roll-in"> Low dimensional representation for visualization
+            </Ul>
+	  </section>
+
+          <section data-background-iframe="https://www.youtube.com/embed/vJG698U2Mvo?autoplay=1&controls=0&rel=0&modestbranding=1&showinfo=0&mute=1" data-background-size="cover" data-vertical-align-top>
+	    <h2 shadows>plot your data</h2>
+	  </section>
+
+	  <section>
+	    <h2>Manifolds</h2>
+            <blockquote style="background-color: #eee8d5; width: 100%;" class="fragment" data-fragment-index="0">
+              Informally: any object nearly flat on small scales
+            </blockquote>
+            <img width="100%" src="figures/manifold_lines.png" alt="1D" class="fragment" data-fragment-index="1">
+            <img width="100%" src="figures/manifold_2d.png" alt="2D" class="fragment" data-fragment-index="2">
+	  </section>
+
+	  <section>
+	    <h2>Manifold learning</h2>
+            <img width="100%" src="figures/manifold_rabbit.png" alt="rabbit">
+	  </section>
+
+	  <section data-background-iframe="https://pair-code.github.io/understanding-umap/" data-background-interactive  data-vertical-align-top>
+            <h2 shadows>local mapping</h2>
+            <div class="slide-footer">
+              <a href="https://pair-code.github.io/understanding-umap/">https://pair-code.github.io/understanding-umap/</a>
+            </div>
+	  </section>
+
+	  <section data-fullscreen>
+	    <h2>Manifold learning Algorithms</h2>
+            <ul>
+              <li> PCA (1901)
+              <li> Multi-dimensional Scaling (1952)
+              <li> Sammon mapping (1969)
+              <li> Maximum Variance Unfolding
+              <li> Locally Linear Embedding (2000)
+              <li> Isomap (2000)
+              <li> Laplacian Eigenmaps (2003)
+              <li> t-distributed Stochastic Neighbor Embedding (tSNE)
+              <li> Random Projections
+              <li> many more
+            </ul>
+	  </section>
+
+	  <section>
+	    <h2>Let's see how they work</h2>
+            <img width="100%" src="figures/manifold_pull.png" alt="pull">
+	  </section>
+
+	</section>
+
+        <section>
+	  <h2>Under construction starting here</h2>
+          <img width="100%" src="figures/underlego.gif" alt="lego">
+	</section>
+                  
+	<section>
+	  <section>
+	    <h2>Multidimensional Scaling</h2>
+	  </section>
+
+	  <section>
+	    <h2>But why not PCA?</h2>
+            <img width="100%" src="figures/manifold_PCA_roll.png" alt="PCA roll"/>
+            <blockquote dark class="fragment" data-fragment-index="0">
+              PCA is linear and cannot find nonlinear structure
+            </blockquote>
+	  </section>
+
+	  <section>
+	    <h2>PCA Linearity</h2>
+            <img width="90%" src="figures/manifold_PCA_geo.png" alt="PCA roll"/>
+            <blockquote dark class="fragment" data-fragment-index="0">
+              PCA is linear and cannot find nonlinear structure
+            </blockquote>
+	  </section>
+
+	  <section>
+	    <h2>Multidimensional Scaling</h2>
+            <ul>
+              <li class="fragment roll-in"> 
+              <li class="fragment roll-in">
+              <li class="fragment roll-in">                 
+            </ul>
+	  </section>
+
+	  <section>
+	    <h2>Multidimensional Scaling: objective</h2>
+            $$
+            {\cal J} = \underset{i\ne j}{\sum} (d_{ij} - \|z_i - z_j\|)^2
+            $$
+	  </section>
+
+	</section>
+
+	<section>
+	  <section>
+	    <h2>Locally Linear Embedding</h2>
+	  </section>
+	</section>
+
+	<section>
+	  <section>
+	    <h2>IsoMap</h2>
+	  </section>
+	</section>
+
+	<section>
+	  <section>
+	    <h2>t-SNE</h2>
+	  </section>
+
+          <section>
+            <h2>Algorithms compared on Swiss Roll</h2>
+            <img width="100%" src="figures/manifold_all.png" alt="all">
+            <div class="slide-footer">
+              <a href="https://scikit-learn.org/stable/auto_examples/manifold/plot_compare_methods.html#sphx-glr-auto-examples-manifold-plot-compare-methods-py" target="_blank">sk-learn documentation</a><br>
+              <a href="https://scikit-learn.org/stable/auto_examples/manifold/plot_lle_digits.html?highlight=pca%20manifold%20learning" target="_blank">also, see this</a>
+            </div>
+          </section>
+	</section>
+
+
+	<section>
+	  <section>
+	    <h2>Random Projections</h2>
+	  </section>
+	</section>
+
+      </div>
+
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="node_modules/reveal.js-verticator/plugin/verticator/verticator.js"></script>
+    <link rel="stylesheet" href="node_modules/reveal.js-verticator/plugin/verticator/verticator.css">
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/math/math.js"></script>
+    <script src="plugin/chalkboard/plugin.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/fullscreen/fullscreen.js"></script>
+    <script src="node_modules/reveal.js-menu/menu.js"></script>
+
+
+    <script>
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+
+      Reveal.initialize({
+          // history: true,
+          hash: true,
+          margin: 0.01,
+          minScale: 0.01,
+          maxScale: 1.23,
+
+          menu: {
+              themes: false,
+              openSlideNumber: true,
+              openButton: false,
+          },
+
+          chalkboard: {
+              boardmarkerWidth: 1,
+              chalkWidth: 2,
+              chalkEffect: 1,
+              toggleNotesButton: false,
+              toggleChalkboardButton: false,
+              slideWidth: Reveal.width,
+              slideHeight: Reveal.height,
+              // src: "chalkboards/chalkboard_em2.json",
+              readOnly: false,
+              theme: "blackboard",
+              eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+          },
+
+          math: {
+              mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+              config: 'TeX-AMS_SVG-full',
+              // pass other options into `MathJax.Hub.Config()`
+              TeX: {
+                  Macros: {
+        	      RR: '\\mathbb{R}',
+        	      PP: '\\mathbb{P}',
+        	      EE: '\\mathbb{E}',
+        	      NN: '\\mathbb{N}',
+        	      vth: '\\vec{\\theta}',
+                      loss: '{\\cal l}',
+                      hclass: '{\\cal H}',
+                      CD: '{\\cal D}',
+                      def: '\\stackrel{\\text{def}}{=}',
+                      pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                      vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	      set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                      bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                      argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                      argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                      prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                  },
+                  loader: {load: ['[tex]/color']},
+                  extensions: ["color.js"],
+                  tex: {packages: {'[+]': ['color']}},
+                  svg: {
+                      fontCache: 'global'
+                  }
+              }
+          },
+          plugins: [ Verticator, RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+      });
+
+      Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+      Reveal.configure({ slideNumber: true });
+      //Reveal.configure({ history: true });
+      Reveal.configure({ slideNumber: 'c / t' });
+      Reveal.addEventListener( 'darkside', function() {
+          document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+      }, false );
+      Reveal.addEventListener( 'brightside', function() {
+          document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+      }, false );
+
+    </script>
+
+    <style type="text/css">
+      /* 1. Style header/footer <div> so they are positioned as desired. */
+      #header-left {
+          position: absolute;
+          top: 0%;
+          left: 0%;
+      }
+      #header-right {
+          position: absolute;
+          top: 0%;
+          right: 0%;
+      }
+      #footer-left {
+          position: absolute;
+          bottom: 0%;
+          left: 0%;
+      }
+    </style>
+
+    <!-- // 2. Create hidden header/footer -->
+    <div id="hidden" style="display:none;">
+      <div id="header">
+        <div id="header-left"><h4>CS8850</h4></div>
+        <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+        <div id="footer-left">
+          <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+               src="figures/valentino.png" alt="robot learning">
+        </div>
+      </div>
+    </div>
+
+
+    <script type="text/javascript">
+      // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+      var header = $('#header').html();
+      if ( window.location.search.match( /print-pdf/gi ) ) {
+          Reveal.addEventListener( 'ready', function( event ) {
+              $('.slide-background').append(header);
+          });
+      }
+      else {
+          $('div.reveal').append(header);
+      }
+    </script>
+
+  </body>
+</html>

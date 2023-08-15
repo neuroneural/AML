@@ -1,0 +1,346 @@
+ <!Doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="css/fontawesome-free-6.2.1-web/css/all.css" rel="stylesheet">
+
+    <!-- <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script> -->
+    <!-- <script src="lib/colorStringStandalone.js" charset="utf-8"></script> -->
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>Advanced Machine Learning</title>
+
+    <meta name="description" content="CS8850 GSU class">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+                    <script type="module" src="js/wc_code/wc-code.js"></script>
+
+    <!--Popup Window CSS-->
+    <style media="screen">
+		*,*:before,*:after{
+		    padding: 0;
+		    margin: 0;
+		    box-sizing: border-box;
+		}
+
+		.popup{
+		    background-color: #fdf6e3;
+		    width: 80%;
+		    padding: 30px 40px;
+		    position: absolute;
+		    transform: translate(-50%,-50%);
+		    left: 50%;
+		    top: 50%;
+		    border-radius: 8px;
+		    font-family: "Poppins",sans-serif;
+		    display: none;
+		    z-index: 1000;
+		    text-align: left;
+		    max-height: 90%;
+            overflow: scroll;
+		}
+		.popup button{
+		    display: block;
+		    margin:  0 0 20px auto;
+		    background-color: transparent;
+		    font-size: 30px;
+		    color: #fdf6e3;
+		    background: #03549a;
+		    border-radius: 100%;
+		    width: 40px;
+		    height: 40px;
+		    border: none;
+		    outline: none;
+		    cursor: pointer;
+		}
+    </style>
+    <style>
+h4#rotate{
+  transform: rotate(-90deg);
+}
+    </style>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-fullscreen>
+          <h4 id="rotate" style="margin-left: -1000px; margin-top: 300px;">Spring 2023 Schedule</h4>
+          <h2 style="margin-top: -350px;">Advanced Machine Learning</h2>
+          <row style="width: 100%">
+            <col50>
+              <table style="font-size:14px">
+                          <tr>
+                            <th>#</th>
+                            <th>date</th>
+                            <th>topic</th>
+                            <th>description</th>
+                          </tr>
+                          <tr><td>1</td>
+                            <td> 09-Jan-2023 </td>
+                            <td> <a href="cs8850_01_intro.html">Introduction and Introductions</a> </td>
+                            <td> </td>
+                          </tr>
+                          <tr><td>2</td>
+                            <td> 11-Jan-2023 </td>
+                            <td> <a href="cs8850_04_LArecap.html">Recap of Linear Algebra and ML math</a> </td>
+                            <td> </td>
+                          </tr>
+                          <tr style='background-color: #FBEEC2;'><td>    </td><td> 16-Jan-2023 </td><td> <em>Holiday</em>     </td><td>              </td></tr>
+                          <tr><td>  3 </td><td> 18-Jan-2023 </td><td> <a href="dsa_03_asymptotic2.html">Asymptotic Analysis</a>         </td><td>      </td></tr>
+                          <tr><td>  4 </td><td> 23-Jan-2023 </td><td> <a href="dsa_04_recurrence.html">Recurrence Relations: Substitution</a> </td><td>      </td></tr>
+                          <tr><td>  5 </td><td> 25-Jan-2023 </td><td> <a href="dsa_05_masterthm.html">Recursion Trees and the Master Theorem</a>     </td><td>  </td></tr>
+                          <tr><td>  6 </td><td> 30-Jan-2023  </td><td> <a href="dsa_06_annihilators.html">Recurrence Relations: Annihilators</a>    </td></td></td><td> </td></tr>
+<tr><td>  7 </td><td> 1-Feb-2023  </td><td> <a href="dsa_07_annihalators_plus.html">Recurrence Relations: Transformations</a>  </td><td> </td></tr>
+<tr><td>  8 </td><td> 6-Feb-2023  </td><td> <a href="dsa_08_invariants_heap.html">Heap & Invariants</a></td><td>        </td></tr>
+<tr><td>  9 </td><td> 8-Feb-2023 </td><td> <a href="dsa_09_queues_sorting.html">Queue & Qsort</a>                      </td><td>          </td></tr>
+<tr><td> 10 </td><td> 13-Feb-2023 </td><td> <a href="dsa_10_comparison_sort.html">Analyzing RQsort</a> </td><td>             </td></tr>
+<tr><td>  11 </td><td> 15-Feb-2023  </td><td>  <a href="dsa_11_bucket.html">Comparison-based Sorting Analysis</a>  </td><td> </td></tr>
+<tr><td> 12 </td><td> 20-Feb-2023 </td><td> <a href="dsa_12_dictionary.html">Dictionary</a></td><td>             </td></tr>
+<tr><td> 13 </td><td> 22-Feb-2023 </td><td> <a href="dsa_13_refresher.html">Open Address Hashing & Refresher</a>                </td><td>     </td></tr>
+<tr  style='background-color: #E5DDCB;'><td> 14 </td><td> 27-Feb-2023 </td><td>            </td><td>   <em>midpoint</em>         </td></tr>
+<tr><td> 15 </td><td> 1-Mar-2023  </td><td>   <a href="dsa_14_bst.html">Binary Search Trees I</a>   </td><td>    </td></tr>
+<tr><td> 16 </td><td> 6-Mar-2023  </td><td> <a href="dsa_15_bst_2.html">Binary Search Trees II</a> </td><td></td></tr>
+<tr><td> 17 </td><td> 8-Mar-2023  </td><td>     <a href="dsa_16_aa_rb_trees.html">Balanced Binary Search Trees</a>                </td><td>   </td></tr>
+</table>
+</col50>
+<col50>
+  <table style="font-size:14px; vertical-align: top;">
+    <tr>
+      <th>#</th>
+      <th>date</th>
+      <th>topic</th>
+      <th>description</th>
+    </tr>
+    <tr style='background-color: #FBEEC2;'><td>  </td><td> 13-Mar-2023 </td><td> <em>Spring Break<em>       </td><td> </td></tr>
+    <tr style='background-color: #FBEEC2;'><td>  </td><td> 15-Mar-2023 </td><td> <em>Spring Break<em>         </td><td>             </td></tr>
+    <tr><td>  18  </td><td> 20-Mar-2023 </td><td> <a href="dsa_17_18_19_dynamic_programming.html">Dynamic Programming  I</a> </td><td>  </td></tr>
+    <tr><td>  19  </td><td> 22-Mar-2023 </td><td> <a href="dsa_17_18_19_dynamic_programming.html">Dynamic Programming II</a> </td><td>  </td></tr>
+    <tr><td> 20 </td><td> 27-Mar-2023 </td><td> <a href="dsa_17_18_19_dynamic_programming.html">Dynamic Programming III</a>  </td><td> </td></tr>
+    <tr><td> 21 </td><td> 29-Mar-2023 </td><td> <a href="dsa_20_greed.html">Greedy Algorithms</a>   </td><td></td></tr>
+    <tr><td> 22 </td><td> 3-Apr-2023 </td><td>  <a href="dsa_21_traversal.html">Graphs and Traversals I</a> </td><td>          </td></tr>
+    <tr><td> 23 </td><td> 5-Apr-2023  </td><td> <a href="dsa_21_traversal.html">Graphs and Traversals II</a>  </td><td>             </td></tr>
+    <tr><td> 24 </td><td> 10-Apr-2023  </td><td> NP-hard Problems I </td><td>           </td></tr>
+    <tr><td> 25 </td><td> 12-Apr-2023 </td><td> NP-hard Problems II  </td><td>   </td></tr>
+    <tr><td> 26 </td><td> 17-Apr-2023 </td><td><a href="dsa_22_mst.html">Minimum Spanning Trees</a>  </td><td>       </td></tr>
+    <tr><td> 27 </td><td> 19-Apr-2023 </td><td> <a href="dsa_23_shortest_path.html">Single Source Shortest Paths</a></td><td>  </td></tr>
+    <tr><td> 28 </td><td> 24-Apr-2023 </td><td> Review </td><td>   </td></tr>
+    <tr  style='background-color: #E5DDCB;'><td> 29 </td><td> 26-Apr-2023 </td><td>  </td><td> </td></tr>
+    <tr style='color: #ccd5d8ff;'><td> 30 </td><td> 2-May-2022 </td><td> </td><td>         </td></tr>
+    <tr style='color: #ccd5d8ff;'><td> 31 </td><td> 4-May-2022  </td><td> </td><td>       </td></tr>
+  </table>
+</col50>
+</row>
+</section>
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <!-- <link rel="stylesheet" href="lib/css/monokai.css"> -->
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <!-- <script src="node_modules/reveal.js-menu/menu.js"></script> -->
+
+                <script type="text/javascript">
+
+	// Event start load section on slide
+	Reveal.addEventListener('slidechanged', function(event) {
+		//-- check if current slide with code
+	    var sectionID = Reveal.getCurrentSlide().id;
+
+	    if(sectionID === "code.1") {
+	       document.getElementById("div4code.1").style.display = "block";
+	    } else {
+	       document.getElementById("div4code.1").style.display = "none"
+	    }
+	    if(sectionID === "code.2") {
+	       document.getElementById("div4code.2").style.display = "block";
+	    } else {
+	       document.getElementById("div4code.2").style.display = "none"
+	    }
+	    if(sectionID === "code.3") {
+	       document.getElementById("div4code.3").style.display = "block";
+	    } else {
+	       document.getElementById("div4code.3").style.display = "none"
+	    }
+	    if(sectionID === "code.4") {
+	       document.getElementById("div4code.4").style.display = "block";
+	    } else {
+	       document.getElementById("div4code.4").style.display = "none"
+	    }
+
+	});
+
+
+    </script>
+
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+              let notes = document.querySelectorAll('aside.notes');
+              notes.forEach(n => {
+	      let html = n.innerHTML;
+	      html = html.trim().replace(/\n/g, '<br/>');
+	      n.innerHTML = html;
+              });
+              Reveal.initialize({
+                  // history: true,
+                  hash: true,
+                  margin: 0.01,
+                  minScale: 0.01,
+                  maxScale: 1.23,
+                  menu: {
+                      themes: true,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+                  customcontrols: {
+                      slideNumberCSS : 'position: fixed; display: block; right: 90px; top: auto; left: auto; width: 50px; bottom: 30px; z-index: 31; font-family: Helvetica, sans-serif; font-size:  12px; line-height: 1; padding: 5px; text-align: center; border-radius: 10px; background-color: rgba(128,128,128,.5)',
+                      controls: [
+                          { icon: '<i class="fa fa-caret-left"></i>',
+                            css: 'position: fixed; right: 60px; bottom: 30px; z-index: 30; font-size: 24px;',
+                            action: 'Reveal.prev(); return false;'
+                          },
+                          { icon: '<i class="fa fa-caret-right"></i>',
+                            css: 'position: fixed; right: 30px; bottom: 30px; z-index: 30; font-size: 24px;',
+                            action: 'Reveal.next(); return false;'
+                          }
+                      ]
+                  },
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      //src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                              floor: ["\\lfloor #1 \\rfloor",1]
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom ],
+
+              });
+
+              Reveal.configure({ fragments: false }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+            </script>
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="background; display:none;">
+              <div id="header">
+                <div id="header-left"><h4>CS4520</h4></div>
+                <div id="header-right"><h4>Algorithms</h4></div>
+                <div id="footer-left">
+                  <!-- <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100" -->
+                  <!--      src="figures/flowchart.png" alt="robot learning"> -->
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>
