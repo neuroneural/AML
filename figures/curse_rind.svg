@@ -1,0 +1,5507 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:ns0="https://launchpad.net/jessyink"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="curse_rind.svg"
+   id="svg5500"
+   width="594.58125pt"
+   viewBox="0 0 594.58125 371.634375"
+   version="1.1"
+   height="371.634375pt"
+   inkscape:version="1.0beta2 (2b71d25, 2019-12-03)">
+  <metadata
+     id="metadata5504">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     inkscape:current-layer="layer5"
+     inkscape:window-maximized="0"
+     inkscape:window-y="23"
+     inkscape:window-x="0"
+     inkscape:cy="262.88623"
+     inkscape:cx="295.78253"
+     inkscape:zoom="0.86787414"
+     showgrid="false"
+     id="namedview5502"
+     inkscape:window-height="1003"
+     inkscape:window-width="1489"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     inkscape:document-rotation="0"
+     bordercolor="#666666"
+     pagecolor="#ffffff" />
+  <defs
+     id="defs4653">
+    <style
+       id="style4651"
+       type="text/css">
+*{stroke-linecap:butt;stroke-linejoin:round;}
+  </style>
+  </defs>
+  <g
+     id="patch_1">
+    <path
+       d="M 0,371.63437 H 594.58125 V 0 H 0 Z"
+       style="fill:none"
+       id="path4655"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     id="patch_2">
+    <path
+       inkscape:connector-curvature="0"
+       id="path4658"
+       style="fill:none"
+       d="m 36.58125,341.27812 h 558 V 15.118125 h -558 z" />
+  </g>
+  <g
+     id="matplotlib.axis_1">
+    <g
+       id="xtick_1">
+      <g
+         id="line2d_1">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4661"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 61.944886,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_2">
+        <defs
+           id="defs4665">
+          <path
+             inkscape:connector-curvature="0"
+             style="stroke:#000000;stroke-width:0.8"
+             id="m7504040a2f"
+             d="M 0,0 V 3.5" />
+        </defs>
+        <g
+           id="g4669">
+          <use
+             height="100%"
+             width="100%"
+             id="use4667"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="61.944885"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_1">
+        <!-- 1 -->
+        <defs
+           id="defs4673">
+          <path
+             inkscape:connector-curvature="0"
+             id="DejaVuSans-49"
+             d="m 12.40625,8.296875 h 16.109375 v 55.625 L 10.984375,60.40625 v 8.984375 l 17.4375,3.515625 H 38.28125 V 8.296875 H 54.390625 V 0 H 12.40625 Z" />
+        </defs>
+        <g
+           id="g4677"
+           transform="matrix(0.1,0,0,-0.1,58.763636,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4675"
+             xlink:href="#DejaVuSans-49" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_2">
+      <g
+         id="line2d_3">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4681"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 90.126705,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_4">
+        <g
+           id="g4686">
+          <use
+             height="100%"
+             width="100%"
+             id="use4684"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="90.126701"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_2">
+        <!-- 2 -->
+        <defs
+           id="defs4690">
+          <path
+             inkscape:connector-curvature="0"
+             id="DejaVuSans-50"
+             d="M 19.1875,8.296875 H 53.609375 V 0 H 7.328125 v 8.296875 q 5.609375,5.8125 15.296875,15.59375 9.703125,9.796875 12.1875,12.640625 4.734375,5.3125 6.609375,9 1.890625,3.6875 1.890625,7.25 0,5.8125 -4.078125,9.46875 -4.078125,3.671875 -10.625,3.671875 -4.640625,0 -9.796875,-1.609375 -5.140625,-1.609375 -11,-4.890625 v 9.96875 Q 13.765625,71.78125 18.9375,73 q 5.1875,1.21875 9.484375,1.21875 11.328125,0 18.0625,-5.671875 6.734375,-5.65625 6.734375,-15.125 0,-4.5 -1.6875,-8.53125 Q 49.859375,40.875 45.40625,35.40625 44.1875,33.984375 37.640625,27.21875 31.109375,20.453125 19.1875,8.296875 Z" />
+        </defs>
+        <g
+           id="g4694"
+           transform="matrix(0.1,0,0,-0.1,86.945455,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4692"
+             xlink:href="#DejaVuSans-50" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_3">
+      <g
+         id="line2d_5">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4698"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 118.30852,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_6">
+        <g
+           id="g4703">
+          <use
+             height="100%"
+             width="100%"
+             id="use4701"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="118.30853"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_3">
+        <!-- 3 -->
+        <defs
+           id="defs4707">
+          <path
+             inkscape:connector-curvature="0"
+             id="DejaVuSans-51"
+             d="M 40.578125,39.3125 Q 47.65625,37.796875 51.625,33 q 3.984375,-4.78125 3.984375,-11.8125 0,-10.78125 -7.421875,-16.703125 -7.421875,-5.90625 -21.09375,-5.90625 -4.578125,0 -9.4375,0.90625 -4.859375,0.90625 -10.03125,2.71875 v 9.515625 q 4.09375,-2.390625 8.96875,-3.609375 4.890625,-1.21875 10.21875,-1.21875 9.265625,0 14.125,3.65625 4.859375,3.65625 4.859375,10.640625 0,6.453125 -4.515625,10.078125 -4.515625,3.640625 -12.5625,3.640625 h -8.5 v 8.109375 h 8.890625 q 7.265625,0 11.125,2.90625 3.859375,2.90625 3.859375,8.375 0,5.609375 -3.984375,8.609375 -3.96875,3.015625 -11.390625,3.015625 -4.0625,0 -8.703125,-0.890625 Q 15.375,64.15625 9.8125,62.3125 v 8.78125 q 5.625,1.5625 10.53125,2.34375 4.90625,0.78125 9.25,0.78125 11.234375,0 17.765625,-5.109375 6.546875,-5.09375 6.546875,-13.78125 0,-6.0625 -3.46875,-10.234375 -3.46875,-4.171875 -9.859375,-5.78125 z" />
+        </defs>
+        <g
+           id="g4711"
+           transform="matrix(0.1,0,0,-0.1,115.12727,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4709"
+             xlink:href="#DejaVuSans-51" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_4">
+      <g
+         id="line2d_7">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4715"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 146.49034,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_8">
+        <g
+           id="g4720">
+          <use
+             height="100%"
+             width="100%"
+             id="use4718"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="146.49034"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_4">
+        <!-- 4 -->
+        <defs
+           id="defs4724">
+          <path
+             inkscape:connector-curvature="0"
+             id="DejaVuSans-52"
+             d="M 37.796875,64.3125 12.890625,25.390625 h 24.90625 z m -2.59375,8.59375 h 12.40625 V 25.390625 h 10.40625 V 17.1875 H 47.609375 V 0 h -9.8125 V 17.1875 H 4.890625 v 9.515625 z" />
+        </defs>
+        <g
+           id="g4728"
+           transform="matrix(0.1,0,0,-0.1,143.30909,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4726"
+             xlink:href="#DejaVuSans-52" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_5">
+      <g
+         id="line2d_9">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4732"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 174.67216,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_10">
+        <g
+           id="g4737">
+          <use
+             height="100%"
+             width="100%"
+             id="use4735"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="174.67216"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_5">
+        <!-- 5 -->
+        <defs
+           id="defs4741">
+          <path
+             inkscape:connector-curvature="0"
+             id="DejaVuSans-53"
+             d="m 10.796875,72.90625 h 38.71875 v -8.3125 h -29.6875 V 46.734375 q 2.140625,0.734375 4.28125,1.09375 2.15625,0.359375 4.3125,0.359375 Q 40.625,48.1875 47.75,41.5 54.890625,34.8125 54.890625,23.390625 54.890625,11.625 47.5625,5.09375 40.234375,-1.421875 26.90625,-1.421875 q -4.59375,0 -9.359375,0.78125 -4.75,0.78125 -9.828125,2.34375 V 11.625 q 4.390625,-2.390625 9.078125,-3.5625 4.6875,-1.171875 9.90625,-1.171875 8.453125,0 13.375,4.4375 4.9375,4.4375 4.9375,12.0625 0,7.609375 -4.9375,12.046875 -4.921875,4.453125 -13.375,4.453125 -3.953125,0 -7.890625,-0.875 -3.921875,-0.875 -8.015625,-2.734375 z" />
+        </defs>
+        <g
+           id="g4745"
+           transform="matrix(0.1,0,0,-0.1,171.49091,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4743"
+             xlink:href="#DejaVuSans-53" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_6">
+      <g
+         id="line2d_11">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4749"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 202.85398,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_12">
+        <g
+           id="g4754">
+          <use
+             height="100%"
+             width="100%"
+             id="use4752"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="202.85397"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_6">
+        <!-- 6 -->
+        <defs
+           id="defs4758">
+          <path
+             inkscape:connector-curvature="0"
+             id="DejaVuSans-54"
+             d="m 33.015625,40.375 q -6.640625,0 -10.53125,-4.546875 -3.875,-4.53125 -3.875,-12.4375 0,-7.859375 3.875,-12.4375 3.890625,-4.5625 10.53125,-4.5625 6.640625,0 10.515625,4.5625 3.875,4.578125 3.875,12.4375 0,7.90625 -3.875,12.4375 Q 39.65625,40.375 33.015625,40.375 Z M 52.59375,71.296875 V 62.3125 q -3.71875,1.75 -7.5,2.671875 -3.78125,0.9375 -7.5,0.9375 -9.765625,0 -14.921875,-6.59375 -5.140625,-6.59375 -5.875,-19.921875 2.875,4.25 7.21875,6.515625 4.359375,2.265625 9.578125,2.265625 10.984375,0 17.359375,-6.671875 6.375,-6.65625 6.375,-18.125 0,-11.234375 -6.640625,-18.03125 -6.640625,-6.78125 -17.671875,-6.78125 -12.65625,0 -19.34375,9.6875 -6.6875,9.703125 -6.6875,28.109375 0,17.28125 8.203125,27.5625 8.203125,10.28125 22.015625,10.28125 3.71875,0 7.5,-0.734375 3.78125,-0.734375 7.890625,-2.1875 z" />
+        </defs>
+        <g
+           id="g4762"
+           transform="matrix(0.1,0,0,-0.1,199.67273,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4760"
+             xlink:href="#DejaVuSans-54" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_7">
+      <g
+         id="line2d_13">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4766"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 231.03579,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_14">
+        <g
+           id="g4771">
+          <use
+             height="100%"
+             width="100%"
+             id="use4769"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="231.0358"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_7">
+        <!-- 7 -->
+        <defs
+           id="defs4775">
+          <path
+             inkscape:connector-curvature="0"
+             id="DejaVuSans-55"
+             d="m 8.203125,72.90625 h 46.875 V 68.703125 L 28.609375,0 H 18.3125 L 43.21875,64.59375 H 8.203125 Z" />
+        </defs>
+        <g
+           id="g4779"
+           transform="matrix(0.1,0,0,-0.1,227.85454,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4777"
+             xlink:href="#DejaVuSans-55" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_8">
+      <g
+         id="line2d_15">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4783"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 259.21761,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_16">
+        <g
+           id="g4788">
+          <use
+             height="100%"
+             width="100%"
+             id="use4786"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="259.21762"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_8">
+        <!-- 8 -->
+        <defs
+           id="defs4792">
+          <path
+             inkscape:connector-curvature="0"
+             id="DejaVuSans-56"
+             d="m 31.78125,34.625 q -7.03125,0 -11.0625,-3.765625 -4.015625,-3.765625 -4.015625,-10.34375 0,-6.59375 4.015625,-10.359375 4.03125,-3.765625 11.0625,-3.765625 7.03125,0 11.078125,3.78125 4.0625,3.796875 4.0625,10.34375 0,6.578125 -4.03125,10.34375 Q 38.875,34.625 31.78125,34.625 Z m -9.859375,4.1875 Q 15.578125,40.375 12.03125,44.71875 8.5,49.078125 8.5,55.328125 q 0,8.734375 6.21875,13.8125 6.234375,5.078125 17.0625,5.078125 10.890625,0 17.09375,-5.078125 6.203125,-5.078125 6.203125,-13.8125 0,-6.25 -3.546875,-10.609375 Q 48,40.375 41.703125,38.8125 q 7.125,-1.65625 11.09375,-6.5 3.984375,-4.828125 3.984375,-11.796875 0,-10.609375 -6.46875,-16.28125 -6.46875,-5.65625 -18.53125,-5.65625 -12.046875,0 -18.53125,5.65625 -6.46875,5.671875 -6.46875,16.28125 0,6.96875 4,11.796875 4.015625,4.84375 11.140625,6.5 z M 18.3125,54.390625 q 0,-5.65625 3.53125,-8.828125 3.546875,-3.171875 9.9375,-3.171875 6.359375,0 9.9375,3.171875 3.59375,3.171875 3.59375,8.828125 0,5.671875 -3.59375,8.84375 -3.578125,3.171875 -9.9375,3.171875 -6.390625,0 -9.9375,-3.171875 Q 18.3125,60.0625 18.3125,54.390625 Z" />
+        </defs>
+        <g
+           id="g4796"
+           transform="matrix(0.1,0,0,-0.1,256.03636,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4794"
+             xlink:href="#DejaVuSans-56" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_9">
+      <g
+         id="line2d_17">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4800"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 287.39943,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_18">
+        <g
+           id="g4805">
+          <use
+             height="100%"
+             width="100%"
+             id="use4803"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="287.39944"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_9">
+        <!-- 9 -->
+        <defs
+           id="defs4809">
+          <path
+             inkscape:connector-curvature="0"
+             id="DejaVuSans-57"
+             d="M 10.984375,1.515625 V 10.5 Q 14.703125,8.734375 18.5,7.8125 q 3.8125,-0.921875 7.484375,-0.921875 9.765625,0 14.90625,6.5625 5.15625,6.5625 5.890625,19.953125 -2.828125,-4.203125 -7.1875,-6.453125 -4.34375,-2.25 -9.609375,-2.25 -10.9375,0 -17.3125,6.609375 -6.375,6.625 -6.375,18.109375 0,11.21875 6.640625,18 6.640625,6.796875 17.671875,6.796875 12.65625,0 19.3125,-9.703125 6.671875,-9.6875 6.671875,-28.140625 0,-17.234375 -8.1875,-27.515625 -8.171875,-10.28125 -21.984375,-10.28125 -3.71875,0 -7.53125,0.734375 -3.796875,0.734375 -7.90625,2.203125 z m 19.625,30.90625 q 6.640625,0 10.515625,4.53125 3.890625,4.546875 3.890625,12.46875 0,7.859375 -3.890625,12.421875 -3.875,4.5625 -10.515625,4.5625 -6.640625,0 -10.515625,-4.5625 -3.875,-4.5625 -3.875,-12.421875 0,-7.921875 3.875,-12.46875 3.875,-4.53125 10.515625,-4.53125 z" />
+        </defs>
+        <g
+           id="g4813"
+           transform="matrix(0.1,0,0,-0.1,284.21818,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4811"
+             xlink:href="#DejaVuSans-57" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_10">
+      <g
+         id="line2d_19">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4817"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 315.58125,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_20">
+        <g
+           id="g4822">
+          <use
+             height="100%"
+             width="100%"
+             id="use4820"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="315.58124"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_10">
+        <!-- 10 -->
+        <defs
+           id="defs4826">
+          <path
+             inkscape:connector-curvature="0"
+             id="DejaVuSans-48"
+             d="m 31.78125,66.40625 q -7.609375,0 -11.453125,-7.5 Q 16.5,51.421875 16.5,36.375 q 0,-14.984375 3.828125,-22.484375 3.84375,-7.5 11.453125,-7.5 7.671875,0 11.5,7.5 3.84375,7.5 3.84375,22.484375 0,15.046875 -3.84375,22.53125 -3.828125,7.5 -11.5,7.5 z m 0,7.8125 q 12.265625,0 18.734375,-9.703125 6.46875,-9.6875 6.46875,-28.140625 0,-18.40625 -6.46875,-28.109375 -6.46875,-9.6875 -18.734375,-9.6875 -12.25,0 -18.71875,9.6875 Q 6.59375,17.96875 6.59375,36.375 q 0,18.453125 6.46875,28.140625 6.46875,9.703125 18.71875,9.703125 z" />
+        </defs>
+        <g
+           id="g4832"
+           transform="matrix(0.1,0,0,-0.1,309.21875,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4828"
+             xlink:href="#DejaVuSans-49" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use4830"
+             xlink:href="#DejaVuSans-48"
+             x="63.623047" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_11">
+      <g
+         id="line2d_21">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4836"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 343.76307,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_22">
+        <g
+           id="g4841">
+          <use
+             height="100%"
+             width="100%"
+             id="use4839"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="343.76306"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_11">
+        <!-- 11 -->
+        <g
+           id="g4848"
+           transform="matrix(0.1,0,0,-0.1,337.40057,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4844"
+             xlink:href="#DejaVuSans-49" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use4846"
+             xlink:href="#DejaVuSans-49"
+             x="63.623047" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_12">
+      <g
+         id="line2d_23">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4852"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 371.94489,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_24">
+        <g
+           id="g4857">
+          <use
+             height="100%"
+             width="100%"
+             id="use4855"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="371.94489"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_12">
+        <!-- 12 -->
+        <g
+           id="g4864"
+           transform="matrix(0.1,0,0,-0.1,365.58239,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4860"
+             xlink:href="#DejaVuSans-49" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use4862"
+             xlink:href="#DejaVuSans-50"
+             x="63.623047" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_13">
+      <g
+         id="line2d_25">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4868"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 400.12671,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_26">
+        <g
+           id="g4873">
+          <use
+             height="100%"
+             width="100%"
+             id="use4871"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="400.12671"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_13">
+        <!-- 13 -->
+        <g
+           id="g4880"
+           transform="matrix(0.1,0,0,-0.1,393.7642,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4876"
+             xlink:href="#DejaVuSans-49" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use4878"
+             xlink:href="#DejaVuSans-51"
+             x="63.623047" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_14">
+      <g
+         id="line2d_27">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4884"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 428.30852,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_28">
+        <g
+           id="g4889">
+          <use
+             height="100%"
+             width="100%"
+             id="use4887"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="428.30853"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_14">
+        <!-- 14 -->
+        <g
+           id="g4896"
+           transform="matrix(0.1,0,0,-0.1,421.94602,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4892"
+             xlink:href="#DejaVuSans-49" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use4894"
+             xlink:href="#DejaVuSans-52"
+             x="63.623047" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_15">
+      <g
+         id="line2d_29">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4900"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 456.49034,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_30">
+        <g
+           id="g4905">
+          <use
+             height="100%"
+             width="100%"
+             id="use4903"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="456.49033"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_15">
+        <!-- 15 -->
+        <g
+           id="g4912"
+           transform="matrix(0.1,0,0,-0.1,450.12784,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4908"
+             xlink:href="#DejaVuSans-49" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use4910"
+             xlink:href="#DejaVuSans-53"
+             x="63.623047" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_16">
+      <g
+         id="line2d_31">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4916"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 484.67216,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_32">
+        <g
+           id="g4921">
+          <use
+             height="100%"
+             width="100%"
+             id="use4919"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="484.67215"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_16">
+        <!-- 16 -->
+        <g
+           id="g4928"
+           transform="matrix(0.1,0,0,-0.1,478.30966,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4924"
+             xlink:href="#DejaVuSans-49" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use4926"
+             xlink:href="#DejaVuSans-54"
+             x="63.623047" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_17">
+      <g
+         id="line2d_33">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4932"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 512.85398,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_34">
+        <g
+           id="g4937">
+          <use
+             height="100%"
+             width="100%"
+             id="use4935"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="512.854"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_17">
+        <!-- 17 -->
+        <g
+           id="g4944"
+           transform="matrix(0.1,0,0,-0.1,506.49148,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4940"
+             xlink:href="#DejaVuSans-49" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use4942"
+             xlink:href="#DejaVuSans-55"
+             x="63.623047" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_18">
+      <g
+         id="line2d_35">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4948"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 541.03579,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_36">
+        <g
+           id="g4953">
+          <use
+             height="100%"
+             width="100%"
+             id="use4951"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="541.03577"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_18">
+        <!-- 18 -->
+        <g
+           id="g4960"
+           transform="matrix(0.1,0,0,-0.1,534.6733,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4956"
+             xlink:href="#DejaVuSans-49" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use4958"
+             xlink:href="#DejaVuSans-56"
+             x="63.623047" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="xtick_19">
+      <g
+         id="line2d_37">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4964"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="M 569.21761,341.27812 V 15.118125"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_38">
+        <g
+           id="g4969">
+          <use
+             height="100%"
+             width="100%"
+             id="use4967"
+             y="341.27814"
+             xlink:href="#m7504040a2f"
+             x="569.21759"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_19">
+        <!-- 19 -->
+        <g
+           id="g4976"
+           transform="matrix(0.1,0,0,-0.1,562.85511,355.87656)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use4972"
+             xlink:href="#DejaVuSans-49" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use4974"
+             xlink:href="#DejaVuSans-57"
+             x="63.623047" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="text_20">
+      <!-- dimension -->
+      <defs
+         id="defs4987">
+        <path
+           inkscape:connector-curvature="0"
+           id="DejaVuSans-100"
+           d="m 45.40625,46.390625 v 29.59375 h 8.984375 V 0 H 45.40625 v 8.203125 q -2.828125,-4.875 -7.15625,-7.25 -4.3125,-2.375 -10.375,-2.375 -9.90625,0 -16.140625,7.90625 -6.21875,7.921875 -6.21875,20.8125 0,12.890625 6.21875,20.796875 Q 17.96875,56 27.875,56 q 6.0625,0 10.375,-2.375 4.328125,-2.359375 7.15625,-7.234375 z M 14.796875,27.296875 q 0,-9.90625 4.078125,-15.546875 4.078125,-5.640625 11.203125,-5.640625 7.125,0 11.21875,5.640625 4.109375,5.640625 4.109375,15.546875 0,9.90625 -4.109375,15.546875 -4.09375,5.640625 -11.21875,5.640625 -7.125,0 -11.203125,-5.640625 -4.078125,-5.640625 -4.078125,-15.546875 z" />
+        <path
+           inkscape:connector-curvature="0"
+           id="DejaVuSans-105"
+           d="M 9.421875,54.6875 H 18.40625 V 0 H 9.421875 Z m 0,21.296875 H 18.40625 V 64.59375 H 9.421875 Z" />
+        <path
+           inkscape:connector-curvature="0"
+           id="DejaVuSans-109"
+           d="M 52,44.1875 Q 55.375,50.25 60.0625,53.125 64.75,56 71.09375,56 q 8.546875,0 13.1875,-5.984375 4.640625,-5.96875 4.640625,-17 V 0 h -9.03125 v 32.71875 q 0,7.859375 -2.796875,11.65625 -2.78125,3.8125 -8.484375,3.8125 -6.984375,0 -11.046875,-4.640625 -4.046875,-4.625 -4.046875,-12.640625 V 0 h -9.03125 v 32.71875 q 0,7.90625 -2.78125,11.6875 -2.78125,3.78125 -8.59375,3.78125 -6.890625,0 -10.953125,-4.65625 -4.046875,-4.65625 -4.046875,-12.625 V 0 h -9.03125 v 54.6875 h 9.03125 v -8.5 q 3.078125,5.03125 7.375,7.421875 Q 29.78125,56 35.6875,56 41.65625,56 45.828125,52.96875 50,49.953125 52,44.1875 Z" />
+        <path
+           inkscape:connector-curvature="0"
+           id="DejaVuSans-101"
+           d="m 56.203125,29.59375 v -4.390625 h -41.3125 q 0.59375,-9.28125 5.59375,-14.140625 5,-4.859375 13.9375,-4.859375 5.171875,0 10.03125,1.265625 4.859375,1.265625 9.65625,3.8125 v -8.5 q -4.84375,-2.046875 -9.921875,-3.125 -5.078125,-1.078125 -10.296875,-1.078125 -13.09375,0 -20.734375,7.609375 -7.640625,7.625 -7.640625,20.625 0,13.421875 7.25,21.296875 Q 20.015625,56 32.328125,56 q 11.03125,0 17.453125,-7.109375 6.421875,-7.09375 6.421875,-19.296875 z m -8.984375,2.640625 q -0.09375,7.359375 -4.125,11.75 -4.03125,4.40625 -10.671875,4.40625 -7.515625,0 -12.03125,-4.25 -4.515625,-4.25 -5.203125,-11.96875 z" />
+        <path
+           inkscape:connector-curvature="0"
+           id="DejaVuSans-110"
+           d="M 54.890625,33.015625 V 0 H 45.90625 v 32.71875 q 0,7.765625 -3.03125,11.609375 -3.03125,3.859375 -9.078125,3.859375 -7.28125,0 -11.484375,-4.640625 -4.203125,-4.625 -4.203125,-12.640625 V 0 h -9.03125 v 54.6875 h 9.03125 v -8.5 q 3.234375,4.9375 7.59375,7.375 4.375,2.4375 10.09375,2.4375 9.421875,0 14.25,-5.828125 4.84375,-5.828125 4.84375,-17.15625 z" />
+        <path
+           inkscape:connector-curvature="0"
+           id="DejaVuSans-115"
+           d="m 44.28125,53.078125 v -8.5 Q 40.484375,46.53125 36.375,47.5 q -4.09375,0.984375 -8.5,0.984375 -6.6875,0 -10.03125,-2.046875 Q 14.5,44.390625 14.5,40.28125 q 0,-3.125 2.390625,-4.90625 2.390625,-1.78125 9.625,-3.390625 l 3.078125,-0.6875 Q 39.15625,29.25 43.1875,25.515625 47.21875,21.78125 47.21875,15.09375 q 0,-7.625 -6.03125,-12.078125 -6.03125,-4.4375 -16.578125,-4.4375 -4.390625,0 -9.15625,0.859375 Q 10.6875,0.296875 5.421875,2 v 9.28125 q 4.984375,-2.59375 9.8125,-3.890625 4.828125,-1.28125 9.578125,-1.28125 6.34375,0 9.75,2.171875 3.421875,2.171875 3.421875,6.125 0,3.65625 -2.46875,5.609375 -2.453125,1.953125 -10.8125,3.765625 l -3.125,0.734375 q -8.34375,1.75 -12.0625,5.390625 -3.703125,3.640625 -3.703125,9.984375 0,7.71875 5.46875,11.90625 Q 16.75,56 26.8125,56 q 4.96875,0 9.359375,-0.734375 4.40625,-0.71875 8.109375,-2.1875 z" />
+        <path
+           inkscape:connector-curvature="0"
+           id="DejaVuSans-111"
+           d="m 30.609375,48.390625 q -7.21875,0 -11.421875,-5.640625 -4.203125,-5.640625 -4.203125,-15.453125 0,-9.8125 4.171875,-15.453125 4.1875,-5.640625 11.453125,-5.640625 7.1875,0 11.375,5.65625 4.203125,5.671875 4.203125,15.4375 0,9.71875 -4.203125,15.40625 -4.1875,5.6875 -11.375,5.6875 z m 0,7.609375 q 11.71875,0 18.40625,-7.625 6.703125,-7.609375 6.703125,-21.078125 0,-13.421875 -6.703125,-21.078125 -6.6875,-7.640625 -18.40625,-7.640625 -11.765625,0 -18.4375,7.640625 -6.65625,7.65625 -6.65625,21.078125 0,13.46875 6.65625,21.078125 Q 18.84375,56 30.609375,56 Z" />
+      </defs>
+      <g
+         id="g5007"
+         transform="matrix(0.1,0,0,-0.1,289.68047,369.55469)">
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           x="0"
+           id="use4989"
+           xlink:href="#DejaVuSans-100" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use4991"
+           xlink:href="#DejaVuSans-105"
+           x="63.476562" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use4993"
+           xlink:href="#DejaVuSans-109"
+           x="91.259766" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use4995"
+           xlink:href="#DejaVuSans-101"
+           x="188.67188" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use4997"
+           xlink:href="#DejaVuSans-110"
+           x="250.19531" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use4999"
+           xlink:href="#DejaVuSans-115"
+           x="313.57422" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5001"
+           xlink:href="#DejaVuSans-105"
+           x="365.67383" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5003"
+           xlink:href="#DejaVuSans-111"
+           x="393.45703" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5005"
+           xlink:href="#DejaVuSans-110"
+           x="454.63867" />
+      </g>
+    </g>
+  </g>
+  <g
+     id="matplotlib.axis_2">
+    <g
+       id="ytick_1">
+      <g
+         id="line2d_39">
+        <path
+           inkscape:connector-curvature="0"
+           id="path5011"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="m 36.58125,309.01096 h 558"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_40">
+        <defs
+           id="defs5015">
+          <path
+             inkscape:connector-curvature="0"
+             style="stroke:#000000;stroke-width:0.8"
+             id="m5d69fbe647"
+             d="M 0,0 H -3.5" />
+        </defs>
+        <g
+           id="g5019">
+          <use
+             height="100%"
+             width="100%"
+             id="use5017"
+             y="309.01096"
+             xlink:href="#m5d69fbe647"
+             x="36.581249"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_21">
+        <!-- 0.2 -->
+        <defs
+           id="defs5023">
+          <path
+             inkscape:connector-curvature="0"
+             id="DejaVuSans-46"
+             d="M 10.6875,12.40625 H 21 V 0 H 10.6875 Z" />
+        </defs>
+        <g
+           id="g5031"
+           transform="matrix(0.1,0,0,-0.1,13.678125,312.81018)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use5025"
+             xlink:href="#DejaVuSans-48" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5027"
+             xlink:href="#DejaVuSans-46"
+             x="63.623047" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5029"
+             xlink:href="#DejaVuSans-50"
+             x="95.410156" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="ytick_2">
+      <g
+         id="line2d_41">
+        <path
+           inkscape:connector-curvature="0"
+           id="path5035"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="m 36.58125,239.24411 h 558"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_42">
+        <g
+           id="g5040">
+          <use
+             height="100%"
+             width="100%"
+             id="use5038"
+             y="239.24411"
+             xlink:href="#m5d69fbe647"
+             x="36.581249"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_22">
+        <!-- 0.4 -->
+        <g
+           id="g5049"
+           transform="matrix(0.1,0,0,-0.1,13.678125,243.04333)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use5043"
+             xlink:href="#DejaVuSans-48" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5045"
+             xlink:href="#DejaVuSans-46"
+             x="63.623047" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5047"
+             xlink:href="#DejaVuSans-52"
+             x="95.410156" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="ytick_3">
+      <g
+         id="line2d_43">
+        <path
+           inkscape:connector-curvature="0"
+           id="path5053"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="m 36.58125,169.47727 h 558"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_44">
+        <g
+           id="g5058">
+          <use
+             height="100%"
+             width="100%"
+             id="use5056"
+             y="169.47726"
+             xlink:href="#m5d69fbe647"
+             x="36.581249"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_23">
+        <!-- 0.6 -->
+        <g
+           id="g5067"
+           transform="matrix(0.1,0,0,-0.1,13.678125,173.27649)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use5061"
+             xlink:href="#DejaVuSans-48" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5063"
+             xlink:href="#DejaVuSans-46"
+             x="63.623047" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5065"
+             xlink:href="#DejaVuSans-54"
+             x="95.410156" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="ytick_4">
+      <g
+         id="line2d_45">
+        <path
+           inkscape:connector-curvature="0"
+           id="path5071"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="m 36.58125,99.710424 h 558"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_46">
+        <g
+           id="g5076">
+          <use
+             height="100%"
+             width="100%"
+             id="use5074"
+             y="99.710426"
+             xlink:href="#m5d69fbe647"
+             x="36.581249"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_24">
+        <!-- 0.8 -->
+        <g
+           id="g5085"
+           transform="matrix(0.1,0,0,-0.1,13.678125,103.50964)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use5079"
+             xlink:href="#DejaVuSans-48" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5081"
+             xlink:href="#DejaVuSans-46"
+             x="63.623047" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5083"
+             xlink:href="#DejaVuSans-56"
+             x="95.410156" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="ytick_5">
+      <g
+         id="line2d_47">
+        <path
+           inkscape:connector-curvature="0"
+           id="path5089"
+           style="fill:none;stroke:#b0b0b0;stroke-width:0.8;stroke-linecap:square"
+           d="m 36.58125,29.94358 h 558"
+           clip-path="url(#p2b4a1fc9b1)" />
+      </g>
+      <g
+         id="line2d_48">
+        <g
+           id="g5094">
+          <use
+             height="100%"
+             width="100%"
+             id="use5092"
+             y="29.943581"
+             xlink:href="#m5d69fbe647"
+             x="36.581249"
+             style="stroke:#000000;stroke-width:0.8" />
+        </g>
+      </g>
+      <g
+         id="text_25">
+        <!-- 1.0 -->
+        <g
+           id="g5103"
+           transform="matrix(0.1,0,0,-0.1,13.678125,33.742798)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use5097"
+             xlink:href="#DejaVuSans-49" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5099"
+             xlink:href="#DejaVuSans-46"
+             x="63.623047" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5101"
+             xlink:href="#DejaVuSans-48"
+             x="95.410156" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="text_26">
+      <!-- proportion taken by rind -->
+      <defs
+         id="defs5115">
+        <path
+           inkscape:connector-curvature="0"
+           id="DejaVuSans-112"
+           d="m 18.109375,8.203125 v -29 H 9.078125 V 54.6875 h 9.03125 v -8.296875 q 2.84375,4.875 7.15625,7.234375 Q 29.59375,56 35.59375,56 q 9.96875,0 16.1875,-7.90625 6.234375,-7.90625 6.234375,-20.796875 0,-12.890625 -6.234375,-20.8125 -6.21875,-7.90625 -16.1875,-7.90625 -6,0 -10.328125,2.375 -4.3125,2.375 -7.15625,7.25 z M 48.6875,27.296875 q 0,9.90625 -4.078125,15.546875 -4.078125,5.640625 -11.203125,5.640625 -7.140625,0 -11.21875,-5.640625 -4.078125,-5.640625 -4.078125,-15.546875 0,-9.90625 4.078125,-15.546875 4.078125,-5.640625 11.21875,-5.640625 7.125,0 11.203125,5.640625 4.078125,5.640625 4.078125,15.546875 z" />
+        <path
+           inkscape:connector-curvature="0"
+           id="DejaVuSans-114"
+           d="m 41.109375,46.296875 q -1.515625,0.875 -3.296875,1.28125 Q 36.03125,48 33.890625,48 26.265625,48 22.1875,43.046875 18.109375,38.09375 18.109375,28.8125 V 0 h -9.03125 v 54.6875 h 9.03125 v -8.5 q 2.84375,4.984375 7.375,7.390625 Q 30.03125,56 36.53125,56 q 0.921875,0 2.046875,-0.125 1.125,-0.109375 2.484375,-0.359375 z" />
+        <path
+           inkscape:connector-curvature="0"
+           id="DejaVuSans-116"
+           d="M 18.3125,70.21875 V 54.6875 h 18.5 v -6.984375 h -18.5 v -29.6875 q 0,-6.6875 1.828125,-8.59375 1.828125,-1.90625 7.453125,-1.90625 H 36.8125 V 0 H 27.59375 Q 17.1875,0 13.234375,3.875 9.28125,7.765625 9.28125,18.015625 v 29.6875 H 2.6875 V 54.6875 h 6.59375 v 15.53125 z" />
+        <path
+           inkscape:connector-curvature="0"
+           d=""
+           id="DejaVuSans-32" />
+        <path
+           inkscape:connector-curvature="0"
+           id="DejaVuSans-97"
+           d="m 34.28125,27.484375 q -10.890625,0 -15.09375,-2.484375 -4.203125,-2.484375 -4.203125,-8.5 0,-4.78125 3.15625,-7.59375 3.15625,-2.796875 8.5625,-2.796875 7.484375,0 12,5.296875 4.515625,5.296875 4.515625,14.078125 v 2 z m 17.921875,3.71875 V 0 H 43.21875 v 8.296875 q -3.078125,-4.96875 -7.671875,-7.34375 -4.59375,-2.375 -11.234375,-2.375 -8.390625,0 -13.359375,4.71875 Q 6,8.015625 6,15.921875 q 0,9.21875 6.171875,13.90625 6.1875,4.6875 18.4375,4.6875 H 43.21875 v 0.890625 q 0,6.203125 -4.078125,9.59375 -4.078125,3.390625 -11.453125,3.390625 -4.6875,0 -9.140625,-1.125 -4.4375,-1.125 -8.53125,-3.375 v 8.3125 q 4.921875,1.90625 9.5625,2.84375 Q 24.21875,56 28.609375,56 q 11.875,0 17.734375,-6.15625 5.859375,-6.140625 5.859375,-18.640625 z" />
+        <path
+           inkscape:connector-curvature="0"
+           id="DejaVuSans-107"
+           d="m 9.078125,75.984375 h 9.03125 v -44.875 l 26.8125,23.578125 h 11.46875 l -29,-25.578125 L 57.625,0 H 45.90625 L 18.109375,26.703125 V 0 h -9.03125 z" />
+        <path
+           inkscape:connector-curvature="0"
+           id="DejaVuSans-98"
+           d="m 48.6875,27.296875 q 0,9.90625 -4.078125,15.546875 -4.078125,5.640625 -11.203125,5.640625 -7.140625,0 -11.21875,-5.640625 -4.078125,-5.640625 -4.078125,-15.546875 0,-9.90625 4.078125,-15.546875 4.078125,-5.640625 11.21875,-5.640625 7.125,0 11.203125,5.640625 4.078125,5.640625 4.078125,15.546875 z m -30.578125,19.09375 q 2.84375,4.875 7.15625,7.234375 Q 29.59375,56 35.59375,56 q 9.96875,0 16.1875,-7.90625 6.234375,-7.90625 6.234375,-20.796875 0,-12.890625 -6.234375,-20.8125 -6.21875,-7.90625 -16.1875,-7.90625 -6,0 -10.328125,2.375 -4.3125,2.375 -7.15625,7.25 V 0 h -9.03125 v 75.984375 h 9.03125 z" />
+        <path
+           inkscape:connector-curvature="0"
+           id="DejaVuSans-121"
+           d="M 32.171875,-5.078125 Q 28.375,-14.84375 24.75,-17.8125 q -3.609375,-2.984375 -9.65625,-2.984375 h -7.1875 v 7.515625 h 5.28125 q 3.703125,0 5.75,1.765625 2.0625,1.75 4.546875,8.296875 L 25.09375,0.875 2.984375,54.6875 H 12.5 L 29.59375,11.921875 46.6875,54.6875 h 9.515625 z" />
+      </defs>
+      <g
+         id="g5165"
+         transform="matrix(0,-0.1,-0.1,0,7.598438,239.20281)">
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           x="0"
+           id="use5117"
+           xlink:href="#DejaVuSans-112" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5119"
+           xlink:href="#DejaVuSans-114"
+           x="63.476562" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5121"
+           xlink:href="#DejaVuSans-111"
+           x="104.55859" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5123"
+           xlink:href="#DejaVuSans-112"
+           x="165.74023" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5125"
+           xlink:href="#DejaVuSans-111"
+           x="229.2168" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5127"
+           xlink:href="#DejaVuSans-114"
+           x="290.39844" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5129"
+           xlink:href="#DejaVuSans-116"
+           x="331.51172" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5131"
+           xlink:href="#DejaVuSans-105"
+           x="370.7207" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5133"
+           xlink:href="#DejaVuSans-111"
+           x="398.50391" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5135"
+           xlink:href="#DejaVuSans-110"
+           x="459.68555" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5137"
+           xlink:href="#DejaVuSans-32"
+           x="523.06445" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5139"
+           xlink:href="#DejaVuSans-116"
+           x="554.85156" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5141"
+           xlink:href="#DejaVuSans-97"
+           x="594.06055" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5143"
+           xlink:href="#DejaVuSans-107"
+           x="655.33984" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5145"
+           xlink:href="#DejaVuSans-101"
+           x="713.20312" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5147"
+           xlink:href="#DejaVuSans-110"
+           x="774.72656" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5149"
+           xlink:href="#DejaVuSans-32"
+           x="838.10547" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5151"
+           xlink:href="#DejaVuSans-98"
+           x="869.89258" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5153"
+           xlink:href="#DejaVuSans-121"
+           x="933.36914" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5155"
+           xlink:href="#DejaVuSans-32"
+           x="992.54883" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5157"
+           xlink:href="#DejaVuSans-114"
+           x="1024.3359" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5159"
+           xlink:href="#DejaVuSans-105"
+           x="1065.4492" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5161"
+           xlink:href="#DejaVuSans-110"
+           x="1093.2324" />
+        <use
+           height="100%"
+           width="100%"
+           y="0"
+           id="use5163"
+           xlink:href="#DejaVuSans-100"
+           x="1156.6113" />
+      </g>
+    </g>
+  </g>
+  <g
+     id="patch_3">
+    <path
+       inkscape:connector-curvature="0"
+       id="path5353"
+       style="fill:none;stroke:#000000;stroke-width:0.8;stroke-linecap:square;stroke-linejoin:miter"
+       d="M 36.58125,341.27812 V 15.118125" />
+  </g>
+  <g
+     id="patch_4">
+    <path
+       inkscape:connector-curvature="0"
+       id="path5356"
+       style="fill:none;stroke:#000000;stroke-width:0.8;stroke-linecap:square;stroke-linejoin:miter"
+       d="M 594.58125,341.27812 V 15.118125" />
+  </g>
+  <g
+     id="patch_5">
+    <path
+       inkscape:connector-curvature="0"
+       id="path5359"
+       style="fill:none;stroke:#000000;stroke-width:0.8;stroke-linecap:square;stroke-linejoin:miter"
+       d="m 36.58125,341.27812 h 558" />
+  </g>
+  <g
+     id="patch_6">
+    <path
+       inkscape:connector-curvature="0"
+       id="path5362"
+       style="fill:none;stroke:#000000;stroke-width:0.8;stroke-linecap:square;stroke-linejoin:miter"
+       d="m 36.58125,15.118125 h 558" />
+  </g>
+  <g
+     id="text_27">
+    <!-- rind % of radius -->
+    <defs
+       id="defs5368">
+      <path
+         inkscape:connector-curvature="0"
+         id="DejaVuSans-37"
+         d="m 72.703125,32.078125 q -4.25,0 -6.671875,-3.609375 -2.40625,-3.609375 -2.40625,-10.0625 0,-6.34375 2.40625,-9.984375 2.421875,-3.640625 6.671875,-3.640625 4.15625,0 6.5625,3.640625 2.421875,3.640625 2.421875,9.984375 0,6.40625 -2.421875,10.03125 -2.40625,3.640625 -6.5625,3.640625 z m 0,6.203125 q 7.71875,0 12.25,-5.375 Q 89.5,27.546875 89.5,18.40625 q 0,-9.125 -4.5625,-14.484375 -4.5625,-5.34375 -12.234375,-5.34375 -7.8125,0 -12.359375,5.34375 -4.53125,5.359375 -4.53125,14.484375 0,9.1875 4.5625,14.53125 4.5625,5.34375 12.328125,5.34375 z M 22.3125,68.015625 q -4.203125,0 -6.625,-3.640625 -2.40625,-3.625 -2.40625,-9.984375 0,-6.4375 2.390625,-10.0625 2.390625,-3.609375 6.640625,-3.609375 4.25,0 6.65625,3.609375 2.421875,3.625 2.421875,10.0625 0,6.296875 -2.4375,9.953125 -2.4375,3.671875 -6.640625,3.671875 z m 44.09375,6.203125 h 7.8125 L 28.609375,-1.421875 h -7.8125 z m -44.09375,0 q 7.71875,0 12.296875,-5.34375 4.59375,-5.34375 4.59375,-14.484375 0,-9.21875 -4.5625,-14.546875 -4.5625,-5.328125 -12.328125,-5.328125 -7.765625,0 -12.28125,5.34375 -4.515625,5.359375 -4.515625,14.53125 0,9.09375 4.53125,14.453125 4.546875,5.375 12.265625,5.375 z" />
+      <path
+         inkscape:connector-curvature="0"
+         id="DejaVuSans-102"
+         d="M 37.109375,75.984375 V 68.5 h -8.59375 q -4.828125,0 -6.71875,-1.953125 -1.875,-1.953125 -1.875,-7.03125 V 54.6875 H 34.71875 V 47.703125 H 19.921875 V 0 h -9.03125 V 47.703125 H 2.296875 V 54.6875 h 8.59375 V 58.5 q 0,9.125 4.25,13.296875 4.25,4.1875 13.46875,4.1875 z" />
+      <path
+         inkscape:connector-curvature="0"
+         id="DejaVuSans-117"
+         d="M 8.5,21.578125 V 54.6875 h 8.984375 V 21.921875 q 0,-7.765625 3.015625,-11.65625 3.03125,-3.875 9.09375,-3.875 7.265625,0 11.484375,4.640625 4.234375,4.640625 4.234375,12.65625 v 31 h 8.984375 V 0 H 45.3125 V 8.40625 Q 42.046875,3.421875 37.71875,1 33.40625,-1.421875 27.6875,-1.421875 18.265625,-1.421875 13.375,4.4375 8.5,10.296875 8.5,21.578125 Z M 31.109375,56 Z" />
+    </defs>
+    <g
+       id="g5402"
+       transform="matrix(0.12,0,0,-0.12,268.08375,9.118125)">
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         x="0"
+         id="use5370"
+         xlink:href="#DejaVuSans-114" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5372"
+         xlink:href="#DejaVuSans-105"
+         x="41.113281" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5374"
+         xlink:href="#DejaVuSans-110"
+         x="68.896484" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5376"
+         xlink:href="#DejaVuSans-100"
+         x="132.27539" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5378"
+         xlink:href="#DejaVuSans-32"
+         x="195.75195" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5380"
+         xlink:href="#DejaVuSans-37"
+         x="227.53906" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5382"
+         xlink:href="#DejaVuSans-32"
+         x="322.55859" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5384"
+         xlink:href="#DejaVuSans-111"
+         x="354.3457" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5386"
+         xlink:href="#DejaVuSans-102"
+         x="415.52734" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5388"
+         xlink:href="#DejaVuSans-32"
+         x="450.73242" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5390"
+         xlink:href="#DejaVuSans-114"
+         x="482.51953" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5392"
+         xlink:href="#DejaVuSans-97"
+         x="523.63281" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5394"
+         xlink:href="#DejaVuSans-100"
+         x="584.91211" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5396"
+         xlink:href="#DejaVuSans-105"
+         x="648.38867" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5398"
+         xlink:href="#DejaVuSans-117"
+         x="676.17188" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         id="use5400"
+         xlink:href="#DejaVuSans-115"
+         x="739.55078" />
+    </g>
+  </g>
+  <defs
+     id="defs5498">
+    <clipPath
+       id="p2b4a1fc9b1">
+      <rect
+         id="rect5495"
+         y="15.118125"
+         x="36.58125"
+         width="558"
+         height="326.16" />
+    </clipPath>
+  </defs>
+  <g
+     ns0:masterSlide="masterSlide"
+     inkscape:label="master"
+     id="layer4"
+     inkscape:groupmode="layer" />
+  <g
+     style="display:inline"
+     inkscape:label="plots"
+     id="layer5"
+     inkscape:groupmode="layer">
+    <g
+       id="patch_7">
+      <path
+         d="m 523.81406,336.27812 h 63.76719 q 2,0 2,-2 v -57.7125 q 0,-2 -2,-2 h -63.76719 q -2,0 -2,2 v 57.7125 q 0,2 2,2 z"
+         style="opacity:0.8;fill:#ffffff;stroke:#cccccc;stroke-linejoin:miter"
+         id="path5405"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       id="line2d_53">
+      <path
+         d="m 525.81406,282.66406 h 20"
+         style="fill:none;stroke:#1f77b4;stroke-linecap:square"
+         id="path5408"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       ns0:effectIn="name:appear;order:1;length:300"
+       id="g7297">
+      <g
+         id="line2d_54">
+        <g
+           id="g5413">
+          <use
+             height="100%"
+             width="100%"
+             id="use5411"
+             y="282.66406"
+             xlink:href="#m7716eb4430"
+             x="535.81409"
+             style="fill:#1f77b4;stroke:#1f77b4" />
+        </g>
+      </g>
+      <g
+         id="text_28">
+        <!-- 15.0% -->
+        <g
+           id="g5426"
+           transform="matrix(0.1,0,0,-0.1,553.81406,286.16406)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use5416"
+             xlink:href="#DejaVuSans-49" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5418"
+             xlink:href="#DejaVuSans-53"
+             x="63.623047" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5420"
+             xlink:href="#DejaVuSans-46"
+             x="127.24609" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5422"
+             xlink:href="#DejaVuSans-48"
+             x="159.0332" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5424"
+             xlink:href="#DejaVuSans-37"
+             x="222.65625" />
+        </g>
+      </g>
+      <g
+         id="line2d_49">
+        <path
+           clip-path="url(#p2b4a1fc9b1)"
+           d="m 61.944886,326.45267 28.181819,-44.47636 28.181815,-37.80491 28.18182,-32.13418 28.18182,-27.31404 28.18182,-23.21694 28.18181,-19.7344 28.18182,-16.77424 28.18182,-14.2581 28.18182,-12.11939 28.18182,-10.30148 28.18182,-8.756257 28.18182,-7.442819 28.18181,-6.326396 28.18182,-5.377437 28.18182,-4.570821 28.18182,-3.885198 28.18181,-3.302419 28.18182,-2.807055"
+           style="fill:none;stroke:#1f77b4;stroke-linecap:square"
+           id="path5169"
+           inkscape:connector-curvature="0" />
+        <defs
+           id="defs5172">
+          <path
+             d="M 0,1.5 C 0.397805,1.5 0.77937,1.341951 1.06066,1.06066 1.341951,0.77937 1.5,0.397805 1.5,0 1.5,-0.397805 1.341951,-0.77937 1.06066,-1.06066 0.77937,-1.341951 0.397805,-1.5 0,-1.5 c -0.397805,0 -0.77937,0.158049 -1.06066,0.43934 C -1.341951,-0.77937 -1.5,-0.397805 -1.5,0 c 0,0.397805 0.158049,0.77937 0.43934,1.06066 C -0.77937,1.341951 -0.397805,1.5 0,1.5 Z"
+             id="m7716eb4430"
+             style="stroke:#1f77b4"
+             inkscape:connector-curvature="0" />
+        </defs>
+        <g
+           clip-path="url(#p2b4a1fc9b1)"
+           id="g5212">
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="61.944885"
+             xlink:href="#m7716eb4430"
+             y="326.45267"
+             id="use5174"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="90.126701"
+             xlink:href="#m7716eb4430"
+             y="281.97632"
+             id="use5176"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="118.30853"
+             xlink:href="#m7716eb4430"
+             y="244.1714"
+             id="use5178"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="146.49034"
+             xlink:href="#m7716eb4430"
+             y="212.03723"
+             id="use5180"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="174.67216"
+             xlink:href="#m7716eb4430"
+             y="184.72318"
+             id="use5182"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="202.85397"
+             xlink:href="#m7716eb4430"
+             y="161.50624"
+             id="use5184"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="231.0358"
+             xlink:href="#m7716eb4430"
+             y="141.77184"
+             id="use5186"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="259.21762"
+             xlink:href="#m7716eb4430"
+             y="124.9976"
+             id="use5188"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="287.39944"
+             xlink:href="#m7716eb4430"
+             y="110.73949"
+             id="use5190"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="315.58124"
+             xlink:href="#m7716eb4430"
+             y="98.62011"
+             id="use5192"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="343.76306"
+             xlink:href="#m7716eb4430"
+             y="88.318626"
+             id="use5194"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="371.94489"
+             xlink:href="#m7716eb4430"
+             y="79.56237"
+             id="use5196"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="400.12671"
+             xlink:href="#m7716eb4430"
+             y="72.119553"
+             id="use5198"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="428.30853"
+             xlink:href="#m7716eb4430"
+             y="65.793159"
+             id="use5200"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="456.49033"
+             xlink:href="#m7716eb4430"
+             y="60.415722"
+             id="use5202"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="484.67215"
+             xlink:href="#m7716eb4430"
+             y="55.844898"
+             id="use5204"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="512.854"
+             xlink:href="#m7716eb4430"
+             y="51.959702"
+             id="use5206"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="541.03577"
+             xlink:href="#m7716eb4430"
+             y="48.657284"
+             id="use5208"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#1f77b4;stroke:#1f77b4"
+             x="569.21759"
+             xlink:href="#m7716eb4430"
+             y="45.850227"
+             id="use5210"
+             width="100%"
+             height="100%" />
+        </g>
+      </g>
+    </g>
+    <g
+       ns0:effectIn="name:appear;order:2;length:300"
+       id="g8866">
+      <g
+         id="line2d_55">
+        <path
+           inkscape:connector-curvature="0"
+           id="path5429"
+           style="fill:none;stroke:#ff7f0e;stroke-linecap:square"
+           d="m 525.81406,297.34219 h 20" />
+      </g>
+      <g
+         id="line2d_56">
+        <g
+           id="g5434">
+          <use
+             height="100%"
+             width="100%"
+             id="use5432"
+             y="297.34219"
+             xlink:href="#mca3fe08649"
+             x="535.81409"
+             style="fill:#ff7f0e;stroke:#ff7f0e" />
+        </g>
+      </g>
+      <g
+         id="text_29">
+        <!-- 25.0% -->
+        <g
+           id="g5447"
+           transform="matrix(0.1,0,0,-0.1,553.81406,300.84219)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use5437"
+             xlink:href="#DejaVuSans-50" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5439"
+             xlink:href="#DejaVuSans-53"
+             x="63.623047" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5441"
+             xlink:href="#DejaVuSans-46"
+             x="127.24609" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5443"
+             xlink:href="#DejaVuSans-48"
+             x="159.0332" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5445"
+             xlink:href="#DejaVuSans-37"
+             x="222.65625" />
+        </g>
+      </g>
+      <g
+         id="line2d_50">
+        <path
+           clip-path="url(#p2b4a1fc9b1)"
+           d="m 61.944886,291.56925 28.181819,-65.40642 28.181815,-49.05481 28.18182,-36.79111 28.18182,-27.59333 28.18182,-20.695003 28.18181,-15.521249 28.18182,-11.640937 28.18182,-8.730703 28.18182,-6.548027 28.18182,-4.911021 28.18182,-3.683265 28.18182,-2.762449 28.18181,-2.071836 28.18182,-1.553878 28.18182,-1.165408 28.18182,-0.874056 28.18181,-0.655542 28.18182,-0.491657"
+           style="fill:none;stroke:#ff7f0e;stroke-linecap:square"
+           id="path5215"
+           inkscape:connector-curvature="0" />
+        <defs
+           id="defs5218">
+          <path
+             d="M 0,1.5 C 0.397805,1.5 0.77937,1.341951 1.06066,1.06066 1.341951,0.77937 1.5,0.397805 1.5,0 1.5,-0.397805 1.341951,-0.77937 1.06066,-1.06066 0.77937,-1.341951 0.397805,-1.5 0,-1.5 c -0.397805,0 -0.77937,0.158049 -1.06066,0.43934 C -1.341951,-0.77937 -1.5,-0.397805 -1.5,0 c 0,0.397805 0.158049,0.77937 0.43934,1.06066 C -0.77937,1.341951 -0.397805,1.5 0,1.5 Z"
+             id="mca3fe08649"
+             style="stroke:#ff7f0e"
+             inkscape:connector-curvature="0" />
+        </defs>
+        <g
+           clip-path="url(#p2b4a1fc9b1)"
+           id="g5258">
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="61.944885"
+             xlink:href="#mca3fe08649"
+             y="291.56924"
+             id="use5220"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="90.126701"
+             xlink:href="#mca3fe08649"
+             y="226.16283"
+             id="use5222"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="118.30853"
+             xlink:href="#mca3fe08649"
+             y="177.10802"
+             id="use5224"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="146.49034"
+             xlink:href="#mca3fe08649"
+             y="140.31691"
+             id="use5226"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="174.67216"
+             xlink:href="#mca3fe08649"
+             y="112.72358"
+             id="use5228"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="202.85397"
+             xlink:href="#mca3fe08649"
+             y="92.02858"
+             id="use5230"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="231.0358"
+             xlink:href="#mca3fe08649"
+             y="76.507324"
+             id="use5232"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="259.21762"
+             xlink:href="#mca3fe08649"
+             y="64.866394"
+             id="use5234"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="287.39944"
+             xlink:href="#mca3fe08649"
+             y="56.135689"
+             id="use5236"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="315.58124"
+             xlink:href="#mca3fe08649"
+             y="49.587662"
+             id="use5238"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="343.76306"
+             xlink:href="#mca3fe08649"
+             y="44.67664"
+             id="use5240"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="371.94489"
+             xlink:href="#mca3fe08649"
+             y="40.993374"
+             id="use5242"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="400.12671"
+             xlink:href="#mca3fe08649"
+             y="38.230927"
+             id="use5244"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="428.30853"
+             xlink:href="#mca3fe08649"
+             y="36.159088"
+             id="use5246"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="456.49033"
+             xlink:href="#mca3fe08649"
+             y="34.605213"
+             id="use5248"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="484.67215"
+             xlink:href="#mca3fe08649"
+             y="33.439804"
+             id="use5250"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="512.854"
+             xlink:href="#mca3fe08649"
+             y="32.565746"
+             id="use5252"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="541.03577"
+             xlink:href="#mca3fe08649"
+             y="31.910206"
+             id="use5254"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#ff7f0e;stroke:#ff7f0e"
+             x="569.21759"
+             xlink:href="#mca3fe08649"
+             y="31.418549"
+             id="use5256"
+             width="100%"
+             height="100%" />
+        </g>
+      </g>
+    </g>
+    <g
+       ns0:effectIn="name:appear;order:3;length:300"
+       id="g9415">
+      <g
+         id="line2d_57">
+        <path
+           inkscape:connector-curvature="0"
+           id="path5450"
+           style="fill:none;stroke:#2ca02c;stroke-linecap:square"
+           d="m 525.81406,312.02031 h 20" />
+      </g>
+      <g
+         id="line2d_58">
+        <g
+           id="g5455">
+          <use
+             height="100%"
+             width="100%"
+             id="use5453"
+             y="312.02032"
+             xlink:href="#m1ab1a045eb"
+             x="535.81409"
+             style="fill:#2ca02c;stroke:#2ca02c" />
+        </g>
+      </g>
+      <g
+         id="text_30">
+        <!-- 50.0% -->
+        <g
+           id="g5468"
+           transform="matrix(0.1,0,0,-0.1,553.81406,315.52031)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use5458"
+             xlink:href="#DejaVuSans-53" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5460"
+             xlink:href="#DejaVuSans-48"
+             x="63.623047" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5462"
+             xlink:href="#DejaVuSans-46"
+             x="127.24609" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5464"
+             xlink:href="#DejaVuSans-48"
+             x="159.0332" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5466"
+             xlink:href="#DejaVuSans-37"
+             x="222.65625" />
+        </g>
+      </g>
+      <g
+         id="line2d_51">
+        <path
+           clip-path="url(#p2b4a1fc9b1)"
+           d="m 61.944886,204.36069 28.181819,-87.20855 28.181815,-43.604282 28.18182,-21.802139 28.18182,-10.90107 28.18182,-5.450535 28.18181,-2.725267 28.18182,-1.362634 28.18182,-0.681317 28.18182,-0.340658 28.18182,-0.170329 28.18182,-0.08516 28.18182,-0.04258 28.18181,-0.02129 28.18182,-0.01065 28.18182,-0.0053 28.18182,-0.0027 28.18181,-0.0013 28.18182,-6.65e-4"
+           style="fill:none;stroke:#2ca02c;stroke-linecap:square"
+           id="path5261"
+           inkscape:connector-curvature="0" />
+        <defs
+           id="defs5264">
+          <path
+             d="M 0,1.5 C 0.397805,1.5 0.77937,1.341951 1.06066,1.06066 1.341951,0.77937 1.5,0.397805 1.5,0 1.5,-0.397805 1.341951,-0.77937 1.06066,-1.06066 0.77937,-1.341951 0.397805,-1.5 0,-1.5 c -0.397805,0 -0.77937,0.158049 -1.06066,0.43934 C -1.341951,-0.77937 -1.5,-0.397805 -1.5,0 c 0,0.397805 0.158049,0.77937 0.43934,1.06066 C -0.77937,1.341951 -0.397805,1.5 0,1.5 Z"
+             id="m1ab1a045eb"
+             style="stroke:#2ca02c"
+             inkscape:connector-curvature="0" />
+        </defs>
+        <g
+           clip-path="url(#p2b4a1fc9b1)"
+           id="g5304">
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="61.944885"
+             xlink:href="#m1ab1a045eb"
+             y="204.36069"
+             id="use5266"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="90.126701"
+             xlink:href="#m1ab1a045eb"
+             y="117.15214"
+             id="use5268"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="118.30853"
+             xlink:href="#m1ab1a045eb"
+             y="73.547859"
+             id="use5270"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="146.49034"
+             xlink:href="#m1ab1a045eb"
+             y="51.74572"
+             id="use5272"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="174.67216"
+             xlink:href="#m1ab1a045eb"
+             y="40.84465"
+             id="use5274"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="202.85397"
+             xlink:href="#m1ab1a045eb"
+             y="35.394115"
+             id="use5276"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="231.0358"
+             xlink:href="#m1ab1a045eb"
+             y="32.668846"
+             id="use5278"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="259.21762"
+             xlink:href="#m1ab1a045eb"
+             y="31.306213"
+             id="use5280"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="287.39944"
+             xlink:href="#m1ab1a045eb"
+             y="30.624895"
+             id="use5282"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="315.58124"
+             xlink:href="#m1ab1a045eb"
+             y="30.284239"
+             id="use5284"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="343.76306"
+             xlink:href="#m1ab1a045eb"
+             y="30.113909"
+             id="use5286"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="371.94489"
+             xlink:href="#m1ab1a045eb"
+             y="30.028744"
+             id="use5288"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="400.12671"
+             xlink:href="#m1ab1a045eb"
+             y="29.986162"
+             id="use5290"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="428.30853"
+             xlink:href="#m1ab1a045eb"
+             y="29.96487"
+             id="use5292"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="456.49033"
+             xlink:href="#m1ab1a045eb"
+             y="29.954226"
+             id="use5294"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="484.67215"
+             xlink:href="#m1ab1a045eb"
+             y="29.948902"
+             id="use5296"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="512.854"
+             xlink:href="#m1ab1a045eb"
+             y="29.946241"
+             id="use5298"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="541.03577"
+             xlink:href="#m1ab1a045eb"
+             y="29.94491"
+             id="use5300"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#2ca02c;stroke:#2ca02c"
+             x="569.21759"
+             xlink:href="#m1ab1a045eb"
+             y="29.944244"
+             id="use5302"
+             width="100%"
+             height="100%" />
+        </g>
+      </g>
+    </g>
+    <g
+       ns0:effectIn="name:appear;order:4;length:300"
+       id="g9965">
+      <g
+         id="line2d_59">
+        <path
+           inkscape:connector-curvature="0"
+           id="path5471"
+           style="fill:none;stroke:#d62728;stroke-linecap:square"
+           d="m 525.81406,326.69844 h 20" />
+      </g>
+      <g
+         id="line2d_60">
+        <g
+           id="g5476">
+          <use
+             height="100%"
+             width="100%"
+             id="use5474"
+             y="326.69843"
+             xlink:href="#m8ec3bcbf10"
+             x="535.81409"
+             style="fill:#d62728;stroke:#d62728" />
+        </g>
+      </g>
+      <g
+         id="text_31">
+        <!-- 90.0% -->
+        <g
+           id="g5489"
+           transform="matrix(0.1,0,0,-0.1,553.81406,330.19844)">
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             x="0"
+             id="use5479"
+             xlink:href="#DejaVuSans-57" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5481"
+             xlink:href="#DejaVuSans-48"
+             x="63.623047" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5483"
+             xlink:href="#DejaVuSans-46"
+             x="127.24609" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5485"
+             xlink:href="#DejaVuSans-48"
+             x="159.0332" />
+          <use
+             height="100%"
+             width="100%"
+             y="0"
+             id="use5487"
+             xlink:href="#DejaVuSans-37"
+             x="222.65625" />
+        </g>
+      </g>
+      <g
+         id="line2d_52">
+        <path
+           clip-path="url(#p2b4a1fc9b1)"
+           d="m 61.944886,64.827002 28.181819,-31.39508 28.181815,-3.139508 28.18182,-0.313951 28.18182,-0.03139 28.18182,-0.0031 28.18181,-3.14e-4 28.18182,-3.1e-5 28.18182,-3e-6 h 28.18182 28.18182 28.18182 28.18182 28.18181 28.18182 28.18182 28.18182 28.18181 28.18182"
+           style="fill:none;stroke:#d62728;stroke-linecap:square"
+           id="path5307"
+           inkscape:connector-curvature="0" />
+        <defs
+           id="defs5310">
+          <path
+             d="M 0,1.5 C 0.397805,1.5 0.77937,1.341951 1.06066,1.06066 1.341951,0.77937 1.5,0.397805 1.5,0 1.5,-0.397805 1.341951,-0.77937 1.06066,-1.06066 0.77937,-1.341951 0.397805,-1.5 0,-1.5 c -0.397805,0 -0.77937,0.158049 -1.06066,0.43934 C -1.341951,-0.77937 -1.5,-0.397805 -1.5,0 c 0,0.397805 0.158049,0.77937 0.43934,1.06066 C -0.77937,1.341951 -0.397805,1.5 0,1.5 Z"
+             id="m8ec3bcbf10"
+             style="stroke:#d62728"
+             inkscape:connector-curvature="0" />
+        </defs>
+        <g
+           clip-path="url(#p2b4a1fc9b1)"
+           id="g5350">
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="61.944885"
+             xlink:href="#m8ec3bcbf10"
+             y="64.827003"
+             id="use5312"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="90.126701"
+             xlink:href="#m8ec3bcbf10"
+             y="33.431923"
+             id="use5314"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="118.30853"
+             xlink:href="#m8ec3bcbf10"
+             y="30.292414"
+             id="use5316"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="146.49034"
+             xlink:href="#m8ec3bcbf10"
+             y="29.978462"
+             id="use5318"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="174.67216"
+             xlink:href="#m8ec3bcbf10"
+             y="29.947067"
+             id="use5320"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="202.85397"
+             xlink:href="#m8ec3bcbf10"
+             y="29.943928"
+             id="use5322"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="231.0358"
+             xlink:href="#m8ec3bcbf10"
+             y="29.943613"
+             id="use5324"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="259.21762"
+             xlink:href="#m8ec3bcbf10"
+             y="29.943583"
+             id="use5326"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="287.39944"
+             xlink:href="#m8ec3bcbf10"
+             y="29.943581"
+             id="use5328"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="315.58124"
+             xlink:href="#m8ec3bcbf10"
+             y="29.943581"
+             id="use5330"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="343.76306"
+             xlink:href="#m8ec3bcbf10"
+             y="29.943581"
+             id="use5332"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="371.94489"
+             xlink:href="#m8ec3bcbf10"
+             y="29.943581"
+             id="use5334"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="400.12671"
+             xlink:href="#m8ec3bcbf10"
+             y="29.943581"
+             id="use5336"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="428.30853"
+             xlink:href="#m8ec3bcbf10"
+             y="29.943581"
+             id="use5338"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="456.49033"
+             xlink:href="#m8ec3bcbf10"
+             y="29.943581"
+             id="use5340"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="484.67215"
+             xlink:href="#m8ec3bcbf10"
+             y="29.943581"
+             id="use5342"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="512.854"
+             xlink:href="#m8ec3bcbf10"
+             y="29.943581"
+             id="use5344"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="541.03577"
+             xlink:href="#m8ec3bcbf10"
+             y="29.943581"
+             id="use5346"
+             width="100%"
+             height="100%" />
+          <use
+             style="fill:#d62728;stroke:#d62728"
+             x="569.21759"
+             xlink:href="#m8ec3bcbf10"
+             y="29.943581"
+             id="use5348"
+             width="100%"
+             height="100%" />
+        </g>
+      </g>
+    </g>
+  </g>
+  <script
+     id="JessyInk"
+     ns0:version="1.5.5">// Copyright 2008, 2009 Hannes Hochreiner
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+
+// Set onload event handler.
+window.onload = jessyInkInit;
+
+// Creating a namespace dictionary. The standard Inkscape namespaces are taken from inkex.py.
+var NSS = new Object();
+NSS['sodipodi']='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd';
+NSS['cc']='http://web.resource.org/cc/';
+NSS['svg']='http://www.w3.org/2000/svg';
+NSS['dc']='http://purl.org/dc/elements/1.1/';
+NSS['rdf']='http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+NSS['inkscape']='http://www.inkscape.org/namespaces/inkscape';
+NSS['xlink']='http://www.w3.org/1999/xlink';
+NSS['xml']='http://www.w3.org/XML/1998/namespace';
+NSS['jessyink']='https://launchpad.net/jessyink';
+
+// Keycodes.
+var LEFT_KEY = 37; // cursor left keycode
+var UP_KEY = 38; // cursor up keycode
+var RIGHT_KEY = 39; // cursor right keycode
+var DOWN_KEY = 40; // cursor down keycode
+var PAGE_UP_KEY = 33; // page up keycode
+var PAGE_DOWN_KEY = 34; // page down keycode
+var HOME_KEY = 36; // home keycode
+var END_KEY = 35; // end keycode
+var ENTER_KEY = 13; // next slide
+var SPACE_KEY = 32;
+var ESCAPE_KEY = 27;
+
+// Presentation modes.
+var SLIDE_MODE = 1;
+var INDEX_MODE = 2;
+var DRAWING_MODE = 3;
+
+// Mouse handler actions.
+var MOUSE_UP = 1;
+var MOUSE_DOWN = 2;
+var MOUSE_MOVE = 3;
+var MOUSE_WHEEL = 4;
+
+// Parameters.
+var ROOT_NODE = document.getElementsByTagNameNS(NSS[&quot;svg&quot;], &quot;svg&quot;)[0];
+var HEIGHT = 0;
+var WIDTH = 0;
+var INDEX_COLUMNS_DEFAULT = 4;
+var INDEX_COLUMNS = INDEX_COLUMNS_DEFAULT;
+var INDEX_OFFSET = 0;
+var STATE_START = -1;
+var STATE_END = -2;
+var BACKGROUND_COLOR = null;
+var slides = new Array();
+
+// Initialisation.
+var currentMode = SLIDE_MODE;
+var masterSlide = null;
+var activeSlide = 0;
+var activeEffect = 0;
+var timeStep = 30; // 40 ms equal 25 frames per second.
+var lastFrameTime = null;
+var processingEffect = false;
+var transCounter = 0;
+var effectArray = 0;
+var defaultTransitionInDict = new Object();
+defaultTransitionInDict[&quot;name&quot;] = &quot;appear&quot;;
+var defaultTransitionOutDict = new Object();
+defaultTransitionOutDict[&quot;name&quot;] = &quot;appear&quot;;
+var jessyInkInitialised = false;
+
+// Initialise char and key code dictionaries.
+var charCodeDictionary = getDefaultCharCodeDictionary();
+var keyCodeDictionary = getDefaultKeyCodeDictionary();
+
+// Initialise mouse handler dictionary.
+var mouseHandlerDictionary = getDefaultMouseHandlerDictionary();
+
+var progress_bar_visible = false;
+var timer_elapsed = 0;
+var timer_start = timer_elapsed;
+var timer_duration = 15; // 15 minutes
+
+var history_counter = 0;
+var history_original_elements = new Array();
+var history_presentation_elements = new Array();
+
+var mouse_original_path = null;
+var mouse_presentation_path = null;
+var mouse_last_x = -1;
+var mouse_last_y = -1;
+var mouse_min_dist_sqr = 3 * 3;
+var path_colour = &quot;red&quot;;
+var path_width_default = 3;
+var path_width = path_width_default;
+var path_paint_width = path_width;
+
+var number_of_added_slides = 0;
+
+/** Initialisation function.
+ *  The whole presentation is set-up in this function.
+ */
+function jessyInkInit()
+{
+    // Make sure we only execute this code once. Double execution can occur if the onload event handler is set
+    // in the main svg tag as well (as was recommended in earlier versions). Executing this function twice does
+    // not lead to any problems, but it takes more time.
+    if (jessyInkInitialised)
+        return;
+
+    // Making the presentation scalable.
+    var VIEWBOX = ROOT_NODE.getAttribute(&quot;viewBox&quot;);
+
+    if (VIEWBOX)
+    {
+        WIDTH = ROOT_NODE.viewBox.animVal.width;
+        HEIGHT = ROOT_NODE.viewBox.animVal.height;
+    }
+    else
+    {
+        HEIGHT = parseFloat(ROOT_NODE.getAttribute(&quot;height&quot;));
+        WIDTH = parseFloat(ROOT_NODE.getAttribute(&quot;width&quot;));
+        ROOT_NODE.setAttribute(&quot;viewBox&quot;, &quot;0 0 &quot; + WIDTH + &quot; &quot; + HEIGHT);
+    }
+
+    ROOT_NODE.setAttribute(&quot;width&quot;, &quot;100%&quot;);
+    ROOT_NODE.setAttribute(&quot;height&quot;, &quot;100%&quot;);
+
+    // Setting the background color.
+    var namedViews = document.getElementsByTagNameNS(NSS[&quot;sodipodi&quot;], &quot;namedview&quot;);
+
+    for (var counter = 0; counter &lt; namedViews.length; counter++)
+    {
+        if (namedViews[counter].hasAttribute(&quot;id&quot;) &amp;&amp; namedViews[counter].hasAttribute(&quot;pagecolor&quot;))
+        {
+            if (namedViews[counter].getAttribute(&quot;id&quot;) == &quot;base&quot;)
+            {
+                BACKGROUND_COLOR = namedViews[counter].getAttribute(&quot;pagecolor&quot;);
+                var newAttribute = &quot;background-color:&quot; + BACKGROUND_COLOR + &quot;;&quot;;
+
+                if (ROOT_NODE.hasAttribute(&quot;style&quot;))
+                    newAttribute += ROOT_NODE.getAttribute(&quot;style&quot;);
+
+                ROOT_NODE.setAttribute(&quot;style&quot;, newAttribute);
+            }
+        }
+    }
+
+    // Defining clip-path.
+    var defsNodes = document.getElementsByTagNameNS(NSS[&quot;svg&quot;], &quot;defs&quot;);
+
+    if (defsNodes.length &gt; 0)
+    {
+        var existingClipPath = document.getElementById(&quot;jessyInkSlideClipPath&quot;);
+
+        if (!existingClipPath)
+        {
+            var rectNode = document.createElementNS(NSS[&quot;svg&quot;], &quot;rect&quot;);
+            var clipPath = document.createElementNS(NSS[&quot;svg&quot;], &quot;clipPath&quot;);
+
+            rectNode.setAttribute(&quot;x&quot;, 0);
+            rectNode.setAttribute(&quot;y&quot;, 0);
+            rectNode.setAttribute(&quot;width&quot;, WIDTH);
+            rectNode.setAttribute(&quot;height&quot;, HEIGHT);
+
+            clipPath.setAttribute(&quot;id&quot;, &quot;jessyInkSlideClipPath&quot;);
+            clipPath.setAttribute(&quot;clipPathUnits&quot;, &quot;userSpaceOnUse&quot;);
+
+            clipPath.appendChild(rectNode);
+            defsNodes[0].appendChild(clipPath);
+        }
+    }
+
+    // Making a list of the slide and finding the master slide.
+    var nodes = document.getElementsByTagNameNS(NSS[&quot;svg&quot;], &quot;g&quot;);
+    var tempSlides = new Array();
+    var existingJessyInkPresentationLayer = null;
+
+    for (var counter = 0; counter &lt; nodes.length; counter++)
+    {
+        if (nodes[counter].getAttributeNS(NSS[&quot;inkscape&quot;], &quot;groupmode&quot;) &amp;&amp; (nodes[counter].getAttributeNS(NSS[&quot;inkscape&quot;], &quot;groupmode&quot;) == &quot;layer&quot;))
+        {
+            if (nodes[counter].getAttributeNS(NSS[&quot;inkscape&quot;], &quot;label&quot;) &amp;&amp; nodes[counter].getAttributeNS(NSS[&quot;jessyink&quot;], &quot;masterSlide&quot;) == &quot;masterSlide&quot;)
+                masterSlide = nodes[counter];
+            else if (nodes[counter].getAttributeNS(NSS[&quot;inkscape&quot;], &quot;label&quot;) &amp;&amp; nodes[counter].getAttributeNS(NSS[&quot;jessyink&quot;], &quot;presentationLayer&quot;) == &quot;presentationLayer&quot;)
+                existingJessyInkPresentationLayer = nodes[counter];
+            else
+                tempSlides.push(nodes[counter].getAttribute(&quot;id&quot;));
+        }
+        else if (nodes[counter].getAttributeNS(NSS['jessyink'], 'element'))
+        {
+            handleElement(nodes[counter]);
+        }
+    }
+
+    // Hide master slide set default transitions.
+    if (masterSlide)
+    {
+        masterSlide.style.display = &quot;none&quot;;
+
+        if (masterSlide.hasAttributeNS(NSS[&quot;jessyink&quot;], &quot;transitionIn&quot;))
+            defaultTransitionInDict = propStrToDict(masterSlide.getAttributeNS(NSS[&quot;jessyink&quot;], &quot;transitionIn&quot;));
+
+        if (masterSlide.hasAttributeNS(NSS[&quot;jessyink&quot;], &quot;transitionOut&quot;))
+            defaultTransitionOutDict = propStrToDict(masterSlide.getAttributeNS(NSS[&quot;jessyink&quot;], &quot;transitionOut&quot;));
+    }
+
+    if (existingJessyInkPresentationLayer != null)
+    {
+        existingJessyInkPresentationLayer.parentNode.removeChild(existingJessyInkPresentationLayer);
+    }
+
+    // Set start slide.
+    var hashObj = new LocationHash(window.location.hash);
+
+    activeSlide = hashObj.slideNumber;
+    activeEffect = hashObj.effectNumber;
+
+    if (activeSlide &lt; 0)
+        activeSlide = 0;
+    else if (activeSlide &gt;= tempSlides.length)
+        activeSlide = tempSlides.length - 1;
+
+    var originalNode = document.getElementById(tempSlides[counter]);
+
+    var JessyInkPresentationLayer = document.createElementNS(NSS[&quot;svg&quot;], &quot;g&quot;);
+    JessyInkPresentationLayer.setAttributeNS(NSS[&quot;inkscape&quot;], &quot;groupmode&quot;, &quot;layer&quot;);
+    JessyInkPresentationLayer.setAttributeNS(NSS[&quot;inkscape&quot;], &quot;label&quot;, &quot;JessyInk Presentation Layer&quot;);
+    JessyInkPresentationLayer.setAttributeNS(NSS[&quot;jessyink&quot;], &quot;presentationLayer&quot;, &quot;presentationLayer&quot;);
+    JessyInkPresentationLayer.setAttribute(&quot;id&quot;, &quot;jessyink_presentation_layer&quot;);
+    JessyInkPresentationLayer.style.display = &quot;inherit&quot;;
+    ROOT_NODE.appendChild(JessyInkPresentationLayer);
+
+    // Gathering all the information about the transitions and effects of the slides, set the background
+    // from the master slide and substitute the auto-texts.
+    for (var counter = 0; counter &lt; tempSlides.length; counter++)
+    {
+        var originalNode = document.getElementById(tempSlides[counter]);
+        originalNode.style.display = &quot;none&quot;;
+        var node = suffixNodeIds(originalNode.cloneNode(true), &quot;_&quot; + counter);
+        JessyInkPresentationLayer.appendChild(node);
+        slides[counter] = new Object();
+        slides[counter][&quot;original_element&quot;] = originalNode;
+        slides[counter][&quot;element&quot;] = node;
+
+        // Set build in transition.
+        slides[counter][&quot;transitionIn&quot;] = new Object();
+
+        var dict;
+
+        if (node.hasAttributeNS(NSS[&quot;jessyink&quot;], &quot;transitionIn&quot;))
+            dict = propStrToDict(node.getAttributeNS(NSS[&quot;jessyink&quot;], &quot;transitionIn&quot;));
+        else
+            dict = defaultTransitionInDict;
+
+        slides[counter][&quot;transitionIn&quot;][&quot;name&quot;] = dict[&quot;name&quot;];
+        slides[counter][&quot;transitionIn&quot;][&quot;options&quot;] = new Object();
+
+        for (key in dict)
+            if (key != &quot;name&quot;)
+                slides[counter][&quot;transitionIn&quot;][&quot;options&quot;][key] = dict[key];
+
+        // Set build out transition.
+        slides[counter][&quot;transitionOut&quot;] = new Object();
+
+        if (node.hasAttributeNS(NSS[&quot;jessyink&quot;], &quot;transitionOut&quot;))
+            dict = propStrToDict(node.getAttributeNS(NSS[&quot;jessyink&quot;], &quot;transitionOut&quot;));
+        else
+            dict = defaultTransitionOutDict;
+
+        slides[counter][&quot;transitionOut&quot;][&quot;name&quot;] = dict[&quot;name&quot;];
+        slides[counter][&quot;transitionOut&quot;][&quot;options&quot;] = new Object();
+
+        for (key in dict)
+            if (key != &quot;name&quot;)
+                slides[counter][&quot;transitionOut&quot;][&quot;options&quot;][key] = dict[key];
+
+        // Copy master slide content.
+        if (masterSlide)
+        {
+            var clonedNode = suffixNodeIds(masterSlide.cloneNode(true), &quot;_&quot; + counter);
+            clonedNode.removeAttributeNS(NSS[&quot;inkscape&quot;], &quot;groupmode&quot;);
+            clonedNode.removeAttributeNS(NSS[&quot;inkscape&quot;], &quot;label&quot;);
+            clonedNode.style.display = &quot;inherit&quot;;
+
+            node.insertBefore(clonedNode, node.firstChild);
+        }
+
+        // Setting clip path.
+        node.setAttribute(&quot;clip-path&quot;, &quot;url(#jessyInkSlideClipPath)&quot;);
+
+        // Substitute auto texts.
+        substituteAutoTexts(node, node.getAttributeNS(NSS[&quot;inkscape&quot;], &quot;label&quot;), counter + 1, tempSlides.length);
+
+        node.removeAttributeNS(NSS[&quot;inkscape&quot;], &quot;groupmode&quot;);
+        node.removeAttributeNS(NSS[&quot;inkscape&quot;], &quot;label&quot;);
+
+        // Set effects.
+        var tempEffects = new Array();
+        var groups = new Object();
+
+        for (var IOCounter = 0; IOCounter &lt;= 1; IOCounter++)
+        {
+            var propName = &quot;&quot;;
+            var dir = 0;
+
+            if (IOCounter == 0)
+            {
+                propName = &quot;effectIn&quot;;
+                dir = 1;
+            }
+            else if (IOCounter == 1)
+            {
+                propName = &quot;effectOut&quot;;
+                dir = -1;
+            }
+
+            var effects = getElementsByPropertyNS(node, NSS[&quot;jessyink&quot;], propName);
+
+            for (var effectCounter = 0; effectCounter &lt; effects.length; effectCounter++)
+            {
+                var element = document.getElementById(effects[effectCounter]);
+                var dict = propStrToDict(element.getAttributeNS(NSS[&quot;jessyink&quot;], propName));
+
+                // Put every element that has an effect associated with it, into its own group.
+                // Unless of course, we already put it into its own group.
+                if (!(groups[element.id]))
+                {
+                    var newGroup = document.createElementNS(NSS[&quot;svg&quot;], &quot;g&quot;);
+
+                    element.parentNode.insertBefore(newGroup, element);
+                    newGroup.appendChild(element.parentNode.removeChild(element));
+                    groups[element.id] = newGroup;
+                }
+
+                var effectDict = new Object();
+
+                effectDict[&quot;effect&quot;] = dict[&quot;name&quot;];
+                effectDict[&quot;dir&quot;] = dir;
+                effectDict[&quot;element&quot;] = groups[element.id];
+
+                for (var option in dict)
+                {
+                    if ((option != &quot;name&quot;) &amp;&amp; (option != &quot;order&quot;))
+                    {
+                        if (!effectDict[&quot;options&quot;])
+                            effectDict[&quot;options&quot;] = new Object();
+
+                        effectDict[&quot;options&quot;][option] = dict[option];
+                    }
+                }
+
+                if (!tempEffects[dict[&quot;order&quot;]])
+                    tempEffects[dict[&quot;order&quot;]] = new Array();
+
+                tempEffects[dict[&quot;order&quot;]][tempEffects[dict[&quot;order&quot;]].length] = effectDict;
+            }
+        }
+
+        // Make invisible, but keep in rendering tree to ensure that bounding box can be calculated.
+        node.setAttribute(&quot;opacity&quot;,0);
+        node.style.display = &quot;inherit&quot;;
+
+        // Create a transform group.
+        var transformGroup = document.createElementNS(NSS[&quot;svg&quot;], &quot;g&quot;);
+
+        // Add content to transform group.
+        while (node.firstChild)
+            transformGroup.appendChild(node.firstChild);
+
+        // Transfer the transform attribute from the node to the transform group.
+        if (node.getAttribute(&quot;transform&quot;))
+        {
+            transformGroup.setAttribute(&quot;transform&quot;, node.getAttribute(&quot;transform&quot;));
+            node.removeAttribute(&quot;transform&quot;);
+        }
+
+        // Create a view group.
+        var viewGroup = document.createElementNS(NSS[&quot;svg&quot;], &quot;g&quot;);
+
+        viewGroup.appendChild(transformGroup);
+        slides[counter][&quot;viewGroup&quot;] = node.appendChild(viewGroup);
+
+        // Insert background.
+        if (BACKGROUND_COLOR != null)
+        {
+            var rectNode = document.createElementNS(NSS[&quot;svg&quot;], &quot;rect&quot;);
+
+            rectNode.setAttribute(&quot;x&quot;, 0);
+            rectNode.setAttribute(&quot;y&quot;, 0);
+            rectNode.setAttribute(&quot;width&quot;, WIDTH);
+            rectNode.setAttribute(&quot;height&quot;, HEIGHT);
+            rectNode.setAttribute(&quot;id&quot;, &quot;jessyInkBackground&quot; + counter);
+            rectNode.setAttribute(&quot;fill&quot;, BACKGROUND_COLOR);
+
+            slides[counter][&quot;viewGroup&quot;].insertBefore(rectNode, slides[counter][&quot;viewGroup&quot;].firstChild);
+        }
+
+        // Set views.
+        var tempViews = new Array();
+        var views = getElementsByPropertyNS(node, NSS[&quot;jessyink&quot;], &quot;view&quot;);
+        var matrixOld = (new matrixSVG()).fromElements(1, 0, 0, 0, 1, 0, 0, 0, 1);
+
+        // Set initial view even if there are no other views.
+        slides[counter][&quot;viewGroup&quot;].setAttribute(&quot;transform&quot;, matrixOld.toAttribute());
+        slides[counter].initialView = matrixOld.toAttribute();
+
+        for (var viewCounter = 0; viewCounter &lt; views.length; viewCounter++)
+        {
+            var element = document.getElementById(views[viewCounter]);
+            var dict = propStrToDict(element.getAttributeNS(NSS[&quot;jessyink&quot;], &quot;view&quot;));
+
+            if (dict[&quot;order&quot;] == 0)
+            {
+                matrixOld = pointMatrixToTransformation(rectToMatrix(element)).mult((new matrixSVG()).fromSVGMatrix(slides[counter].viewGroup.getScreenCTM()).inv().mult((new matrixSVG()).fromSVGMatrix(element.parentNode.getScreenCTM())).inv());
+                slides[counter].initialView = matrixOld.toAttribute();
+            }
+            else
+            {
+                var effectDict = new Object();
+
+                effectDict[&quot;effect&quot;] = dict[&quot;name&quot;];
+                effectDict[&quot;dir&quot;] = 1;
+                effectDict[&quot;element&quot;] = slides[counter][&quot;viewGroup&quot;];
+                effectDict[&quot;order&quot;] = dict[&quot;order&quot;];
+
+                for (var option in dict)
+                {
+                    if ((option != &quot;name&quot;) &amp;&amp; (option != &quot;order&quot;))
+                    {
+                        if (!effectDict[&quot;options&quot;])
+                            effectDict[&quot;options&quot;] = new Object();
+
+                        effectDict[&quot;options&quot;][option] = dict[option];
+                    }
+                }
+
+                effectDict[&quot;options&quot;][&quot;matrixNew&quot;] = pointMatrixToTransformation(rectToMatrix(element)).mult((new matrixSVG()).fromSVGMatrix(slides[counter].viewGroup.getScreenCTM()).inv().mult((new matrixSVG()).fromSVGMatrix(element.parentNode.getScreenCTM())).inv());
+
+                tempViews[dict[&quot;order&quot;]] = effectDict;
+            }
+
+            // Remove element.
+            element.parentNode.removeChild(element);
+        }
+
+        // Consolidate view array and append it to the effect array.
+        if (tempViews.length &gt; 0)
+        {
+            for (var viewCounter = 0; viewCounter &lt; tempViews.length; viewCounter++)
+            {
+                if (tempViews[viewCounter])
+                {
+                    tempViews[viewCounter][&quot;options&quot;][&quot;matrixOld&quot;] = matrixOld;
+                    matrixOld = tempViews[viewCounter][&quot;options&quot;][&quot;matrixNew&quot;];
+
+                    if (!tempEffects[tempViews[viewCounter][&quot;order&quot;]])
+                        tempEffects[tempViews[viewCounter][&quot;order&quot;]] = new Array();
+
+                    tempEffects[tempViews[viewCounter][&quot;order&quot;]][tempEffects[tempViews[viewCounter][&quot;order&quot;]].length] = tempViews[viewCounter];
+                }
+            }
+        }
+
+        // Set consolidated effect array.
+        if (tempEffects.length &gt; 0)
+        {
+            slides[counter][&quot;effects&quot;] = new Array();
+
+            for (var effectCounter = 0; effectCounter &lt; tempEffects.length; effectCounter++)
+            {
+                if (tempEffects[effectCounter])
+                    slides[counter][&quot;effects&quot;][slides[counter][&quot;effects&quot;].length] = tempEffects[effectCounter];
+            }
+        }
+
+        node.setAttribute(&quot;onmouseover&quot;, &quot;if ((currentMode == INDEX_MODE) &amp;&amp; ( activeSlide != &quot; + counter + &quot;)) { indexSetActiveSlide(&quot; + counter + &quot;); };&quot;);
+
+        // Set visibility for initial state.
+        if (counter == activeSlide)
+        {
+            node.style.display = &quot;inherit&quot;;
+            node.setAttribute(&quot;opacity&quot;,1);
+        }
+        else
+        {
+            node.style.display = &quot;none&quot;;
+            node.setAttribute(&quot;opacity&quot;,0);
+        }
+    }
+
+    // Set key handler.
+    var jessyInkObjects = document.getElementsByTagNameNS(NSS[&quot;svg&quot;], &quot;g&quot;);
+
+    for (var counter = 0; counter &lt; jessyInkObjects.length; counter++)
+    {
+        var elem = jessyInkObjects[counter];
+
+        if (elem.getAttributeNS(NSS[&quot;jessyink&quot;], &quot;customKeyBindings&quot;))
+        {
+            if (elem.getCustomKeyBindings != undefined)
+                keyCodeDictionary = elem.getCustomKeyBindings();
+
+            if (elem.getCustomCharBindings != undefined)
+                charCodeDictionary = elem.getCustomCharBindings();
+        }
+    }
+
+    // Set mouse handler.
+    var jessyInkMouseHandler = document.getElementsByTagNameNS(NSS[&quot;jessyink&quot;], &quot;mousehandler&quot;);
+
+    for (var counter = 0; counter &lt; jessyInkMouseHandler.length; counter++)
+    {
+        var elem = jessyInkMouseHandler[counter];
+
+        if (elem.getMouseHandler != undefined)
+        {
+            var tempDict = elem.getMouseHandler();
+
+            for (mode in tempDict)
+            {
+                if (!mouseHandlerDictionary[mode])
+                    mouseHandlerDictionary[mode] = new Object();
+
+                for (handler in tempDict[mode])
+                    mouseHandlerDictionary[mode][handler] = tempDict[mode][handler];
+            }
+        }
+    }
+
+    // Check effect number.
+    if ((activeEffect &lt; 0) || (!slides[activeSlide].effects))
+    {
+        activeEffect = 0;
+    }
+    else if (activeEffect &gt; slides[activeSlide].effects.length)
+    {
+        activeEffect = slides[activeSlide].effects.length;
+    }
+
+    createProgressBar(JessyInkPresentationLayer);
+    hideProgressBar();
+    setProgressBarValue(activeSlide);
+    setTimeIndicatorValue(0);
+    setInterval(&quot;updateTimer()&quot;, 1000);
+    setSlideToState(activeSlide, activeEffect);
+    jessyInkInitialised = true;
+}
+
+/** Function to substitute the auto-texts.
+ *
+ *  @param node the node
+ *  @param slideName name of the slide the node is on
+ *  @param slideNumber number of the slide the node is on
+ *  @param numberOfSlides number of slides in the presentation
+ */
+function substituteAutoTexts(node, slideName, slideNumber, numberOfSlides)
+{
+    var texts = node.getElementsByTagNameNS(NSS[&quot;svg&quot;], &quot;tspan&quot;);
+
+    for (var textCounter = 0; textCounter &lt; texts.length; textCounter++)
+    {
+        if (texts[textCounter].getAttributeNS(NSS[&quot;jessyink&quot;], &quot;autoText&quot;) == &quot;slideNumber&quot;)
+            texts[textCounter].firstChild.nodeValue = slideNumber;
+        else if (texts[textCounter].getAttributeNS(NSS[&quot;jessyink&quot;], &quot;autoText&quot;) == &quot;numberOfSlides&quot;)
+            texts[textCounter].firstChild.nodeValue = numberOfSlides;
+        else if (texts[textCounter].getAttributeNS(NSS[&quot;jessyink&quot;], &quot;autoText&quot;) == &quot;slideTitle&quot;)
+            texts[textCounter].firstChild.nodeValue = slideName;
+    }
+}
+
+/** Convenience function to get an element depending on whether it has a property with a particular name.
+ *    This function emulates some dearly missed XPath functionality.
+ *
+ *  @param node the node
+ *  @param namespace namespace of the attribute
+ *  @param name attribute name
+ */
+function getElementsByPropertyNS(node, namespace, name)
+{
+    var elems = new Array();
+
+    if (node.getAttributeNS(namespace, name))
+        elems.push(node.getAttribute(&quot;id&quot;));
+
+    for (var counter = 0; counter &lt; node.childNodes.length; counter++)
+    {
+        if (node.childNodes[counter].nodeType == 1)
+            elems = elems.concat(getElementsByPropertyNS(node.childNodes[counter], namespace, name));
+    }
+
+    return elems;
+}
+
+/** Function to dispatch the next effect, if there is none left, change the slide.
+ *
+ *  @param dir direction of the change (1 = forwards, -1 = backwards)
+ */
+function dispatchEffects(dir)
+{
+    if (slides[activeSlide][&quot;effects&quot;] &amp;&amp; (((dir == 1) &amp;&amp; (activeEffect &lt; slides[activeSlide][&quot;effects&quot;].length)) || ((dir == -1) &amp;&amp; (activeEffect &gt; 0))))
+    {
+        processingEffect = true;
+
+        if (dir == 1)
+        {
+            effectArray = slides[activeSlide][&quot;effects&quot;][activeEffect];
+            activeEffect += dir;
+        }
+        else if (dir == -1)
+        {
+            activeEffect += dir;
+            effectArray = slides[activeSlide][&quot;effects&quot;][activeEffect];
+        }
+
+        transCounter = 0;
+        startTime = (new Date()).getTime();
+        lastFrameTime = null;
+        effect(dir);
+    }
+    else if (((dir == 1) &amp;&amp; (activeSlide &lt; (slides.length - 1))) || (((dir == -1) &amp;&amp; (activeSlide &gt; 0))))
+    {
+        changeSlide(dir);
+    }
+}
+
+/** Function to skip effects and directly either put the slide into start or end state or change slides.
+ *
+ *  @param dir direction of the change (1 = forwards, -1 = backwards)
+ */
+function skipEffects(dir)
+{
+    if (slides[activeSlide][&quot;effects&quot;] &amp;&amp; (((dir == 1) &amp;&amp; (activeEffect &lt; slides[activeSlide][&quot;effects&quot;].length)) || ((dir == -1) &amp;&amp; (activeEffect &gt; 0))))
+    {
+        processingEffect = true;
+
+        if (slides[activeSlide][&quot;effects&quot;] &amp;&amp; (dir == 1))
+            activeEffect = slides[activeSlide][&quot;effects&quot;].length;
+        else
+            activeEffect = 0;
+
+        if (dir == 1)
+            setSlideToState(activeSlide, STATE_END);
+        else
+            setSlideToState(activeSlide, STATE_START);
+
+        processingEffect = false;
+    }
+    else if (((dir == 1) &amp;&amp; (activeSlide &lt; (slides.length - 1))) || (((dir == -1) &amp;&amp; (activeSlide &gt; 0))))
+    {
+        changeSlide(dir);
+    }
+}
+
+/** Function to change between slides.
+ *
+ *  @param dir direction (1 = forwards, -1 = backwards)
+ */
+function changeSlide(dir)
+{
+    processingEffect = true;
+    effectArray = new Array();
+
+    effectArray[0] = new Object();
+    if (dir == 1)
+    {
+        effectArray[0][&quot;effect&quot;] = slides[activeSlide][&quot;transitionOut&quot;][&quot;name&quot;];
+        effectArray[0][&quot;options&quot;] = slides[activeSlide][&quot;transitionOut&quot;][&quot;options&quot;];
+        effectArray[0][&quot;dir&quot;] = -1;
+    }
+    else if (dir == -1)
+    {
+        effectArray[0][&quot;effect&quot;] = slides[activeSlide][&quot;transitionIn&quot;][&quot;name&quot;];
+        effectArray[0][&quot;options&quot;] = slides[activeSlide][&quot;transitionIn&quot;][&quot;options&quot;];
+        effectArray[0][&quot;dir&quot;] = 1;
+    }
+    effectArray[0][&quot;element&quot;] = slides[activeSlide][&quot;element&quot;];
+
+    activeSlide += dir;
+    setProgressBarValue(activeSlide);
+
+    effectArray[1] = new Object();
+
+    if (dir == 1)
+    {
+        effectArray[1][&quot;effect&quot;] = slides[activeSlide][&quot;transitionIn&quot;][&quot;name&quot;];
+        effectArray[1][&quot;options&quot;] = slides[activeSlide][&quot;transitionIn&quot;][&quot;options&quot;];
+        effectArray[1][&quot;dir&quot;] = 1;
+    }
+    else if (dir == -1)
+    {
+        effectArray[1][&quot;effect&quot;] = slides[activeSlide][&quot;transitionOut&quot;][&quot;name&quot;];
+        effectArray[1][&quot;options&quot;] = slides[activeSlide][&quot;transitionOut&quot;][&quot;options&quot;];
+        effectArray[1][&quot;dir&quot;] = -1;
+    }
+
+    effectArray[1][&quot;element&quot;] = slides[activeSlide][&quot;element&quot;];
+
+    if (slides[activeSlide][&quot;effects&quot;] &amp;&amp; (dir == -1))
+        activeEffect = slides[activeSlide][&quot;effects&quot;].length;
+    else
+        activeEffect = 0;
+
+    if (dir == -1)
+        setSlideToState(activeSlide, STATE_END);
+    else
+        setSlideToState(activeSlide, STATE_START);
+
+    transCounter = 0;
+    startTime = (new Date()).getTime();
+    lastFrameTime = null;
+    effect(dir);
+}
+
+/** Function to toggle between index and slide mode.
+*/
+function toggleSlideIndex()
+{
+    var suspendHandle = ROOT_NODE.suspendRedraw(500);
+
+    if (currentMode == SLIDE_MODE)
+    {
+        hideProgressBar();
+        INDEX_OFFSET = -1;
+        indexSetPageSlide(activeSlide);
+        currentMode = INDEX_MODE;
+    }
+    else if (currentMode == INDEX_MODE)
+    {
+        for (var counter = 0; counter &lt; slides.length; counter++)
+        {
+            slides[counter][&quot;element&quot;].setAttribute(&quot;transform&quot;,&quot;scale(1)&quot;);
+
+            if (counter == activeSlide)
+            {
+                slides[counter][&quot;element&quot;].style.display = &quot;inherit&quot;;
+                slides[counter][&quot;element&quot;].setAttribute(&quot;opacity&quot;,1);
+                activeEffect = 0;
+            }
+            else
+            {
+                slides[counter][&quot;element&quot;].setAttribute(&quot;opacity&quot;,0);
+                slides[counter][&quot;element&quot;].style.display = &quot;none&quot;;
+            }
+        }
+        currentMode = SLIDE_MODE;
+        setSlideToState(activeSlide, STATE_START);
+        setProgressBarValue(activeSlide);
+
+        if (progress_bar_visible)
+        {
+            showProgressBar();
+        }
+    }
+
+    ROOT_NODE.unsuspendRedraw(suspendHandle);
+    ROOT_NODE.forceRedraw();
+}
+
+/** Function to run an effect.
+ *
+ *  @param dir direction in which to play the effect (1 = forwards, -1 = backwards)
+ */
+function effect(dir)
+{
+    var done = true;
+
+    var suspendHandle = ROOT_NODE.suspendRedraw(200);
+
+    for (var counter = 0; counter &lt; effectArray.length; counter++)
+    {
+        if (effectArray[counter][&quot;effect&quot;] == &quot;fade&quot;)
+            done &amp;= fade(parseInt(effectArray[counter][&quot;dir&quot;]) * dir, effectArray[counter][&quot;element&quot;], transCounter, effectArray[counter][&quot;options&quot;]);
+        else if (effectArray[counter][&quot;effect&quot;] == &quot;appear&quot;)
+            done &amp;= appear(parseInt(effectArray[counter][&quot;dir&quot;]) * dir, effectArray[counter][&quot;element&quot;], transCounter, effectArray[counter][&quot;options&quot;]);
+        else if (effectArray[counter][&quot;effect&quot;] == &quot;pop&quot;)
+            done &amp;= pop(parseInt(effectArray[counter][&quot;dir&quot;]) * dir, effectArray[counter][&quot;element&quot;], transCounter, effectArray[counter][&quot;options&quot;]);
+        else if (effectArray[counter][&quot;effect&quot;] == &quot;view&quot;)
+            done &amp;= view(parseInt(effectArray[counter][&quot;dir&quot;]) * dir, effectArray[counter][&quot;element&quot;], transCounter, effectArray[counter][&quot;options&quot;]);
+    }
+
+    ROOT_NODE.unsuspendRedraw(suspendHandle);
+    ROOT_NODE.forceRedraw();
+
+    if (!done)
+    {
+        var currentTime = (new Date()).getTime();
+        var timeDiff = 1;
+
+        transCounter = currentTime - startTime;
+
+        if (lastFrameTime != null)
+        {
+            timeDiff = timeStep - (currentTime - lastFrameTime);
+
+            if (timeDiff &lt;= 0)
+                timeDiff = 1;
+        }
+
+        lastFrameTime = currentTime;
+
+        window.setTimeout(&quot;effect(&quot; + dir + &quot;)&quot;, timeDiff);
+    }
+    else
+    {
+        window.location.hash = (activeSlide + 1) + '_' + activeEffect;
+        processingEffect = false;
+    }
+}
+
+/** Function to display the index sheet.
+ *
+ *  @param offsetNumber offset number
+ */
+function displayIndex(offsetNumber)
+{
+    var offsetX = 0;
+    var offsetY = 0;
+
+    if (offsetNumber &lt; 0)
+        offsetNumber = 0;
+    else if (offsetNumber &gt;= slides.length)
+        offsetNumber = slides.length - 1;
+
+    for (var counter = 0; counter &lt; slides.length; counter++)
+    {
+        if ((counter &lt; offsetNumber) || (counter &gt; offsetNumber + INDEX_COLUMNS * INDEX_COLUMNS - 1))
+        {
+            slides[counter][&quot;element&quot;].setAttribute(&quot;opacity&quot;,0);
+            slides[counter][&quot;element&quot;].style.display = &quot;none&quot;;
+        }
+        else
+        {
+            offsetX = ((counter - offsetNumber) % INDEX_COLUMNS) * WIDTH;
+            offsetY = Math.floor((counter - offsetNumber) / INDEX_COLUMNS) * HEIGHT;
+
+            slides[counter][&quot;element&quot;].setAttribute(&quot;transform&quot;,&quot;scale(&quot;+1/INDEX_COLUMNS+&quot;) translate(&quot;+offsetX+&quot;,&quot;+offsetY+&quot;)&quot;);
+            slides[counter][&quot;element&quot;].style.display = &quot;inherit&quot;;
+            slides[counter][&quot;element&quot;].setAttribute(&quot;opacity&quot;,0.5);
+        }
+
+        setSlideToState(counter, STATE_END);
+    }
+
+    //do we need to save the current offset?
+    if (INDEX_OFFSET != offsetNumber)
+        INDEX_OFFSET = offsetNumber;
+}
+
+/** Function to set the active slide in the slide view.
+ *
+ *  @param nbr index of the active slide
+ */
+function slideSetActiveSlide(nbr)
+{
+    if (nbr &gt;= slides.length)
+        nbr = slides.length - 1;
+    else if (nbr &lt; 0)
+        nbr = 0;
+
+    slides[activeSlide][&quot;element&quot;].setAttribute(&quot;opacity&quot;,0);
+    slides[activeSlide][&quot;element&quot;].style.display = &quot;none&quot;;
+
+    activeSlide = parseInt(nbr);
+
+    setSlideToState(activeSlide, STATE_START);
+    slides[activeSlide][&quot;element&quot;].style.display = &quot;inherit&quot;;
+    slides[activeSlide][&quot;element&quot;].setAttribute(&quot;opacity&quot;,1);
+
+    activeEffect = 0;
+    setProgressBarValue(nbr);
+}
+
+/** Function to set the active slide in the index view.
+ *
+ *  @param nbr index of the active slide
+ */
+function indexSetActiveSlide(nbr)
+{
+    if (nbr &gt;= slides.length)
+        nbr = slides.length - 1;
+    else if (nbr &lt; 0)
+        nbr = 0;
+
+    slides[activeSlide][&quot;element&quot;].setAttribute(&quot;opacity&quot;,0.5);
+
+    activeSlide = parseInt(nbr);
+    window.location.hash = (activeSlide + 1) + '_0';
+
+    slides[activeSlide][&quot;element&quot;].setAttribute(&quot;opacity&quot;,1);
+}
+
+/** Function to set the page and active slide in index view.
+ *
+ *  @param nbr index of the active slide
+ *
+ *  NOTE: To force a redraw,
+ *  set INDEX_OFFSET to -1 before calling indexSetPageSlide().
+ *
+ *  This is necessary for zooming (otherwise the index might not
+ *  get redrawn) and when switching to index mode.
+ *
+ *  INDEX_OFFSET = -1
+ *  indexSetPageSlide(activeSlide);
+ */
+function indexSetPageSlide(nbr)
+{
+    if (nbr &gt;= slides.length)
+        nbr = slides.length - 1;
+    else if (nbr &lt; 0)
+        nbr = 0;
+
+    //calculate the offset
+    var offset = nbr - nbr % (INDEX_COLUMNS * INDEX_COLUMNS);
+
+    if (offset &lt; 0)
+        offset = 0;
+
+    //if different from kept offset, then record and change the page
+    if (offset != INDEX_OFFSET)
+    {
+        INDEX_OFFSET = offset;
+        displayIndex(INDEX_OFFSET);
+    }
+
+    //set the active slide
+    indexSetActiveSlide(nbr);
+}
+
+/** Event handler for key press.
+ *
+ *  @param e the event
+ */
+function keydown(e)
+{
+    if (!e)
+        e = window.event;
+
+    code = e.keyCode || e.charCode;
+
+    if (!processingEffect &amp;&amp; keyCodeDictionary[currentMode] &amp;&amp; keyCodeDictionary[currentMode][code])
+        return keyCodeDictionary[currentMode][code]();
+    else
+        document.onkeypress = keypress;
+}
+// Set event handler for key down.
+document.onkeydown = keydown;
+
+/** Event handler for key press.
+ *
+ *  @param e the event
+ */
+function keypress(e)
+{
+    document.onkeypress = null;
+
+    if (!e)
+        e = window.event;
+
+    str = String.fromCharCode(e.keyCode || e.charCode);
+
+    if (!processingEffect &amp;&amp; charCodeDictionary[currentMode] &amp;&amp; charCodeDictionary[currentMode][str])
+        return charCodeDictionary[currentMode][str]();
+}
+
+/** Function to supply the default char code dictionary.
+ *
+ * @returns default char code dictionary
+ */
+function getDefaultCharCodeDictionary()
+{
+    var charCodeDict = new Object();
+
+    charCodeDict[SLIDE_MODE] = new Object();
+    charCodeDict[INDEX_MODE] = new Object();
+    charCodeDict[DRAWING_MODE] = new Object();
+
+    charCodeDict[SLIDE_MODE][&quot;i&quot;] = function () { return toggleSlideIndex(); };
+    charCodeDict[SLIDE_MODE][&quot;d&quot;] = function () { return slideSwitchToDrawingMode(); };
+    charCodeDict[SLIDE_MODE][&quot;D&quot;] = function () { return slideQueryDuration(); };
+    charCodeDict[SLIDE_MODE][&quot;n&quot;] = function () { return slideAddSlide(activeSlide); };
+    charCodeDict[SLIDE_MODE][&quot;p&quot;] = function () { return slideToggleProgressBarVisibility(); };
+    charCodeDict[SLIDE_MODE][&quot;t&quot;] = function () { return slideResetTimer(); };
+    charCodeDict[SLIDE_MODE][&quot;e&quot;] = function () { return slideUpdateExportLayer(); };
+
+    charCodeDict[DRAWING_MODE][&quot;d&quot;] = function () { return drawingSwitchToSlideMode(); };
+    charCodeDict[DRAWING_MODE][&quot;0&quot;] = function () { return drawingResetPathWidth(); };
+    charCodeDict[DRAWING_MODE][&quot;1&quot;] = function () { return drawingSetPathWidth(1.0); };
+    charCodeDict[DRAWING_MODE][&quot;3&quot;] = function () { return drawingSetPathWidth(3.0); };
+    charCodeDict[DRAWING_MODE][&quot;5&quot;] = function () { return drawingSetPathWidth(5.0); };
+    charCodeDict[DRAWING_MODE][&quot;7&quot;] = function () { return drawingSetPathWidth(7.0); };
+    charCodeDict[DRAWING_MODE][&quot;9&quot;] = function () { return drawingSetPathWidth(9.0); };
+    charCodeDict[DRAWING_MODE][&quot;b&quot;] = function () { return drawingSetPathColour(&quot;blue&quot;); };
+    charCodeDict[DRAWING_MODE][&quot;c&quot;] = function () { return drawingSetPathColour(&quot;cyan&quot;); };
+    charCodeDict[DRAWING_MODE][&quot;g&quot;] = function () { return drawingSetPathColour(&quot;green&quot;); };
+    charCodeDict[DRAWING_MODE][&quot;k&quot;] = function () { return drawingSetPathColour(&quot;black&quot;); };
+    charCodeDict[DRAWING_MODE][&quot;m&quot;] = function () { return drawingSetPathColour(&quot;magenta&quot;); };
+    charCodeDict[DRAWING_MODE][&quot;o&quot;] = function () { return drawingSetPathColour(&quot;orange&quot;); };
+    charCodeDict[DRAWING_MODE][&quot;r&quot;] = function () { return drawingSetPathColour(&quot;red&quot;); };
+    charCodeDict[DRAWING_MODE][&quot;w&quot;] = function () { return drawingSetPathColour(&quot;white&quot;); };
+    charCodeDict[DRAWING_MODE][&quot;y&quot;] = function () { return drawingSetPathColour(&quot;yellow&quot;); };
+    charCodeDict[DRAWING_MODE][&quot;z&quot;] = function () { return drawingUndo(); };
+
+    charCodeDict[INDEX_MODE][&quot;i&quot;] = function () { return toggleSlideIndex(); };
+    charCodeDict[INDEX_MODE][&quot;-&quot;] = function () { return indexDecreaseNumberOfColumns(); };
+    charCodeDict[INDEX_MODE][&quot;=&quot;] = function () { return indexIncreaseNumberOfColumns(); };
+    charCodeDict[INDEX_MODE][&quot;+&quot;] = function () { return indexIncreaseNumberOfColumns(); };
+    charCodeDict[INDEX_MODE][&quot;0&quot;] = function () { return indexResetNumberOfColumns(); };
+
+    return charCodeDict;
+}
+
+/** Function to supply the default key code dictionary.
+ *
+ * @returns default key code dictionary
+ */
+function getDefaultKeyCodeDictionary()
+{
+    var keyCodeDict = new Object();
+
+    keyCodeDict[SLIDE_MODE] = new Object();
+    keyCodeDict[INDEX_MODE] = new Object();
+    keyCodeDict[DRAWING_MODE] = new Object();
+
+    keyCodeDict[SLIDE_MODE][LEFT_KEY] = function() { return dispatchEffects(-1); };
+    keyCodeDict[SLIDE_MODE][RIGHT_KEY] = function() { return dispatchEffects(1); };
+    keyCodeDict[SLIDE_MODE][UP_KEY] = function() { return skipEffects(-1); };
+    keyCodeDict[SLIDE_MODE][DOWN_KEY] = function() { return skipEffects(1); };
+    keyCodeDict[SLIDE_MODE][PAGE_UP_KEY] = function() { return dispatchEffects(-1); };
+    keyCodeDict[SLIDE_MODE][PAGE_DOWN_KEY] = function() { return dispatchEffects(1); };
+    keyCodeDict[SLIDE_MODE][HOME_KEY] = function() { return slideSetActiveSlide(0); };
+    keyCodeDict[SLIDE_MODE][END_KEY] = function() { return slideSetActiveSlide(slides.length - 1); };
+    keyCodeDict[SLIDE_MODE][SPACE_KEY] = function() { return dispatchEffects(1); };
+
+    keyCodeDict[INDEX_MODE][LEFT_KEY] = function() { return indexSetPageSlide(activeSlide - 1); };
+    keyCodeDict[INDEX_MODE][RIGHT_KEY] = function() { return indexSetPageSlide(activeSlide + 1); };
+    keyCodeDict[INDEX_MODE][UP_KEY] = function() { return indexSetPageSlide(activeSlide - INDEX_COLUMNS); };
+    keyCodeDict[INDEX_MODE][DOWN_KEY] = function() { return indexSetPageSlide(activeSlide + INDEX_COLUMNS); };
+    keyCodeDict[INDEX_MODE][PAGE_UP_KEY] = function() { return indexSetPageSlide(activeSlide - INDEX_COLUMNS * INDEX_COLUMNS); };
+    keyCodeDict[INDEX_MODE][PAGE_DOWN_KEY] = function() { return indexSetPageSlide(activeSlide + INDEX_COLUMNS * INDEX_COLUMNS); };
+    keyCodeDict[INDEX_MODE][HOME_KEY] = function() { return indexSetPageSlide(0); };
+    keyCodeDict[INDEX_MODE][END_KEY] = function() { return indexSetPageSlide(slides.length - 1); };
+    keyCodeDict[INDEX_MODE][ENTER_KEY] = function() { return toggleSlideIndex(); };
+
+    keyCodeDict[DRAWING_MODE][ESCAPE_KEY] = function () { return drawingSwitchToSlideMode(); };
+
+    return keyCodeDict;
+}
+
+/** Function to handle all mouse events.
+ *
+ *    @param    evnt    event
+ *    @param    action    type of event (e.g. mouse up, mouse wheel)
+ */
+function mouseHandlerDispatch(evnt, action)
+{
+    if (!evnt)
+        evnt = window.event;
+
+    var retVal = true;
+
+    if (!processingEffect &amp;&amp; mouseHandlerDictionary[currentMode] &amp;&amp; mouseHandlerDictionary[currentMode][action])
+    {
+        var subRetVal = mouseHandlerDictionary[currentMode][action](evnt);
+
+        if (subRetVal != null &amp;&amp; subRetVal != undefined)
+            retVal = subRetVal;
+    }
+
+    if (evnt.preventDefault &amp;&amp; !retVal)
+        evnt.preventDefault();
+
+    evnt.returnValue = retVal;
+
+    return retVal;
+}
+
+// Set mouse event handler.
+document.onmousedown = function(e) { return mouseHandlerDispatch(e, MOUSE_DOWN); };
+document.onmouseup = function(e) { return mouseHandlerDispatch(e, MOUSE_UP); };
+document.onmousemove = function(e) { return mouseHandlerDispatch(e, MOUSE_MOVE); };
+
+// Moz
+if (window.addEventListener)
+{
+    window.addEventListener('DOMMouseScroll', function(e) { return mouseHandlerDispatch(e, MOUSE_WHEEL); }, false);
+}
+
+// Opera Safari OK - may not work in IE
+window.onmousewheel = function(e) { return mouseHandlerDispatch(e, MOUSE_WHEEL); };
+
+/** Function to supply the default mouse handler dictionary.
+ *
+ * @returns default mouse handler dictionary
+ */
+function getDefaultMouseHandlerDictionary()
+{
+    var mouseHandlerDict = new Object();
+
+    mouseHandlerDict[SLIDE_MODE] = new Object();
+    mouseHandlerDict[INDEX_MODE] = new Object();
+    mouseHandlerDict[DRAWING_MODE] = new Object();
+
+    mouseHandlerDict[SLIDE_MODE][MOUSE_DOWN] = function(evnt) { return dispatchEffects(1); };
+    mouseHandlerDict[SLIDE_MODE][MOUSE_WHEEL] = function(evnt) { return slideMousewheel(evnt); };
+
+    mouseHandlerDict[INDEX_MODE][MOUSE_DOWN] = function(evnt) { return toggleSlideIndex(); };
+
+    mouseHandlerDict[DRAWING_MODE][MOUSE_DOWN] = function(evnt) { return drawingMousedown(evnt); };
+    mouseHandlerDict[DRAWING_MODE][MOUSE_UP] = function(evnt) { return drawingMouseup(evnt); };
+    mouseHandlerDict[DRAWING_MODE][MOUSE_MOVE] = function(evnt) { return drawingMousemove(evnt); };
+
+    return mouseHandlerDict;
+}
+
+/** Function to switch from slide mode to drawing mode.
+*/
+function slideSwitchToDrawingMode()
+{
+    currentMode = DRAWING_MODE;
+
+    var tempDict;
+
+    if (ROOT_NODE.hasAttribute(&quot;style&quot;))
+        tempDict = propStrToDict(ROOT_NODE.getAttribute(&quot;style&quot;));
+    else
+        tempDict = new Object();
+
+    tempDict[&quot;cursor&quot;] = &quot;crosshair&quot;;
+    ROOT_NODE.setAttribute(&quot;style&quot;, dictToPropStr(tempDict));
+}
+
+/** Function to switch from drawing mode to slide mode.
+*/
+function drawingSwitchToSlideMode()
+{
+    currentMode = SLIDE_MODE;
+
+    var tempDict;
+
+    if (ROOT_NODE.hasAttribute(&quot;style&quot;))
+        tempDict = propStrToDict(ROOT_NODE.getAttribute(&quot;style&quot;));
+    else
+        tempDict = new Object();
+
+    tempDict[&quot;cursor&quot;] = &quot;auto&quot;;
+    ROOT_NODE.setAttribute(&quot;style&quot;, dictToPropStr(tempDict));
+}
+
+/** Function to decrease the number of columns in index mode.
+*/
+function indexDecreaseNumberOfColumns()
+{
+    if (INDEX_COLUMNS &gt;= 3)
+    {
+        INDEX_COLUMNS -= 1;
+        INDEX_OFFSET = -1
+            indexSetPageSlide(activeSlide);
+    }
+}
+
+/** Function to increase the number of columns in index mode.
+*/
+function indexIncreaseNumberOfColumns()
+{
+    if (INDEX_COLUMNS &lt; 7)
+    {
+        INDEX_COLUMNS += 1;
+        INDEX_OFFSET = -1
+            indexSetPageSlide(activeSlide);
+    }
+}
+
+/** Function to reset the number of columns in index mode.
+*/
+function indexResetNumberOfColumns()
+{
+    if (INDEX_COLUMNS != INDEX_COLUMNS_DEFAULT)
+    {
+        INDEX_COLUMNS = INDEX_COLUMNS_DEFAULT;
+        INDEX_OFFSET = -1
+            indexSetPageSlide(activeSlide);
+    }
+}
+
+/** Function to reset path width in drawing mode.
+*/
+function drawingResetPathWidth()
+{
+    path_width = path_width_default;
+    set_path_paint_width();
+}
+
+/** Function to set path width in drawing mode.
+ *
+ * @param width new path width
+ */
+function drawingSetPathWidth(width)
+{
+    path_width = width;
+    set_path_paint_width();
+}
+
+/** Function to set path colour in drawing mode.
+ *
+ * @param colour new path colour
+ */
+function drawingSetPathColour(colour)
+{
+    path_colour = colour;
+}
+
+/** Function to query the duration of the presentation from the user in slide mode.
+*/
+function slideQueryDuration()
+{
+    var new_duration = prompt(&quot;Length of presentation in minutes?&quot;, timer_duration);
+
+    if ((new_duration != null) &amp;&amp; (new_duration != ''))
+    {
+        timer_duration = new_duration;
+    }
+
+    updateTimer();
+}
+
+/** Function to add new slide in slide mode.
+ *
+ * @param afterSlide after which slide to insert the new one
+ */
+function slideAddSlide(afterSlide)
+{
+    addSlide(afterSlide);
+    slideSetActiveSlide(afterSlide + 1);
+    updateTimer();
+}
+
+/** Function to toggle the visibility of the progress bar in slide mode.
+*/
+function slideToggleProgressBarVisibility()
+{
+    if (progress_bar_visible)
+    {
+        progress_bar_visible = false;
+        hideProgressBar();
+    }
+    else
+    {
+        progress_bar_visible = true;
+        showProgressBar();
+    }
+}
+
+/** Function to reset the timer in slide mode.
+*/
+function slideResetTimer()
+{
+    timer_start = timer_elapsed;
+    updateTimer();
+}
+
+/** Convenience function to pad a string with zero in front up to a certain length.
+ */
+function padString(str, len)
+{
+    var outStr = str;
+
+    while (outStr.length &lt; len)
+    {
+        outStr = '0' + outStr;
+    }
+
+    return outStr;
+}
+
+/** Function to update the export layer.
+ */
+function slideUpdateExportLayer()
+{
+    // Suspend redraw since we are going to mess with the slides.
+    var suspendHandle = ROOT_NODE.suspendRedraw(2000);
+
+    var tmpActiveSlide = activeSlide;
+    var tmpActiveEffect = activeEffect;
+    var exportedLayers = new Array();
+
+    for (var counterSlides = 0; counterSlides &lt; slides.length; counterSlides++)
+    {
+        var exportNode;
+
+        setSlideToState(counterSlides, STATE_START);
+
+        var maxEffect = 0;
+
+        if (slides[counterSlides].effects)
+        {
+            maxEffect = slides[counterSlides].effects.length;
+        }
+
+        exportNode = slides[counterSlides].element.cloneNode(true);
+        exportNode.setAttributeNS(NSS[&quot;inkscape&quot;], &quot;groupmode&quot;, &quot;layer&quot;);
+        exportNode.setAttributeNS(NSS[&quot;inkscape&quot;], &quot;label&quot;, &quot;slide_&quot; + padString((counterSlides + 1).toString(), slides.length.toString().length) + &quot;_effect_&quot; + padString(&quot;0&quot;, maxEffect.toString().length));
+
+        exportedLayers.push(exportNode);
+
+        if (slides[counterSlides][&quot;effects&quot;])
+        {
+            for (var counter = 0; counter &lt; slides[counterSlides][&quot;effects&quot;].length; counter++)
+            {
+                for (var subCounter = 0; subCounter &lt; slides[counterSlides][&quot;effects&quot;][counter].length; subCounter++)
+                {
+                    var effect = slides[counterSlides][&quot;effects&quot;][counter][subCounter];
+                    if (effect[&quot;effect&quot;] == &quot;fade&quot;)
+                        fade(parseInt(effect[&quot;dir&quot;]), effect[&quot;element&quot;], STATE_END, effect[&quot;options&quot;]);
+                    else if (effect[&quot;effect&quot;] == &quot;appear&quot;)
+                        appear(parseInt(effect[&quot;dir&quot;]), effect[&quot;element&quot;], STATE_END, effect[&quot;options&quot;]);
+                    else if (effect[&quot;effect&quot;] == &quot;pop&quot;)
+                        pop(parseInt(effect[&quot;dir&quot;]), effect[&quot;element&quot;], STATE_END, effect[&quot;options&quot;]);
+                    else if (effect[&quot;effect&quot;] == &quot;view&quot;)
+                        view(parseInt(effect[&quot;dir&quot;]), effect[&quot;element&quot;], STATE_END, effect[&quot;options&quot;]);
+                }
+
+                var layerName = &quot;slide_&quot; + padString((counterSlides + 1).toString(), slides.length.toString().length) + &quot;_effect_&quot; + padString((counter + 1).toString(), maxEffect.toString().length);
+                exportNode = slides[counterSlides].element.cloneNode(true);
+                exportNode.setAttributeNS(NSS[&quot;inkscape&quot;], &quot;groupmode&quot;, &quot;layer&quot;);
+                exportNode.setAttributeNS(NSS[&quot;inkscape&quot;], &quot;label&quot;, layerName);
+                exportNode.setAttribute(&quot;id&quot;, layerName);
+
+                exportedLayers.push(exportNode);
+            }
+        }
+    }
+
+    activeSlide = tmpActiveSlide;
+    activeEffect = tmpActiveEffect;
+    setSlideToState(activeSlide, activeEffect);
+
+    // Copy image.
+    var newDoc = document.documentElement.cloneNode(true);
+
+    // Delete viewbox form new imag and set width and height.
+    newDoc.removeAttribute('viewbox');
+    newDoc.setAttribute('width', WIDTH);
+    newDoc.setAttribute('height', HEIGHT);
+
+    // Delete all layers and script elements.
+    var nodesToBeRemoved = new Array();
+
+    for (var childCounter = 0; childCounter &lt;  newDoc.childNodes.length; childCounter++)
+    {
+        var child = newDoc.childNodes[childCounter];
+
+        if (child.nodeType == 1)
+        {
+            if ((child.nodeName.toUpperCase() == 'G') || (child.nodeName.toUpperCase() == 'SCRIPT'))
+            {
+                nodesToBeRemoved.push(child);
+            }
+        }
+    }
+
+    for (var ndCounter = 0; ndCounter &lt; nodesToBeRemoved.length; ndCounter++)
+    {
+        var nd = nodesToBeRemoved[ndCounter];
+
+        // Before removing the node, check whether it contains any definitions.
+        var defs = nd.getElementsByTagNameNS(NSS[&quot;svg&quot;], &quot;defs&quot;);
+
+        for (var defsCounter = 0; defsCounter &lt; defs.length; defsCounter++)
+        {
+            if (defs[defsCounter].id)
+            {
+                newDoc.appendChild(defs[defsCounter].cloneNode(true));
+            }
+        }
+
+        // Remove node.
+        nd.parentNode.removeChild(nd);
+    }
+
+    // Set current layer.
+    if (exportedLayers[0])
+    {
+        var namedView;
+
+        for (var nodeCounter = 0; nodeCounter &lt; newDoc.childNodes.length; nodeCounter++)
+        {
+            if ((newDoc.childNodes[nodeCounter].nodeType == 1) &amp;&amp; (newDoc.childNodes[nodeCounter].getAttribute('id') == 'base'))
+            {
+                namedView = newDoc.childNodes[nodeCounter];
+            }
+        }
+
+        if (namedView)
+        {
+            namedView.setAttributeNS(NSS['inkscape'], 'current-layer', exportedLayers[0].getAttributeNS(NSS['inkscape'], 'label'));
+        }
+    }
+
+    // Add exported layers.
+    while (exportedLayers.length &gt; 0)
+    {
+        var nd = exportedLayers.pop();
+
+        nd.setAttribute(&quot;opacity&quot;,1);
+        nd.style.display = &quot;inherit&quot;;
+
+        newDoc.appendChild(nd);
+    }
+
+    // Serialise the new document.
+  window.location = 'data:application/svg+xml;base64;charset=utf-8,' + window.btoa(unescape(encodeURIComponent((new XMLSerializer()).serializeToString(newDoc))));
+
+    // Unsuspend redraw.
+    ROOT_NODE.unsuspendRedraw(suspendHandle);
+    ROOT_NODE.forceRedraw();
+}
+
+/** Function to undo last drawing operation.
+*/
+function drawingUndo()
+{
+    mouse_presentation_path = null;
+    mouse_original_path = null;
+
+    if (history_presentation_elements.length &gt; 0)
+    {
+        var p = history_presentation_elements.pop();
+        var parent = p.parentNode.removeChild(p);
+
+        p = history_original_elements.pop();
+        parent = p.parentNode.removeChild(p);
+    }
+}
+
+/** Event handler for mouse down in drawing mode.
+ *
+ *  @param e the event
+ */
+function drawingMousedown(e)
+{
+    var value = 0;
+
+    if (e.button)
+        value = e.button;
+    else if (e.which)
+        value = e.which;
+
+    if (value == 1)
+    {
+        history_counter++;
+
+        var p = calcCoord(e);
+
+        mouse_last_x = e.clientX;
+        mouse_last_y = e.clientY;
+        mouse_original_path = document.createElementNS(NSS[&quot;svg&quot;], &quot;path&quot;);
+        mouse_original_path.setAttribute(&quot;stroke&quot;, path_colour);
+        mouse_original_path.setAttribute(&quot;stroke-width&quot;, path_paint_width);
+        mouse_original_path.setAttribute(&quot;fill&quot;, &quot;none&quot;);
+        mouse_original_path.setAttribute(&quot;id&quot;, &quot;path &quot; + Date());
+        mouse_original_path.setAttribute(&quot;d&quot;, &quot;M&quot; + p.x + &quot;,&quot; + p.y);
+        slides[activeSlide][&quot;original_element&quot;].appendChild(mouse_original_path);
+        history_original_elements.push(mouse_original_path);
+
+        mouse_presentation_path = document.createElementNS(NSS[&quot;svg&quot;], &quot;path&quot;);
+        mouse_presentation_path.setAttribute(&quot;stroke&quot;, path_colour);
+        mouse_presentation_path.setAttribute(&quot;stroke-width&quot;, path_paint_width);
+        mouse_presentation_path.setAttribute(&quot;fill&quot;, &quot;none&quot;);
+        mouse_presentation_path.setAttribute(&quot;id&quot;, &quot;path &quot; + Date() + &quot; presentation copy&quot;);
+        mouse_presentation_path.setAttribute(&quot;d&quot;, &quot;M&quot; + p.x + &quot;,&quot; + p.y);
+
+        if (slides[activeSlide][&quot;viewGroup&quot;])
+            slides[activeSlide][&quot;viewGroup&quot;].appendChild(mouse_presentation_path);
+        else
+            slides[activeSlide][&quot;element&quot;].appendChild(mouse_presentation_path);
+
+        history_presentation_elements.push(mouse_presentation_path);
+
+        return false;
+    }
+
+    return true;
+}
+
+/** Event handler for mouse up in drawing mode.
+ *
+ *  @param e the event
+ */
+function drawingMouseup(e)
+{
+    if(!e)
+        e = window.event;
+
+    if (mouse_presentation_path != null)
+    {
+        var p = calcCoord(e);
+        var d = mouse_presentation_path.getAttribute(&quot;d&quot;);
+        d += &quot; L&quot; + p.x + &quot;,&quot; + p.y;
+        mouse_presentation_path.setAttribute(&quot;d&quot;, d);
+        mouse_presentation_path = null;
+        mouse_original_path.setAttribute(&quot;d&quot;, d);
+        mouse_original_path = null;
+
+        return false;
+    }
+
+    return true;
+}
+
+/** Event handler for mouse move in drawing mode.
+ *
+ *  @param e the event
+ */
+function drawingMousemove(e)
+{
+    if(!e)
+        e = window.event;
+
+    var dist = (mouse_last_x - e.clientX) * (mouse_last_x - e.clientX) + (mouse_last_y - e.clientY) * (mouse_last_y - e.clientY);
+
+    if (mouse_presentation_path == null)
+    {
+        return true;
+    }
+
+    if (dist &gt;= mouse_min_dist_sqr)
+    {
+        var p = calcCoord(e);
+        var d = mouse_presentation_path.getAttribute(&quot;d&quot;);
+        d += &quot; L&quot; + p.x + &quot;,&quot; + p.y;
+        mouse_presentation_path.setAttribute(&quot;d&quot;, d);
+        mouse_original_path.setAttribute(&quot;d&quot;, d);
+        mouse_last_x = e.clientX;
+        mouse_last_y = e.clientY;
+    }
+
+    return false;
+}
+
+/** Event handler for mouse wheel events in slide mode.
+ *  based on http://adomas.org/javascript-mouse-wheel/
+ *
+ *  @param e the event
+ */
+function slideMousewheel(e)
+{
+    var delta = 0;
+
+    if (!e)
+        e = window.event;
+
+    if (e.wheelDelta)
+    { // IE Opera
+        delta = e.wheelDelta/120;
+    }
+    else if (e.detail)
+    { // MOZ
+        delta = -e.detail/3;
+    }
+
+    if (delta &gt; 0)
+        skipEffects(-1);
+    else if (delta &lt; 0)
+        skipEffects(1);
+
+    if (e.preventDefault)
+        e.preventDefault();
+
+    e.returnValue = false;
+}
+
+/** Event handler for mouse wheel events in index mode.
+ *  based on http://adomas.org/javascript-mouse-wheel/
+ *
+ *  @param e the event
+ */
+function indexMousewheel(e)
+{
+    var delta = 0;
+
+    if (!e)
+        e = window.event;
+
+    if (e.wheelDelta)
+    { // IE Opera
+        delta = e.wheelDelta/120;
+    }
+    else if (e.detail)
+    { // MOZ
+        delta = -e.detail/3;
+    }
+
+    if (delta &gt; 0)
+        indexSetPageSlide(activeSlide - INDEX_COLUMNS * INDEX_COLUMNS);
+    else if (delta &lt; 0)
+        indexSetPageSlide(activeSlide + INDEX_COLUMNS * INDEX_COLUMNS);
+
+    if (e.preventDefault)
+        e.preventDefault();
+
+    e.returnValue = false;
+}
+
+/** Function to set the path paint width.
+*/
+function set_path_paint_width()
+{
+    var svgPoint1 = document.documentElement.createSVGPoint();
+    var svgPoint2 = document.documentElement.createSVGPoint();
+
+    svgPoint1.x = 0.0;
+    svgPoint1.y = 0.0;
+    svgPoint2.x = 1.0;
+    svgPoint2.y = 0.0;
+
+    var matrix = slides[activeSlide][&quot;element&quot;].getTransformToElement(ROOT_NODE);
+
+    if (slides[activeSlide][&quot;viewGroup&quot;])
+        matrix = slides[activeSlide][&quot;viewGroup&quot;].getTransformToElement(ROOT_NODE);
+
+    svgPoint1 = svgPoint1.matrixTransform(matrix);
+    svgPoint2 = svgPoint2.matrixTransform(matrix);
+
+    path_paint_width = path_width / Math.sqrt((svgPoint2.x - svgPoint1.x) * (svgPoint2.x - svgPoint1.x) + (svgPoint2.y - svgPoint1.y) * (svgPoint2.y - svgPoint1.y));
+}
+
+/** The view effect.
+ *
+ *  @param dir direction the effect should be played (1 = forwards, -1 = backwards)
+ *  @param element the element the effect should be applied to
+ *  @param time the time that has elapsed since the beginning of the effect
+ *  @param options a dictionary with additional options (e.g. length of the effect); for the view effect the options need to contain the old and the new matrix.
+ */
+function view(dir, element, time, options)
+{
+    var length = 250;
+    var fraction;
+
+    if (!options[&quot;matrixInitial&quot;])
+    {
+        var tempString = slides[activeSlide][&quot;viewGroup&quot;].getAttribute(&quot;transform&quot;);
+
+        if (tempString)
+            options[&quot;matrixInitial&quot;] = (new matrixSVG()).fromAttribute(tempString);
+        else
+            options[&quot;matrixInitial&quot;] = (new matrixSVG()).fromSVGElements(1, 0, 0, 1, 0, 0);
+    }
+
+    if ((time == STATE_END) || (time == STATE_START))
+        fraction = 1;
+    else
+    {
+        if (options &amp;&amp; options[&quot;length&quot;])
+            length = options[&quot;length&quot;];
+
+        fraction = time / length;
+    }
+
+    if (dir == 1)
+    {
+        if (fraction &lt;= 0)
+        {
+            element.setAttribute(&quot;transform&quot;, options[&quot;matrixInitial&quot;].toAttribute());
+        }
+        else if (fraction &gt;= 1)
+        {
+            element.setAttribute(&quot;transform&quot;, options[&quot;matrixNew&quot;].toAttribute());
+
+            set_path_paint_width();
+
+            options[&quot;matrixInitial&quot;] = null;
+            return true;
+        }
+        else
+        {
+            element.setAttribute(&quot;transform&quot;, options[&quot;matrixInitial&quot;].mix(options[&quot;matrixNew&quot;], fraction).toAttribute());
+        }
+    }
+    else if (dir == -1)
+    {
+        if (fraction &lt;= 0)
+        {
+            element.setAttribute(&quot;transform&quot;, options[&quot;matrixInitial&quot;].toAttribute());
+        }
+        else if (fraction &gt;= 1)
+        {
+            element.setAttribute(&quot;transform&quot;, options[&quot;matrixOld&quot;].toAttribute());
+            set_path_paint_width();
+
+            options[&quot;matrixInitial&quot;] = null;
+            return true;
+        }
+        else
+        {
+            element.setAttribute(&quot;transform&quot;, options[&quot;matrixInitial&quot;].mix(options[&quot;matrixOld&quot;], fraction).toAttribute());
+        }
+    }
+
+    return false;
+}
+
+/** The fade effect.
+ *
+ *  @param dir direction the effect should be played (1 = forwards, -1 = backwards)
+ *  @param element the element the effect should be applied to
+ *  @param time the time that has elapsed since the beginning of the effect
+ *  @param options a dictionary with additional options (e.g. length of the effect)
+ */
+function fade(dir, element, time, options)
+{
+    var length = 250;
+    var fraction;
+
+    if ((time == STATE_END) || (time == STATE_START))
+        fraction = 1;
+    else
+    {
+        if (options &amp;&amp; options[&quot;length&quot;])
+            length = options[&quot;length&quot;];
+
+        fraction = time / length;
+    }
+
+    if (dir == 1)
+    {
+        if (fraction &lt;= 0)
+        {
+            element.style.display = &quot;none&quot;;
+            element.setAttribute(&quot;opacity&quot;, 0);
+        }
+        else if (fraction &gt;= 1)
+        {
+            element.style.display = &quot;inherit&quot;;
+            element.setAttribute(&quot;opacity&quot;, 1);
+            return true;
+        }
+        else
+        {
+            element.style.display = &quot;inherit&quot;;
+            element.setAttribute(&quot;opacity&quot;, fraction);
+        }
+    }
+    else if (dir == -1)
+    {
+        if (fraction &lt;= 0)
+        {
+            element.style.display = &quot;inherit&quot;;
+            element.setAttribute(&quot;opacity&quot;, 1);
+        }
+        else if (fraction &gt;= 1)
+        {
+            element.setAttribute(&quot;opacity&quot;, 0);
+            element.style.display = &quot;none&quot;;
+            return true;
+        }
+        else
+        {
+            element.style.display = &quot;inherit&quot;;
+            element.setAttribute(&quot;opacity&quot;, 1 - fraction);
+        }
+    }
+    return false;
+}
+
+/** The appear effect.
+ *
+ *  @param dir direction the effect should be played (1 = forwards, -1 = backwards)
+ *  @param element the element the effect should be applied to
+ *  @param time the time that has elapsed since the beginning of the effect
+ *  @param options a dictionary with additional options (e.g. length of the effect)
+ */
+function appear(dir, element, time, options)
+{
+    if (dir == 1)
+    {
+        element.style.display = &quot;inherit&quot;;
+        element.setAttribute(&quot;opacity&quot;,1);
+    }
+    else if (dir == -1)
+    {
+        element.style.display = &quot;none&quot;;
+        element.setAttribute(&quot;opacity&quot;,0);
+    }
+    return true;
+}
+
+/** The pop effect.
+ *
+ *  @param dir direction the effect should be played (1 = forwards, -1 = backwards)
+ *  @param element the element the effect should be applied to
+ *  @param time the time that has elapsed since the beginning of the effect
+ *  @param options a dictionary with additional options (e.g. length of the effect)
+ */
+function pop(dir, element, time, options)
+{
+    var length = 500;
+    var fraction;
+
+    if ((time == STATE_END) || (time == STATE_START))
+        fraction = 1;
+    else
+    {
+        if (options &amp;&amp; options[&quot;length&quot;])
+            length = options[&quot;length&quot;];
+
+        fraction = time / length;
+    }
+
+    if (dir == 1)
+    {
+        if (fraction &lt;= 0)
+        {
+            element.setAttribute(&quot;opacity&quot;, 0);
+            element.setAttribute(&quot;transform&quot;, &quot;scale(0)&quot;);
+            element.style.display = &quot;none&quot;;
+        }
+        else if (fraction &gt;= 1)
+        {
+            element.setAttribute(&quot;opacity&quot;, 1);
+            element.removeAttribute(&quot;transform&quot;);
+            element.style.display = &quot;inherit&quot;;
+            return true;
+        }
+        else
+        {
+            element.style.display = &quot;inherit&quot;;
+            var opacityFraction = fraction * 3;
+            if (opacityFraction &gt; 1)
+                opacityFraction = 1;
+            element.setAttribute(&quot;opacity&quot;, opacityFraction);
+            var offsetX = WIDTH * (1.0 - fraction) / 2.0;
+            var offsetY = HEIGHT * (1.0 - fraction) / 2.0;
+            element.setAttribute(&quot;transform&quot;, &quot;translate(&quot; + offsetX + &quot;,&quot; + offsetY + &quot;) scale(&quot; + fraction + &quot;)&quot;);
+        }
+    }
+    else if (dir == -1)
+    {
+        if (fraction &lt;= 0)
+        {
+            element.setAttribute(&quot;opacity&quot;, 1);
+            element.setAttribute(&quot;transform&quot;, &quot;scale(1)&quot;);
+            element.style.display = &quot;inherit&quot;;
+        }
+        else if (fraction &gt;= 1)
+        {
+            element.setAttribute(&quot;opacity&quot;, 0);
+            element.removeAttribute(&quot;transform&quot;);
+            element.style.display = &quot;none&quot;;
+            return true;
+        }
+        else
+        {
+            element.setAttribute(&quot;opacity&quot;, 1 - fraction);
+            element.setAttribute(&quot;transform&quot;, &quot;scale(&quot; + 1 - fraction + &quot;)&quot;);
+            element.style.display = &quot;inherit&quot;;
+        }
+    }
+    return false;
+}
+
+/** Function to set a slide either to the start or the end state.
+ *
+ *  @param slide the slide to use
+ *  @param state the state into which the slide should be set
+ */
+function setSlideToState(slide, state)
+{
+    slides[slide][&quot;viewGroup&quot;].setAttribute(&quot;transform&quot;, slides[slide].initialView);
+
+    if (slides[slide][&quot;effects&quot;])
+    {
+        if (state == STATE_END)
+        {
+            for (var counter = 0; counter &lt; slides[slide][&quot;effects&quot;].length; counter++)
+            {
+                for (var subCounter = 0; subCounter &lt; slides[slide][&quot;effects&quot;][counter].length; subCounter++)
+                {
+                    var effect = slides[slide][&quot;effects&quot;][counter][subCounter];
+                    if (effect[&quot;effect&quot;] == &quot;fade&quot;)
+                        fade(effect[&quot;dir&quot;], effect[&quot;element&quot;], STATE_END, effect[&quot;options&quot;]);
+                    else if (effect[&quot;effect&quot;] == &quot;appear&quot;)
+                        appear(effect[&quot;dir&quot;], effect[&quot;element&quot;], STATE_END, effect[&quot;options&quot;]);
+                    else if (effect[&quot;effect&quot;] == &quot;pop&quot;)
+                        pop(effect[&quot;dir&quot;], effect[&quot;element&quot;], STATE_END, effect[&quot;options&quot;]);
+                    else if (effect[&quot;effect&quot;] == &quot;view&quot;)
+                        view(effect[&quot;dir&quot;], effect[&quot;element&quot;], STATE_END, effect[&quot;options&quot;]);
+                }
+            }
+        }
+        else if (state == STATE_START)
+        {
+            for (var counter = slides[slide][&quot;effects&quot;].length - 1; counter &gt;= 0; counter--)
+            {
+                for (var subCounter = 0; subCounter &lt; slides[slide][&quot;effects&quot;][counter].length; subCounter++)
+                {
+                    var effect = slides[slide][&quot;effects&quot;][counter][subCounter];
+                    if (effect[&quot;effect&quot;] == &quot;fade&quot;)
+                        fade(parseInt(effect[&quot;dir&quot;]) * -1, effect[&quot;element&quot;], STATE_START, effect[&quot;options&quot;]);
+                    else if (effect[&quot;effect&quot;] == &quot;appear&quot;)
+                        appear(parseInt(effect[&quot;dir&quot;]) * -1, effect[&quot;element&quot;], STATE_START, effect[&quot;options&quot;]);
+                    else if (effect[&quot;effect&quot;] == &quot;pop&quot;)
+                        pop(parseInt(effect[&quot;dir&quot;]) * -1, effect[&quot;element&quot;], STATE_START, effect[&quot;options&quot;]);
+                    else if (effect[&quot;effect&quot;] == &quot;view&quot;)
+                        view(parseInt(effect[&quot;dir&quot;]) * -1, effect[&quot;element&quot;], STATE_START, effect[&quot;options&quot;]);
+                }
+            }
+        }
+        else
+        {
+            setSlideToState(slide, STATE_START);
+
+            for (var counter = 0; counter &lt; slides[slide][&quot;effects&quot;].length &amp;&amp; counter &lt; state; counter++)
+            {
+                for (var subCounter = 0; subCounter &lt; slides[slide][&quot;effects&quot;][counter].length; subCounter++)
+                {
+                    var effect = slides[slide][&quot;effects&quot;][counter][subCounter];
+                    if (effect[&quot;effect&quot;] == &quot;fade&quot;)
+                        fade(effect[&quot;dir&quot;], effect[&quot;element&quot;], STATE_END, effect[&quot;options&quot;]);
+                    else if (effect[&quot;effect&quot;] == &quot;appear&quot;)
+                        appear(effect[&quot;dir&quot;], effect[&quot;element&quot;], STATE_END, effect[&quot;options&quot;]);
+                    else if (effect[&quot;effect&quot;] == &quot;pop&quot;)
+                        pop(effect[&quot;dir&quot;], effect[&quot;element&quot;], STATE_END, effect[&quot;options&quot;]);
+                    else if (effect[&quot;effect&quot;] == &quot;view&quot;)
+                        view(effect[&quot;dir&quot;], effect[&quot;element&quot;], STATE_END, effect[&quot;options&quot;]);
+                }
+            }
+        }
+    }
+
+    window.location.hash = (activeSlide + 1) + '_' + activeEffect;
+}
+
+/** Convenience function to translate a attribute string into a dictionary.
+ *
+ *    @param str the attribute string
+ *  @return a dictionary
+ *  @see dictToPropStr
+ */
+function propStrToDict(str)
+{
+    var list = str.split(&quot;;&quot;);
+    var obj = new Object();
+
+    for (var counter = 0; counter &lt; list.length; counter++)
+    {
+        var subStr = list[counter];
+        var subList = subStr.split(&quot;:&quot;);
+        if (subList.length == 2)
+        {
+            obj[subList[0]] = subList[1];
+        }
+    }
+
+    return obj;
+}
+
+/** Convenience function to translate a dictionary into a string that can be used as an attribute.
+ *
+ *  @param dict the dictionary to convert
+ *  @return a string that can be used as an attribute
+ *  @see propStrToDict
+ */
+function dictToPropStr(dict)
+{
+    var str = &quot;&quot;;
+
+    for (var key in dict)
+    {
+        str += key + &quot;:&quot; + dict[key] + &quot;;&quot;;
+    }
+
+    return str;
+}
+
+/** Sub-function to add a suffix to the ids of the node and all its children.
+ *
+ *    @param node the node to change
+ *    @param suffix the suffix to add
+ *    @param replace dictionary of replaced ids
+ *  @see suffixNodeIds
+ */
+function suffixNoneIds_sub(node, suffix, replace)
+{
+    if (node.nodeType == 1)
+    {
+        if (node.getAttribute(&quot;id&quot;))
+        {
+            var id = node.getAttribute(&quot;id&quot;)
+                replace[&quot;#&quot; + id] = id + suffix;
+            node.setAttribute(&quot;id&quot;, id + suffix);
+        }
+
+        if ((node.nodeName == &quot;use&quot;) &amp;&amp; (node.getAttributeNS(NSS[&quot;xlink&quot;], &quot;href&quot;)) &amp;&amp; (replace[node.getAttribute(NSS[&quot;xlink&quot;], &quot;href&quot;)]))
+            node.setAttribute(NSS[&quot;xlink&quot;], &quot;href&quot;, node.getAttribute(NSS[&quot;xlink&quot;], &quot;href&quot;) + suffix);
+
+        if (node.childNodes)
+        {
+            for (var counter = 0; counter &lt; node.childNodes.length; counter++)
+                suffixNoneIds_sub(node.childNodes[counter], suffix, replace);
+        }
+    }
+}
+
+/** Function to add a suffix to the ids of the node and all its children.
+ *
+ *    @param node the node to change
+ *    @param suffix the suffix to add
+ *  @return the changed node
+ *  @see suffixNodeIds_sub
+ */
+function suffixNodeIds(node, suffix)
+{
+    var replace = new Object();
+
+    suffixNoneIds_sub(node, suffix, replace);
+
+    return node;
+}
+
+/** Function to build a progress bar.
+ *
+ *  @param parent node to attach the progress bar to
+ */
+function createProgressBar(parent_node)
+{
+    var g = document.createElementNS(NSS[&quot;svg&quot;], &quot;g&quot;);
+    g.setAttribute(&quot;clip-path&quot;, &quot;url(#jessyInkSlideClipPath)&quot;);
+    g.setAttribute(&quot;id&quot;, &quot;layer_progress_bar&quot;);
+    g.setAttribute(&quot;style&quot;, &quot;display: none;&quot;);
+
+    var rect_progress_bar = document.createElementNS(NSS[&quot;svg&quot;], &quot;rect&quot;);
+    rect_progress_bar.setAttribute(&quot;style&quot;, &quot;marker: none; fill: rgb(128, 128, 128); stroke: none;&quot;);
+    rect_progress_bar.setAttribute(&quot;id&quot;, &quot;rect_progress_bar&quot;);
+    rect_progress_bar.setAttribute(&quot;x&quot;, 0);
+    rect_progress_bar.setAttribute(&quot;y&quot;, 0.99 * HEIGHT);
+    rect_progress_bar.setAttribute(&quot;width&quot;, 0);
+    rect_progress_bar.setAttribute(&quot;height&quot;, 0.01 * HEIGHT);
+    g.appendChild(rect_progress_bar);
+
+    var circle_timer_indicator = document.createElementNS(NSS[&quot;svg&quot;], &quot;circle&quot;);
+    circle_timer_indicator.setAttribute(&quot;style&quot;, &quot;marker: none; fill: rgb(255, 0, 0); stroke: none;&quot;);
+    circle_timer_indicator.setAttribute(&quot;id&quot;, &quot;circle_timer_indicator&quot;);
+    circle_timer_indicator.setAttribute(&quot;cx&quot;, 0.005 * HEIGHT);
+    circle_timer_indicator.setAttribute(&quot;cy&quot;, 0.995 * HEIGHT);
+    circle_timer_indicator.setAttribute(&quot;r&quot;, 0.005 * HEIGHT);
+    g.appendChild(circle_timer_indicator);
+
+    parent_node.appendChild(g);
+}
+
+/** Function to hide the progress bar.
+ *
+ */
+function hideProgressBar()
+{
+    var progress_bar = document.getElementById(&quot;layer_progress_bar&quot;);
+
+    if (!progress_bar)
+    {
+        return;
+    }
+
+    progress_bar.setAttribute(&quot;style&quot;, &quot;display: none;&quot;);
+}
+
+/** Function to show the progress bar.
+ *
+ */
+function showProgressBar()
+{
+    var progress_bar = document.getElementById(&quot;layer_progress_bar&quot;);
+
+    if (!progress_bar)
+    {
+        return;
+    }
+
+    progress_bar.setAttribute(&quot;style&quot;, &quot;display: inherit;&quot;);
+}
+
+/** Set progress bar value.
+ *
+ *    @param value the current slide number
+ *
+ */
+function setProgressBarValue(value)
+{
+    var rect_progress_bar = document.getElementById(&quot;rect_progress_bar&quot;);
+
+    if (!rect_progress_bar)
+    {
+        return;
+    }
+
+    if (value &lt; 1)
+    {
+        // First slide, assumed to be the title of the presentation
+        var x = 0;
+        var w = 0.01 * HEIGHT;
+    }
+    else if (value &gt;= slides.length - 1)
+    {
+        // Last slide, assumed to be the end of the presentation
+        var x = WIDTH - 0.01 * HEIGHT;
+        var w = 0.01 * HEIGHT;
+    }
+    else
+    {
+        value -= 1;
+        value /= (slides.length - 2);
+
+        var x = WIDTH * value;
+        var w = WIDTH / (slides.length - 2);
+    }
+
+    rect_progress_bar.setAttribute(&quot;x&quot;, x);
+    rect_progress_bar.setAttribute(&quot;width&quot;, w);
+}
+
+/** Set time indicator.
+ *
+ *    @param value the percentage of time elapse so far between 0.0 and 1.0
+ *
+ */
+function setTimeIndicatorValue(value)
+{
+    var circle_timer_indicator = document.getElementById(&quot;circle_timer_indicator&quot;);
+
+    if (!circle_timer_indicator)
+    {
+        return;
+    }
+
+    if (value &lt; 0.0)
+    {
+        value = 0.0;
+    }
+
+    if (value &gt; 1.0)
+    {
+        value = 1.0;
+    }
+
+    var cx = (WIDTH - 0.01 * HEIGHT) * value + 0.005 * HEIGHT;
+    circle_timer_indicator.setAttribute(&quot;cx&quot;, cx);
+}
+
+/** Update timer.
+ *
+ */
+function updateTimer()
+{
+    timer_elapsed += 1;
+    setTimeIndicatorValue((timer_elapsed - timer_start) / (60 * timer_duration));
+}
+
+/** Convert screen coordinates to document coordinates.
+ *
+ *  @param e event with screen coordinates
+ *
+ *  @return coordinates in SVG file coordinate system
+ */
+function calcCoord(e)
+{
+    var svgPoint = document.documentElement.createSVGPoint();
+    svgPoint.x = e.clientX + window.pageXOffset;
+    svgPoint.y = e.clientY + window.pageYOffset;
+
+    var matrix = slides[activeSlide][&quot;element&quot;].getScreenCTM();
+
+    if (slides[activeSlide][&quot;viewGroup&quot;])
+        matrix = slides[activeSlide][&quot;viewGroup&quot;].getScreenCTM();
+
+    svgPoint = svgPoint.matrixTransform(matrix.inverse());
+    return svgPoint;
+}
+
+/** Add slide.
+ *
+ *    @param after_slide after which slide the new slide should be inserted into the presentation
+ */
+function addSlide(after_slide)
+{
+    number_of_added_slides++;
+
+    var g = document.createElementNS(NSS[&quot;svg&quot;], &quot;g&quot;);
+    g.setAttribute(&quot;clip-path&quot;, &quot;url(#jessyInkSlideClipPath)&quot;);
+    g.setAttribute(&quot;id&quot;, &quot;Whiteboard &quot; + Date() + &quot; presentation copy&quot;);
+    g.setAttribute(&quot;style&quot;, &quot;display: none;&quot;);
+
+    var new_slide = new Object();
+    new_slide[&quot;element&quot;] = g;
+
+    // Set build in transition.
+    new_slide[&quot;transitionIn&quot;] = new Object();
+    var dict = defaultTransitionInDict;
+    new_slide[&quot;transitionIn&quot;][&quot;name&quot;] = dict[&quot;name&quot;];
+    new_slide[&quot;transitionIn&quot;][&quot;options&quot;] = new Object();
+
+    for (key in dict)
+        if (key != &quot;name&quot;)
+            new_slide[&quot;transitionIn&quot;][&quot;options&quot;][key] = dict[key];
+
+    // Set build out transition.
+    new_slide[&quot;transitionOut&quot;] = new Object();
+    dict = defaultTransitionOutDict;
+    new_slide[&quot;transitionOut&quot;][&quot;name&quot;] = dict[&quot;name&quot;];
+    new_slide[&quot;transitionOut&quot;][&quot;options&quot;] = new Object();
+
+    for (key in dict)
+        if (key != &quot;name&quot;)
+            new_slide[&quot;transitionOut&quot;][&quot;options&quot;][key] = dict[key];
+
+    // Copy master slide content.
+    if (masterSlide)
+    {
+        var clonedNode = suffixNodeIds(masterSlide.cloneNode(true), &quot;_&quot; + Date() + &quot; presentation_copy&quot;);
+        clonedNode.removeAttributeNS(NSS[&quot;inkscape&quot;], &quot;groupmode&quot;);
+        clonedNode.removeAttributeNS(NSS[&quot;inkscape&quot;], &quot;label&quot;);
+        clonedNode.style.display = &quot;inherit&quot;;
+
+        g.appendChild(clonedNode);
+    }
+
+    // Substitute auto texts.
+    substituteAutoTexts(g, &quot;Whiteboard &quot; + number_of_added_slides, &quot;W&quot; + number_of_added_slides, slides.length);
+
+    g.setAttribute(&quot;onmouseover&quot;, &quot;if ((currentMode == INDEX_MODE) &amp;&amp; ( activeSlide != &quot; + (after_slide + 1) + &quot;)) { indexSetActiveSlide(&quot; + (after_slide + 1) + &quot;); };&quot;);
+
+    // Create a transform group.
+    var transformGroup = document.createElementNS(NSS[&quot;svg&quot;], &quot;g&quot;);
+
+    // Add content to transform group.
+    while (g.firstChild)
+        transformGroup.appendChild(g.firstChild);
+
+    // Transfer the transform attribute from the node to the transform group.
+    if (g.getAttribute(&quot;transform&quot;))
+    {
+        transformGroup.setAttribute(&quot;transform&quot;, g.getAttribute(&quot;transform&quot;));
+        g.removeAttribute(&quot;transform&quot;);
+    }
+
+    // Create a view group.
+    var viewGroup = document.createElementNS(NSS[&quot;svg&quot;], &quot;g&quot;);
+
+    viewGroup.appendChild(transformGroup);
+    new_slide[&quot;viewGroup&quot;] = g.appendChild(viewGroup);
+
+    // Insert background.
+    if (BACKGROUND_COLOR != null)
+    {
+        var rectNode = document.createElementNS(NSS[&quot;svg&quot;], &quot;rect&quot;);
+
+        rectNode.setAttribute(&quot;x&quot;, 0);
+        rectNode.setAttribute(&quot;y&quot;, 0);
+        rectNode.setAttribute(&quot;width&quot;, WIDTH);
+        rectNode.setAttribute(&quot;height&quot;, HEIGHT);
+        rectNode.setAttribute(&quot;id&quot;, &quot;jessyInkBackground&quot; + Date());
+        rectNode.setAttribute(&quot;fill&quot;, BACKGROUND_COLOR);
+
+        new_slide[&quot;viewGroup&quot;].insertBefore(rectNode, new_slide[&quot;viewGroup&quot;].firstChild);
+    }
+
+    // Set initial view even if there are no other views.
+    var matrixOld = (new matrixSVG()).fromElements(1, 0, 0, 0, 1, 0, 0, 0, 1);
+
+    new_slide[&quot;viewGroup&quot;].setAttribute(&quot;transform&quot;, matrixOld.toAttribute());
+    new_slide.initialView = matrixOld.toAttribute();
+
+    // Insert slide
+    var node = slides[after_slide][&quot;element&quot;];
+    var next_node = node.nextSibling;
+    var parent_node = node.parentNode;
+
+    if (next_node)
+    {
+        parent_node.insertBefore(g, next_node);
+    }
+    else
+    {
+        parent_node.appendChild(g);
+    }
+
+    g = document.createElementNS(NSS[&quot;svg&quot;], &quot;g&quot;);
+    g.setAttributeNS(NSS[&quot;inkscape&quot;], &quot;groupmode&quot;, &quot;layer&quot;);
+    g.setAttributeNS(NSS[&quot;inkscape&quot;], &quot;label&quot;, &quot;Whiteboard &quot; + number_of_added_slides);
+    g.setAttribute(&quot;clip-path&quot;, &quot;url(#jessyInkSlideClipPath)&quot;);
+    g.setAttribute(&quot;id&quot;, &quot;Whiteboard &quot; + Date());
+    g.setAttribute(&quot;style&quot;, &quot;display: none;&quot;);
+
+    new_slide[&quot;original_element&quot;] = g;
+
+    node = slides[after_slide][&quot;original_element&quot;];
+    next_node = node.nextSibling;
+    parent_node = node.parentNode;
+
+    if (next_node)
+    {
+        parent_node.insertBefore(g, next_node);
+    }
+    else
+    {
+        parent_node.appendChild(g);
+    }
+
+    before_new_slide = slides.slice(0, after_slide + 1);
+    after_new_slide = slides.slice(after_slide + 1);
+    slides = before_new_slide.concat(new_slide, after_new_slide);
+
+    //resetting the counter attributes on the slides that follow the new slide...
+    for (var counter = after_slide+2; counter &lt; slides.length; counter++)
+    {
+        slides[counter][&quot;element&quot;].setAttribute(&quot;onmouseover&quot;, &quot;if ((currentMode == INDEX_MODE) &amp;&amp; ( activeSlide != &quot; + counter + &quot;)) { indexSetActiveSlide(&quot; + counter + &quot;); };&quot;);
+    }
+}
+
+/** Convenience function to obtain a transformation matrix from a point matrix.
+ *
+ *    @param mPoints Point matrix.
+ *    @return A transformation matrix.
+ */
+function pointMatrixToTransformation(mPoints)
+{
+    mPointsOld = (new matrixSVG()).fromElements(0, WIDTH, WIDTH, 0, 0, HEIGHT, 1, 1, 1);
+
+    return mPointsOld.mult(mPoints.inv());
+}
+
+/** Convenience function to obtain a matrix with three corners of a rectangle.
+ *
+ *    @param rect an svg rectangle
+ *    @return a matrixSVG containing three corners of the rectangle
+ */
+function rectToMatrix(rect)
+{
+    rectWidth = rect.getBBox().width;
+    rectHeight = rect.getBBox().height;
+    rectX = rect.getBBox().x;
+    rectY = rect.getBBox().y;
+    rectXcorr = 0;
+    rectYcorr = 0;
+
+    scaleX = WIDTH / rectWidth;
+    scaleY = HEIGHT / rectHeight;
+
+    if (scaleX &gt; scaleY)
+    {
+        scaleX = scaleY;
+        rectXcorr -= (WIDTH / scaleX - rectWidth) / 2;
+        rectWidth = WIDTH / scaleX;
+    }
+    else
+    {
+        scaleY = scaleX;
+        rectYcorr -= (HEIGHT / scaleY - rectHeight) / 2;
+        rectHeight = HEIGHT / scaleY;
+    }
+
+    if (rect.transform.baseVal.numberOfItems &lt; 1)
+    {
+        mRectTrans = (new matrixSVG()).fromElements(1, 0, 0, 0, 1, 0, 0, 0, 1);
+    }
+    else
+    {
+        mRectTrans = (new matrixSVG()).fromSVGMatrix(rect.transform.baseVal.consolidate().matrix);
+    }
+
+    newBasePoints = (new matrixSVG()).fromElements(rectX, rectX, rectX, rectY, rectY, rectY, 1, 1, 1);
+    newVectors = (new matrixSVG()).fromElements(rectXcorr, rectXcorr + rectWidth, rectXcorr + rectWidth, rectYcorr, rectYcorr, rectYcorr + rectHeight, 0, 0, 0);
+
+    return mRectTrans.mult(newBasePoints.add(newVectors));
+}
+
+/** Function to handle JessyInk elements.
+ *
+ *    @param    node    Element node.
+ */
+function handleElement(node)
+{
+    if (node.getAttributeNS(NSS['jessyink'], 'element') == 'core.video')
+    {
+        var url;
+        var width;
+        var height;
+        var x;
+        var y;
+        var transform;
+
+        var tspans = node.getElementsByTagNameNS(&quot;http://www.w3.org/2000/svg&quot;, &quot;tspan&quot;);
+
+        for (var tspanCounter = 0; tspanCounter &lt; tspans.length; tspanCounter++)
+        {
+            if (tspans[tspanCounter].getAttributeNS(&quot;https://launchpad.net/jessyink&quot;, &quot;video&quot;) == &quot;url&quot;)
+            {
+                url = tspans[tspanCounter].firstChild.nodeValue;
+            }
+        }
+
+        var rects = node.getElementsByTagNameNS(&quot;http://www.w3.org/2000/svg&quot;, &quot;rect&quot;);
+
+        for (var rectCounter = 0; rectCounter &lt; rects.length; rectCounter++)
+        {
+            if (rects[rectCounter].getAttributeNS(&quot;https://launchpad.net/jessyink&quot;, &quot;video&quot;) == &quot;rect&quot;)
+            {
+                x = rects[rectCounter].getAttribute(&quot;x&quot;);
+                y = rects[rectCounter].getAttribute(&quot;y&quot;);
+                width = rects[rectCounter].getAttribute(&quot;width&quot;);
+                height = rects[rectCounter].getAttribute(&quot;height&quot;);
+                transform = rects[rectCounter].getAttribute(&quot;transform&quot;);
+            }
+        }
+
+        for (var childCounter = 0; childCounter &lt; node.childNodes.length; childCounter++)
+        {
+            if (node.childNodes[childCounter].nodeType == 1)
+            {
+                if (node.childNodes[childCounter].style)
+                {
+                    node.childNodes[childCounter].style.display = 'none';
+                }
+                else
+                {
+                    node.childNodes[childCounter].setAttribute(&quot;style&quot;, &quot;display: none;&quot;);
+                }
+            }
+        }
+
+        var foreignNode = document.createElementNS(&quot;http://www.w3.org/2000/svg&quot;, &quot;foreignObject&quot;);
+        foreignNode.setAttribute(&quot;x&quot;, x);
+        foreignNode.setAttribute(&quot;y&quot;, y);
+        foreignNode.setAttribute(&quot;width&quot;, width);
+        foreignNode.setAttribute(&quot;height&quot;, height);
+        foreignNode.setAttribute(&quot;transform&quot;, transform);
+
+        var videoNode = document.createElementNS(&quot;http://www.w3.org/1999/xhtml&quot;, &quot;video&quot;);
+        videoNode.setAttribute(&quot;src&quot;, url);
+
+        foreignNode.appendChild(videoNode);
+        node.appendChild(foreignNode);
+    }
+}
+
+/** Class processing the location hash.
+ *
+ *    @param str location hash
+ */
+function LocationHash(str)
+{
+    this.slideNumber = 0;
+    this.effectNumber = 0;
+
+    str = str.substr(1, str.length - 1);
+
+    var parts = str.split('_');
+
+    // Try to extract slide number.
+    if (parts.length &gt;= 1)
+    {
+        try
+        {
+            var slideNumber = parseInt(parts[0]);
+
+            if (!isNaN(slideNumber))
+            {
+                this.slideNumber = slideNumber - 1;
+            }
+        }
+        catch (e)
+        {
+        }
+    }
+
+    // Try to extract effect number.
+    if (parts.length &gt;= 2)
+    {
+        try
+        {
+            var effectNumber = parseInt(parts[1]);
+
+            if (!isNaN(effectNumber))
+            {
+                this.effectNumber = effectNumber;
+            }
+        }
+        catch (e)
+        {
+        }
+    }
+}
+
+/** Class representing an svg matrix.
+*/
+function matrixSVG()
+{
+    this.e11 = 0; // a
+    this.e12 = 0; // c
+    this.e13 = 0; // e
+    this.e21 = 0; // b
+    this.e22 = 0; // d
+    this.e23 = 0; // f
+    this.e31 = 0;
+    this.e32 = 0;
+    this.e33 = 0;
+}
+
+/** Constructor function.
+ *
+ *    @param a element a (i.e. 1, 1) as described in the svg standard.
+ *    @param b element b (i.e. 2, 1) as described in the svg standard.
+ *    @param c element c (i.e. 1, 2) as described in the svg standard.
+ *    @param d element d (i.e. 2, 2) as described in the svg standard.
+ *    @param e element e (i.e. 1, 3) as described in the svg standard.
+ *    @param f element f (i.e. 2, 3) as described in the svg standard.
+ */
+matrixSVG.prototype.fromSVGElements = function(a, b, c, d, e, f)
+{
+    this.e11 = a;
+    this.e12 = c;
+    this.e13 = e;
+    this.e21 = b;
+    this.e22 = d;
+    this.e23 = f;
+    this.e31 = 0;
+    this.e32 = 0;
+    this.e33 = 1;
+
+    return this;
+}
+
+/** Constructor function.
+ *
+ *    @param matrix an svg matrix as described in the svg standard.
+ */
+matrixSVG.prototype.fromSVGMatrix = function(m)
+{
+    this.e11 = m.a;
+    this.e12 = m.c;
+    this.e13 = m.e;
+    this.e21 = m.b;
+    this.e22 = m.d;
+    this.e23 = m.f;
+    this.e31 = 0;
+    this.e32 = 0;
+    this.e33 = 1;
+
+    return this;
+}
+
+/** Constructor function.
+ *
+ *    @param e11 element 1, 1 of the matrix.
+ *    @param e12 element 1, 2 of the matrix.
+ *    @param e13 element 1, 3 of the matrix.
+ *    @param e21 element 2, 1 of the matrix.
+ *    @param e22 element 2, 2 of the matrix.
+ *    @param e23 element 2, 3 of the matrix.
+ *    @param e31 element 3, 1 of the matrix.
+ *    @param e32 element 3, 2 of the matrix.
+ *    @param e33 element 3, 3 of the matrix.
+ */
+matrixSVG.prototype.fromElements = function(e11, e12, e13, e21, e22, e23, e31, e32, e33)
+{
+    this.e11 = e11;
+    this.e12 = e12;
+    this.e13 = e13;
+    this.e21 = e21;
+    this.e22 = e22;
+    this.e23 = e23;
+    this.e31 = e31;
+    this.e32 = e32;
+    this.e33 = e33;
+
+    return this;
+}
+
+/** Constructor function.
+ *
+ *    @param attrString string value of the &quot;transform&quot; attribute (currently only &quot;matrix&quot; is accepted)
+ */
+matrixSVG.prototype.fromAttribute = function(attrString)
+{
+    str = attrString.substr(7, attrString.length - 8);
+
+    str = str.trim();
+
+    strArray = str.split(&quot;,&quot;);
+
+    // Opera does not use commas to separate the values of the matrix, only spaces.
+    if (strArray.length != 6)
+        strArray = str.split(&quot; &quot;);
+
+    this.e11 = parseFloat(strArray[0]);
+    this.e21 = parseFloat(strArray[1]);
+    this.e31 = 0;
+    this.e12 = parseFloat(strArray[2]);
+    this.e22 = parseFloat(strArray[3]);
+    this.e32 = 0;
+    this.e13 = parseFloat(strArray[4]);
+    this.e23 = parseFloat(strArray[5]);
+    this.e33 = 1;
+
+    return this;
+}
+
+/** Output function
+ *
+ *    @return a string that can be used as the &quot;transform&quot; attribute.
+ */
+matrixSVG.prototype.toAttribute = function()
+{
+    return &quot;matrix(&quot; + this.e11 + &quot;, &quot; + this.e21 + &quot;, &quot; + this.e12 + &quot;, &quot; + this.e22 + &quot;, &quot; + this.e13 + &quot;, &quot; + this.e23 + &quot;)&quot;;
+}
+
+/** Matrix nversion.
+ *
+ *    @return the inverse of the matrix
+ */
+matrixSVG.prototype.inv = function()
+{
+    out = new matrixSVG();
+
+    det = this.e11 * (this.e33 * this.e22 - this.e32 * this.e23) - this.e21 * (this.e33 * this.e12 - this.e32 * this.e13) + this.e31 * (this.e23 * this.e12 - this.e22 * this.e13);
+
+    out.e11 =  (this.e33 * this.e22 - this.e32 * this.e23) / det;
+    out.e12 = -(this.e33 * this.e12 - this.e32 * this.e13) / det;
+    out.e13 =  (this.e23 * this.e12 - this.e22 * this.e13) / det;
+    out.e21 = -(this.e33 * this.e21 - this.e31 * this.e23) / det;
+    out.e22 =  (this.e33 * this.e11 - this.e31 * this.e13) / det;
+    out.e23 = -(this.e23 * this.e11 - this.e21 * this.e13) / det;
+    out.e31 =  (this.e32 * this.e21 - this.e31 * this.e22) / det;
+    out.e32 = -(this.e32 * this.e11 - this.e31 * this.e12) / det;
+    out.e33 =  (this.e22 * this.e11 - this.e21 * this.e12) / det;
+
+    return out;
+}
+
+/** Matrix multiplication.
+ *
+ *    @param op another svg matrix
+ *    @return this * op
+ */
+matrixSVG.prototype.mult = function(op)
+{
+    out = new matrixSVG();
+
+    out.e11 = this.e11 * op.e11 + this.e12 * op.e21 + this.e13 * op.e31;
+    out.e12 = this.e11 * op.e12 + this.e12 * op.e22 + this.e13 * op.e32;
+    out.e13 = this.e11 * op.e13 + this.e12 * op.e23 + this.e13 * op.e33;
+    out.e21 = this.e21 * op.e11 + this.e22 * op.e21 + this.e23 * op.e31;
+    out.e22 = this.e21 * op.e12 + this.e22 * op.e22 + this.e23 * op.e32;
+    out.e23 = this.e21 * op.e13 + this.e22 * op.e23 + this.e23 * op.e33;
+    out.e31 = this.e31 * op.e11 + this.e32 * op.e21 + this.e33 * op.e31;
+    out.e32 = this.e31 * op.e12 + this.e32 * op.e22 + this.e33 * op.e32;
+    out.e33 = this.e31 * op.e13 + this.e32 * op.e23 + this.e33 * op.e33;
+
+    return out;
+}
+
+/** Matrix addition.
+ *
+ *    @param op another svg matrix
+ *    @return this + op
+ */
+matrixSVG.prototype.add = function(op)
+{
+    out = new matrixSVG();
+
+    out.e11 = this.e11 + op.e11;
+    out.e12 = this.e12 + op.e12;
+    out.e13 = this.e13 + op.e13;
+    out.e21 = this.e21 + op.e21;
+    out.e22 = this.e22 + op.e22;
+    out.e23 = this.e23 + op.e23;
+    out.e31 = this.e31 + op.e31;
+    out.e32 = this.e32 + op.e32;
+    out.e33 = this.e33 + op.e33;
+
+    return out;
+}
+
+/** Matrix mixing.
+ *
+ *    @param op another svg matrix
+ *    @parma contribOp contribution of the other matrix (0 &lt;= contribOp &lt;= 1)
+ *    @return (1 - contribOp) * this + contribOp * op
+ */
+matrixSVG.prototype.mix = function(op, contribOp)
+{
+    contribThis = 1.0 - contribOp;
+    out = new matrixSVG();
+
+    out.e11 = contribThis * this.e11 + contribOp * op.e11;
+    out.e12 = contribThis * this.e12 + contribOp * op.e12;
+    out.e13 = contribThis * this.e13 + contribOp * op.e13;
+    out.e21 = contribThis * this.e21 + contribOp * op.e21;
+    out.e22 = contribThis * this.e22 + contribOp * op.e22;
+    out.e23 = contribThis * this.e23 + contribOp * op.e23;
+    out.e31 = contribThis * this.e31 + contribOp * op.e31;
+    out.e32 = contribThis * this.e32 + contribOp * op.e32;
+    out.e33 = contribThis * this.e33 + contribOp * op.e33;
+
+    return out;
+}
+
+/** Trimming function for strings.
+*/
+String.prototype.trim = function()
+{
+    return this.replace(/^\s+|\s+$/g, '');
+}
+
+/** SVGElement.getTransformToElement polyfill */
+SVGElement.prototype.getTransformToElement = SVGElement.prototype.getTransformToElement || function(elem) {
+    return elem.getScreenCTM().inverse().multiply(this.getScreenCTM());
+};
+</script>
+</svg>
