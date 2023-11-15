@@ -125,11 +125,12 @@
 </col50>
 </row>
 </section>
-                  
+
 	          <section>
 	            <h3>Outline for the lecture</h3>
                     <ul>
                       <li class="fragment roll-in"> Receiver Operator Characteristics
+                      <li class="fragment roll-in"> Trustworthy AI
                       <li class="fragment roll-in"> Model Calibration
 	            </ul>
                   </section>
@@ -190,6 +191,65 @@
                   </section>
 
                 </section>
+
+                <section>
+                  <section data-background-size="cover" data-background="figures/AI_trustworthy_AI.jpeg">
+                    <h1 style="text-shadow: 4px 4px 4px #002b36; color: #f1f1f1">Trustworthy AI</h1>
+                  </section>
+
+                  <section data-vertical-align-top >
+                    <h3>Why trustworthy AI is interesting</h3>
+                    <ul>
+                      <li class="fragment roll-in"> AI is increasingly used not only for decision support, but also for automated decision making
+                      <li class="fragment roll-in"> Trust in resulting AI decisions is vital
+                      <li class="fragment roll-in"> How to make AI solutions <em>trustworthy</em>?
+                      <li class="fragment roll-in"> What does it mean to be <em>trustworthy</em>?
+                      <li class="fragment roll-in"> AI <em>trustworthiness</em> is strongly manifested in the fields of Explainable AI (XAI) and Fairness, Accountability and Transparency (FAT)
+                    </ul>
+                    <div class="slide-footer">
+                      <a href="https://youtu.be/xxZOLo8wxe0">based on a 2020 tutorial by  Ulf Johansson</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3>Interpretability</h3>
+                    <ul>
+                      <li class="fragment roll-in"> A recognized key property of trustworthy predictive models
+                      <li class="fragment roll-in"> Interpretable models make it possible to <alert>understand</alert> individual predictions without invoking explanation frameworks/modules
+                      <li class="fragment roll-in"> If a model is interpretable, <em>inspection</em> and <em>analysis</em> becomes straightforward
+                      <li class="fragment roll-in"> However, the most visible approaches are building external explanation frameworks. Vigorously (including ourselves <i class="fa-solid fa-face-smile" style='color: #FA6900;'></i>)
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h3>Algorithmic Confidence</h3>
+                    <ul style="font-size: 34px;">
+                      <li class="fragment roll-in"> FAT Principles<sup>footer</sup> include <alert>accuracy</alert> as a vital component of accountable algorithms
+                      <li class="fragment roll-in"> One guiding question for accountable algorithms: "<alert>How confident are the decisions output by your system?</alert>"
+                      <li class="fragment roll-in"> Thus, not just everything with the accuracy on top, but also ability to, at the very least, <alert>report uncertainty</alert>
+                      <li class="fragment roll-in"> Extremely valuable to have algorithm reason about its own uncertainty and confidence in <alert>individual recommendations</alert>
+                    </ul>
+                    <div class="slide-footer">
+                    <a href="https://www.fatml.org/resources/principles-for-accountable-algorithms">Principles for Accountable Algorithms and a Social Impact Statement for Algorithms</a>
+                    </div>
+                  </section>
+
+                  <section data-vertical-align-top>
+                    <h3>Interpretable and Accountable models</h3>
+                    <h2>Requirements</h2>
+                    <ul style="font-size: 34px;">
+                      <li class="fragment roll-in"> <alert>Interpretable</alert> models
+                        <blockquote style='width: 100%;'>
+                          decision trees, rule sets, or glass-box layer of Usman Mahmood <i class="fa-regular fa-face-laugh-wink" style='color: #FA6900;'></i>
+                        </blockquote>
+                      <li class="fragment roll-in"> <alert>Well-calibrated</alert> models
+                      <li class="fragment roll-in"> <alert>Specific</alert> to individual predictions, exhibiting different confidences
+                      <li class="fragment roll-in"> <alert>Fixed</alert> models available for inspection and analysis
+                    </ul>
+                  </section>
+                </section>
+
+
                 <section>
                   <section>
                     <h2>On Calibration of Modern Neural Networks</h2>
