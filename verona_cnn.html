@@ -1,0 +1,1031 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>(Extremely) Quick DL Intro</title>
+
+    <meta name="description" content="Lectures at University of Verona">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+                      <h1>Convolutional Neural Networks</h1>
+	              <h2>Selected topics in Deep Learning</h2>
+                      <h3>in 6 hours or less</h3>
+                      <h3>by Sergey Plis</h3>
+	            <p>
+	          </section>
+                </section>
+                <!-- --------------------------------------------------------------------------->
+	        <section>
+                  <section>
+                    <h2>History of CNNs</h2>
+                  </section>
+
+                  <section>
+                    <h2>Cat's brain 1962 (Hubel and Wiesel)</h2>
+                    <img width="70%"
+                         src="figures/cats_brain.png" alt="cat's brain">
+                    <div class="slide-footer">
+                      <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1359523/pdf/jphysiol01247-0121.pdf">Receptive fields, binocular interaction and functional architecture in the cat's visual cortex</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <div id="header-right" style="margin-right: -100px;">
+                    <img width="130"
+                         src="figures/fukushima.jpg" alt="fukushima">
+                    </div>
+                    <h2>Fukushima's Neurocognitron 1979</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="900"
+                         src="figures/neurocognitron_.png" alt="neurocognitron">
+                    <div class="slide-footer">
+                      <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1359523/pdf/jphysiol01247-0121.pdf">Neocognitron - A Self-organizing Neural Network Model for a Mechanism of Pattern Recognition Unaffected by Shift in Position</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <div id="header-right"  style="margin-right: -100px;">
+                    <img width="130"
+                         src="figures/waibel.jpg" alt="waibel">
+                    </div>
+                    <h2>Time Delay Neural Network 1989</h2>
+                    <img style="margin-top: -20px;" width="40%"
+                         src="figures/tdnn_.png" alt="tdnn">
+                    <div class="slide-footer">
+                      <a href="https://www.cs.toronto.edu/~fritz/absps/waibelTDNN.pdf">Phoneme Recognition Using Time Delay Neural Networks</a>
+                    </div>
+                    <aside class="notes">
+                      Note 1D channels!
+                    </aside>
+                  </section>
+
+                  <section>
+                    <div id="header-right">
+                    <img width="130"
+                         src="figures/lecun.png" alt="lecun">
+                    </div>
+                    <h2>CNN 1989</h2>
+                    <img style="margin-top: -50px;" width="73%"
+                         src="figures/cnn.png" alt="cnn">
+                    <div class="slide-footer">
+                      <a href="http://yann.lecun.org/exdb/publis/pdf/lecun-89e.pdf">Backpropagation Applied to Handwritten Zip Code Recognition</a>
+                    </div>
+                    <aside class="notes">
+                      Note undersampling to reduce layers!
+                    </aside>
+                  </section>
+
+                  <section>
+                    <div id="header-right">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="130"
+                           src="figures/lecun.png" alt="lecun">
+                    </div>
+                    <h2>CNN 1998</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                         src="figures/lenet.png" alt="lenet">
+                    <div class="slide-footer">
+                      <a href="http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf">Gradient-Based Learning applied to Document Recognition</a>
+                    </div>
+                    <aside class="notes">
+                      Note subsampling! No pooling yet!
+                    </aside>
+                  </section>
+
+                  <section>
+                    <div id="header-right">
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="130"
+                           src="figures/dancirican.jpg" alt="cirican">
+                    </div>
+                    <h2>CNN+GPU+MaxPooling 2011</h2>
+                    <img style="margin-top: -40px;" width="70%"
+                         src="figures/gpunet.png" alt="gpunet">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/pdf/1102.0183.pdf">High Performance Neural Network for Visual Object Classification</a>
+                    </div>
+                    <aside class="notes">
+                      Everything is here. Max Pooling, GPU (60x speedup compared to CPU), lots of data etc.<br>
+                      Chinese handwriting recognition 2011 winner.<br>
+                      Traffic sign recognition winner 2011 <br>
+                      Neuronal Membrane segmentation 2012 <br>
+                    </aside>
+                  </section>
+
+                  <section>
+                    <div id="header-right">
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="130"
+                         src="figures/alex.png" alt="Alex">
+                    </div>
+                    <h2>AlexNet 2012</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                         src="figures/alexnet.png" alt="alexnet">
+                    <div class="slide-footer">
+                      <a href="https://www.cs.toronto.edu/~fritz/absps/imagenet.pdf">ImageNet Classification with Deep ConvolutionalNeural Networks</a>
+                    </div>
+                  <aside class="notes">
+                  </aside>
+                  </section>
+
+
+                </section>
+                <!-- --------------------------------------------------------------------------->
+	        <section>
+                  <section>
+                    <h2>CNN: bulding blocks</h2>
+                    <div class="slide-footer">
+                      <a href="http://deeplearning.net/software/theano_versions/dev/tutorial/conv_arithmetic.html">some images are from Theano documentation</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Convolving a kernel with an image</h2>
+                    <row>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                             src="figures/CNN_convo1.gif" alt="convolution">
+                        \[
+                        \left(
+                        \begin{array}{ccc}
+                        0 & 1 & 2 \\
+                        2 & 2 & 0 \\
+                        0 & 1 & 2 \\
+                        \end{array}
+                        \right)
+                        \]
+                      </col50>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                             src="figures/CNN_convo2.gif" alt="convolution 2">
+                      </col50>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>Convolving a kernel with an image</h2>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                             src="figures/CNN_flat_conv.svg" alt="convolution">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/pdf/1603.07285.pdf">A guide to convolution arithmetic for deep learning</a>
+                    </div>
+                  </section>
+
+
+                  <section>
+                    <h2>Padding and symmetries</h2>
+                    <row>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                             src="figures/CNN_same_pad.gif" alt="same pad">
+                      </col50>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                             src="figures/CNN_full_pad.gif" alt="full pad">
+                      </col50>
+                    </row>
+                  </section>
+
+                  <section>
+                    <h2>Padding and symmetries</h2>
+                        <img style="margin-top: -35px;" width="85%"
+                             src="figures/CNN_padded.svg" alt="convolution">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/pdf/1603.07285.pdf">A guide to convolution arithmetic for deep learning</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>How do the channels look?</h2>
+                      <div style="position:relative; width:800px; height:800px; margin:0 auto;">
+                        <img class="fragment current-visible" data-transition="slide fade-out" data-fragment-index="0" width="600"  src="figures/CNN_original.png" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
+                        <img class="fragment current-visible" data-transition="slide fade-out" data-fragment-index="1" width="600"  src="figures/CNN_layer1.png" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
+                        <img class="fragment current-visible" data-transition="slide fade-out" data-fragment-index="2" width="600" src="figures/CNN_layer2.png" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
+                        <img class="fragment current-visible" data-transition="slide fade-out" data-fragment-index="3" width="600" src="figures/CNN_layer3.png" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
+                      </div>
+                  </section>
+
+                  <section>
+                    <h2>Pooling: maxpooling</h2>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                             src="figures/CNN_maxpooling.gif" alt="max pooling">
+                  </section>
+
+                  <section>
+                    <h2>Pooling: maxpooling</h2>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                             src="figures/CNN_flat_maxpooling.svg" alt="max pooling">
+                  </section>
+
+                  <section>
+                    <h2>Pooling: average</h2>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                             src="figures/CNN_avpooling.svg" alt="average pooling">
+                  </section>
+
+                  <section>
+                    <h2>How do we produce a class prediction?</h2>
+                  </section>
+
+                  <section>
+                    <h2>One-convolution</h2>
+                    <row>
+                      <col50>
+                      </col50>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                             src="figures/CNN_one_conv.gif" alt="one_conv">
+                      </col50>
+                    </row>
+                  </section>
+
+                  <section>
+                    <div id="header-right">
+                    <img width="300"
+                         src="figures/CNN_upconvolution.gif" alt="gif upconv">
+                    </div>
+                    <h2>Upconvolution</h2>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                             src="figures/CNN_upconvolution.png" alt="upconv">
+                    <div class="slide-footer">
+                      <a href="https://datascience.stackexchange.com/a/20176">Image from a comment on stackexchange</a>
+                    </div>
+
+
+                  </section>
+
+                  <section>
+                    <h2>Dilated convolution</h2>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="60%"
+                             src="figures/CNN_dilation.gif" alt="dilated">
+                  </section>
+
+                  <section data-background-iframe="https://www.youtube.com/embed/HnWIHWFbuUQ?autoplay=1&controls=0&rel=0&modestbranding=1&showinfo=0">
+                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Play with a simulator</h2>
+                    <h3 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1"><a href="https://www.youtube.com/watch?v=HnWIHWFbuUQ&featu" target="_blank">Video</a></h3>
+                    <h3 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1"><a href="https://poloclub.github.io/cnn-explainer/" target="_blank">Demo</a></h3>
+                    <h3 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1"><a href="https://github.com/poloclub/cnn-explainer" target="_blank">GitHub</a></h3>
+
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/2004.15004v1">CNN Explainer: Learning Convolutional Neural Networks with Interactive Visualization</a>
+                    </div>                    
+                  </section>
+                  
+                  <section>
+                    <h2>Basic building blocks</h2>
+                    <ol>
+                      <li> Convolution with a filter
+                      <li> Zero Padding
+                      <li> Channels and channel-kernel relationship
+                      <li> Pooling (max and average)
+                      <li> Moving from convolution layers to predictions
+                      <li> One convolution
+                      <li> Upconvolution
+                      <li> Dilated convolution
+                    </ol>
+                  </section>
+
+                </section>
+
+                <!-- --------------------------------------------------------------------------->
+	        <section>
+                  <section>
+                    <h2>Skip connections</h2>
+                    <aside class="notes">
+                      Thanks to the reverse mode accumulation of Bert Speelpenning, (pause) after the forward pass backpropagation works backward along the paths in the computation graph. Normally, each edge denotes a computation, such as linear transformation followed by a slight nonlinearity. However, there is an advantage in excluding computation on some edges simply using an identity transform instead. A trick, that although, as everything under the sun, been known for a while, recently rediscovered to be effective in training very deep deep-learning models.<br>In this section I will walk you through the rediscovery and along the way introduce another transformative concept of gates.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Dark knowledge</h2>
+                    <row>
+                      <col50>
+                      </col50>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                             src="figures/shadow-of-the-vampire.jpg" alt="vampire">
+                      </col50>
+                    </row>
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/1312.6184">Do Deep Nets Really Need to be Deep?</a><br>
+                      <a href="https://arxiv.org/abs/1503.02531">Distilling the Knowledge in a Neural Network</a>
+                      <a href="https://arxiv.org/abs/1412.6550">FitNets: Hints for Thin Deep Nets</a>
+                    </div>
+                    <aside class="notes">
+                      It has been conjectured quite early that deeper models should be more powerful than shallow, but we were unable to train them effectively no matter how hard we've tried. Various pre-training approaches, when parameters of each layer are initialized in a smart way, were helping only to a point. The difficulties were discouraging and we did not know how to move forward with thin and deep networks.<br>
+                      Until in 2013 Rich Caruana observed the following effect: (Explain the mimic nets for teacher and student training) <br>
+                      Geoff Hinton - called the grandfather of deep learning by some - came up with explanation, which he termed: dark knowledge (explain hard labels and soft labels) <br>
+                      and the team of Yoshia Bengio has used this observation for training deep and thin networks they called fitnets<br>
+                      yet, to some, this two stage teacher+student process seemed a bit cumbersome.
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h3>Highway networks (May 2015 on arxiv)</h2>
+                    <ul  style="list-style-type: none; font-size: 32px;">
+                      <li class="fragment roll-in">
+                        $$
+                        \vec{y} = H(\vec{x}, \bm{W}_H)
+                        $$
+                      <li class="fragment roll-in">
+                        $$
+                        \vec{y} = H(\vec{x}, \bm{W}_H) \odot T(\vec{x}, \bm{W}_T) + \vec{x} \odot C(\vec{x}, \bm{W}_C)
+                        $$
+                      <li class="fragment roll-in">
+                        $$
+                        \vec{y} = H(\vec{x}, \bm{W}_H) \odot T(\vec{x}, \bm{W}_T) + \vec{x} \odot (1 - T(\vec{x}, \bm{W}_T))
+                        $$
+                      <li class="fragment roll-in">
+                        $$
+                        \vec{y} =
+                        \left\{
+                        \begin{array}{ll}
+                        \vec{x} & \mbox{if }\;\;T(\vec{x}, \bm{W}_T)=0,\\
+                        H(\vec{x}, \bm{W}_H) & \mbox{if }\;\;T(\vec{x}, \bm{W}_T)=1
+                        \end{array}
+                        \right.
+                        $$
+                      <li class="fragment roll-in"> What if untrained gate is always open and does not let gradients flow?
+                      <li class="fragment roll-in"> <b>Initialize gate biases to large negative values!</b>
+                    </ul>
+                    <div class="slide-footer" style="text-align: left;">
+                      <a href="https://arxiv.org/abs/1505.00387">Highway Networks</a><br>
+                      <a href="https://arxiv.org/abs/1507.06228">Training Very Deep Networks</a>
+                    </div>
+
+                    <aside class="notes">
+                      In 2015 Rupesh Srivastawa, Klaus Greff and Yurgen Schmidhuber made the following, a bit elaborate, observation. If we embellish the regular layer in a feed forward neural network with a transfer and carry gates, we will enable gradients flow along the entire depth of a deep network.<br>
+                      Let's see how they have done it.
+                    </aside>
+                  </section>
+
+                  <section data-fullscreen>
+                    <alert>Train models with 100 of layers instead of just 10 before</alert>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1500"
+                         src="figures/CNN_HW_performance.png" alt="HWN">
+                    <aside class="notes">
+                      The networks that they have trained using traditional layers and highway layers were of depth 10, 20, 50, and a 100. Plain networks would train increasingly poorly with depth, while highway networks retained ability to train. Importantly the results were comparable with the ones of fitnets (trained by mimicing a teacher).
+                    </aside>
+                  </section>
+
+                  <section>
+                    <h2>Residual Networks (block)</h2>
+                    <row>
+                      <col50>
+                      </col50>
+                      <col50>
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1500"
+                             src="figures/CNN_resnets_block.svg" alt="resnet block">
+                      </col50>
+                    </row>
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/pdf/1512.03385.pdf">Deep Residual Learning for Image Recognition</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Residual Networks (full)</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1500"
+                         src="figures/CNN_resnets_whole.svg" alt="resnet whole">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/pdf/1512.03385.pdf">Deep Residual Learning for Image Recognition</a>
+                    </div>
+
+                  </section>
+
+                  <section>
+                    <h2>Residual Networks (performance)</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1500"
+                         src="figures/CNN_resnets_perf.svg" alt="resnet perf">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/pdf/1512.03385.pdf">Deep Residual Learning for Image Recognition</a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Error surface effect of skip connection</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                         src="figures/skip_smooth.png" alt="landscape">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/pdf/1512.03385.pdf">Deep Residual Learning for Image Recognition</a><br>
+                      <a href="https://arxiv.org/pdf/1505.00387.pdf">Highway Networks</a><br>
+                      <a href="https://papers.nips.cc/paper/7875-visualizing-the-loss-landscape-of-neural-nets.pdf">Visualizing the Loss Landscape of Neural Nets</a>
+                    </div>
+                  <aside class="notes">
+                  </aside>
+                  </section>
+
+                  <section>
+                    <h2>Dense Networks (architecture)</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="80%"
+                         src="figures/CNN_densenet.svg" alt="dense diagram">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/1608.06993">Densely Connected Convolutional Networks</a>
+                    </div>
+                  <aside class="notes">
+                  </aside>
+                  </section>
+
+
+                  <section>
+                    <h2>Dense Networks (effect)</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                         src="figures/densenet.png" alt="dense">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/1608.06993">Densely Connected Convolutional Networks</a>
+                    </div>
+                  <aside class="notes">
+                  </aside>
+                  </section>
+
+                  <section>
+                    <h2>Take Away Concepts</h2>
+                    <ol>
+                      <li> Skip connections
+                      <li> Gates
+                    </ol>
+                  </section>
+
+                </section>
+
+                <!-- --------------------------------------------------------------------------->
+	        <section>
+                  <section>
+                    <h2>Fully convolutional networks</h2>
+                  </section>
+
+                  <section data-background-iframe="https://www.youtube.com/embed/xr_2dwZDH6U?autoplay=1&controls=0&rel=0&modestbranding=1&showinfo=0">
+                    <h2 style="color:#839496;">The task of Semantic segmentation</h2>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Semantic segmentation task</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                         src="figures/CNN_semantic_bikes.png" alt="fikes">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/1411.4038">Fully Convolutional Networks for Semantic Segmentation</a><br>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3>Replacing feed forward with convolutional</h3>
+                    <ul  style="list-style-type: none; margin: 0px 0;">
+                      <li class="fragment roll-in">
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
+                             src="figures/CNN_semantic_cc_1.png" alt="cc 1">
+                      <li class="fragment roll-in">
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
+                             src="figures/CNN_semantic_cc_2.png" alt="cc 1">
+                      <li class="fragment roll-in">
+                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
+                             src="figures/CNN_semantic_cc_3.png" alt="cc 1">
+                    </ul>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Fully Convolutional Model (2014)</h2>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                         src="figures/CNN_semantic_ff.png" alt="final model">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/1411.4038" target="_blank">Fully Convolutional Networks for Semantic Segmentation</a><br>
+                    </div>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Examples</h2>
+                    <img width="50%"
+                         src="figures/CNN_semantic_examples.png" alt="final model">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/1411.4038" target="_blank">Fully Convolutional Networks for Semantic Segmentation</a><br>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Take Away Point</h2>
+                    <ol>
+                      <li> When target and input have the same dimension it may be better to use convolution everywhere.
+                    </ol>
+                  </section>
+
+                </section>
+
+                <!-- --------------------------------------------------------------------------->
+		<section>
+		  <section>
+		    <h2>Semantic segmentation with twists</h2>
+		  </section>
+
+		  <section>
+		    <h2>deep learning standard: U-net</h2>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255, 0.8);" width="250"
+                         src="figures_ccd/unet_arc.png" alt="david">
+		    <p>
+
+		      <div class='slide-footer'>
+			Ronneberger et al. U-net: Convolutional networks
+			for biomedical image segmentation. MICCAI 2015<br>
+			Çiçek et al. 3D U-Net: learning dense volumetric
+			segmentation from sparse annotation. MICCAI 2016
+		      </div>
+		  </section>
+
+		  <section>
+		    <h2>deep learning standard: U-net</h2>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255, 0.8);" width="250"
+                         src="figures_ccd/unet_table.png" alt="david">
+		    <p>
+		      <div class='slide-footer'>
+			Ronneberger et al. U-net: Convolutional networks for
+			biomedical image segmentation. MICCAI 2015<br>
+			Çiçek et al. 3D U-Net: learning dense volumetric
+			segmentation from sparse annotation. MICCAI 2016
+		      </div>
+		  </section>
+
+
+		  <section>
+		    <h2>comparison on the brain segmentation task</h2>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255, 0.8);" width="250"
+                         src="figures_ccd/tasks.png" alt="david">
+		  </section>
+
+		  <section>
+		    <h2>state of the art: freesurfer</h2>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255, 0.8);" width="250"
+                         src="figures/CNN_freesurfer.png" alt="david">
+		    <br>
+		    <div class='slide-footer'>
+		      Dale et al. Cortical surface-based analysis. I. Segmentation and
+		      surface reconstruction. Neuroimage 1999
+		    </div>
+		  </section>
+
+		  <section>
+		    <h2>Meshnet</h2>
+		    <img src="figures_ccd/dilation.png" style="border:0; box-shadow: 0px
+							   0px 0px rgba(150, 150, 255, 0.8);float: left;"
+			 alt="Websocket" width="40%">
+		    <img src="figures_ccd/mn1.png" style="border:0; box-shadow: 0px
+						      0px 0px rgba(150, 150, 255, 0.8);float: right;"
+			 alt="Websocket" width="35%"
+			 >
+
+		    <div class="ulist">
+		      <ul style="width: 60%; float: left;">
+			<li>Gray and White matter</li>
+			<li>FreeSurfer for ground truth</li>
+			<li>T1 MRIs from HCP</li>
+			<li>GitHub <br>
+			  <small>
+			    <a href="https://github.com/Entodi/MeshNet">
+			      https://github.com/Entodi/MeshNet</a>
+			  </small>
+			</li>
+		      </ul>
+		    </div>
+
+		    <br>
+		    <div class="slide-footer">
+		      Fedorov et al. End-to-end learning of brain tissue segmentation
+		      from imperfect labeling. IJCNN 2017
+		    </div>
+		  </section>
+
+
+		  <section>
+		    <h2>Meshnet</h2>
+
+		    <img src="figures_ccd/mntable.png" style="border:0; box-shadow: 0px
+							  0px 0px rgba(150, 150, 255, 0.8);float: right;"
+			 alt="Websocket" width="60%"
+			 >
+
+		    <div class="ulist">
+		      <ul style="width: 35%; float: left;">
+			<li>72516 vs. 23523355</li>
+			<li>600kb vs. 2Gb</li>
+		      </ul>
+		    </div>
+		    <p>
+		      <br>
+		      <div class="slide-footer">
+			Fedorov et al. End-to-end learning of brain tissue segmentation
+			from imperfect labeling. IJCNN 2017
+		      </div>
+		  </section>
+
+		  <section>
+		    <h2>Meshnet</h2>
+		    <img src="figures_ccd/mnpipeline.png" style="border:0; box-shadow: 0px
+							     0px 0px rgba(150, 150, 255, 0.8);"
+			 alt="Websocket" class="stretch"
+			 >
+		    <br>
+		    <div class="slide-footer">
+		      Fedorov et al. End-to-end learning of brain tissue segmentation
+		      from imperfect labeling. IJCNN 2017
+		    </div>
+		  </section>
+
+		  <section>
+		    <h2>Meshnet</h2>
+		    <img src="figures_ccd/mnexample.png" style="border:0; box-shadow: 0px
+							    0px 0px rgba(150, 150, 255, 0.8);"
+			 alt="Websocket" class="stretch"
+			 >
+		    <br>
+		    <div class="slide-footer">
+		      Fedorov et al. End-to-end learning of brain tissue segmentation
+		      from imperfect labeling. IJCNN 2017
+		    </div>
+		  </section>
+
+		  <section>
+                    <h3>(often) better than the teacher</h3>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255, 0.8);" width="700"
+                         src="figures_ccd/MN_examples.png" alt="loop">
+                  </section>
+
+                  <section>
+                    <h3>multimodal is straightforward</h3>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255, 0.8);" width="700"
+                         src="figures_ccd/MeshNet_multi.png" alt="loop">
+                  </section>
+
+		  <section>
+                    <h3>better than the human (sometimes)</h3>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255, 0.8);" width="700"
+                         src="figures_ccd/mnhuman.png" alt="loop">
+                  </section>
+
+		  <section>
+                    <h3>better than U-net</h3>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255, 0.8);"
+                         src="figures_ccd/mnvsunet.png" alt="loop">
+                  </section>
+
+
+		  <section data-background-video="figures_ccd/combined.mp4" data-background-size="contain" data-background-video-loop=true>
+                  </section>
+
+                  <section data-vertical-align-top data-background-iframe="https://brainchop.org"
+                           data-background-interactive>
+                    <h3 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Give us <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> on <i class="fab fa-github"></i></h3>
+                    <div class='slide-footer'>
+                      <a href="https://github.com/neuroneural/brainchop">https://github.com/neuroneural/brainchop <i class="fab fa-github"></i></a>
+                    </div>
+                  </section>
+                </section>
+
+                <!-- --------------------------------------------------------------------------->
+	        <section>
+                  <section>
+                    <h2>(even more) "Advanced" uses of CNN</h2>
+                  </section>
+
+                  <section>
+                    <h2>Masked Convolutions</h2>
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/1601.06759">
+                        Pixel Recurrent Neural Networks
+                      </a><br>
+                      <a href="https://arxiv.org/abs/1606.05328">
+                        Conditional Image Generation with PixelCNN Decoders
+                      </a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>PixelCNNs</h2>
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/1601.06759">
+                        Pixel Recurrent Neural Networks
+                      </a><br>
+                      <a href="https://arxiv.org/abs/1606.05328">
+                        Conditional Image Generation with PixelCNN Decoders
+                      </a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Wavenet: $\ge$16kHz audio</h2>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255, 0.8);"
+                         src="figures/CNN_audio_zoom.gif" alt="loop">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/1609.03499">
+                        WaveNet: A Generative Model for Raw Audio
+                      </a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Wavenet: sample by sample</h2>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255, 0.8);"
+                         src="figures/CNN_wavenet.gif" alt="loop">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/1609.03499">
+                        WaveNet: A Generative Model for Raw Audio
+                      </a>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h2>Wavenet: conditioned on text</h2>
+                    <row>
+                      <col50>
+                    <table style="font-size:28px">
+                      <tr>
+                        <th>Model</th>
+                        <th>"The blue lagoon..."</th>
+                      </tr>
+                      <tr>
+                        <td>Parametric</td>
+                        <td><audio controls="" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/parametric-1.wav"></audio></td>
+                      </tr>
+                      <tr>
+                        <td>Concatenative</td>
+                        <td>
+                          <audio controls="" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/concatenative-1.wav"></audio>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Wavenet</td>
+                        <td>
+                          <audio controls="" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/wavenet-1.wav"></audio>
+                        </td>
+                      </tr>
+                    </table>
+                      </col50>
+                      <col50>
+                    <table style="font-size:28px">
+                      <tr>
+                        <th>Model</th>
+                        <th>"English poetry and ..."</th>
+                      </tr>
+                      <tr>
+                        <td>Parametric</td>
+                        <td><audio controls="" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/parametric-2.wav"></audio></td>
+                      </tr>
+                      <tr>
+                        <td>Concatenative</td>
+                        <td>
+                          <audio controls="" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/concatenative-2.wav"></audio>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Wavenet</td>
+                        <td>
+                          <audio controls="" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/wavenet-2.wav"></audio>
+                        </td>
+                      </tr>
+                    </table>
+                      </col50>
+                    </row>
+                    <audio controls="" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/Speaker%201/speaker-2.wav"></audio>
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/1609.03499">
+                        WaveNet: A Generative Model for Raw Audio
+                      </a>
+                    </div>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Deformable Convolutions</h2>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255, 0.8);"
+                         src="figures/CNN_deformable.svg" alt="defrmable">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/1703.06211">
+                        Deformable Convolutions
+                      </a>
+                    </div>
+                  </section>
+
+                  <section data-fullscreen>
+                    <h2>Deformable Convolutions</h2>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255, 0.8);"
+                         src="figures/CNN_deformable_conv_demo1.png" alt="defrmable">
+                    <div class="slide-footer">
+                      <a href="https://arxiv.org/abs/1703.06211">
+                        Deformable Convolutions
+                      </a>
+                    </div>
+                  </section>
+                  
+                  <section>
+                    <h2>Take Away Points</h2>
+                    <ol>
+                      <li> Masked convolution
+                      <li> Pixel based generation
+                      <li> Deformable convolution (can be rotation invariant)
+                    </ol>
+                  </section>
+                
+
+                </section>
+
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+            <script src="node_modules/reveal.js-verticator/plugin/verticator/verticator.js"></script>
+            <link rel="stylesheet" href="node_modules/reveal.js-verticator/plugin/verticator/verticator.css">
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  width: 960,
+                  height: 700,
+                  center: true,
+                  hash: true,
+                  controls: false,
+                  keyboard: true,
+                  margin: 0.05,
+                  overview: true,
+                  transition: 'slide', // Transition style: none/fade/slide/convex/concave/zoom
+                  transitionSpeed: 'slow', // Transition speed: default/fast/slow
+                  // hash: true,
+                  // margin: 0.01,
+                  // minScale: 0.01,
+                  maxScale: 1.23,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ Verticator, RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>May 23, 2024</h4></div>
+                <div id="header-right"><h4></h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/UniverVerona.svg" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>

@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+
+    <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+    <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+
+    <title>(Extremely) Quick DL Intro</title>
+
+    <meta name="description" content="Lectures at University of Verona">
+    <meta name="author" content="Sergey M Plis">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+
+  <body>
+    <div class="reveal">
+      <!-- In between the <div="reveal"> and the <div class="slides">-->
+          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
+          <!-- In between the <div="reveal"> and the <div class="slides">-->
+              <!-- Any section element inside of this container is displayed as a slide -->
+              <div class="slides">
+
+	        <section>
+	          <section>
+	            <p>
+                      <h1>why study deep learning</h1>
+	              <h2>Selected topics in Deep Learning</h2>
+                      <h3>in 6 hours or less</h3>
+                      <h3>by Sergey Plis</h3>
+	            <p>
+	          </section>
+                </section>
+                <section>
+                  <section>
+                    <h1>Why Machine Learning?</h1>
+                  </section>
+                  <section data-vertical-align-top data-background-iframe="https://joshworth.com/dev/pixelspace/pixelspace_solarsystem.html"
+                           data-background-interactive>
+                    <h3>Philosophical reason</h3>
+                    <div class='slide-footer'>
+                      <a href="https://joshworth.com/dev/pixelspace/pixelspace_solarsystem.html">Source</a>
+                    </div>
+                  </section>
+
+                  <section data-vertical-align-top>
+                    <h3>Pragmatic reason</h3>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255,
+                                                0.8);" width="700" src="figures_ccd/lesion.jpg"
+                         alt="loop"><br>
+                    brain imaging for  brain
+                    disorder understanding
+                  </section>
+
+                  <section>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255,
+                                                0.8);" width="700" src="figures_ccd/moredata.jpg"
+                         alt="loop"><br>
+                    lets collect more data at the finest resolution
+                  </section>
+
+
+                  <section>
+                    <h3>Problem</h3>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255,
+                                                0.8);" width="700" src="figures_ccd/overload.jpg"
+                         alt="loop"><br>
+                    high dimensional data is not
+                    easy to see through
+                  </section>
+
+                  <section>
+                    <h3>Desired Solution</h3>
+                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                                rgba(150, 150, 255,
+                                                0.8);" width="700" src="figures_ccd/rreading.png"
+                         alt="loop"><br>
+                    automatically extract
+                    meaning from data
+                  </section>
+
+                  <section  data-state="brightside">
+            <h3>Desired Solution</h3>
+            <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
+                                        rgba(150, 150, 255, 0.8); margin-top:-20pt;"
+                 width="70%"
+                 src="figures/DALLE_bald_reading_robot2.png"
+                 alt="loop"><br>
+            <h3>
+            automatically extract meaning from data
+            </h3>
+            <div class="slide-footer" style="font-size:9pt;">
+              The image is generated by OpenAI DALL-E from the prompt "a bald child robot with a concentrated but slightly smiling face is reading a book about human brain surrounded by a pile of reading material comics style"
+            </div>
+          </section>
+
+		  <section data-background="figures/jobnews.png"
+			   data-background-transition="zoom"
+			   data-background-size="contain">
+                  </section>
+		  <section data-background="figures/automation.jpg"
+			   data-background-transition="zoom"
+			   data-background-size="cover">
+                  </section>
+		  <section data-background="figures/job.jpg"
+			   data-background-transition="zoom"
+			   data-background-size="cover">
+                  </section>
+		  <section data-background="figures/threat.png"
+			   data-background-transition="zoom"
+			   data-background-size="contain">
+                  </section>
+		  <section data-background="figures/skynet.gif"
+			   data-background-transition="zoom"
+			   data-background-size="cover">
+                  </section>
+		  <section data-background="figures/threat.png"
+			   data-background-transition="zoom"
+			   data-background-size="contain">
+                  </section>
+		  <section data-background="figures/paperclip.jpg"
+			   data-background-transition="zoom"
+			   data-background-size="cover">
+                    <div class="slide-footer">
+                      <a href="verona_lr.html">next section </a>
+                    </div>
+                  </section>
+                </section>
+
+
+              </div>
+
+            </div>
+
+            <script src="dist/reveal.js"></script>
+
+            <link rel="stylesheet" href="plugin/highlight/monokai.css">
+            <script src="plugin/highlight/highlight.js"></script>
+            <script src="plugin/math/math.js"></script>
+            <script src="plugin/chalkboard/plugin.js"></script>
+            <script src="plugin/notes/notes.js"></script>
+            <script src="plugin/zoom/zoom.js"></script>
+            <script src="plugin/fullscreen/fullscreen.js"></script>
+            <script src="node_modules/reveal.js-menu/menu.js"></script>
+            <script src="node_modules/reveal.js-verticator/plugin/verticator/verticator.js"></script>
+            <link rel="stylesheet" href="node_modules/reveal.js-verticator/plugin/verticator/verticator.css">
+            <script>
+              // Full list of configuration options available at:
+              // https://github.com/hakimel/reveal.js#configuration
+
+              Reveal.initialize({
+                  // history: true,
+                  width: 960,
+                  height: 700,
+                  center: true,
+                  hash: true,
+                  controls: false,
+                  keyboard: true,
+                  margin: 0.05,
+                  overview: true,
+                  transition: 'slide', // Transition style: none/fade/slide/convex/concave/zoom
+                  transitionSpeed: 'slow', // Transition speed: default/fast/slow
+                  // hash: true,
+                  // margin: 0.01,
+                  // minScale: 0.01,
+                  maxScale: 1.23,
+
+                  menu: {
+                      themes: false,
+                      openSlideNumber: true,
+                      openButton: false,
+                  },
+
+                  chalkboard: {
+                      boardmarkerWidth: 1,
+                      chalkWidth: 2,
+                      chalkEffect: 1,
+                      toggleNotesButton: false,
+                      toggleChalkboardButton: false,
+                      slideWidth: Reveal.width,
+                      slideHeight: Reveal.height,
+                      // src: "chalkboards/chalkboard_em2.json",
+                      readOnly: false,
+                      theme: "blackboard",
+                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+                  },
+
+                  math: {
+                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                      config: 'TeX-AMS_SVG-full',
+                      // pass other options into `MathJax.Hub.Config()`
+                      TeX: {
+                          Macros: {
+        	              RR: '\\mathbb{R}',
+        	              PP: '\\mathbb{P}',
+        	              EE: '\\mathbb{E}',
+        	              NN: '\\mathbb{N}',
+        	              vth: '\\vec{\\theta}',
+                              loss: '{\\cal l}',
+                              hclass: '{\\cal H}',
+                              CD: '{\\cal D}',
+                              def: '\\stackrel{\\text{def}}{=}',
+                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                          },
+                          loader: {load: ['[tex]/color']},
+                          extensions: ["color.js"],
+                          tex: {packages: {'[+]': ['color']}},
+                          svg: {
+                              fontCache: 'global'
+                          }
+                      }
+                  },
+
+                  plugins: [ Verticator, RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+
+              });
+
+              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+              Reveal.configure({ slideNumber: true });
+              //Reveal.configure({ history: true });
+              Reveal.configure({ slideNumber: 'c / t' });
+              Reveal.addEventListener( 'darkside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+              }, false );
+              Reveal.addEventListener( 'brightside', function() {
+                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+              }, false );
+
+            </script>
+
+            <style type="text/css">
+              /* 1. Style header/footer <div> so they are positioned as desired. */
+              #header-left {
+                  position: absolute;
+                  top: 0%;
+                  left: 0%;
+              }
+              #header-right {
+                  position: absolute;
+                  top: 0%;
+                  right: 0%;
+              }
+              #footer-left {
+                  position: absolute;
+                  bottom: 0%;
+                  left: 0%;
+              }
+            </style>
+
+            <!-- // 2. Create hidden header/footer -->
+            <div id="hidden" style="display:none;">
+              <div id="header">
+                <div id="header-left"><h4>May 22, 2024</h4></div>
+                <div id="header-right"><h4></h4></div>
+                <div id="footer-left">
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+                       src="figures/UniverVerona.svg" alt="robot learning">
+                </div>
+              </div>
+            </div>
+
+
+            <script type="text/javascript">
+              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+              var header = $('#header').html();
+              if ( window.location.search.match( /print-pdf/gi ) ) {
+                  Reveal.addEventListener( 'ready', function( event ) {
+                      $('.slide-background').append(header);
+                  });
+              }
+              else {
+                  $('div.reveal').append(header);
+              }
+            </script>
+
+  </body>
+</html>
