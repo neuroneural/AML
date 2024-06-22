@@ -808,6 +808,12 @@ Predict Progression to Alzheimer’s Disease </a> 2020
 
               });
 
+              Reveal.configure({
+                  keyboard: {
+                      38: 'next',
+                      40: 'prev'
+                  }
+              });
               Reveal.configure({ fragments: true }); // set false when developing to see everything at once
               Reveal.configure({ slideNumber: true });
               //Reveal.configure({ history: true });
