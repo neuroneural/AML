@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Niivue Viewer</title>
+  <style>
+    body, html { margin: 0; height: 100%; overflow: hidden; }
+    canvas { width: 100% !important; height: 100% !important; }
+  </style>
+</head>
+<body>
+  <canvas id="gl"></canvas>
+  <script type="module">
+    import * as niivue from "https://niivue.github.io/niivue/dist/index.js";
+    var nv = new niivue.Niivue({
+      isResizeCanvas: true,
+      isOrientationCube: true,
+      crosshairColor: [152/255, 148/255, 136/255, 0.5],
+    });
+    nv.attachTo("gl");
+    nv.loadVolumes([{ url: "figures/t1_crop.nii.gz" }]);
+  </script>
+</body>
+</html>
