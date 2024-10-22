@@ -4,9 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+    <link href="css/fontawesome-free-6.2.1-web/css/all.css" rel="stylesheet">
 
     <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
     <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
@@ -73,6 +71,49 @@
                   </section>
 
                   <section>
+                    <h3>Matrix Factorization in Linear Algebra</h3>
+  <ul style="list-style-type: none; padding: 0; margin: 0;">
+    <li class="fragment">
+      <img data-src="figures/CR_1.svg" alt="CR_1">
+    </li>
+    <li class="fragment">
+      <img data-src="figures/LU_2.svg" alt="LU_2">
+    </li>
+    <li class="fragment">
+      <img data-src="figures/QR_3.svg" alt="QR_3">
+    </li>
+    <li class="fragment">
+      <img data-src="figures/EIG_4.svg" alt="EIG_4">
+    </li>
+    <li class="fragment">
+      <img data-src="figures/SVD_5.svg" alt="SVD_5">
+    </li>
+  </ul>
+  <style>
+    .reveal section ul {
+      width: 100%;
+      max-width: 100%;
+      padding: 0;
+      margin: 0;
+    }
+    .reveal section ul li {
+      list-style-type: none;
+      margin: 10px 0;
+    }
+    .reveal section ul li img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
+  <div class="slide-footer">
+    images from <a href="https://github.com/kenjihiranabe/The-Art-of-Linear-Algebra?tab=readme-ov-file">The Art of Linear Algebra</a>
+  </div>
+
+</section>
+                  <section>
+                    <h3>Factorization can be viewed as a graph</h3>
                       <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="800" class="reveal"
                            src="figures/latent_variable_model.png" alt="RBM">
                       $\bm{V} = \bm{W}\bm{H}$
@@ -86,12 +127,190 @@
                   </section>
 
                   <section>
-                    <h1>Cocktail party!</h1>
+                    <h1><i class="fa-solid fa-martini-glass-citrus"></i> Cocktail party!</h1>
                   </section>
+
+<section>
+  <row>
+    <col30 class="fragment roll-in">
+      <h4>sources</h4>
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <img src="figures/Bach.png" alt="Bach" style="width: 80px; height: 80px; margin-right: 5px; margin-top: -10px;">
+        <audio controls src="figures/cocktail/single_channel_Bach.mp3" style="height: 30px;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <img src="figures/Bengio.png" alt="Bengio" style="width: 80px; height: 80px; margin-right: 5px; margin-top: -10px;">
+        <audio controls src="figures/cocktail/single_channel_Bengio.mp3" style="height: 30px;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <img src="figures/LeCun.png" alt="LeCun" style="width: 80px; height: 80px; margin-right: 5px; margin-top: -10px;">
+        <audio controls src="figures/cocktail/single_channel_LeCun.mp3" style="height: 30px;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <img src="figures/Schmidhuber.png" alt="Schmidhuber" style="width: 80px; height: 80px; margin-right: 5px; margin-top: -10px;">
+        <audio controls src="figures/cocktail/single_channel_Schmidhuber.mp3" style="height: 30px;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <img src="figures/Yudkowski.png" alt="Yudkowski" style="width: 80px; height: 80px; margin-right: 5px; margin-top: -10px;">
+        <audio controls src="figures/cocktail/single_channel_Yudkowski.mp3" style="height: 30px;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <img src="figures/Hinton.png" alt="Hinton" style="width: 80px; height: 80px; margin-right: 5px; margin-top: -10px;">
+        <audio controls src="figures/cocktail/single_channel_Hinton.mp3" style="height: 30px;"></audio>
+      </div>
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <img src="figures/Jazz.png" alt="Jazz" style="width: 80px; height: 80px; margin-right: 5px; margin-top: -10px;">
+        <audio controls src="figures/cocktail/single_channel_Jazz.mp3" style="height: 30px;"></audio>
+      </div>
+    </col30>
+    <col10>
+    </col10>
+    <col30 class="fragment roll-in">
+      <h4>linear mixtures</h4>
+      <img src="figures/godfatherAI.png" alt="father" style="width: 100%; margin-right: 5px;">
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <audio controls src="figures/cocktail/mixture01.mp3" style="height: 30px; width: 100%;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <audio controls src="figures/cocktail/mixture02.mp3" style="height: 30px; width: 100%;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <audio controls src="figures/cocktail/mixture03.mp3" style="height: 30px; width: 100%;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <audio controls src="figures/cocktail/mixture04.mp3" style="height: 30px; width: 100%;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <audio controls src="figures/cocktail/mixture05.mp3" style="height: 30px; width: 100%;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <audio controls src="figures/cocktail/mixture06.mp3" style="height: 30px; width: 100%;"></audio>
+      </div>
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <audio controls src="figures/cocktail/mixture07.mp3" style="height: 30px; width: 100%;"></audio>
+      </div>
+      $\bm{X} = \bm{A}\bm{S}$
+    </col30>
+    <col10>
+    </col10>
+    <col30 class="fragment roll-in">
+      <h4>reconstructions</h4>
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <img src="figures/Bach.png" alt="Bach" style="width: 80px; height: 80px; margin-right: 5px; margin-top: -10px;">
+        <audio controls src="figures/cocktail/sources01.mp3" style="height: 30px;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <img src="figures/Bengio.png" alt="Bengio" style="width: 80px; height: 80px; margin-right: 5px; margin-top: -10px;">
+        <audio controls src="figures/cocktail/sources02.mp3" style="height: 30px;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <img src="figures/LeCun.png" alt="LeCun" style="width: 80px; height: 80px; margin-right: 5px; margin-top: -10px;">
+        <audio controls src="figures/cocktail/sources03.mp3" style="height: 30px;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <img src="figures/Schmidhuber.png" alt="Schmidhuber" style="width: 80px; height: 80px; margin-right: 5px; margin-top: -10px;">
+        <audio controls src="figures/cocktail/sources04.mp3" style="height: 30px;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <img src="figures/Yudkowski.png" alt="Yudkowski" style="width: 80px; height: 80px; margin-right: 5px; margin-top: -10px;">
+        <audio controls src="figures/cocktail/sources05.mp3" style="height: 30px;"></audio>
+      </div>
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <img src="figures/Hinton.png" alt="Hinton" style="width: 80px; height: 80px; margin-right: 5px; margin-top: -10px;">
+        <audio controls src="figures/cocktail/sources06.mp3" style="height: 30px;"></audio>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 5px;">
+        <img src="figures/Jazz.png" alt="Jazz" style="width: 80px; height: 80px; margin-right: 5px; margin-top: -10px;">
+        <audio controls src="figures/cocktail/sources07.mp3" style="height: 30px;"></audio>
+      </div>
+
+    </col30>
+  </row>
+</section>
+
+<section>
+  <row style="width: 120%; margin-left: -100px;">
+    <col50>
+      <h3>Linear Independence</h3>
+      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%; text-align: left;">
+A set of vectors \(\vec{v}_1, \vec{v}_2, \dots, \vec{v}_n\) in a vector space is <b>linearly independent</b> if the only solution to their linear combination being zero is when all coefficients are zero.</p>
+      </blockquote>
+
+<div style="font-size: 32px;">
+  \begin{align}
+  c_1 \vec{v}_1 + c_2 \vec{v}_2 + \dots + c_n \vec{v}_n = 0 \\
+  \implies \quad c_1 = c_2 = \dots = c_n = 0
+  \end{align}
+</div>
+
+      <blockquote style="background-color: #eee8d5; width: 100%; text-align: left;">
+        <b>Example:</b> Vectors \((1, 0)\) and \((0, 1)\) are linearly independent.
+      </blockquote>
+
+      <div style="font-size: 32px;">
+        $\vec{v}_i^T\vec{v}_j = 0$
+      </div>
+
+    </col50>
+<col10>
+  </col10>
+    <col50>
+      <h3>Statistical Independence</h3>
+      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%; text-align: left;">
+        Random variables \(X_1, X_2, \dots, X_n\) are <b>statistically independent</b> if the joint probability is the product of individual probabilities.
+      </blockquote>
+
+      <div style="font-size: 32px;">
+        \(P(X_1, X_2) = P(X_1) \cdot P(X_2)\)
+      </div>
+
+      <blockquote style="background-color: #eee8d5; width: 100%; text-align: left;">
+        <b>Example:</b> The outcome of two dice rolls are independent.
+      </blockquote>
+
+    </col50>
+  </row>
+</section>
 
                   <section>
                     <h1>Independence</h1>
+
+                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%; text-align: left;">
+                      <b>Key Difference:</b> Linear independence deals with vector spaces, while statistical independence focuses on probability distributions.
+                    </blockquote>
                   </section>
+
+<section>
+  <h2>ICA: Mathematical Setup</h2>
+
+  <ul style="font-size: 36px; text-align: left;">
+    <li class="fragment roll-in">Given observed signals \(X\), we assume:
+      \[
+      X = A \cdot S
+      \]
+      where \(X\) is the observed data, \(A\) is the unknown mixing matrix, and \(S\) are the independent sources.</li>
+    <li class="fragment roll-in">The goal is to recover \(S\) by finding a suitable unmixing matrix \(W\) such that:
+      \[
+      Y = W \cdot X \quad \text{(where \(Y\) approximates the sources \(S\))}
+      \]
+    </li>
+  </ul>
+</section>
 
                   <section>
                     <h1>identifiability</h1>
@@ -100,7 +319,200 @@
                   <section>
                     <h1>fastICA</h1>
                   </section>
+<section>
+      <h2>Central Limit Theorem (CLT)</h2>
+      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%; text-align: left;" class="fragment roll-in">
+        The <b>Central Limit Theorem</b> states that the sum (or average) of independent random variables with finite mean and variance tends towards a normal distribution, regardless of the original distribution.
+      </blockquote>
 
+      <div style="font-size: 32px;" class="fragment roll-in">
+        \[
+        Z_n = \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i \quad \xrightarrow{n \to \infty} \quad \mathcal{N}(\mu, \sigma^2)
+        \]
+      </div>
+
+      <blockquote style="background-color: #eee8d5; width: 100%; text-align: left;" class="fragment roll-in">
+        <b>Example:</b> The average of a large number of dice rolls will follow a normal distribution, even though a single roll is uniformly distributed.
+      </blockquote>
+</section>
+
+<section>
+      <h2>Central Limit Theorem (CLT)</h2>
+      <h3>Key Insights</h3>
+      <ul style="font-size: 36px; text-align: left;">
+        <li class="fragment roll-in">Applies to independent random variables with finite mean and variance.
+        <li class="fragment roll-in">Explains why sums or averages often look Gaussian, even if the original variables are not.
+        <li class="fragment roll-in">The distribution converges faster with more samples.
+      </ul>
+
+        <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; text-align: left; font-size: 32px;" <li class="fragment roll-in">
+          <b>Mathematical Implication:</b> Mixed signals tend to be more Gaussian, which ICA exploits to recover independent, non-Gaussian sources.
+        </blockquote>
+</section>
+<section>
+  <h2>CLT and Statistical Independence</h2>
+
+  <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%; text-align: left;" class="fragment roll-in">
+    The Central Limit Theorem implies that <b>linear mixtures</b> of independent, non-Gaussian variables tend to be more Gaussian.
+  </blockquote>
+
+  <div style="font-size: 32px;" class="fragment roll-in">
+    \[
+    Z_n = \frac{1}{\sqrt{n}} \sum_{i=1}^n S_i \quad \xrightarrow{n \to \infty} \quad \mathcal{N}(\mu, \sigma^2)
+    \]
+  </div>
+
+  <blockquote style="background-color: #eee8d5; width: 100%; text-align: left;" class="fragment roll-in">
+    <b>Key Insight:</b> When independent sources mix linearly, the result looks more Gaussian than the original sources.
+  </blockquote>
+</section>
+
+<section>
+  <h2>Connection between CLT and ICA</h2>
+  <h3>How ICA Exploits This Connection</h3>
+
+  <ul style="font-size: 36px; text-align: left;">
+    <li class="fragment roll-in">ICA assumes that <b>independent sources</b> are often non-Gaussian.</li>
+    <li class="fragment roll-in">A linear mixture (observed data) tends to be <b>more Gaussian</b> than the original sources.</li>
+    <li class="fragment roll-in">ICA reverses this mixing by searching for components that <b>maximize non-Gaussianity</b>.</li>
+  </ul>
+
+  <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; text-align: left; font-size: 32px;" class="fragment roll-in">
+    <b>Takeaway:</b> ICA identifies independent sources by finding non-Gaussian signals within the observed mixtures, which are closer to the original, independent sources.
+  </blockquote>
+</section>
+
+<section>
+  <h4>Nonlinear Transformations Amplify Non-Gaussianity</h4>
+
+  <ul style="font-size: 36px; text-align: left;">
+    <li class="fragment roll-in">
+      <blockquote style="background-color: #eee8d5; width: 100%; text-align: left;">
+        Linear transformations (e.g., rotations or scaling) preserve Gaussianity. Nonlinear transformations distort the data in ways that highlight deviations from Gaussianity.
+      </blockquote>
+    </li>
+
+    <li class="fragment roll-in">
+      <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; text-align: left;">
+        Nonlinear functions like \( \tanh(u) \) or \( u^3 \) react <b>strongly to outliers</b> or higher-order statistics, making non-Gaussian features more prominent.
+      </blockquote>
+    </li>
+
+    <li class="fragment roll-in">
+      <ul style="font-size: 32px; text-align: left;">
+        <li class="fragment roll-in">Gaussian distributions have light tails—outliers are rare.</li>
+        <li class="fragment roll-in">Nonlinear functions emphasize <b>outliers or rare events</b>, which are common in non-Gaussian data (like sparse signals).</li>
+      </ul>
+    </li>
+</section>
+
+<section>
+  <h4>Nonlinear Transformations Amplify Non-Gaussianity</h4>
+  <ul style="font-size: 36px; text-align: left;">    
+    <li class="fragment roll-in">
+      <blockquote style="background-color: #eee8d5; width: 100%; text-align: left;">
+        The FastICA algorithm computes expectations using these nonlinear functions, which helps it detect signals that are <b>far from Gaussian.</b>
+      </blockquote>
+    </li>
+
+    <li class="fragment roll-in">
+      <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; text-align: left;">
+        Nonlinear transformations amplify the non-Gaussian properties in the data, making it easier to separate independent components.
+      </blockquote>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>FastICA: Optimization Steps</h2>
+
+  <ol style="font-size: 36px; text-align: left;">
+    <li class="fragment roll-in"><b>Whiten the data</b>: Use PCA to make the data uncorrelated.
+      \[
+      Z = W_{\text{PCA}} \cdot X
+      \]
+    </li>
+
+    <li class="fragment roll-in"><b>Choose a non-linearity</b> (e.g., \(g(u) = \tanh(u)\)) to maximize non-Gaussianity.</li>
+
+    <li class="fragment roll-in"><b>Update the weight vector</b> \(w_i\) for each independent component:
+      \[
+      w_i \leftarrow \mathbb{E} \{Z \cdot g(w_i^T Z)\} - \mathbb{E} \{g'(w_i^T Z)\} \cdot w_i
+      \]
+    </li>
+
+    <li class="fragment roll-in"><b>Orthogonalize</b> the weight vectors to ensure independence.</li>
+
+    <li class="fragment roll-in"><b>Iterate</b> until convergence (i.e., weight vectors stabilize).</li>
+  </ol>
+</section>
+
+<section>
+  <h2>FastICA: Implementation</h2>
+
+  <pre class="python fragment roll-in" style="width: 99%; font-size: 12pt;">
+<code data-trim data-noescape data-line-numbers="*|20|25-26|29">
+import numpy as np
+
+# Step 1: Center and whiten the data
+def whiten(X):
+    X = X - np.mean(X, axis=0)  # Center the data
+    cov = np.cov(X, rowvar=False)  # Covariance matrix
+    eigvals, eigvecs = np.linalg.eigh(cov)  # Eigen-decomposition
+    D = np.diag(1.0 / np.sqrt(eigvals))  # Whitening matrix
+    return X @ eigvecs @ D @ eigvecs.T
+
+# Step 2: Nonlinear function for maximizing non-Gaussianity
+def g(u):
+    return np.tanh(u)  # Hyperbolic tangent nonlinearity
+
+def g_derivative(u):
+    return 1 - np.tanh(u) ** 2  # Derivative of tanh
+
+# Step 3: FastICA iteration
+def fastica(X, n_components, max_iter=100, tol=1e-5):
+    X = whiten(X)
+    n_samples, n_features = X.shape
+    W = np.random.rand(n_components, n_features)  # Initialize random weights
+
+    for i in range(max_iter):
+        W_new = (X.T @ g(X @ W.T)) / n_samples  # Update all weights
+        W_new -= np.diag(np.mean(g_derivative(X @ W.T), axis=0)) @ W_new
+
+        # Decorrelate weights (orthogonalization)
+        W_new = np.linalg.qr(W_new)[0]
+
+        # Check for convergence
+        if np.max(np.abs(np.abs(np.diag(W_new @ W.T)) - 1)) < tol:
+            break
+        W = W_new
+
+    return W @ X.T  # Recovered signals
+
+# Step 4: Example usage with synthetic data
+np.random.seed(0)
+S = np.array([np.sin(np.linspace(0, 8, 1000)),
+              np.sign(np.sin(np.linspace(0, 8, 1000)))]).T
+A = np.array([[1, 1], [0.5, 2]])  # Mixing matrix
+X = S @ A.T  # Mixed signals
+
+# Apply FastICA
+S_estimated = fastica(X, n_components=2)
+
+# Plot results
+import matplotlib.pyplot as plt
+fig, axs = plt.subplots(3, 1, figsize=(8, 6))
+axs[0].plot(S)
+axs[0].set_title('Original Signals')
+axs[1].plot(X)
+axs[1].set_title('Mixed Signals')
+axs[2].plot(S_estimated.T)
+axs[2].set_title('Recovered Signals (FastICA)')
+plt.tight_layout()
+plt.show()
+</code>
+  </pre>
+</section>
                   <section>
                     <h1>Infomax</h1>
                   </section>
