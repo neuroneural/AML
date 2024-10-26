@@ -21,6 +21,42 @@ input_files = [
 num_sources = len(input_files)
 
 
+def compute_covariance_matrices(X, window_size, randomize=False):
+    """
+    Compute the covariance matrix for each non-overlapping window of X.
+    Optionally randomize the rows of X before computing the covariance matrices.
+
+    Parameters:
+    - X: A 2D NumPy array of shape (m, k)
+    - window_size: The size of the window (number of samples in each chunk)
+    - randomize: If True, the rows of X will be randomly permuted
+
+    Returns:
+    - A 3D NumPy array of covariance matrices with shape [n, k, k]
+    """
+    if randomize:
+        # Randomly permute the rows of X
+        X = np.random.permutation(X)
+
+    m, k = X.shape
+    n_chunks = m // window_size + 1
+    covariance_matrices = np.zeros((n_chunks, k, k))  # Pre-allocate the array
+
+    for i in range(n_chunks):
+        start = i * window_size
+        # the last covariance maybe low rank
+        end = np.min((m, start + window_size))
+        if end - start < X.shape[1]:
+            break
+        chunk = X[start:end, :]
+        cov_matrix = np.cov(
+            chunk, rowvar=False
+        )  # Compute the covariance matrix for the chunk
+        covariance_matrices[i, :, :] = cov_matrix
+
+    return covariance_matrices
+
+
 def n_batch_covariances(X, winlen, n_covariances):
     """
     Compute n_covariances covariance matrices, each based on a unique random batch of length winlen from the data X.
@@ -126,9 +162,12 @@ print("Processing complete. Check the current directory for output files.")
 
 # Start the timer
 start_time = time.time()
-winlen = 100
-cs = n_batch_covariances(X.T, winlen, 200)
+winlen = 50
+# cs = compute_covariance_matrices(X, winlen, randomize=False)
+cs = n_batch_covariances(X.T, winlen, 2000)
+print("Quasi is done")
 B, _ = qndiag(filter_full_rank_matrices(cs, tol=1e-10))
+print("JDX is done")
 Y = (X.T @ B.T).T
 # End the timer
 end_time = time.time()
