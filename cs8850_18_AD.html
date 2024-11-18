@@ -172,11 +172,11 @@
                       AD is not Numerical Differentiation</h2>
                     <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="1000"
                          src="figures/ADnotND.svg" alt="ADnotND">
-                    <blockquote style="background-color: #eee8d5; font-size: 40px; width: 100%;">
+                    <blockquote style="background-color: #eee8d5; font-size: 40px; width: 100%;" class="fragment roll-in">
                       Numerical diffirentiation is a problematic approximation
                       <ul  style="list-style-type: disk; font-size: 22pt">
-                        <li> though shalt not add small numbers to big numbers
-                        <li> though shalt not subtract numbers which are approximately equal
+                        <li class="fragment roll-in"> though shalt not add small numbers to big numbers
+                        <li class="fragment roll-in"> though shalt not subtract numbers which are approximately equal
                       </ul>
                     </blockquote>
                   </section>
@@ -187,13 +187,6 @@
                     </h3>
                     <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="80%"
                          src="figures/truncation_error.svg" alt="round off and truncation errors">
-                    <blockquote style="background-color: #eee8d5; font-size: 40px;">
-                      Numerical diffirentiation is a problematic approximation
-                      <ul  style="list-style-type: disk; font-size: 22pt">
-                        <li> though shalt not add small numbers to big numbers
-                        <li> though shalt not subtract numbers which are approximately equal
-                      </ul>
-                    </blockquote>
                   </section>
 
                   <section data-background="figures/logisticbifurcation.png" background-size="cover">
@@ -202,7 +195,7 @@
                     </h2>
                     <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0); margin-bottom: -10px; margin-top: -10px;" width="1000"
                          src="figures/ADsnotSymbolic.svg" alt="ADnotSymbolic">
-                    <blockquote style="background-color: #eee8d5; font-size: 22px; width: 100%;" style="margin-top: -40px;">
+                    <blockquote class="fragment roll-in" style="background-color: #eee8d5; font-size: 20px; width: 100%; margin-top: -100px;">
                       \begin{align}
                       f(\vec{x}) & = \prod_{i=1}^d x_i \\
                       \nabla f(\vec{x}) & = \left(\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \dots, \frac{\partial f}{\partial x_d},\right)
@@ -216,9 +209,7 @@
                       \end{align}
                     </blockquote>
                     <div class="slide-footer">
-                      Example from Speelpenning, figure modified from Baydin
-                    </div>
-                    <div class="slide-footer">
+                      Example from Speelpenning, figure modified from Baydin<br>
                       For an alternative opinion see: <a href="https://arxiv.org/abs/1904.02990v3" target="blank_">On the Equivalence of Forward Mode Automatic Differentiation and Symbolic Differentiation
 </a>
                     </div>
@@ -350,7 +341,7 @@
                       </dd>
                       <dt>Type III</dt>
                       <dd> Computer programs transform other computer programs
-                        (Speelpenning (1980); LUSH; TAPENADE)
+                        (Speelpenning (1980); <a href="https://lush.sourceforge.net/">LUSH</a>; TAPENADE)
                       </dd>
                       <dt>Type IV</dt>
                       <dd> First-class AD operators; closure
