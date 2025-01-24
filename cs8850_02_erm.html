@@ -108,7 +108,7 @@
                           y_m))$. <br>Sequence of pairs in
                           $\cal{X}\times\cal{Y}$
                         </ul>
-                      <li class="fragment" data-fragment-index="4">The learner's output
+                      <li class="fragment" data-fragment-index="4">The learner's output (<span style="color: #DBD7D7;">ὑπόθεσις</span>)
                         <ul>
                           $h: \cal{X} \rightarrow \cal{Y}$
                         </ul>
@@ -303,7 +303,7 @@
                     <!--   $h_S \in \underset{h\in{\cal H}}{\argmin}L_S(h)$ -->
                     <!-- </dev><br> -->
                     <blockquote style="text-align: left;" style="background-color: #eee8d5;" class="fragment" data-fragment-index="0">
-                      <b>The Realizability Assumption:</b> There exists $h^* \in {\cal H} s.t. L_{{\cal D}, f}(h^*)=0$. This implies: with probability 1 over random samples $S\sim {\cal D}$ labeled by $f$, we have $L_S(h^*)=0$
+                      <b>The Realizability Assumption:</b> There exists $h^* \in {\cal H}$ s.t.  $L_{{\cal D}, f}(h^*)=0$. This implies: with probability 1 over random samples $S\sim {\cal D}$ labeled by $f$, we have $L_S(h^*)=0$
                     </blockquote>
                     <blockquote style="text-align: left;" style="background-color: #eee8d5;" class="fragment" data-fragment-index="1">
                       <b>The i.i.d. Assumption:</b> Samples in the training set are independent and identically distributed. Denoted as $S\sim {\cal D}^m$
@@ -357,14 +357,14 @@
                     <blockquote style="text-align: left;">
                       <b>The Realizability Assumption:</b> There exists $h^* \in {\cal H} s.t. L_{{\cal D}, f}(h^*)=0$. This implies: with probability 1 over random samples $S\sim {\cal D}$ labeled by $f$, we have $L_S(h^*)=0$
                     </blockquote>
-                    Means $L_S(h_S) = 0$, where $h_S \in \underset{h\in{\cal H}}{\argmin}L_S(h)$. Hence $L_{({\cal D}, f)}(h_S) > \epsilon$ can only happen if for some $h\in {\cal H}_B$, $L_S(h)=0$
+                    <span class="fragment" data-fragment-index="0" >Means $L_S(h_S) = 0$, where $h_S \in \underset{h\in{\cal H}}{\argmin}L_S(h)$.</span> <div class="fragment" data-fragment-index="1" >Hence $L_{({\cal D}, f)}(h_S) > \epsilon$ can only happen if for some $h\in {\cal H}_B$, $L_S(h)=0$</span>
                     <br>
-                    <div class="fragment" data-fragment-index="0" >
+                    <div class="fragment" data-fragment-index="2" >
                       follows $\{S\mid_x : L_{({\cal D}, f)}(h_S) > \epsilon \} \subseteq M$
                     </div>
                   </section>
                   <section>
-                    <div class="fragment" data-fragment-index="0" >
+                    <div class="fragment" data-fragment-index="2" >
                       We want to upperbound ${\cal D}^m(\{S\mid_x : L_{({\cal D}, f)}(h_S) > \epsilon\})$
                     </div>
                     <div class="fragment" data-fragment-index="1" >
@@ -392,10 +392,13 @@
                     </blockquote>
                     <div class="fragment" data-fragment-index="0">
                     hence<br>
-                    ${\cal D}^m(\{S\mid_x : L_{({\cal D}, f)}(h_S) > \epsilon\}) \le {\cal D}^m(\underset{h\in {\cal H}_B}\bigcup \{S\mid_x : L_{S}(h) = 0  \})$
-                    <br>$\le \sum_{h\in {\cal H}_B}{\cal D}^m(\{S\mid_x : L_{S}(h) = 0  \})$
+                    \begin{align}
+                    {\cal D}^m(\{S\mid_x : L_{({\cal D}, f)}(h_S) > \epsilon\}) & \le \\
+                    {\cal D}^m(\underset{h\in {\cal H}_B}\bigcup \{S\mid_x : L_{S}(h) = 0  \}) & \le \\
+                    \sum_{h\in {\cal H}_B}{\cal D}^m(\{S\mid_x : L_{S}(h) = 0  \})
+                    \end{align}
                     </div>
-                    <div class="fragment" data-fragment-index="1">
+                    <div class="fragment" data-fragment-index="1" style="margin-top:-50px;">
                       let's put a bound on each summand separately
                     </div>
                   </section>
