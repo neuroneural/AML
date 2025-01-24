@@ -165,6 +165,475 @@
             <aside>
           </section>
 
+          <section data-auto-animate>
+    <div id="scene-container" style="width: 800px; height: 500px; margin: 0 auto;"></div>
+    <div id="instructions" style="position: absolute; top: 20px; left: -120px; color: white; font-size: 12px; background: rgba(0,0,0,0.7); padding: 10px; border-radius: 5px;">
+        <strong>Controls:</strong><br>
+        W - Move red point (x)<br>
+        E - Rotate normal vector (w)<br>
+        R - Move hyperplane along normal<br>
+        Right click - Orbit camera<br>
+        Left click - Drag selected element<br>
+        [Labels update automatically]
+    </div>
+
+    <script type="module">
+        import * as THREE from 'https://cdn.skypack.dev/three@0.136.0';
+        import { OrbitControls } from 'https://cdn.skypack.dev/three@0.136.0/examples/jsm/controls/OrbitControls.js';
+        import { TransformControls } from 'https://cdn.skypack.dev/three@0.136.0/examples/jsm/controls/TransformControls.js';
+
+      let renderer, camera, scene, controls;
+      let w, x, x_p, r, plane, R1, R2;
+      let wLabel, distanceLabel, pointDistanceLabel;
+      let transformControls, squares = []; // Add squares here
+      let currentMode = 'translate';
+      
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, 800/500, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(800, 500);
+            document.getElementById('scene-container').appendChild(renderer.domElement);
+
+            // Lighting
+            const light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(1, 1, 1);
+            scene.add(light);
+            scene.add(new THREE.AmbientLight(0x404040));
+
+            // Coordinate system
+            const axesHelper = new THREE.AxesHelper(5);
+            scene.add(axesHelper);
+
+        // Create squares function
+        function createSquare() {
+            const geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+            const material = new THREE.MeshStandardMaterial({
+                color: 0xffffff,
+                metalness: 0.3,
+                roughness: 0.8
+            });
+            return new THREE.Mesh(geometry, material);
+        }
+
+        // Generate random points
+        const numPoints = 20;
+        for (let i = 0; i < numPoints * 2; i++) {
+            const square = createSquare();
+            square.position.set(
+                (Math.random() - 0.5) * 8,
+                (Math.random() - 0.5) * 8,
+                (Math.random() - 0.5) * 8
+            );
+            scene.add(square);
+            squares.push(square);
+        }            
+
+            // Hyperplane
+            const planeGeometry = new THREE.PlaneGeometry(8, 8);
+            const planeMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xaaaaaa,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.5
+            });
+            plane = new THREE.Mesh(planeGeometry, planeMaterial);
+            scene.add(plane);
+
+            // Normal vector (w)
+            w = new THREE.ArrowHelper(
+                new THREE.Vector3(0, 1, 0),
+                new THREE.Vector3(0, 0, 0),
+                2,
+                0x00ff00
+            );
+            scene.add(w);
+
+            // Data point (x)
+            const xGeometry = new THREE.SphereGeometry(0.2, 32, 32);
+            const xMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
+            x = new THREE.Mesh(xGeometry, xMaterial);
+            x.position.set(2, 3, 1);
+            scene.add(x);
+            
+            // Projection point (x_p)
+            const xpGeometry = new THREE.SphereGeometry(0.2, 32, 32);
+            const xpMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+            x_p = new THREE.Mesh(xpGeometry, xpMaterial);
+            scene.add(x_p);
+
+            // Vector (r)
+            r = new THREE.ArrowHelper(
+                new THREE.Vector3(),
+                new THREE.Vector3(),
+                0.1,
+                0xff00ff
+            );
+            scene.add(r);
+
+            // Rays
+            const rayMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
+            R1 = new THREE.LineSegments(new THREE.BufferGeometry(), rayMaterial);
+            R2 = new THREE.LineSegments(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0x00ff00 }));
+            scene.add(R1, R2);
+
+            // Labels
+            wLabel = document.createElement('div');
+            wLabel.style.position = 'absolute';
+            wLabel.style.color = 'white';
+            document.getElementById('scene-container').appendChild(wLabel);
+
+            distanceLabel = document.createElement('div');
+            distanceLabel.style.position = 'absolute';
+            distanceLabel.style.color = 'white';
+            distanceLabel.style.top = '20px';
+            document.getElementById('scene-container').appendChild(distanceLabel);
+
+            pointDistanceLabel = document.createElement('div');
+            pointDistanceLabel.style.position = 'absolute';
+            pointDistanceLabel.style.color = 'white';
+            pointDistanceLabel.style.top = '70px';
+            document.getElementById('scene-container').appendChild(pointDistanceLabel);
+            
+            // Camera controls
+            controls = new OrbitControls(camera, renderer.domElement);
+            camera.position.set(8, 8, 8);
+            controls.update();
+
+            // Transform controls
+            transformControls = new TransformControls(camera, renderer.domElement);
+            transformControls.addEventListener('dragging-changed', (event) => {
+                controls.enabled = !event.value;
+            });
+            transformControls.addEventListener('change', () => {
+                if(currentMode === 'move-plane') {
+                    w.position.copy(plane.position);
+                    updateGeometry();
+                } else {
+                    updateGeometry();
+                }
+            });
+            scene.add(transformControls);
+
+            // Event listeners
+            document.addEventListener('keydown', (event) => {
+                switch (event.key.toLowerCase()) {
+                    case 'w':
+                        transformControls.space = 'world';
+                        transformControls.setMode('translate');
+                        transformControls.showX = true;
+                        transformControls.showY = true;
+                        transformControls.showZ = true;
+                        transformControls.attach(x);
+                        currentMode = 'translate';
+                        break;
+                    case 'e':
+                        transformControls.space = 'world';
+                        transformControls.setMode('rotate');
+                        transformControls.showX = true;
+                        transformControls.showY = true;
+                        transformControls.showZ = true;
+                        transformControls.attach(w);
+                        currentMode = 'rotate';
+                        break;
+                    case 'r':
+                        transformControls.space = 'local';
+                        transformControls.setMode('translate');
+                        transformControls.showX = false;
+                        transformControls.showY = false;
+                        transformControls.showZ = true;
+                        transformControls.attach(plane);
+                        currentMode = 'move-plane';
+                        break;
+                }
+            });
+
+            transformControls.attach(x);
+            updateGeometry();
+        }
+
+        function updateGeometry() {
+            // Get current normal from w orientation
+            const normal = new THREE.Vector3(0, 0, 1).applyQuaternion(w.quaternion);
+            
+            // Update hyperplane orientation and position
+            plane.quaternion.copy(w.quaternion);
+            plane.position.copy(w.position);
+            
+            // Calculate projection x_p
+            const planePoint = plane.position.clone();
+            const t = (planePoint.dot(normal) - x.position.dot(normal)) / normal.lengthSq();
+            x_p.position.copy(x.position).addScaledVector(normal, t);
+            
+            // Calculate distance components
+            const wLength = normal.length();
+            const w0 = planePoint.dot(normal);
+            const numerator = Math.abs(normal.dot(x.position) - w0);
+            const pointDistance = numerator / wLength;
+
+            // Update labels
+            wLabel.textContent = `‖w‖ = ${wLength.toFixed(2)}`;
+            distanceLabel.textContent = `w₀/‖w‖ = ${(w0/wLength).toFixed(2)}`;
+            pointDistanceLabel.textContent = `|w·x - w₀|/‖w‖ = ${pointDistance.toFixed(2)}`;
+            
+            // Update vector r
+            r.setDirection(x.position.clone().sub(x_p.position).normalize());
+            r.setLength(x.position.distanceTo(x_p.position));
+            r.position.copy(x_p.position);
+            
+            // Update rays
+            const rayLength = 5;
+            const R1Points = [
+                planePoint.clone().add(normal.clone().multiplyScalar(-rayLength)),
+                planePoint.clone().add(normal.clone().multiplyScalar(rayLength))
+            ];
+            R1.geometry.setFromPoints(R1Points);
+            
+            const R2Points = [
+                x_p.position.clone(),
+                x.position.clone().add(x.position.clone().sub(x_p.position).multiplyScalar(2))
+            ];
+            R2.geometry.setFromPoints(R2Points);
+
+        // Update square colors
+        normal.normalize();      
+        squares.forEach(square => {
+            const vecToPoint = square.position.clone().sub(planePoint);
+            const distance = vecToPoint.dot(normal);
+            square.material.color.setHex(distance >= 0 ? 0xff0000 : 0x0000ff);
+            square.material.needsUpdate = true;
+        });
+        
+            render();
+        }
+
+        function render() {
+            renderer.render(scene, camera);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            render();
+        }
+
+        init();
+        animate();
+    </script>
+          </section>
+          
+<!-- <section data-auto-animate> -->
+<!--     <div id="scene-container" style="width: 800px; height: 500px; margin: 0 auto;"></div> -->
+<!--     <div id="instructions" style="position: absolute; top: 20px; left: -120px; color: white; font-size: 12px; background: rgba(0,0,0,0.7); padding: 10px; border-radius: 5px;"> -->
+<!--         <strong>Controls:</strong><br> -->
+<!--         W - Move red point (x)<br> -->
+<!--         E - Rotate normal vector (w)<br> -->
+<!--         R - Move hyperplane along normal<br> -->
+<!--         Right click - Orbit camera<br> -->
+<!--         Left click - Drag selected element<br> -->
+<!--         [Labels update automatically] -->
+<!--     </div> -->
+
+<!--     <script type="module"> -->
+<!--         import * as THREE from 'https://cdn.skypack.dev/three@0.136.0'; -->
+<!--         import { OrbitControls } from 'https://cdn.skypack.dev/three@0.136.0/examples/jsm/controls/OrbitControls.js'; -->
+<!--         import { TransformControls } from 'https://cdn.skypack.dev/three@0.136.0/examples/jsm/controls/TransformControls.js'; -->
+
+<!--         let renderer, camera, scene, controls; -->
+<!--         let w, x, x_p, r, plane, R1, R2; -->
+<!--         let wLabel, distanceLabel, transformControls; -->
+<!--         let currentMode = 'translate'; -->
+
+<!--         function init() { -->
+<!--             scene = new THREE.Scene(); -->
+<!--             camera = new THREE.PerspectiveCamera(75, 800/500, 0.1, 1000); -->
+<!--             renderer = new THREE.WebGLRenderer({ antialias: true }); -->
+<!--             renderer.setSize(800, 500); -->
+<!--             document.getElementById('scene-container').appendChild(renderer.domElement); -->
+
+<!--             // Lighting -->
+<!--             const light = new THREE.DirectionalLight(0xffffff, 1); -->
+<!--             light.position.set(1, 1, 1); -->
+<!--             scene.add(light); -->
+<!--             scene.add(new THREE.AmbientLight(0x404040)); -->
+
+<!--             // Coordinate system -->
+<!--             const axesHelper = new THREE.AxesHelper(5); -->
+<!--             scene.add(axesHelper); -->
+
+<!--             // Hyperplane -->
+<!--             const planeGeometry = new THREE.PlaneGeometry(8, 8); -->
+<!--             const planeMaterial = new THREE.MeshPhongMaterial({  -->
+<!--                 color: 0xaaaaaa, -->
+<!--                 side: THREE.DoubleSide, -->
+<!--                 transparent: true, -->
+<!--                 opacity: 0.5 -->
+<!--             }); -->
+<!--             plane = new THREE.Mesh(planeGeometry, planeMaterial); -->
+<!--             scene.add(plane); -->
+
+<!--             // Normal vector (w) -->
+<!--             w = new THREE.ArrowHelper( -->
+<!--                 new THREE.Vector3(0, 1, 0), -->
+<!--                 new THREE.Vector3(0, 0, 0), -->
+<!--                 2, -->
+<!--                 0x00ff00 -->
+<!--             ); -->
+<!--             scene.add(w); -->
+
+<!--             // Data point (x) -->
+<!--             const xGeometry = new THREE.SphereGeometry(0.2, 32, 32); -->
+<!--             const xMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 }); -->
+<!--             x = new THREE.Mesh(xGeometry, xMaterial); -->
+<!--             x.position.set(2, 3, 1); -->
+<!--             scene.add(x); -->
+
+<!--             // Projection point (x_p) -->
+<!--             const xpGeometry = new THREE.SphereGeometry(0.2, 32, 32); -->
+<!--             const xpMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff }); -->
+<!--             x_p = new THREE.Mesh(xpGeometry, xpMaterial); -->
+<!--             scene.add(x_p); -->
+
+<!--             // Vector (r) -->
+<!--             r = new THREE.ArrowHelper( -->
+<!--                 new THREE.Vector3(), -->
+<!--                 new THREE.Vector3(), -->
+<!--                 0.1, -->
+<!--                 0xff00ff -->
+<!--             ); -->
+<!--             scene.add(r); -->
+
+<!--             // Rays -->
+<!--             const rayMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 }); -->
+<!--             R1 = new THREE.LineSegments(new THREE.BufferGeometry(), rayMaterial); -->
+<!--             R2 = new THREE.LineSegments(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0x00ff00 })); -->
+<!--             scene.add(R1, R2); -->
+
+<!--             // Labels -->
+<!--             wLabel = document.createElement('div'); -->
+<!--             wLabel.style.position = 'absolute'; -->
+<!--             wLabel.style.color = 'white'; -->
+<!--             document.getElementById('scene-container').appendChild(wLabel); -->
+
+<!--             distanceLabel = document.createElement('div'); -->
+<!--             distanceLabel.style.position = 'absolute'; -->
+<!--             distanceLabel.style.color = 'white'; -->
+<!--             distanceLabel.style.top = '20px'; -->
+<!--             document.getElementById('scene-container').appendChild(distanceLabel); -->
+
+<!--             // Camera controls -->
+<!--             controls = new OrbitControls(camera, renderer.domElement); -->
+<!--             camera.position.set(8, 8, 8); -->
+<!--             controls.update(); -->
+
+<!--             // Transform controls -->
+<!--             transformControls = new TransformControls(camera, renderer.domElement); -->
+<!--             transformControls.addEventListener('dragging-changed', (event) => { -->
+<!--                 controls.enabled = !event.value; -->
+<!--             }); -->
+<!--             transformControls.addEventListener('change', () => { -->
+<!--                 if(currentMode === 'move-plane') { -->
+<!--                     w.position.copy(plane.position); -->
+<!--                     updateGeometry(); -->
+<!--                 } else { -->
+<!--                     updateGeometry(); -->
+<!--                 } -->
+<!--             }); -->
+<!--             scene.add(transformControls); -->
+
+<!--            // Event listeners -->
+<!--             document.addEventListener('keydown', (event) => { -->
+<!--                 switch (event.key.toLowerCase()) { -->
+<!--                     case 'w': -->
+<!--                         transformControls.space = 'world'; -->
+<!--                         transformControls.setMode('translate'); -->
+<!--                         transformControls.showX = true; -->
+<!--                         transformControls.showY = true; -->
+<!--                         transformControls.showZ = true; -->
+<!--                         transformControls.attach(x); -->
+<!--                         currentMode = 'translate'; -->
+<!--                         break; -->
+<!--                     case 'e': -->
+<!--                         transformControls.space = 'world'; -->
+<!--                         transformControls.setMode('rotate'); -->
+<!--                         transformControls.showX = true; -->
+<!--                         transformControls.showY = true; -->
+<!--                         transformControls.showZ = true; -->
+<!--                         transformControls.attach(w); -->
+<!--                         currentMode = 'rotate'; -->
+<!--                         break; -->
+<!--                     case 'r': -->
+<!--                         transformControls.space = 'local'; -->
+<!--                         transformControls.setMode('translate'); -->
+<!--                         transformControls.showX = false; -->
+<!--                         transformControls.showY = false; -->
+<!--                         transformControls.showZ = true; -->
+<!--                         transformControls.attach(plane); -->
+<!--                         currentMode = 'move-plane'; -->
+<!--                         break; -->
+<!--                 } -->
+<!--             });             -->
+
+<!--             transformControls.attach(x); -->
+<!--             updateGeometry(); -->
+<!--         } -->
+
+<!--         function updateGeometry() { -->
+<!--             // Get current normal from w orientation -->
+<!--             const normal = new THREE.Vector3(0, 0, 1).applyQuaternion(w.quaternion); -->
+            
+<!--             // Update hyperplane orientation and position -->
+<!--             plane.quaternion.copy(w.quaternion); -->
+<!--             plane.position.copy(w.position); -->
+            
+<!--             // Calculate projection x_p -->
+<!--             const planePoint = plane.position.clone(); -->
+<!--             const t = (planePoint.dot(normal) - x.position.dot(normal)) / normal.lengthSq(); -->
+<!--             x_p.position.copy(x.position).addScaledVector(normal, t); -->
+            
+<!--             // Update vector r -->
+<!--             r.setDirection(x.position.clone().sub(x_p.position).normalize()); -->
+<!--             r.setLength(x.position.distanceTo(x_p.position)); -->
+<!--             r.position.copy(x_p.position); -->
+            
+<!--             // Update rays -->
+<!--             const rayLength = 5; -->
+<!--             const R1Points = [ -->
+<!--                 planePoint.clone().add(normal.clone().multiplyScalar(-rayLength)), -->
+<!--                 planePoint.clone().add(normal.clone().multiplyScalar(rayLength)) -->
+<!--             ]; -->
+<!--             R1.geometry.setFromPoints(R1Points); -->
+            
+<!--             const R2Points = [ -->
+<!--                 x_p.position.clone(), -->
+<!--                 x.position.clone().add(x.position.clone().sub(x_p.position).multiplyScalar(2)) -->
+<!--             ]; -->
+<!--             R2.geometry.setFromPoints(R2Points); -->
+            
+<!--             // Update labels -->
+<!--             const wLength = normal.length(); -->
+<!--             const w0 = planePoint.dot(normal); -->
+<!--             wLabel.textContent = `‖w‖ = ${wLength.toFixed(2)}`; -->
+<!--             distanceLabel.textContent = `w₀/‖w‖ = ${(w0/wLength).toFixed(2)}`; -->
+            
+<!--             render(); -->
+<!--         } -->
+
+<!--         function render() { -->
+<!--             renderer.render(scene, camera); -->
+<!--         } -->
+
+<!--         function animate() { -->
+<!--             requestAnimationFrame(animate); -->
+<!--             controls.update(); -->
+<!--             render(); -->
+<!--         } -->
+
+<!--         init(); -->
+<!--         animate(); -->
+<!--     </script> -->
+<!-- </section> -->
+          
 
           <section>
             <h2>An example!</h2>
