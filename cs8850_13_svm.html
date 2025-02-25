@@ -168,10 +168,10 @@
 
                   <section>
                     <h2>Decision boundary: 2 classes</h2>
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="650"
+                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="950"
                            src="figures/kde_decision_boundary.svg" alt="kde decision boundary">
                       <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22px; text-align: left;">
-                        In the general case we need to non-parametrically estimate the densities
+                        In the general case, we need to non-parametrically estimate the densities
                       </blockquote>
                       <blockquote style="background-color: #eee8d5; width: 100%; font-size: 26px;"  class="fragment" data-fragment-index="0">
                         $\prob{P$_{KDE}$}{\vec{x}} = \frac{1}{Nh^d} \sum_{n=1}^N \prob{K}{\frac{\vec{x} - \vec{x}^n}{h}}$, where $\prob{K}{\vec{x}} = (2\pi)^{-d/2}e^{-\frac{1}{2}\vec{x}^T\vec{x}}$
@@ -190,7 +190,7 @@
                   <section>
                     <h2>Restricted Bayes optimal classifier</h2>
                       <blockquote style="background-color: #eee8d5; width: 100%; font-size: 32px; text-align: left;">
-                        <b>Definition:</b> Given a joint distribution $\prob{P$_{KDE}$}{\vec{x}|C}$ and a set of classifiers $\cal H$, we say that $h^*$ is a restricted Bayes optimal classifier with respect to $\cal H$ and ${\rm P}_{KDE}$ is $h^* \in {\cal H}$ and for all $h\in {\cal H}$, $\prob{error}{h^*:{\rm P}_{KDE}} \le \prob{error}{h: {\rm P}_{KDE}}$
+                        <b>Definition:</b> Given a joint distribution $\prob{P$_{KDE}$}{\vec{x},C}$ and a set of classifiers $\cal H$, we say that $h^*$ is a restricted Bayes optimal classifier with respect to $\cal H$ and ${\rm P}_{KDE}$ <p> if $h^* \in {\cal H}$ and $\forall h\in {\cal H}$, $\prob{error}{h^*:{\rm P}_{KDE}} \le \prob{error}{h: {\rm P}_{KDE}}$
                       </blockquote>
                     <aside class="notes">
                       Read the definition. Point out the P is our estimated density whose variance we are trying to reduce
