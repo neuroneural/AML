@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 350" width="100%" height="100%">
+  <defs>
+    <style>
+      .title-text { font-family: 'Lato', sans-serif; font-size: 20px; font-weight: bold; fill: #586e75; }
+      .label-text { font-family: 'Lato', sans-serif; font-size: 15px; fill: #657b83; }
+      .math-text { font-family: 'Lato', 'Times New Roman', serif; font-size: 16px; font-style: italic; fill: #073642; }
+      .badge-text { font-family: 'Lato', sans-serif; font-size: 15px; font-weight: bold; fill: #ffffff; }
+      .fail-text { font-family: 'Lato', sans-serif; font-size: 14px; font-weight: bold; fill: #dc322f; }
+      .pass-text { font-family: 'Lato', sans-serif; font-size: 14px; font-weight: bold; fill: #859900; }
+      .axis-line { stroke: #93a1a1; stroke-width: 2.5; stroke-linecap: round; }
+      .interval-rect { fill: rgba(133, 153, 0, 0.22); stroke: #859900; stroke-width: 2.5; rx: 6; }
+      .panel-bg { fill: #fffdf6; stroke: #eee8d5; stroke-width: 2; rx: 12; }
+    </style>
+    <marker id="arrow-int" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#93a1a1" />
+    </marker>
+  </defs>
+
+  <rect x="2" y="2" width="336" height="344" class="panel-bg" />
+  <rect x="2" y="2" width="336" height="42" fill="#eee8d5" rx="12" />
+  <text x="170" y="28" text-anchor="middle" class="title-text">2. Intervals on ℝ</text>
+  <rect x="235" y="10" width="95" height="26" rx="13" fill="#268bd2" />
+  <text x="282" y="27" text-anchor="middle" class="badge-text">VCdim = 2</text>
+
+  <text x="20" y="70" class="math-text">h<tspan font-size="11" dy="3">[a,b]</tspan><tspan font-size="16" dy="-3">(x) = 𝟭[a ≤ x ≤ b]</tspan></text>
+
+  <!-- 2 Points Success -->
+  <text x="20" y="98" class="pass-text">✓ d = 2 (All 2² = 4 labelings possible)</text>
+  <line x1="25" y1="125" x2="315" y2="125" class="axis-line" marker-end="url(#arrow-int)" />
+  <rect x="75" y="112" width="70" height="26" class="interval-rect" />
+  <circle cx="110" cy="125" r="7" fill="#d33682" stroke="#073642" stroke-width="2" />
+  <circle cx="230" cy="125" r="7" fill="#268bd2" stroke="#073642" stroke-width="2" />
+  <text x="110" y="152" text-anchor="middle" class="label-text">● [in]</text>
+  <text x="230" y="152" text-anchor="middle" class="label-text">○ [out]</text>
+  <text x="290" y="98" style="font-size: 12px; fill: #859900; font-weight: bold; font-family: 'Lato', sans-serif;">(00, 01, 10, 11 ✓)</text>
+
+  <!-- 3 Points Fail -->
+  <text x="20" y="190" class="fail-text">✗ d = 3 (Fails: cannot get ● ○ ●)</text>
+  <line x1="25" y1="225" x2="315" y2="225" class="axis-line" marker-end="url(#arrow-int)" />
+  
+  <circle cx="70" cy="225" r="8" fill="#d33682" stroke="#073642" stroke-width="2" />
+  <text x="70" y="252" text-anchor="middle" class="label-text">x₁: <tspan font-weight="bold" fill="#d33682">●</tspan></text>
+  
+  <circle cx="170" cy="225" r="8" fill="#268bd2" stroke="#073642" stroke-width="2" />
+  <text x="170" y="252" text-anchor="middle" class="label-text">x₂: <tspan font-weight="bold" fill="#268bd2">○</tspan></text>
+
+  <circle cx="270" cy="225" r="8" fill="#d33682" stroke="#073642" stroke-width="2" />
+  <text x="270" y="252" text-anchor="middle" class="label-text">x₃: <tspan font-weight="bold" fill="#d33682">●</tspan></text>
+
+  <!-- Attempted interval enclosing x1 and x3 -->
+  <rect x="52" y="212" width="236" height="26" fill="none" stroke="#dc322f" stroke-width="2" stroke-dasharray="4,3" rx="4" />
+
+  <!-- Impossible note -->
+  <rect x="25" y="272" width="290" height="58" rx="6" fill="#fdf2f2" stroke="#dc322f" stroke-width="1" />
+  <text x="170" y="293" text-anchor="middle" class="fail-text">Any [a,b] containing x₁ and x₃</text>
+  <text x="170" y="313" text-anchor="middle" style="font-size: 13px; fill: #657b83; font-family: 'Lato', sans-serif;">must also enclose middle point x₂!</text>
+</svg>

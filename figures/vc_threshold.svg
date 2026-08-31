@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 350" width="100%" height="100%">
+  <defs>
+    <style>
+      .title-text { font-family: 'Lato', sans-serif; font-size: 20px; font-weight: bold; fill: #586e75; }
+      .label-text { font-family: 'Lato', sans-serif; font-size: 15px; fill: #657b83; }
+      .math-text { font-family: 'Lato', 'Times New Roman', serif; font-size: 16px; font-style: italic; fill: #073642; }
+      .badge-text { font-family: 'Lato', sans-serif; font-size: 15px; font-weight: bold; fill: #ffffff; }
+      .fail-text { font-family: 'Lato', sans-serif; font-size: 14px; font-weight: bold; fill: #dc322f; }
+      .pass-text { font-family: 'Lato', sans-serif; font-size: 14px; font-weight: bold; fill: #859900; }
+      .axis-line { stroke: #93a1a1; stroke-width: 2.5; stroke-linecap: round; }
+      .threshold-line { stroke: #859900; stroke-width: 3.5; stroke-dasharray: 6,4; }
+      .panel-bg { fill: #fffdf6; stroke: #eee8d5; stroke-width: 2; rx: 12; }
+    </style>
+    <marker id="arrow-th" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#93a1a1" />
+    </marker>
+  </defs>
+
+  <rect x="2" y="2" width="336" height="344" class="panel-bg" />
+  <rect x="2" y="2" width="336" height="42" fill="#eee8d5" rx="12" />
+  <text x="170" y="28" text-anchor="middle" class="title-text">1. Thresholds on ℝ</text>
+  <rect x="235" y="10" width="95" height="26" rx="13" fill="#268bd2" />
+  <text x="282" y="27" text-anchor="middle" class="badge-text">VCdim = 1</text>
+
+  <text x="20" y="70" class="math-text">h<tspan font-size="11" dy="3">a</tspan><tspan font-size="16" dy="-3">(x) = 𝟭[x &gt; a]</tspan></text>
+
+  <!-- 1 Point Success -->
+  <text x="20" y="98" class="pass-text">✓ d = 1 (Shattered: 2¹ = 2 labelings)</text>
+  <line x1="25" y1="125" x2="315" y2="125" class="axis-line" marker-end="url(#arrow-th)" />
+  <circle cx="95" cy="125" r="7" fill="#268bd2" stroke="#073642" stroke-width="2" />
+  <line x1="130" y1="110" x2="130" y2="140" class="threshold-line" />
+  <text x="95" y="152" text-anchor="middle" class="label-text">○ (a &gt; x₁)</text>
+  
+  <circle cx="245" cy="125" r="7" fill="#d33682" stroke="#073642" stroke-width="2" />
+  <line x1="210" y1="110" x2="210" y2="140" class="threshold-line" />
+  <text x="245" y="152" text-anchor="middle" class="label-text">● (a &lt; x₁)</text>
+
+  <!-- 2 Points Fail -->
+  <text x="20" y="190" class="fail-text">✗ d = 2 (Fails: cannot get ● ○)</text>
+  <line x1="25" y1="225" x2="315" y2="225" class="axis-line" marker-end="url(#arrow-th)" />
+  
+  <circle cx="110" cy="225" r="8" fill="#d33682" stroke="#073642" stroke-width="2" />
+  <text x="110" y="252" text-anchor="middle" class="label-text">x₁: <tspan font-weight="bold" fill="#d33682">● (+1)</tspan></text>
+  
+  <circle cx="230" cy="225" r="8" fill="#268bd2" stroke="#073642" stroke-width="2" />
+  <text x="230" y="252" text-anchor="middle" class="label-text">x₂: <tspan font-weight="bold" fill="#268bd2">○ (0)</tspan></text>
+
+  <!-- Impossible note -->
+  <rect x="25" y="272" width="290" height="58" rx="6" fill="#fdf2f2" stroke="#dc322f" stroke-width="1" />
+  <text x="170" y="293" text-anchor="middle" class="fail-text">x₁ &gt; a ⟹ x₂ &gt; a</text>
+  <text x="170" y="313" text-anchor="middle" style="font-size: 13px; fill: #657b83; font-family: 'Lato', sans-serif;">If x₁ is ● (+1), x₂ must also be ● (+1)</text>
+</svg>
