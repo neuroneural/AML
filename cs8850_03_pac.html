@@ -346,21 +346,21 @@
                   </section>
 
                   <section>
-                    <h3>What about infinite classes?</h3>
-                    <h4>VC Dimension: "Effective Size" of $\cal H$</h4>
-                    <div class="fragment" data-fragment-index="0" style="margin-bottom: 0.4em; text-align: left; font-size: 0.88em;">
+                    <h3 style="margin-bottom: 2px;">What about infinite classes?</h3>
+                    <h4 style="margin-top: 0; margin-bottom: 8px; font-size: 0.85em; color: #586e75;">VC Dimension: "Effective Size" of $\cal H$</h4>
+                    <div class="fragment" data-fragment-index="0" style="margin-bottom: 3px; text-align: left; font-size: 0.78em; line-height: 1.3;">
                       For finite ${\cal H}$, complexity enters through $\ln|{\cal H}|$. But for lines in $\RR^2$, $|{\cal H}| = \infty \implies \ln|{\cal H}| = \infty$.
                     </div>
-                    <div class="fragment" data-fragment-index="1" style="margin-bottom: 0.4em; text-align: left; font-size: 0.88em;">
+                    <div class="fragment" data-fragment-index="1" style="margin-bottom: 5px; text-align: left; font-size: 0.78em; line-height: 1.3;">
                       <b>Intuition:</b> VC dimension measures the <b>flexibility</b> of a class — how many independent binary labeling decisions it can make.
                     </div>
-                    <blockquote class="fragment" data-fragment-index="2" style="text-align: left; background-color: #eee8d5; width: 100%; font-size: 0.82em;">
+                    <blockquote class="fragment" data-fragment-index="2" style="text-align: left; background-color: #eee8d5; width: 100%; font-size: 0.75em; line-height: 1.35; margin: 5px auto; padding: 6px 12px; box-sizing: border-box;">
                       <b>The Labeling Game &amp; Shattering:</b><br>
                       Give me $d$ data points and arbitrarily assign each as <span style="color:#d33682; font-weight: bold;">●</span> or <span style="color:#268bd2; font-weight: bold;">○</span>.<br>
                       If ${\cal H}$ can reproduce <b>every one of the $2^d$ possible labelings</b>, then ${\cal H}$ <b>shatters</b> those $d$ points.<br>
                       <b>VC dimension $\text{VCdim}({\cal H})$</b> is the largest $d$ for which <i>some</i> arrangement of $d$ points can be shattered.
                     </blockquote>
-                    <div class="fragment" data-fragment-index="3" style="text-align: left; font-size: 0.78em; background-color: #fdf6e3; border-left: 5px solid #cb4b16; padding: 6px 12px; margin-top: 8px;">
+                    <div class="fragment" data-fragment-index="3" style="text-align: left; font-size: 0.72em; line-height: 1.3; background-color: #fdf6e3; border-left: 5px solid #cb4b16; padding: 5px 10px; margin-top: 5px; box-sizing: border-box;">
                       <b>$\exists$ vs $\forall$ subtlety:</b><br>
                       • $\text{VCdim}({\cal H}) \ge d \iff \mathbf{\exists}$ at least <i>one</i> set of $d$ points that is shattered.<br>
                       • To prove $\text{VCdim}({\cal H}) \le d \iff$ show that <b>no</b> set of $d+1$ points can be shattered.
@@ -392,20 +392,20 @@
                   </section>
 
                   <section>
-                    <h3>Why do we care? VC dimension &amp; PAC</h3>
-                    <div class="fragment" data-fragment-index="0" style="text-align: left; font-size: 0.88em; margin-bottom: 0.5em;">
+                    <h3 style="margin-bottom: 8px;">Why do we care? VC dimension &amp; PAC</h3>
+                    <div class="fragment" data-fragment-index="0" style="text-align: left; font-size: 0.82em; margin-bottom: 0.4em;">
                       With finite ${\cal H}$, sample complexity was $m \ge \frac{\ln|{\cal H}| + \ln(1/\delta)}{\epsilon}$.
                     </div>
-                    <div class="fragment" data-fragment-index="1" style="text-align: left; font-size: 0.88em; margin-bottom: 0.5em;">
+                    <div class="fragment" data-fragment-index="1" style="text-align: left; font-size: 0.82em; margin-bottom: 0.4em;">
                       For infinite ${\cal H}$, $\operatorname{VCdim}({\cal H})$ replaces $\ln|{\cal H}|$:
-                      <blockquote style="text-align: center; background-color: #eee8d5; width: 85%; margin: 10px auto; padding: 10px 0; font-size: 0.95em;">
+                      <blockquote style="text-align: center; background-color: #eee8d5; width: 85%; margin: 6px auto; padding: 6px 0; font-size: 0.9em;">
                         $m = O\left(\frac{\operatorname{VCdim}({\cal H}) + \ln(1/\delta)}{\epsilon}\right)$
                       </blockquote>
                     </div>
-                    <div class="fragment" data-fragment-index="2" style="text-align: center; font-size: 0.82em; margin: 15px auto; padding: 10px; background-color: #eee8d5; border-radius: 8px;">
+                    <div class="fragment" data-fragment-index="2" style="text-align: center; font-size: 0.76em; margin: 8px auto; padding: 6px; background-color: #eee8d5; border-radius: 6px;">
                       $\text{Higher VCdim} \implies \text{more labelings} \implies \text{easier to fit noise} \implies \text{more data needed to prevent overfitting}$
                     </div>
-                    <div class="fragment" data-fragment-index="3" style="text-align: left; font-size: 0.85em; margin-top: 10px;">
+                    <div class="fragment" data-fragment-index="3" style="text-align: left; font-size: 0.8em; margin-top: 6px;">
                       <b>Fundamental Theorem of Learning Theory:</b> A hypothesis class ${\cal H}$ is PAC learnable (using ERM) <b>if and only if</b> $\operatorname{VCdim}({\cal H}) < \infty$!
                     </div>
                     <aside class="notes">
@@ -872,7 +872,7 @@
                   hash: true,
                   margin: 0.01,
                   minScale: 0.01,
-                  maxScale: 1.23,
+                  maxScale: 1.2,
 
                   menu: {
                       themes: false,
