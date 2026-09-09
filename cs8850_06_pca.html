@@ -1827,6 +1827,37 @@
             \]
             where $|\lambda_1| > |\lambda_2| > \cdots |\lambda_K|$
             </blockquote>
+
+            <div class="fragment" data-fragment-index="0" style="font-size: 24px; margin-top: 25px;">
+              <p style="color: #268bd2; margin-bottom: 6px; font-weight: bold;">
+                Geometric &harr; Statistical Bridge:
+              </p>
+              Axis directions = eigenvectors ${\bf w}_k$ (orientation of the data cloud)<br>
+              Semi-axis lengths = $\sqrt{\lambda_k}$ (standard deviation along that axis: $\sigma_k = \sqrt{\text{Var}}$)<br>
+              <span style="color: #859900; font-weight: bold;">Longest principal axis ${\bf w}_1$ &harr; direction of maximal variance!</span>
+            </div>
+
+            <aside class="notes">
+              TALKING POINTS FOR CLASS:
+              1. Where does this come from? (It doesn't come out of nowhere!):
+                 - In standard Cartesian geometry, an axis-aligned ellipse is: x^2/a^2 + y^2/b^2 = 1.
+                 - In matrix form, this is x^T D^{-1} x = 1, where the diagonal entries are a^2 and b^2.
+                 - When covariance C is not diagonal, the ellipse is simply rotated in space!
+              2. Spectral Theorem connection (from earlier in the lecture):
+                 - Because C is real and symmetric, C = W D W^T.
+                 - Rotating into the eigenvector basis W diagonalizes C and turns the tilted ellipsoid back into an axis-aligned ellipse!
+                 - Therefore, the axes of the tilted ellipse MUST align with the columns of W (the eigenvectors).
+              3. The Connection to Maximal Variance:
+                 - The level surface x^T C^{-1} x = 1 is the 1-standard-deviation (1-sigma) contour of the Gaussian cloud.
+                 - The semi-axis length along w_k is a = sqrt(lambda_k) = sigma_k.
+                 - The longest axis of that data cloud is where the data spreads the furthest--meaning MAXIMAL VARIANCE!
+                 - The shortest axis has the least spread (minimal variance).
+              4. Foreshadowing PCA Optimization (Slide 5.19):
+                 - Tell the students: "Right now we see this purely geometrically from the shape of the data ellipse.
+                   In a few slides, we will set up the optimization problem: max Var(w^T x) subject to ||w||=1.
+                   Calculus (Lagrange multipliers) will give us the EXACT SAME eigenvalue equation C w = lambda w!
+                   Geometry and optimization are two sides of the same coin."
+            </aside>
           </section>
 
           <section>
