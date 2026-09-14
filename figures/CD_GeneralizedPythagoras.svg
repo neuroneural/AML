@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 460" width="700" height="460">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#b58900" />
+    </marker>
+  </defs>
+  <style>
+    .edge { stroke: #073642; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+    .diag { stroke: #b58900; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+    .label { font-family: 'Times New Roman', Georgia, serif; font-size: 26px; font-style: italic; fill: #073642; text-anchor: middle; }
+    .sub { font-size: 18px; }
+  </style>
+
+  <!-- Edges -->
+  <!-- Back / top / right edges -->
+  <line x1="290" y1="80" x2="650" y2="80" class="edge" />
+  <line x1="650" y1="80" x2="650" y2="250" class="edge" />
+  <line x1="290" y1="80" x2="290" y2="250" class="edge" />
+  <line x1="290" y1="250" x2="650" y2="250" class="edge" />
+
+  <!-- Connecting edges back-to-front -->
+  <line x1="290" y1="80" x2="60" y2="240" class="edge" />
+  <line x1="650" y1="80" x2="420" y2="240" class="edge" />
+  <line x1="290" y1="250" x2="60" y2="410" class="edge" />
+  <line x1="650" y1="250" x2="420" y2="410" class="edge" />
+
+  <!-- Front face edges -->
+  <line x1="60" y1="410" x2="420" y2="410" class="edge" />
+  <line x1="420" y1="410" x2="420" y2="240" class="edge" />
+  <line x1="420" y1="240" x2="60" y2="240" class="edge" />
+  <line x1="60" y1="240" x2="60" y2="410" class="edge" />
+
+  <!-- Diagonals -->
+  <!-- Base diagonal d1: from (290, 250) [back-bottom-left] to (420, 410) [front-bottom-right] -->
+  <line x1="290" y1="250" x2="420" y2="410" class="diag" />
+
+  <!-- Space diagonal d2: from (290, 80) [back-top-left] to (420, 410) [front-bottom-right] -->
+  <line x1="290" y1="80" x2="420" y2="410" class="diag" />
+
+  <!-- Pointer arrows & Labels for d1 and d2 -->
+  <line x1="330" y1="335" x2="350" y2="332" marker-start="url(#arrow)" stroke="#b58900" stroke-width="2" />
+  <text x="310" y="340" class="label" fill="#b58900">d<tspan dy="5" class="sub">1</tspan></text>
+
+  <line x1="345" y1="180" x2="375" y2="180" marker-start="url(#arrow)" stroke="#b58900" stroke-width="2" />
+  <text x="395" y="187" class="label" fill="#b58900">d<tspan dy="5" class="sub">2</tspan></text>
+
+  <!-- Coordinate length labels: x, y, z -->
+  <text x="230" y="440" class="label">x</text>
+  <text x="190" y="330" class="label">y</text>
+  <text x="270" y="180" class="label">z</text>
+</svg>
