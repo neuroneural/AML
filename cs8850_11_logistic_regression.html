@@ -872,16 +872,25 @@
 
                   <section>
                     <h3>Newton-Raphson update for logistic regression</h3>
-                    <ul style="list-style-type: none;">
+                    <div style="font-size: 21px; color: #586e75; margin-top: -12px; margin-bottom: 10px;">
+                      <b>IRLS:</b> <u>I</u>teratively <u>R</u>eweighted <u>L</u>east <u>S</u>quares
+                    </div>
+                    <ul style="list-style-type: none; font-size: 27px; line-height: 1.32; margin: 0 auto;">
                       <li class="fragment roll-in"> $\nabla_{\vec{w}} \ell = {\bf X}^T (\vec{\sigma} - \vec{l})$
                       <li class="fragment roll-in"> ${\bf H} = \nabla\nabla_{\vec{w}} \ell = {\bf X}^T{\bf W}{\bf X}$
                       <li class="fragment roll-in"> ${\bf W}_{i,i} = \sigma_i(1-\sigma_i)$
                       <li class="fragment roll-in"> $\vec{w}_{new} = \vec{w}_{old} - (\bf{X}^T\bf{W}\bf{X})^{-1}\bf{X}^T(\vec{\sigma} - \vec{l})$
                       <li class="fragment roll-in"> bring $(\bf{X}^T\bf{W}\bf{X})^{-1}$ out
                       <li class="fragment roll-in"> $\vec{w}_{new} = (\bf{X}^T\bf{W}\bf{X})^{-1}(\bf{X}^T\bf{W}\bf{X}\vec{w}_{old} - \bf{X}^T(\vec{\sigma} - \vec{l}))$
-                      <li class="fragment roll-in"> $\vec{z} = \bf{X}\vec{w}_{old} - \bf{W}^{-1}(\vec{\sigma} - \vec{l})$
-                      <li class="fragment roll-in"> $\vec{w}_{new} = (\bf{X}^T\bf{W}\bf{X})^{-1}\bf{X}^T\bf{W}\vec{z}$
+                      <li class="fragment roll-in"> $\vec{z} = \bf{X}\vec{w}_{old} - \bf{W}^{-1}(\vec{\sigma} - \vec{l})$ &emsp;<span style="font-size: 19px; color: #586e75;">(adjusted response)</span>
+                      <li class="fragment roll-in"> $\vec{w}_{new} = (\bf{X}^T\bf{W}\bf{X})^{-1}\bf{X}^T\bf{W}\vec{z}$ &emsp;<span style="font-size: 20px; color: #268bd2; font-weight: bold;">&larr; Weighted Least Squares form</span>
                     </ul>
+                    <div class="fragment roll-in" style="margin-top: 10px; font-size: 19px; background: rgba(238, 232, 213, 0.7); border-left: 4px solid #268bd2; padding: 6px 14px; text-align: left; max-width: 840px; margin-left: auto; margin-right: auto; color: #073642;">
+                      <b>Why IRLS?</b> Because weights ${\bf W}_{i,i} = \sigma_i(1-\sigma_i)$ depend on $\vec{w}$, we solve weighted least squares repeatedly with recomputed weights until convergence.
+                    </div>
+                    <aside class="notes">
+                      Compare this to linear regression from the previous slide! In linear regression, the closed-form OLS solution is w = (X^T X)^(-1) X^T y in a single step. Here, because of the sigmoid non-linearity, the Hessian is X^T W X where W is a diagonal matrix of variances sigma_i(1 - sigma_i). When you pull out (X^T W X)^(-1), you get the EXACT algebraic form of Weighted Least Squares with effective target z! But because the weights W depend on w, you cannot solve it in one step: you must recompute W at each iteration and re-solve. That is why Newton-Raphson applied to logistic regression is universally known as Iteratively Reweighted Least Squares (IRLS).
+                    </aside>
                   </section>
 
                 </section>
