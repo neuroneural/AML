@@ -202,38 +202,50 @@
                   </section>
 
                   <section>
-                    <h2>Gaussian NB  as a linear classifier</h2>
-                    <ul  style="list-style-type: none; font-size: 36px; ">
-                      <li class="fragment roll-in"> Decision boundary:
-                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 30px;">
-                          $\log\frac{\prod_{i=1}^d \prob{P}{x_i|y=0}\prob{P}{y=0}}{\prod_{i=1}^d \prob{P}{x_i|y=1}\prob{P}{y=1}} = 0$
-                          $\log\frac{\prod_{i=1}^d \prob{P}{x_i|y=0}\prob{P}{y=0}}{\prod_{i=1}^d \prob{P}{x_i|y=1}\prob{P}{y=1}}= \log\frac{1 - \pi}{\pi} +\sum_{i=1}^d \log\frac{\prob{P}{x_i|y=0}}{\prob{P}{x_i|y=1}}$
-                    </blockquote>
-                      <li class="fragment roll-in"> If you do the algebra:
-                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 30px;">
+                    <h2>Gaussian NB as a linear classifier</h2>
+                    <div style="font-size: 21px; color: #586e75; margin-top: -12px; margin-bottom: 8px;">
+                      Condition: Equal Feature Variance Across Classes ($\sigma_{i,0}^2 = \sigma_{i,1}^2 = \sigma_i^2$)
+                    </div>
+                    <ul style="list-style-type: none; font-size: 32px; line-height: 1.35;">
+                      <li class="fragment roll-in"> Decision boundary ($\log\text{-odds} = 0$):
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 26px; padding: 6px 12px; margin: 6px 0;">
+                          $\log\frac{\prod_{i=1}^d \prob{P}{x_i|y=0}\prob{P}{y=0}}{\prod_{i=1}^d \prob{P}{x_i|y=1}\prob{P}{y=1}} = 0 \implies \log\frac{1 - \pi}{\pi} +\sum_{i=1}^d \log\frac{\prob{P}{x_i|y=0}}{\prob{P}{x_i|y=1}} = 0$
+                        </blockquote>
+                      <li class="fragment roll-in"> When variances are equal, quadratic $x_i^2$ terms cancel:
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 26px; padding: 6px 12px; margin: 6px 0;">
                           $\log\frac{1 - \pi}{\pi} +\sum_{i=1}^d \frac{\mu^2_{i,1} - \mu^2_{i,0}}{2\sigma_i^2} + \sum_{i=1}^d \frac{\mu_{i,1} - \mu_{i,0}}{\sigma_i^2} x_i = w_0 + \sum_{i=1}^d w_i x_i$
-                    </blockquote>
+                        </blockquote>
                     </ul>
+                    <aside class="notes">
+                      Notice the mathematical condition that makes GNB linear: both classes must share the same feature variances (\sigma_{i,0}^2 = \sigma_{i,1}^2 = \sigma_i^2). In that case, the quadratic terms x_i^2 / (2\sigma_i^2) cancel out completely! The covariance can be diagonal (elliptical, \sigma_1 \ne \sigma_2), but it must be equal across classes. If class variances differ, the x_i^2 terms survive, giving a curved quadratic boundary (QDA).
+                    </aside>
                   </section>
 
                   <section>
                     <h2>Gaussian NB implies Logistic Sigmoid!</h2>
-                    <ul style="list-style-type: none; font-size: 34px;">
+                    <div style="font-size: 21px; color: #586e75; margin-top: -12px; margin-bottom: 8px;">
+                      Equal Class Variances ($\sigma_{i,0}^2 = \sigma_{i,1}^2$) &implies; Linear Log-Odds &implies; Sigmoid Posterior
+                    </div>
+                    <ul style="list-style-type: none; font-size: 30px; line-height: 1.35;">
                       <li class="fragment roll-in"> From previous slide, the log-odds ratio is linear:
-                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 28px;">
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 26px; padding: 6px 12px; margin: 6px 0;">
                           $\log\frac{\prob{P}{Y=1|\vec{x}}}{\prob{P}{Y=0|\vec{x}}} = w_0 + \sum_{i=1}^d w_i x_i = w_0 + \vec{w}^T\vec{x}$
                         </blockquote>
                       <li class="fragment roll-in"> Invert to solve for the posterior $\prob{P}{Y=1|\vec{x}}$:
-                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 28px;">
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 26px; padding: 6px 12px; margin: 6px 0;">
                           $\prob{P}{Y=1|\vec{x}} = \frac{1}{1 + \exp(-(w_0 + \vec{w}^T\vec{x}))} = \sigma(w_0 + \vec{w}^T\vec{x})$
                         </blockquote>
                       <li class="fragment roll-in">
-                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 26px; width: 100%;">
-                          Same functional form! But GNB assumes conditional independence &amp; normality, whereas Logistic Regression learns $\vec{w}$ directly.
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 22px; width: 100%; line-height: 1.35; padding: 8px 12px; margin-top: 8px;">
+                          <b>Equal Variance Condition:</b> Quadratic $x_i^2$ terms cancel only when classes share feature variance ($\sigma_{i,0}^2 = \sigma_{i,1}^2$). If class variances differ, the boundary curves (Quadratic NB / QDA).<br>
+                          <span style="font-size: 19px; opacity: 0.95;">(Note: Unequal priors $\pi \ne 0.5$ only shift the scalar intercept $w_0$ parallelly, keeping the boundary linear).</span>
                         </blockquote>
                     </ul>
                     <aside class="notes">
-                      In Lecture 10, we saw that Gaussian Naive Bayes models class-conditional distributions as Gaussians with diagonal covariance. When variances are shared between classes, the quadratic terms cancel completely! The log-posterior odds ratio is strictly linear: w0 + w^T x. When you invert this log-odds equation to solve for P(Y=1|x), you get the logistic sigmoid! This reveals a profound truth: Gaussian Naive Bayes and Logistic Regression share the EXACT same posterior form. So what is the difference? GNB is generative: it fits means and variances by joint MLE, assuming independence. Logistic Regression is discriminative: it learns w directly by conditional MLE without assuming Gaussianity or independence!
+                      Two essential mathematical nuances to highlight:
+                      1. Does GNB require spherical covariance (\sigma_1 = \sigma_2) to be linear? No! Covariance can be diagonal (elliptical), but the two classes must SHARE that covariance (\sigma_{i,0} = \sigma_{i,1}). When variances are equal across classes, the x_i^2 terms cancel, leaving a strictly linear boundary. If class variances differ, the quadratic terms survive and the boundary curves into an ellipse/hyperbola (QDA).
+                      2. Do unequal priors curve the boundary? No! The prior ratio \ln(\pi / (1-\pi)) is a pure scalar constant that enters solely into the bias w0. Changing priors shifts the linear hyperplane parallel to itself without curving it.
+                      3. Bottom line: GNB (generative) with shared class variance has the EXACT same posterior sigmoid form as Logistic Regression (discriminative).
                     </aside>
                   </section>
 
