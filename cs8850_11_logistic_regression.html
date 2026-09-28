@@ -119,8 +119,9 @@
 	          <section>
 	            <h3>Outline of this lecture</h3>
                     <ul>
-                      <li class="fragment roll-in"> Naïve Bayes recap &amp; The GNB Bridge
+                      <li class="fragment roll-in"> Naïve Bayes recap: Probabilistic Linear Boundaries
                       <li class="fragment roll-in"> Defining Logistic Regression &amp; Geometry
+                      <li class="fragment roll-in"> The GNB &ndash; Logistic Regression Connection
                       <li class="fragment roll-in"> Solving Logistic Regression (MLE &amp; IRLS)
                       <li class="fragment roll-in"> Take Home Points
 	            </ul>
@@ -213,95 +214,21 @@
                         </blockquote>
                       <li class="fragment roll-in"> When variances are equal, quadratic $x_i^2$ terms cancel:
                         <blockquote style="background-color: #eee8d5; width: 100%; font-size: 26px; padding: 6px 12px; margin: 6px 0;">
-                          $\log\frac{1 - \pi}{\pi} +\sum_{i=1}^d \frac{\mu^2_{i,1} - \mu^2_{i,0}}{2\sigma_i^2} + \sum_{i=1}^d \frac{\mu_{i,1} - \mu_{i,0}}{\sigma_i^2} x_i = w_0 + \sum_{i=1}^d w_i x_i$
-                        </blockquote>
-                    </ul>
-                    <aside class="notes">
-                      Notice the mathematical condition that makes GNB linear: both classes must share the same feature variances (\sigma_{i,0}^2 = \sigma_{i,1}^2 = \sigma_i^2). In that case, the quadratic terms x_i^2 / (2\sigma_i^2) cancel out completely! The covariance can be diagonal (elliptical, \sigma_1 \ne \sigma_2), but it must be equal across classes. If class variances differ, the x_i^2 terms survive, giving a curved quadratic boundary (QDA).
-                    </aside>
-                  </section>
-
-                  <section>
-                    <h2>Gaussian NB implies Logistic Sigmoid!</h2>
-                    <div style="font-size: 21px; color: #586e75; margin-top: -12px; margin-bottom: 8px;">
-                      Equal Class Variances ($\sigma_{i,0}^2 = \sigma_{i,1}^2$) $\implies$ Linear Log-Odds $\implies$ Sigmoid Posterior
-                    </div>
-                    <ul style="list-style-type: none; font-size: 30px; line-height: 1.35;">
-                      <li class="fragment roll-in"> From previous slide, the log-odds ratio is linear:
-                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 26px; padding: 6px 12px; margin: 6px 0;">
-                          $\log\frac{\prob{P}{Y=1|\vec{x}}}{\prob{P}{Y=0|\vec{x}}} = w_0 + \sum_{i=1}^d w_i x_i = w_0 + \vec{w}^T\vec{x}$
-                        </blockquote>
-                      <li class="fragment roll-in"> Invert to solve for the posterior $\prob{P}{Y=1|\vec{x}}$:
-                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 26px; padding: 6px 12px; margin: 6px 0;">
-                          $\prob{P}{Y=1|\vec{x}} = \frac{1}{1 + \exp(-(w_0 + \vec{w}^T\vec{x}))} = \sigma(w_0 + \vec{w}^T\vec{x})$
+                          $\log\frac{1 - \pi}{\pi} +\sum_{i=1}^d \frac{\mu^2_{i,1} - \mu^2_{i,0}}{2\sigma_i^2} + \sum_{i=1}^d \frac{\mu_{i,1} - \mu_{i,0}}{\sigma_i^2} x_i = w_0 + \sum_{i=1}^d w_i x_i = 0$
                         </blockquote>
                       <li class="fragment roll-in">
                         <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 22px; width: 100%; line-height: 1.35; padding: 8px 12px; margin-top: 8px;">
-                          <b>Equal Variance Condition:</b> Quadratic $x_i^2$ terms cancel only when classes share feature variance ($\sigma_{i,0}^2 = \sigma_{i,1}^2$). If class variances differ, the boundary curves (Quadratic Discriminant Analysis / QDA).<br>
-                          <span style="font-size: 19px; opacity: 0.95;">(Note: Unequal priors $\pi \ne 0.5$ only shift the scalar intercept $w_0$ parallelly, keeping the boundary linear).</span>
+                          <b>A Probabilistic Linear Boundary:</b> $w_0 + \vec{w}^T\vec{x} = 0$<br>
+                          <span style="font-size: 19px; opacity: 0.95;">(If class variances differ $\sigma_{i,0}^2 \ne \sigma_{i,1}^2$, quadratic terms survive $\implies$ curved boundary: Quadratic Discriminant Analysis / QDA).</span>
                         </blockquote>
                     </ul>
                     <aside class="notes">
-                      Two essential mathematical nuances to highlight:
-                      1. Does GNB require spherical covariance (\sigma_1 = \sigma_2) to be linear? No! Covariance can be diagonal (elliptical), but the two classes must SHARE that covariance (\sigma_{i,0} = \sigma_{i,1}). When variances are equal across classes, the x_i^2 terms cancel, leaving a strictly linear boundary. If class variances differ, the quadratic terms survive and the boundary curves into an ellipse/hyperbola (QDA).
-                      2. Do unequal priors curve the boundary? No! The prior ratio \ln(\pi / (1-\pi)) is a pure scalar constant that enters solely into the bias w0. Changing priors shifts the linear hyperplane parallel to itself without curving it.
-                      3. Bottom line: GNB (generative) with shared class variance has the EXACT same posterior sigmoid form as Logistic Regression (discriminative).
-                    </aside>
-                  </section>
-
-                  <!-- Interactive Demo: GNB vs. Logistic Regression -->
-                  <section>
-                    <h3>GNB vs. Logistic Regression</h3>
-                    <div style="font-size: 18px; color: #586e75; margin-top: -10px; margin-bottom: 6px;">
-                      Generative (Diagonal Covariance) vs. Discriminative (Direct Boundary)
-                    </div>
-
-                    <div id="gnb-demo-container" style="display: flex; flex-direction: column; align-items: center; width: 940px; margin: 0 auto; user-select: none;">
-                      <!-- Top Telemetry Bar -->
-                      <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-bottom: none; border-radius: 8px 8px 0 0; padding: 5px 12px; box-sizing: border-box; font-size: 13px; color: #073642;">
-                        <div style="display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 11px; white-space: nowrap; flex-shrink: 0;">
-                          <span style="color: #268bd2; display: inline-flex; align-items: center; gap: 3px;" title="True underlying class distribution (rotates with &rho;)">
-                            <svg width="15" height="9"><ellipse cx="7.5" cy="4.5" rx="6.5" ry="3.5" fill="none" stroke="#268bd2" stroke-width="2"/></svg>
-                            True Density
-                          </span>
-                          <span style="color: #586e75; display: inline-flex; align-items: center; gap: 3px;" title="GNB model: forced to axis-aligned diagonal covariance">
-                            <svg width="15" height="9"><ellipse cx="7.5" cy="4.5" rx="6.5" ry="3.5" fill="none" stroke="#586e75" stroke-width="1.8" stroke-dasharray="3,2"/></svg>
-                            GNB Model
-                          </span>
-                          <span style="color: #cb4b16; display: inline-flex; align-items: center; gap: 3px;">
-                            <svg width="16" height="9"><line x1="0" y1="4.5" x2="16" y2="4.5" stroke="#cb4b16" stroke-width="2.5" stroke-dasharray="4,3"/></svg>
-                            GNB: <span id="gnb-acc-val">--</span>
-                          </span>
-                          <span style="color: #859900; display: inline-flex; align-items: center; gap: 3px;">
-                            <svg width="16" height="9"><line x1="0" y1="4.5" x2="16" y2="4.5" stroke="#859900" stroke-width="3"/></svg>
-                            LR: <span id="lr-acc-val">--</span>
-                          </span>
-                        </div>
-                        <div id="gnb-lr-status" style="font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 520px; text-align: right;"></div>
-                      </div>
-
-                      <!-- Canvas Area -->
-                      <div style="position: relative; width: 100%; height: 350px; box-sizing: border-box;">
-                        <canvas id="gnb-lr-canvas" width="940" height="350" style="display: block; width: 100%; height: 100%; border-radius: 0 0 8px 8px; border: 1px solid #93a1a1; box-shadow: 0 3px 10px rgba(0,0,0,0.12); background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
-                      </div>
-
-                      <!-- Controls Toolbar -->
-                      <div style="margin-top: 6px; width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px; padding: 5px 12px; box-sizing: border-box; font-size: 12px; color: #586e75;">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                          <b>Presets:</b>
-                          <button id="gnb-btn-indep" style="cursor: pointer; padding: 2px 7px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Independent (&rho;=0)</button>
-                          <button id="gnb-btn-corr" style="cursor: pointer; padding: 2px 7px; border: 1px solid #b58900; background: #eee8d5; border-radius: 4px; font-size: 11px; font-weight: bold;">Correlated (&rho;=0.8)</button>
-                          <button id="gnb-btn-outlier" style="cursor: pointer; padding: 2px 7px; border: 1px solid #dc322f; background: #fdf6e3; color: #dc322f; border-radius: 4px; font-size: 11px;">Toggle Outlier</button>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                          <label for="gnb-lr-rho"><b>Feature Correlation &rho;:</b></label>
-                          <input type="range" id="gnb-lr-rho" min="-0.85" max="0.85" step="0.05" value="0.75" style="width: 140px;">
-                          <span id="gnb-lr-rho-val" style="font-family: monospace; font-weight: bold; width: 35px;">0.75</span>
-                        </div>
-                      </div>
-                    </div>
-                    <aside class="notes">
-                      Notice the difference between the two models. When features are uncorrelated (rho = 0), GNB's conditional independence assumption holds, and its boundary is identical to Logistic Regression. But when features are correlated (rho = 0.8), the true clusters tilt diagonally. Because GNB assumes independence, it is forced to fit axis-aligned ellipses! Its boundary cuts sub-optimally across the data, dropping accuracy. Logistic regression, on the other hand, makes NO independence assumption: it learns the boundary directly, automatically rotating with the correlation!
+                      Key conceptual point: a linear decision boundary can be obtained probabilistically!
+                      Earlier in the course, we studied the Perceptron, which is a purely algorithmic linear classifier that updates its hyperplane on misclassified points.
+                      Here, Gaussian Naïve Bayes demonstrates that a strictly linear decision boundary ($w_0 + \vec{w}^T\vec{x} = 0$) also emerges purely probabilistically from Gaussian class-conditional distributions when classes share feature variance.
+                      Notice:
+                      1. Shared variance (\sigma_{i,0} = \sigma_{i,1}) across classes cancels the quadratic x_i^2 terms. If variances differ, the boundary curves into Quadratic Discriminant Analysis (QDA).
+                      2. Unequal priors \pi \ne 0.5 only shift the scalar intercept w0 parallelly without bending the line.
                     </aside>
                   </section>
 
@@ -323,6 +250,11 @@
                       <li class="fragment roll-in"> Let's learn $\prob{P}{y|x}$ directly!
                       <li class="fragment roll-in"> Or learn the decision boundary directly
                     </ul>
+                    <aside class="notes">
+                      In Gaussian Naïve Bayes, we modeled the full generative distributions P(x|y) and P(y) to obtain a linear decision boundary. But estimating all those generative parameters requires strong assumptions (like feature independence).
+                      If our primary goal is classification, why model the entire data generation process? Why not model P(y|x) or the linear boundary directly?
+                      This motivates discriminative modeling—which brings us to Logistic Regression!
+                    </aside>
                   </section>
 
                 </section>
@@ -677,11 +609,91 @@
                     </aside>
                   </section>
 
-                </section>
-
-                <section>
                   <section>
-                    <h2>Solving Logistic regression</h2>
+                    <h2>Gaussian NB implies Logistic Sigmoid!</h2>
+                    <div style="font-size: 21px; color: #586e75; margin-top: -12px; margin-bottom: 8px;">
+                      Equal Class Variances ($\sigma_{i,0}^2 = \sigma_{i,1}^2$) $\implies$ Linear Log-Odds $\implies$ Sigmoid Posterior
+                    </div>
+                    <ul style="list-style-type: none; font-size: 30px; line-height: 1.35;">
+                      <li class="fragment roll-in"> Recall: in Gaussian NB with equal variances, log-odds is linear:
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 26px; padding: 6px 12px; margin: 6px 0;">
+                          $\log\frac{\prob{P}{Y=1|\vec{x}}}{\prob{P}{Y=0|\vec{x}}} = w_0 + \sum_{i=1}^d w_i x_i = w_0 + \vec{w}^T\vec{x}$
+                        </blockquote>
+                      <li class="fragment roll-in"> Inverting log-odds yields the exact same Logistic Sigmoid:
+                        <blockquote style="background-color: #eee8d5; width: 100%; font-size: 26px; padding: 6px 12px; margin: 6px 0;">
+                          $\prob{P}{Y=1|\vec{x}} = \frac{1}{1 + \exp(-(w_0 + \vec{w}^T\vec{x}))} = \sigma(w_0 + \vec{w}^T\vec{x})$
+                        </blockquote>
+                      <li class="fragment roll-in">
+                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 22px; width: 100%; line-height: 1.35; padding: 8px 12px; margin-top: 8px;">
+                          <b>Equal Variance Condition:</b> Quadratic $x_i^2$ terms cancel only when classes share feature variance ($\sigma_{i,0}^2 = \sigma_{i,1}^2$). If class variances differ, the boundary curves (Quadratic Discriminant Analysis / QDA).<br>
+                          <span style="font-size: 19px; opacity: 0.95;">(Note: Unequal priors $\pi \ne 0.5$ only shift the scalar intercept $w_0$ parallelly, keeping the boundary linear).</span>
+                        </blockquote>
+                    </ul>
+                    <aside class="notes">
+                      Before we solve for the weights w, let's tie this directly back to our Gaussian Naïve Bayes discussion from earlier:
+                      1. GNB with shared class variance produces the EXACT same posterior functional form as Logistic Regression: \sigma(w^T x + w0)!
+                      2. Generative vs. Discriminative distinction: GNB assumes features are conditionally independent Gaussians and estimates means and variances (\mu, \sigma^2, \pi). Logistic Regression bypasses feature distributions entirely and learns w directly.
+                      3. If variances differ across classes, the quadratic terms do not cancel, producing a curved boundary (QDA).
+                    </aside>
+                  </section>
+
+                  <!-- Interactive Demo: GNB vs. Logistic Regression -->
+                  <section>
+                    <h3>GNB vs. Logistic Regression</h3>
+                    <div style="font-size: 18px; color: #586e75; margin-top: -10px; margin-bottom: 6px;">
+                      Generative (Diagonal Covariance) vs. Discriminative (Direct Boundary)
+                    </div>
+
+                    <div id="gnb-demo-container" style="display: flex; flex-direction: column; align-items: center; width: 940px; margin: 0 auto; user-select: none;">
+                      <!-- Top Telemetry Bar -->
+                      <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-bottom: none; border-radius: 8px 8px 0 0; padding: 5px 12px; box-sizing: border-box; font-size: 13px; color: #073642;">
+                        <div style="display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 11px; white-space: nowrap; flex-shrink: 0;">
+                          <span style="color: #268bd2; display: inline-flex; align-items: center; gap: 3px;" title="True underlying class distribution (rotates with &rho;)">
+                            <svg width="15" height="9"><ellipse cx="7.5" cy="4.5" rx="6.5" ry="3.5" fill="none" stroke="#268bd2" stroke-width="2"/></svg>
+                            True Density
+                          </span>
+                          <span style="color: #586e75; display: inline-flex; align-items: center; gap: 3px;" title="GNB model: forced to axis-aligned diagonal covariance">
+                            <svg width="15" height="9"><ellipse cx="7.5" cy="4.5" rx="6.5" ry="3.5" fill="none" stroke="#586e75" stroke-width="1.8" stroke-dasharray="3,2"/></svg>
+                            GNB Model
+                          </span>
+                          <span style="color: #cb4b16; display: inline-flex; align-items: center; gap: 3px;">
+                            <svg width="16" height="9"><line x1="0" y1="4.5" x2="16" y2="4.5" stroke="#cb4b16" stroke-width="2.5" stroke-dasharray="4,3"/></svg>
+                            GNB: <span id="gnb-acc-val">--</span>
+                          </span>
+                          <span style="color: #859900; display: inline-flex; align-items: center; gap: 3px;">
+                            <svg width="16" height="9"><line x1="0" y1="4.5" x2="16" y2="4.5" stroke="#859900" stroke-width="3"/></svg>
+                            LR: <span id="lr-acc-val">--</span>
+                          </span>
+                        </div>
+                        <div id="gnb-lr-status" style="font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 520px; text-align: right;"></div>
+                      </div>
+
+                      <!-- Canvas Area -->
+                      <div style="position: relative; width: 100%; height: 350px; box-sizing: border-box;">
+                        <canvas id="gnb-lr-canvas" width="940" height="350" style="display: block; width: 100%; height: 100%; border-radius: 0 0 8px 8px; border: 1px solid #93a1a1; box-shadow: 0 3px 10px rgba(0,0,0,0.12); background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+                      </div>
+
+                      <!-- Controls Toolbar -->
+                      <div style="margin-top: 6px; width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px; padding: 5px 12px; box-sizing: border-box; font-size: 12px; color: #586e75;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <b>Presets:</b>
+                          <button id="gnb-btn-indep" style="cursor: pointer; padding: 2px 7px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Independent (&rho;=0)</button>
+                          <button id="gnb-btn-corr" style="cursor: pointer; padding: 2px 7px; border: 1px solid #b58900; background: #eee8d5; border-radius: 4px; font-size: 11px; font-weight: bold;">Correlated (&rho;=0.8)</button>
+                          <button id="gnb-btn-outlier" style="cursor: pointer; padding: 2px 7px; border: 1px solid #dc322f; background: #fdf6e3; color: #dc322f; border-radius: 4px; font-size: 11px;">Toggle Outlier</button>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                          <label for="gnb-lr-rho"><b>Feature Correlation &rho;:</b></label>
+                          <input type="range" id="gnb-lr-rho" min="-0.85" max="0.85" step="0.05" value="0.75" style="width: 140px;">
+                          <span id="gnb-lr-rho-val" style="font-family: monospace; font-weight: bold; width: 35px;">0.75</span>
+                        </div>
+                      </div>
+                    </div>
+                    <aside class="notes">
+                      Notice the difference between the two models:
+                      1. When features are uncorrelated (rho = 0), GNB's conditional independence assumption holds, and its boundary is identical to Logistic Regression.
+                      2. But when features are correlated (rho = 0.8), the true clusters tilt diagonally. Because GNB assumes independence, it is forced to fit axis-aligned ellipses! Its boundary cuts sub-optimally across the data, dropping accuracy.
+                      3. Logistic regression makes NO independence assumption: it learns the boundary directly, automatically rotating with the correlation!
+                    </aside>
                   </section>
 
                   <section data-fullscreen>
@@ -700,6 +712,11 @@
                       \prob{p}{c_1|\vec{x}} = \frac{1}{1+\exp{(-a)}} = \sigma(a)
                       \]
                     </div>
+                    <aside class="notes">
+                      Here is the overarching theoretical takeaway: all posterior decisions in binary classification are sigmoids in terms of the log-posterior ratio!
+                      Whether the generative distributions p(x|c_1) and p(x|c_2) are Gaussians (GNB), Poisson, or anything else, applying Bayes' rule to write the posterior p(c_1|x) identically simplifies to \sigma(a), where a is the log-odds ratio.
+                      Logistic Regression simply posits that this log-odds ratio a is linear in x: a = w^T x + w0.
+                    </aside>
                   </section>
 
                   <section>
@@ -720,6 +737,16 @@
                         </col50>
                       </row>
                     </blockquote>
+                    <aside class="notes">
+                      Take note of these key algebraic identities for the sigmoid, especially the derivative: d\sigma/da = \sigma(1 - \sigma). We will use this derivative extensively in the next section when solving for the maximum likelihood weights!
+                    </aside>
+                  </section>
+
+                </section>
+
+                <section>
+                  <section>
+                    <h2>Solving Logistic regression</h2>
                   </section>
 
                   <section>
