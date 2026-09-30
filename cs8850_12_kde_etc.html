@@ -10,7 +10,7 @@
     <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
     <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
 
-    <title>Advanced Machine Learning</title>
+    <title>Advanced Machine Learning: Lecture 12</title>
 
     <meta name="description" content="CS8850 GSU class">
     <meta name="author" content="Sergey M Plis">
@@ -18,13 +18,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-
-
     <link rel="stylesheet" href="dist/reset.css">
     <link rel="stylesheet" href="dist/reveal.css">
     <!-- Code syntax highlighting -->
     <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
-    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
     <!-- Printing and PDF exports -->
@@ -37,752 +34,1305 @@
     </script>
   </head>
 
-
   <body>
     <div class="reveal">
-      <!-- In between the <div="reveal"> and the <div class="slides">-->
-          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
-          <!-- In between the <div="reveal"> and the <div class="slides">-->
-              <!-- Any section element inside of this container is displayed as a slide -->
-              <div class="slides">
+      <div class="slides">
 
-	        <section>
-	          <section>
-	            <p>
-	              <h2>Advanced Machine Learning</h2>
-                      <h3>12: Kernel Density Estimation</h3>
-	            <p>
-	          </section>
+        <!-- ========================================================================= -->
+        <!-- SECTION 1: TITLE, SCHEDULE, OUTLINE, AND THE BRIDGE RECAP                 -->
+        <!-- ========================================================================= -->
+        <section>
+          <!-- 1.1 Title Slide -->
+          <section>
+            <p>
+              <h2>Advanced Machine Learning</h2>
+              <h3>12: Kernel Density Estimation</h3>
+            <p>
+          </section>
 
-                  <section>
-                  <h3>Schedule (you are here <i class='fa fa-map-marker' style='color: #FA6900;'></i>)</h3>
+          <!-- 1.2 Schedule Slide (Fall 2026 synced) -->
+          <section>
+            <h3>Schedule (you are here <i class='fa fa-map-marker' style='color: #FA6900;'></i>)</h3>
+            <row>
+              <col50>
+                <table style="font-size:14px; white-space: nowrap;">
+                  <tr>
+                    <th>#</th>
+                    <th>date</th>
+                    <th>topic</th>
+                    <th>description</th>
+                  </tr>
+                  <tr><td>1</td><td>24-Aug-2026</td><td>Introduction</td><td></td></tr>
+                  <tr><td>2</td><td>26-Aug-2026</td><td>Foundations of learning</td><td>Drop/Add</td></tr>
+                  <tr><td>3</td><td>31-Aug-2026</td><td>PAC learnability</td><td>HW1</td></tr>
+                  <tr><td>4</td><td>02-Sep-2026</td><td>Linear learning models</td><td></td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>5</td><td>07-Sep-2026</td><td><em>Labor Day Holiday</em></td><td>Holiday</td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>6</td><td>09-Sep-2026</td><td>Principal Component Analysis</td><td>Project ideas</td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>7</td><td>14-Sep-2026</td><td>Curse of Dimensionality</td><td>HW2, HW1 due</td></tr>
+                  <tr><td>8</td><td>16-Sep-2026</td><td>Bayesian Decision Theory</td><td></td></tr>
+                  <tr><td>9</td><td>21-Sep-2026</td><td>Parameter estimation: MLE</td><td></td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>10</td><td>23-Sep-2026</td><td>Parameter estimation: MAP &amp; NB</td><td>finalize teams</td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>11</td><td>28-Sep-2026</td><td>Logistic Regression</td><td>HW3, HW2 due</td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>12<i class='fa fa-map-marker' style='color: #FA6900;'></i></td><td>30-Sep-2026</td><td>Kernel Density Estimation</td><td><i class='fa fa-map-marker' style='color: #FA6900;'></i></td></tr>
+                  <tr><td>13</td><td>05-Oct-2026</td><td>Support Vector Machines</td><td></td></tr>
+                  <tr><td>14</td><td>07-Oct-2026</td><td>Matrix Factorization</td><td></td></tr>
+                  <tr style="background-color:#E5DDCB;"><td>15</td><td>12-Oct-2026</td><td>* Midterm</td><td>Exam, HW3 due</td></tr>
+                  <tr><td>16</td><td>14-Oct-2026</td><td>k-means clustering</td><td></td></tr>
+                  <tr style='background-color: #69D2E7;'><td>17</td><td>19-Oct-2026</td><td>Invited: Intro to Causal Learning I</td><td></td></tr>
+                </table>
+              </col50>
 
-                  <row>
-                    <col50>
-                      <table style="font-size:14px">
-                        <tr>
-                          <th>#</th>
-                          <th>date</th>
-                          <th>topic</th>
-                          <th>description</th>
-                        </tr>
-                        <tr><td>1</td><td>25-Aug-2025</td><td>Introduction</td><td></td></tr>
-                        <tr><td>2</td><td>27-Aug-2025</td><td>Foundations of learning</td><td> Drop/Add</td></tr>
-                        <tr style="background-color:#FBEEC2;"><td>3</td><td>01-Sep-2025</td><td><em>Labor Day Holiday</em></td><td>Holiday</td></tr>
-                        <tr style="background-color:#FBEEC2;"><td>4</td><td>03-Sep-2025</td><td>Linear algebra (self-recap)</td><td>HW1</td></tr>
-                        <tr><td>5</td><td>08-Sep-2025</td><td>PAC learnability</td><td></td></tr>
-                        <tr><td>6</td><td>10-Sep-2025</td><td>Linear learning models</td><td></td></tr>
-                        <tr style='background-color: #E0E4CC;'><td>7</td><td>15-Sep-2025</td><td>Principal Component Analysis</td><td>Project ideas</td></tr>
-                        <tr><td>8</td><td>17-Sep-2025</td><td>Curse of Dimensionality</td><td></td></tr>
-                        <tr style='background-color: #E0E4CC;'><td>9</td><td>22-Sep-2025</td><td>Bayesian Decision Theory</td><td>HW2, HW1 due</td></tr>
-                        <tr><td>10</td><td>24-Sep-2025</td><td>Parameter estimation: MLE</td><td></td></tr>
-                        <tr style='background-color: #E0E4CC;'><td>11</td><td>29-Sep-2025</td><td>Parameter estimation: MAP &amp; NB</td><td>finalize teams</td></tr>
-                        <tr><td>12</td><td>01-Oct-2025</td><td>Logistic Regression</td><td></td></tr>
-                        <tr><td>13<i class='fa fa-map-marker' style='color: #FA6900;'></i></td><td>06-Oct-2025</td><td>Kernel Density Estimation</td><td><i class='fa fa-map-marker' style='color: #FA6900;'></i></td></tr>
-                        <tr style='background-color: #E0E4CC;'><td>14</td><td>08-Oct-2025</td><td>Support Vector Machines</td><td>HW3, HW2 due</td></tr>
-                        <tr style="background-color:#E5DDCB;"><td>15</td><td>13-Oct-2025</td><td>* Midterm</td><td>Exam</td></tr>
-                        <tr><td>16</td><td>15-Oct-2025</td><td>Matrix Factorization</td><td></td></tr>
-                        <tr style="background-color:#E5DDCB;"><td>17</td><td>20-Oct-2025</td><td>* Mid-point projects checkpoint</td><td>*</td></tr>
-                        <tr><td>18</td><td>22-Oct-2025</td><td>k-means clustering</td><td></td></tr>
-                      </table>
-                    </col50>
+              <col50>
+                <table style="font-size:14px; white-space: nowrap; vertical-align: top;">
+                  <tr>
+                    <th>#</th>
+                    <th>date</th>
+                    <th>topic</th>
+                    <th>description</th>
+                  </tr>
+                  <tr style='background-color: #69D2E7;'><td>18</td><td>21-Oct-2026</td><td>Invited: Intro to Causal Learning II</td><td></td></tr>
+                  <tr style="background-color:#E5DDCB;"><td>19</td><td>26-Oct-2026</td><td>* Mid-point projects checkpoint</td><td>HW4, P</td></tr>
+                  <tr><td>20</td><td>28-Oct-2026</td><td>Expectation Maximization</td><td></td></tr>
+                  <tr><td>21</td><td>02-Nov-2026</td><td>Stochastic Gradient Descent</td><td></td></tr>
+                  <tr><td>22</td><td>04-Nov-2026</td><td>Automatic Differentiation</td><td></td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>23</td><td>09-Nov-2026</td><td>Nonlinear embedding approaches</td><td>HW5, HW4 due</td></tr>
+                  <tr><td>24</td><td>11-Nov-2026</td><td>Model comparison</td><td></td></tr>
+                  <tr><td>25</td><td>16-Nov-2026</td><td>Model Calibration</td><td></td></tr>
+                  <tr><td>26</td><td>18-Nov-2026</td><td>Convolutional Neural Networks</td><td></td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>27</td><td>23-Nov-2026</td><td><em>Thanksgiving Break</em></td><td>Holiday</td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>28</td><td>25-Nov-2026</td><td><em>Thanksgiving Break</em></td><td>Holiday</td></tr>
+                  <tr><td>29</td><td>30-Nov-2026</td><td>Word Embedding</td><td></td></tr>
+                  <tr style="background-color:#E5DDCB;"><td>30</td><td>02-Dec-2026</td><td>Project Final Presentations</td><td>HW5 due, P</td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>31</td><td>07-Dec-2026</td><td>Presentation spillover / Exam prep</td><td>Classes End</td></tr>
+                  <tr style="background-color:#E5DDCB;"><td>32</td><td>09-Dec-2026</td><td>* Final Exam</td><td>Exam</td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>33</td><td>16-Dec-2026</td><td>Project Reports</td><td>due</td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>34</td><td>17-Dec-2026</td><td>Grades due 5 p.m.</td><td>PAWS</td></tr>
+                </table>
+              </col50>
+            </row>
+          </section>
 
-                    <col50>
-                      <table style="font-size:14px; vertical-align: top;">
-                        <tr>
-                          <th>#</th>
-                          <th>date</th>
-                          <th>topic</th>
-                          <th>description</th>
-                        </tr>
-                        <tr><td>19</td><td>27-Oct-2025</td><td>Expectation Maximization</td><td></td></tr>
-                        <tr style='background-color: #E0E4CC;'><td>20</td><td>29-Oct-2025</td><td>Stochastic Gradient Descent</td><td>HW4, HW3 due</td></tr>
-                        <tr><td>21</td><td>03-Nov-2025</td><td>Automatic Differentiation</td><td></td></tr>
-                        <tr><td>22</td><td>05-Nov-2025</td><td>Nonlinear embedding approaches</td><td></td></tr>
-                        <tr><td>23</td><td>10-Nov-2025</td><td>Model comparison I</td><td></td></tr>
-                        <tr style='background-color: #E0E4CC;'><td>24</td><td>12-Nov-2025</td><td>Model comparison II</td><td>HW5, HW4 due</td></tr>
-                        <tr><td>25</td><td>17-Nov-2025</td><td>Model Calibration</td><td></td></tr>
-                        <tr><td>26</td><td>19-Nov-2025</td><td>Convolutional Neural Networks</td><td></td></tr>
-                        <tr style="background-color:#FBEEC2;"><td>27</td><td>24-Nov-2025</td><td><em>Thanksgiving Break</em></td><td>Holiday</td></tr>
-                        <tr style="background-color:#FBEEC2;"><td>28</td><td>26-Nov-2025</td><td><em>Thanksgiving Break</em></td><td>Holiday</td></tr>
-                        <tr><td>29</td><td>01-Dec-2025</td><td>Word Embedding</td><td></td></tr>
-                        <tr style="background-color:#E5DDCB;"><td>30</td><td>03-Dec-2025</td><td>* Project Final Presentations</td><td>HW5 due, P</td></tr>
-                        <tr style="background-color:#FBEEC2;"><td>31</td><td>08-Dec-2025</td><td>Extra prep day</td><td>Classes End</td></tr>
-                        <tr style="background-color:#E5DDCB;"><td>32</td><td>10-Dec-2025</td><td>* Final Exam</td><td>Exam</td></tr>
-                        <tr><td>34</td><td>17-Dec-2025</td><td>Project Reports</td><td>due</td></tr>
-                        <tr><td>35</td><td>19-Dec-2025</td><td>Grades due 5 p.m.</td><td></td></tr>
-                      </table>
-                    </col50>
-                  </row>
-                </section>
+          <!-- 1.3 Outline Slide -->
+          <section>
+            <h3>Outline of this lecture</h3>
+            <ul>
+              <li class="fragment roll-in"> Non-parametric Density Estimation &amp; Histograms
+              <li class="fragment roll-in"> Parzen Windows &amp; Kernel Density Estimation
+              <li class="fragment roll-in"> Bandwidth Selection &amp; Bias-Variance Tradeoff
+              <li class="fragment roll-in"> Multivariate Density Estimation &amp; Pre-whitening
+              <li class="fragment roll-in"> Non-parametric Classification &amp; Bridge to SVM
+              <li class="fragment roll-in"> Take Home Points
+            </ul>
+          </section>
 
-                  
-	          <section>
-	            <h3>Outline for the lecture</h3>
-                    <ul>
-                      <li class="fragment roll-in"> Density estimation
-	            </ul>
-                  </section>
-                </section>
+          <!-- 1.4 Bridge Slide: Connecting Past Lectures to Today -->
+          <section id="bridge-slide">
+            <h3>Connecting the Dots: The Road to Non-parametric Methods</h3>
+            <div id="bridge-container" style="position: relative; width: 940px; height: 500px; margin: 15px auto 0 auto; display: flex; justify-content: space-between; align-items: stretch;">
 
-                <!-- -------------------------------------------------------------------------         -->
-                <section>
-                  <section>
-                    <h2>Density estimation</h2>
-	          </section>
+              <!-- Left Column: The 5 Core Narrative Questions -->
+              <div style="width: 480px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2;">
+                
+                <!-- Fragment 0: What is learning -->
+                <div id="bridge-card-0" class="fragment" data-fragment-index="0" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #268bd2; border-radius: 6px; padding: 7px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #268bd2; font-size: 16px;">1. What is learning?</div>
+                  <div style="color: #586e75; font-size: 13.5px; margin-top: 2px; line-height: 1.3;">
+                    Empirical Risk Minimization, PAC learnability, sample complexity, and generalization bounds.
+                  </div>
+                </div>
 
-                  <section>
-                    <h3>bayesian decision boundary</h3>
-                    <div class="row">
-                    <div class="col_right">
-                    <ul  style="list-style-type: none; font-size: 22pt">
-                      <li class="fragment roll-in" data-fragment-index="0"> If $\prob{P}{\omega_1|\vec{x}} \gt \prob{P}{\omega_2|\vec{x}}$, decide $\omega_1$
-                      <li class="fragment roll-in" data-fragment-index="1"> If $\prob{P}{\omega_1|\vec{x}} \lt \prob{P}{\omega_2|\vec{x}}$, decide $\omega_2$
-                      <li class="fragment roll-in" data-fragment-index="2"> $\prob{P}{error|\vec{x}} = \min[\prob{P}{\omega_1|\vec{x}}, \prob{P}{\omega_2|\vec{x}}]$
-                      <li class="fragment roll-in" data-fragment-index="3"> $\prob{P}{\omega_1|\vec{x}} = \prob{P}{\omega_2|\vec{x}}$ decision boundary
-                      <li class="fragment roll-in" data-fragment-index="4"> $\log\frac{\prob{P}{\omega_1|\vec{x}}}{\prob{P}{\omega_2|\vec{x}}} = 0$
-                    </ul>
-                    </div>
-                    <div class="col_left5">
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                           src="figures/posterior_ratio.svg" alt="posterior">
-                    </div>
-                    </div>
-                    <div class="fragment" data-fragment-index="3">
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;" >
-                      If we know posteriors exactly, this the optimal strategy!
-                    </blockquote>
-                    </div>
-                  </section>
+                <!-- Fragment 1: Linear models -->
+                <div id="bridge-card-1" class="fragment" data-fragment-index="1" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #2aa198; border-radius: 6px; padding: 7px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #2aa198; font-size: 16px;">2. Linear models &amp; representations</div>
+                  <div style="color: #586e75; font-size: 13.5px; margin-top: 2px; line-height: 1.3;">
+                    Separating hyperplanes, least squares regression, PCA projections, and dimensionality.
+                  </div>
+                </div>
 
-                  <section>
-                    <h2>Non-parametric density estimation</h2>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;  width: 100%;" >
-                      We have assumed that either
-                    </blockquote>
-                    <ul  style="list-style-type: none; font-size: 22pt">
-                      <li class="fragment roll-in" data-fragment-index="0"> The likelihoods $\prob{P}{\vec{x}|\omega_k}$ were known (likelihood ratio test), or
-                      <li class="fragment roll-in" data-fragment-index="1"> At least their parametric form was known (parameter estimation)
-                    </ul>
-                    <div class="fragment" data-fragment-index="2">
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;" >
-                      What if all that we have and know is the data?
-                    </blockquote>
-                    </div>
-                    <div class="fragment" data-fragment-index="3">
-                    <blockquote style="background-color: #eee8d5;">
-                      Ooh! How <del>challenging</del> exciting!
-                    </blockquote>
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                           src="figures/data_to_density.svg" alt="density">
-                    </div>
-                  </section>
+                <!-- Fragment 2: Probabilistic & Bayesian -->
+                <div id="bridge-card-2" class="fragment" data-fragment-index="2" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #859900; border-radius: 6px; padding: 7px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #859900; font-size: 16px;">3. Probabilistic interpretation &amp; Bayesian learning</div>
+                  <div style="color: #586e75; font-size: 13.5px; margin-top: 2px; line-height: 1.3;">
+                    Bayesian decision theory, posterior ratio test, and minimizing expected Bayes risk.
+                  </div>
+                </div>
 
-                  <section>
-                    <h2>Histogram</h2>
-                    <div class="fragment" data-fragment-index="0">
-                      <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;  width: 100%;" >
-                        The simplest form of non-parametric density estimation
-                      </blockquote>
-                    </div>
-                    <ul  style="list-style-type: alpha; font-size: 24px;">
-                      <li class="fragment roll-in">  Divide the sample
-                        space into  a number  of bins;
-                      <li class="fragment roll-in"> Approximate the
-                        density by the fraction of <em>training
-                          data</em> points that fall into each bin
-                        <blockquote style="background-color: #eee8d5; font-size: 22px;">
-                          $$\prob{P}{\vec{x}} = \frac{1}{N}\frac{\text{# of } \vec{x}^i \text{ in the same bin as }\vec{x}}{\text{bin width}}$$
-                        </blockquote>
-                      <li class="fragment roll-in"> Need to define: <em>bin width</em> and <em>first bin starting position</em>
-                      <li class="fragment roll-in" style="list-style-type: none;">
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
-                           src="figures/histogram_example.svg" alt="histogram">
+                <!-- Fragment 3: Parametric estimation -->
+                <div id="bridge-card-3" class="fragment" data-fragment-index="3" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #b58900; border-radius: 6px; padding: 7px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #b58900; font-size: 16px;">4. Parametric parameter estimation</div>
+                  <div style="color: #586e75; font-size: 13.5px; margin-top: 2px; line-height: 1.3;">
+                    Estimating parameters when analytical functional forms are assumed: MLE, MAP, Naïve Bayes, and Logistic Regression.
+                  </div>
+                </div>
 
-                      </ul>
-                  </section>
-
-                  <section>
-                    <h2>Histogram is simple but problematic</h2>
-                    <ul  style="list-style-type: none; " class="fa-ul">
-                      <li class="fragment roll-in"><span class="fa-li"><i class="fa fa-thumbs-down"></i></span>The density estimate depends on the starting bin position
-                      <li class="fragment roll-in"><span class="fa-li"><i class="fa fa-thumbs-down"></i></span> The discontinuities of the estimate are only an artifact of the chosen bin locations
-                      <li class="fragment roll-in"><span class="fa-li"><i class="fa fa-thumbs-down"></i></span> The curse of dimensionality, since the
-number of bins grows exponentially with the number of dimensions
-                      <li class="fragment roll-in"><span class="fa-li"><i class="fa fa-thumbs-down"></i></span> Unsuitable for most practical
-                        applications except for quick visualizations in one or two dimensions
-                      <li class="fragment roll-in"><span class="fa-li"><i class=" fa fa-ban"></i></span> Let's leave it alone!
-                    </ul>
-                    <aside class="notes">
-                      For multivariate data, the density estimate is also affected by the
-                      orientation of the bins<br>
-                      These discontinuities make it very difficult (to the naïve analyst) to grasp
-                      the structure of the data<br>
-                      In high dimensions we would require a very large number of examples or
-                      else most of the bins would be empty
-                    </aside>
-                  </section>
-
-                  <section>
-                    <h3>Non-parametric DE</h3>
-                    <h4>general formulation</h4>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 26px;" >
-                     What we are trying to accomplish?
-                    </blockquote>
-                    <ul  style="list-style-type: alpha; font-size: 22px;">
-                      <li class="fragment roll-in"> The probability that $\vec{x}\sim \prob{P}{\vec{x}}$, will fall in
-                        a given region $\cal R$ of the sample space is
-                        \[
-                        \theta = \int_{\cal R} \prob{P}{\vec{x}^{\prime}}d\vec{x}^{\prime}
-                        \]
-                      <li class="fragment roll-in"> Probability that $k$ of $N$ drawn vectors $\{\vec{x}^1, \dots, \vec{x}^N\}$ will fall in region ${\cal R}$ is
-                        \[
-                        \prob{P}{k} = {N \choose k} \theta^k (1 - \theta)^{N-k}
-                        \]
-                      <li class="fragment roll-in"> From properties of the binomial pmf
-                        <row>
-                          <col50>
-                            $\prob{E}{\frac{k}{N}} = \theta$
-                          </col50>
-                          <col>
-                          $\prob{var}{\frac{k}{N}} = \frac{\theta(1-\theta)}{N}$
-                          </col>
-                        </row>
-                      <li class="fragment roll-in"> As $N\rightarrow\infty$, variance reduces and we can obtain a good estimate from
-                        $
-                        \theta \simeq \frac{k}{N}
-                        $
-                    </ul>
-                  </section>
-
-                  <section>
-                    <h3>Non-parametric DE</h3>
-                    <h4>general formulation</h4>
-                    <ul  style="list-style-type: disk; font-size: 28px">
-                      <li class="fragment roll-in"> Assume $\cal R$ is so small that $\prob{P}{\vec{x}}$ does not much vary across it
-                        \[
-                        \theta = \int_{\cal R} \prob{P}{\vec{x}^{\prime}}d\vec{x}^{\prime} \simeq \prob{P}{\vec{x}}V
-                        \]
-                      <li class="fragment roll-in"> Combining with $\theta \simeq \frac{k}{N}$
-                        \[
-                        \prob{P}{x} \simeq \frac{k}{NV}
-                        \]
-                      <li class="fragment roll-in" style="list-style-type: none;">
-                        <blockquote style="background-color: #eee8d5;  width: 100%; ">
-                          We obtain a more accurate estimate increasing $N$ and shrinking $V$
-                        </blockquote>
-                    </ul>
-                    <aside class="notes">
-                      V is the volume enclosed by region R <br>
-
-                    </aside>
-                  </section>
-
-                  <section>
-                    <h2>practical considerations</h2>
-                    <ul  style="list-style-type: disk; font-size: 22pt">
-                      <li class="fragment roll-in"> As $V$ approaches zero ${\cal R}$ encloses no examples
-                      <li class="fragment roll-in"> Have to find a compromise for $V$
-                      <li class="fragment roll-in"> The general expression of nonparametric density becomes
-                        <blockquote style="background-color: #eee8d5; width: 100%;">
-                        \[
-                        \prob{P}{x} \simeq \frac{k/N}{V} \mbox{, where }   \begin{cases}
-                        V & \text{volume surrounding } \vec{x} \\
-                        N & \text{total #examples}\\
-                        k & \text{#examples inside } V
-                        \end{cases}
-                        \]
-                        </blockquote>
-                      <li class="fragment roll-in"> For convergence of the estimator we need to provide for:
-                        <blockquote style="background-color: #eee8d5; width: 40%; font-size:20px;">
-                        \begin{align}
-                        &\underset{n\to\infty}{\lim} V = 0\\
-                        &\underset{n\to\infty}{\lim} k = \infty\\
-                        &\underset{n\to\infty}{\lim} k/N = 0\\
-                        \end{align}
-                        </blockquote>
-                    </ul>
-                    <aside class="notes">
-                      Large enough V to include enough samples within R<br>
-                      Small enough to support p(x) is constant in R
-                    </aside>
-                  </section>
-
-                  <section>
-                    <h2>Two approaches that provide this</h2>
-                    <blockquote style="background-color: #eee8d5; width: 100%; ">
-                      <ul  style="list-style-type: decimal; font-size: 22pt">
-                        <li> Fix $V$ and estimate $k$ - <em>kernel density estimation</em> (KDE)
-                        <li> Fix $k$ and estimate $V$ - <em>k-neares neighbor</em> (kNN)
-                      </ul>
-                        </blockquote>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="100%"
-                         src="figures/kde_knn.png" alt="kde vs knn">
-                  </section>
-
-                  <section>
-                    <h2>Parzen windows</h2>
-                    <row>
-                      <col>
-                      <ul  style="list-style-type: disk; font-size: 22pt">
-                        <li class="fragment roll-in"> Assume, the region
-                          $\cal R$ enclosing $k$ examples is a  hypercube with the side of
-                          length $h$ centered at $\vec{x}$
-                        <li class="fragment roll-in"> Its volume is $V = h^d$, where $d$ is the dimensionality
-                        <li class="fragment roll-in"> To find the number of examples that
-                          fall within this region we define a window function $K(u)$ (a.k.a. kernel)
-                          \[
-                          \prob{K}{u} = \begin{cases}
-                          1 & |u_j| \lt \frac{1}{2} \forall j = 1\dots d\\
-                          0 & \text{otherwise}
-                          \end{cases}
-                          \]
-                        <li class="fragment roll-in"> Known as a Parzen window or the naïve estimator and corresponds to a unit hypercube centered at the origin
-                        <li class="fragment roll-in"> $\prob{K}{\frac{(\vec{x} - \vec{x}^n)}{h}} = 1$ if $\vec{x}^n$ is inside a
-                          hypercube of side $h$ centered on $\vec{x}$, and zero otherwise
-                      </ul>
-                    </col>
-                    <col30>
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="300"
-                           src="figures/parzen_cube.svg" alt="Parzen cube">
-
-                    </col30>
-                    </row>
-                  </section>
-
-                  <section>
-                    <h2>Parzen windows</h2>
-                    <row>
-                      <col>
-                      <ul  style="list-style-type: disk; font-size: 22pt">
-                        <li class="fragment roll-in"  data-fragment-index="0"> The total number of points inside the hypercube is
-                          \[
-                          k = \sum_{n=1}^N \prob{K}{\frac{\vec{x} - \vec{x}^n}{h}}
-                          \]
-                        <li class="fragment roll-in" data-fragment-index="1"> The density estimate becomes
-                          \[
-                          \prob{P$_{KDE}$}{\vec{x}} = \frac{1}{Nh^d} \sum_{n=1}^N \prob{K}{\frac{\vec{x} - \vec{x}^n}{h}}
-                          \]
-                      </ul>
-                      </col>
-                      <col40>
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="90%"
-                           src="figures/parzen_box.svg" alt="Parzen example">
-                      </col40>
-                    </row>
-                      <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22px; text-align: left;" class="fragment" data-fragment-index="2">
-                        Note, Parzen window resembles histogram but with the bin location determined by the data
-                    </blockquote>
-                  </section>
-
-                  <section>
-                    <h2>Parzen windows</h2>
-                      <ul  style="list-style-type: disk; font-size: 22pt">
-                        <li class="fragment roll-in"> What's the role of the kernel function?
-                        <li class="fragment roll-in"> Let us compute the expectation of the estimate $\prob{P$_{KDE}$}{\vec{x}}$
-                          \begin{align}
-                          E\left[\prob{P$_{KDE}$}{\vec{x}}\right] &= \frac{1}{Nh^d} \sum_{n=1}^N E\left[\prob{K}{\frac{\vec{x} - \vec{x}^n}{h}}\right]\\
-                          & = \frac{1}{h^d} E\left[ \prob{K}{\frac{x-x^\prime}{h}}\right]\\
-                          & = \frac{1}{h^d} \int \prob{K}{\frac{x-x^\prime}{h}} \prob{P}{x^\prime}dx^\prime\\
-                          \end{align}
-                        <li class="fragment roll-in"> $\prob{P$_{KDE}$}{\vec{x}}$ is a convolution of the true density with the kernel function
-                        <li class="fragment roll-in"> As $h\to 0$, the kernel approaches Dirac delta and $\prob{P$_{KDE}$}{\vec{x}}$ approaches true density
-                      </ul>
-                      <aside class="notes">
-                        Thus, the kernel width ℎ plays the role of a smoothing parameter: the
-                        wider ℎ is, the smoother the estimate 𝑝𝐾𝐷𝐸 𝑥<br>
-                        However, in practice we have a finite number of points, so ℎ cannot be
-                        made arbitrarily small, since the density estimate 𝑝𝐾𝐷𝐸 𝑥 would then
-                        degenerate to a set of impulses located at the training data points
-                      </aside>
-                  </section>
-
-                  <section>
-                    <div id="header-right" style="font-size: 24px; right: -10%; top: -5%;">
-                      <blockquote style="background-color: #eee8d5; width: 100%;">
-                        \[
-                        \prob{P$_{KDE}$}{\vec{x}} = \frac{1}{Nh^d} \sum_{n=1}^N \prob{K}{\frac{\vec{x} - \vec{x}^n}{h}}
-                        \]
-                      </blockquote>
-                    </div>
-                    <div id="header-left" style="font-size: 24px; left: -15%; top: -5%">
-                      <blockquote style="background-color: #eee8d5; width: 100%;">
-                          \[
-                          \prob{K}{u} = \begin{cases}
-                          1 & |u_j| \lt \frac{1}{2} \forall j = 1\dots d\\
-                          0 & \text{otherwise}
-                          \end{cases}
-                          \]
-                      </blockquote>
-                    </div>
-                    <h2>Exercise</h2>
-                      <ul  style="list-style-type: disk; font-size: 22px;">
-                        <li class="fragment roll-in"> Given dataset $X = \{4, 5, 5, 6, 12, 14, 15, 15, 16, 17\}$ use Parzen windows to estimate the density at $y=3,10,15$; use $h=4$
-                        <li class="fragment roll-in" style="list-style-type: none;">  <center><img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
-                           src="figures/kde_tight.svg" alt="kde combination"></center>
-                        <li class="fragment roll-in"> Let's estimate $\prob{P}{y=3}$
-                          $$
-                          \frac{1}{10\times 4^1} \left[ \prob{K}{\frac{3-4}{4}} + \prob{K}{\frac{3-5}{4}} + \cdots +\prob{K}{\frac{3-17}{4}}\right] = \frac{1}{40} = 0.025
-                          $$
-                        <li class="fragment roll-in">
-                          $
-                          \prob{P}{y=10} = \frac{1}{10\times 4^1} \left[ 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0\right] = \frac{0}{40} = 0
-                          $
-                        <li class="fragment roll-in">
-                          $
-                          \prob{P}{y=15} = \frac{1}{10\times 4^1} \left[ 0 + 0 + 0 + 0 + 0 + 1 + 1 + 1 + 1 + 0\right] = \frac{4}{40} = 0.1
-                          $
-                      </ul>
-                  </section>
-
-                  <section>
-                    <h2>Smooth kernels</h2>
-                    <ul  style="list-style-type: disk; font-size: 22px;">
-                      <li class="fragment roll-in"> The Cube window has a few drawbacks
-                        <ul>
-                          <li class="fragment roll-in"> Yields density estimates that have discontinuities
-                          <li class="fragment roll-in"> Weights equally all points $\vec{x}_i$, regardless of their distance to the estimation point $\vec{x}$
-                        </ul>
-                      <li class="fragment roll-in"> Often a smooth kernel is preferred
-                        <ul>
-                          <li class="fragment roll-in"> $\prob{K}{\vec{x}} \ge 0$
-                          <li class="fragment roll-in"> $\displaystyle\int_{\cal R} \prob{K}{\vec{x}}d\vec{x} = 1$
-                          <li class="fragment roll-in"> Usually, radially symmetric and unimodal, i.e. $\prob{K}{\vec{x}} = (2\pi)^{-d/2}e^{-\frac{1}{2}\vec{x}^T\vec{x}}$
-                          <li class="fragment roll-in"> Just use it in our density estimator:
-                            <row>
-                              <col50  style="font-size: 22px;">
-                                $$
-                                \prob{P$_{KDE}$}{\vec{x}} = \frac{1}{Nh^d} \sum_{n=1}^N \prob{K}{\frac{\vec{x} - \vec{x}^n}{h}}
-                                $$
-                              </col50>
-                              <col70>
-                              <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); top: -10%;" width="100%"
-                                   src="figures/parzen_kernel.svg" alt="smooth parzen">
-                              <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
-                                   src="figures/kde_width_change.svg" alt="kde width">
-                              </col70>
-                            </row>
-                        </ul>
-                  </section>
-
-                  <section>
-                    <h2>Interpretation</h2>
-                    <ul  style="list-style-type: disk; font-size: 22pt">
-                      <li class="fragment roll-in">  The smooth kernel estimate is a sum of "bumps"
-                      <li class="fragment roll-in">  The kernel function determines the shape of the bumps
-                      <li class="fragment roll-in">  The parameter $h$, "smoothing parameter" determines their width
-                      <li class="fragment roll-in" style="list-style-type: none;">
-                        <center>
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
-                             src="figures/kde_combines.svg" alt="kde combination">
-                        </center>
-                    </ul>
-                  </section>
-
-                  <section>
-                    <h2>Prior knowledge vs data</h2>
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-top: -6%;" width="700"
-                           src="figures/kde_bumpy.png" alt="kde tuning">
-                  </section>
-
-                  <section>
-                    <h2>bandwidth selection</h2>
-                    <ul  style="list-style-type: disk; font-size: 22px;">
-                      <li class="fragment roll-in">  Large $h$ over-smoothes the DE hiding structure
-                      <li class="fragment roll-in">  Small $h$ yields a spiky uninterpretable DE
-                    </ul>
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
-                           src="figures/kde_tuning.svg" alt="kde tuning">
-                  </section>
-
-                  <section>
-                    <h2>bandwidth selection</h2>
-                    <ul  style="list-style-type: disk; font-size: 26px;">
-                      <li class="fragment roll-in">  Pick $h$ that minimizes the error between
-                        the estimated density and the true density
-                      <li class="fragment roll-in">  Let us use MSE for measuring this error
-                      <li class="fragment roll-in" style="list-style-type: none;">  $E\left[ (\prob{P$_{KDE}$}{\vec{x}} - \prob{P}{\vec{x}})^2 \right] $
-                      <li class="fragment roll-in" style="list-style-type: none;"> $ = E\left[ \prob{P$_{KDE}$}{\vec{x}}^2 - 2 \prob{P$_{KDE}$}{\vec{x}} \prob{P}{\vec{x}} + \prob{P}{\vec{x}}^2\right]$
-                      <li class="fragment roll-in" style="list-style-type: none;"> $ = E\left[ \prob{P$_{KDE}$}{\vec{x}}^2\right] - 2 E\left[\prob{P$_{KDE}$}{\vec{x}}\right] \prob{P}{\vec{x}} + \prob{P}{\vec{x}}^2$
-
-                      <li class="fragment roll-in" style="list-style-type: none;"> Add and subtract $E^2\left[ \prob{P$_{KDE}$}{\vec{x}} \right]$
-                      <li class="fragment roll-in" style="list-style-type: none;">
-                        \begin{align}
-                        =  & E^2\left[ \prob{P$_{KDE}$}{\vec{x}} \right]  - 2 E\left[\prob{P$_{KDE}$}{\vec{x}}\right] \prob{P}{\vec{x}} + \prob{P}{\vec{x}}^2 \\
-                        & + E\left[ \prob{P$_{KDE}$}{\vec{x}}^2\right] - E^2\left[ \prob{P$_{KDE}$}{\vec{x}} \right]
-                        \end{align}
-                      <li class="fragment roll-in" style="list-style-type: none;">
-                        \begin{align}
-                        =  & (E\left[ \prob{P$_{KDE}$}{\vec{x}} \right]  - \prob{P}{\vec{x}})^2 + E\left[ \prob{P$_{KDE}$}{\vec{x}}^2\right] - E^2\left[ \prob{P$_{KDE}$}{\vec{x}} \right]
-                        \end{align}
-                      <li class="fragment roll-in">  This is an example of <em>bias-variance tradeoff</em>
-                    </ul>
-                  </section>
-
-                  <section>
-                    <h2>Bias-variance tradeoff (digression)</h2>
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-top: -4%" width="600"
-                           src="figures/bias_variance_targets.png" alt="bias variance">
-                  </section>
-
-                  <section>
-                    <h2>Bias-variance tradeoff (digression)</h2>
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
-                           src="figures/model_complexity.png" alt="model complexity">
-                  </section>
-
-                  <section>
-                    <h2>Bias-variance tradeoff (digression)</h2>
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="900"
-                           src="figures/kde_bias_variance.svg" alt="kde bias variance">
-                  </section>
-
-
-                  <section>
-                    <div id="header-right" style="font-size: 24px;" class="fragment" data-fragment-index="3">
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100"
-                           src="figures/itisfine.png" alt="normal">
-                    </div>
-                    <h2>bandwidth selection</h2>
-                    <div class="fragment" data-fragment-index="0">
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
-                      Subjective choice
-                    </blockquote>
-                    </div>
-                    <ul  style="list-style-type: disk; font-size: 22pt">
-                      <li class="fragment roll-in" data-fragment-index="1"> Plot out several curves and choose the estimate that best matches your subjective ideas
-                      <li class="fragment roll-in" data-fragment-index="2"> Not too practical for high-dimensional data
-                    </ul>
-                    <div class="fragment" data-fragment-index="3">
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
-                      Assuming everything is Normal
-                    </blockquote>
-                    </div>
-                    <ul  style="list-style-type: disk; font-size: 22pt">
-                      <li class="fragment roll-in" data-fragment-index="4"> Minimize the overall MSE
-                        $
-                        h = \argmin \{ E\left[ \int (\prob{P$_{KDE}$}{\vec{x}} - \prob{P}{\vec{x}})^2 d\vec{x} \right]\}
-                        $
-                      <li class="fragment roll-in" data-fragment-index="5"> Assuming the true distribution is Gaussian
-                        $
-                        h^* = 1.06\sigma N^{-\frac{1}{5}}
-                        $
-                      <li class="fragment roll-in" data-fragment-index="6"> Can obtain better results with
-                        $$
-                        h^* = 0.9A N^{-\frac{1}{5}} \mbox{ where } A = \min(\sigma, \frac{IQR}{1.34})
-                        $$
-                    </ul>
-                  </section>
-
-                  <section>
-                    <h2>Multivariate density estimation</h2>
-                    <div class="fragment" data-fragment-index="0">
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
-                      Things to watch out for
-                    </blockquote>
-                    </div>
-                    <ul  style="list-style-type: disk; font-size: 22pt">
-                      <li class="fragment roll-in" data-fragment-index="1"> $h$ is the same for all the axes, so this density
-                        estimate is weighting all axes equally
-                      <li class="fragment roll-in" data-fragment-index="2"> A problem if one or several of the features has larger spread than the others
-                    </ul>
-                    <div class="fragment" data-fragment-index="3">
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
-                      A couple of "hacks" to fix this
-                    </blockquote>
-                    </div>
-                    <ul  style="list-style-type: disk; font-size: 22pt">
-                      <li class="fragment roll-in" data-fragment-index="4"> <em>Pre-scaling</em> each axis (e.g. to unit variance)
-                      <li class="fragment roll-in" data-fragment-index="5"> <em>Pre-whitening</em> the data
-                        <ul>
-                          <li class="fragment roll-in" data-fragment-index="6"> Whiten the data $\vec{y}=\Lambda^{-1/2}V^T\vec{x}$
-                          <li class="fragment roll-in" data-fragment-index="7"> Estimate the density
-                          <li class="fragment roll-in" data-fragment-index="8"> Transform everything back
-                          <li class="fragment roll-in" data-fragment-index="9"> Equivalent to hyper-ellipsoidal kernel
-                        </ul>
-                    </ul>
-                    </ul>
-                  </section>
-
-                  <section>
-                    <h2>Product kernels</h2>
-                    <div class="fragment" data-fragment-index="0">
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
-                      Use it if "hacky" solutions are not your thing
-                    </blockquote>
-                    </div>
-                    <ul  style="list-style-type: disk; font-size: 22pt">
-                      <li class="fragment roll-in" data-fragment-index="1" style="list-style-type: none;">
-                        $\prob{P$_{KDE}$}{\vec{x}} = \frac{1}{N} \sum_{i=1}^N \prob{K}{\vec{x}, \vec{x}^i, h_1, \dots, h_d}$
-                      <li class="fragment roll-in" data-fragment-index="2" style="list-style-type: none;">
-                        $\prob{K}{\vec{x}, \vec{x}^i, h_1, \dots, h_d} = \frac{1}{h_1h_2\dots h_d} \prod_{j=1}^d \prob{K}{\frac{x_j-x_j^i}{h_j}} $
-                      <li class="fragment roll-in" data-fragment-index="3"> Consists of the product of one-dimensional kernels
-                      <li class="fragment roll-in" data-fragment-index="4"> Note, kernel independence does not imply feature independence
-                    </ul>
-                  </section>
-
-                  <section>
-                    <h2>Unimodal distribution KDE</h2>
-                    <ul style="font-size: 28px;">
-                      <li>100 data points were drawn from the distribution
-                      <li> True density (left), the estimates using $h=1.06\sigma N^{-1/5}$ (middle) and $h=0.9A N^{-1/5}$ (right)
-                    </ul>
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                           src="figures/unimodal_kde.png" alt="unimodal kde">
-                  </section>
-
-                  <section>
-                    <h2>bimodal distribution KDE</h2>
-                    <ul  style="font-size: 28px;">
-                      <li>100 data points were drawn from the distribution
-                      <li> True density (left), the estimates using $h=1.06\sigma N^{-1/5}$ (middle) and $h=0.9A N^{-1/5}$ (right)
-                    </ul>
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-top: -5%;" width="1000"
-                           src="figures/bimodal_kde.png" alt="bimodal kde">
-                  </section>
-
-                </section>
-
+                <!-- Fragment 4: Non-parametric transition -->
+                <div id="bridge-card-4" class="fragment" data-fragment-index="4" style="background: rgba(253, 246, 227, 0.98); border-left: 5px solid #cb4b16; border-radius: 6px; padding: 8px 12px; box-shadow: 0 3px 8px rgba(203,75,22,0.18); text-align: left;">
+                  <div style="font-weight: bold; color: #cb4b16; font-size: 16px;">5. But what if analytical forms are unknown?</div>
+                  <div style="color: #073642; font-size: 13.5px; margin-top: 2px; line-height: 1.3;">
+                    Can we estimate probability densities directly from data and enable Bayesian methods <b>without assuming an analytical distribution?</b>
+                  </div>
+                </div>
 
               </div>
 
+              <!-- SVG Connectors linking Left Questions to Right Schedule Rows -->
+              <svg id="bridge-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;" viewBox="0 0 940 500">
+                <defs>
+                  <marker id="arr-blue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#268bd2" />
+                  </marker>
+                  <marker id="arr-cyan" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#2aa198" />
+                  </marker>
+                  <marker id="arr-green" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#859900" />
+                  </marker>
+                  <marker id="arr-yellow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#b58900" />
+                  </marker>
+                  <marker id="arr-orange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#cb4b16" />
+                  </marker>
+                </defs>
+
+                <!-- Frag 0 -> Lec 2 & 3 -->
+                <g class="fragment" data-fragment-index="0">
+                  <path id="conn-0-2" fill="none" stroke="#268bd2" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-blue)" />
+                  <path id="conn-0-3" fill="none" stroke="#268bd2" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-blue)" />
+                </g>
+
+                <!-- Frag 1 -> Lec 4 & 6 -->
+                <g class="fragment" data-fragment-index="1">
+                  <path id="conn-1-4" fill="none" stroke="#2aa198" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-cyan)" />
+                  <path id="conn-1-6" fill="none" stroke="#2aa198" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-cyan)" />
+                </g>
+
+                <!-- Frag 2 -> Lec 8 -->
+                <g class="fragment" data-fragment-index="2">
+                  <path id="conn-2-8" fill="none" stroke="#859900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-green)" />
+                </g>
+
+                <!-- Frag 3 -> Lec 9, 10, 11 -->
+                <g class="fragment" data-fragment-index="3">
+                  <path id="conn-3-9" fill="none" stroke="#b58900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-yellow)" />
+                  <path id="conn-3-10" fill="none" stroke="#b58900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-yellow)" />
+                  <path id="conn-3-11" fill="none" stroke="#b58900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-yellow)" />
+                </g>
+
+                <!-- Frag 4 -> Lec 12 (Today!) -->
+                <g class="fragment" data-fragment-index="4">
+                  <path id="conn-4-12" fill="none" stroke="#cb4b16" stroke-width="3.5" marker-end="url(#arr-orange)" />
+                </g>
+              </svg>
+
+              <!-- Right Column: Schedule Table for Lectures 1 to 12 -->
+              <div style="width: 420px; margin-left: 20px; z-index: 2;">
+                <table style="font-size: 13.5px; line-height: 1.25; width: 100%; border-collapse: collapse;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid #586e75;">
+                      <th style="padding: 4px 6px; width: 22px;">#</th>
+                      <th style="padding: 4px 6px; width: 75px;">date</th>
+                      <th style="padding: 4px 6px;">topic</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr id="bridge-row-1"><td style="padding: 3px 6px;">1</td><td style="padding: 3px 6px;">24-Aug-2026</td><td style="padding: 3px 6px;">Introduction</td></tr>
+                    <tr id="bridge-row-2" style="background-color: #E0E4CC;"><td style="padding: 3px 6px;">2</td><td style="padding: 3px 6px;">26-Aug-2026</td><td style="padding: 3px 6px;">Foundations of learning</td></tr>
+                    <tr id="bridge-row-3" style="background-color: #E0E4CC;"><td style="padding: 3px 6px;">3</td><td style="padding: 3px 6px;">31-Aug-2026</td><td style="padding: 3px 6px;">PAC learnability</td></tr>
+                    <tr id="bridge-row-4" style="background-color: #E0E4CC;"><td style="padding: 3px 6px;">4</td><td style="padding: 3px 6px;">02-Sep-2026</td><td style="padding: 3px 6px;">Linear learning models</td></tr>
+                    <tr id="bridge-row-5" style="background-color: #FBEEC2; opacity: 0.6;"><td style="padding: 3px 6px;">5</td><td style="padding: 3px 6px;">07-Sep-2026</td><td style="padding: 3px 6px;"><em>Labor Day Holiday</em></td></tr>
+                    <tr id="bridge-row-6" style="background-color: #E0E4CC;"><td style="padding: 3px 6px;">6</td><td style="padding: 3px 6px;">09-Sep-2026</td><td style="padding: 3px 6px;">Principal Component Analysis</td></tr>
+                    <tr id="bridge-row-7" style="background-color: #E0E4CC;"><td style="padding: 3px 6px;">7</td><td style="padding: 3px 6px;">14-Sep-2026</td><td style="padding: 3px 6px;">Curse of Dimensionality</td></tr>
+                    <tr id="bridge-row-8" style="background-color: #E0E4CC;"><td style="padding: 3px 6px;">8</td><td style="padding: 3px 6px;">16-Sep-2026</td><td style="padding: 3px 6px;">Bayesian Decision Theory</td></tr>
+                    <tr id="bridge-row-9" style="background-color: #E0E4CC;"><td style="padding: 3px 6px;">9</td><td style="padding: 3px 6px;">21-Sep-2026</td><td style="padding: 3px 6px;">Parameter estimation: MLE</td></tr>
+                    <tr id="bridge-row-10" style="background-color: #E0E4CC;"><td style="padding: 3px 6px;">10</td><td style="padding: 3px 6px;">23-Sep-2026</td><td style="padding: 3px 6px;">Parameter estimation: MAP &amp; NB</td></tr>
+                    <tr id="bridge-row-11" style="background-color: #E0E4CC;"><td style="padding: 3px 6px;">11</td><td style="padding: 3px 6px;">28-Sep-2026</td><td style="padding: 3px 6px;">Logistic Regression</td></tr>
+                    <tr id="bridge-row-12" style="background-color: #FBEEC2; border: 2px solid #cb4b16; font-weight: bold;"><td style="padding: 4px 6px; color: #cb4b16;">12<i class='fa fa-map-marker' style='color: #FA6900;'></i></td><td style="padding: 4px 6px; color: #cb4b16;">30-Sep-2026</td><td style="padding: 4px 6px; color: #cb4b16;">Kernel Density Estimation</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
             </div>
+            <aside class="notes">
+              Review our journey:
+              We started by asking "What is learning?" In Foundations and PAC learnability, we proved generalization bounds and showed when empirical risk minimization succeeds.
+              Next, we studied linear learning models and representations: separating hyperplanes, linear regression, and PCA projections for dimensionality reduction.
+              Then we entered the probabilistic framework: Bayesian Decision Theory established the Bayes error as the fundamental performance bound when posteriors are known.
+              To make it operational, we covered parameter estimation: MLE, MAP, Naïve Bayes, and Logistic Regression. In all of these, we assumed known parametric distributions (Gaussians, Bernoullis).
+              Today, we confront the next major challenge: What if we don't know the true distribution family? Can we estimate continuous densities directly from empirical data without rigid parametric assumptions? That is Kernel Density Estimation.
+            </aside>
+          </section>
+        </section>
 
-            <script src="dist/reveal.js"></script>
+        <!-- ========================================================================= -->
+        <!-- SECTION 2: NON-PARAMETRIC DENSITY ESTIMATION & HISTOGRAMS                 -->
+        <!-- ========================================================================= -->
+        <section>
+          <!-- 2.0 Section Header -->
+          <section>
+            <h2>Non-parametric Density Estimation</h2>
+          </section>
 
-            <link rel="stylesheet" href="plugin/highlight/monokai.css">
-            <script src="plugin/highlight/highlight.js"></script>
-            <script src="plugin/math/math.js"></script>
-            <script src="plugin/chalkboard/plugin.js"></script>
-            <script src="plugin/notes/notes.js"></script>
-            <script src="plugin/zoom/zoom.js"></script>
-            <script src="plugin/fullscreen/fullscreen.js"></script>
-            <script src="plugin/menu/menu.js"></script>
+          <!-- 2.1 Bayesian Decision Boundary Recap -->
+          <section>
+            <h3>bayesian decision boundary</h3>
+            <div class="row">
+              <div class="col_right">
+                <ul style="list-style-type: none; font-size: 22pt">
+                  <li class="fragment roll-in" data-fragment-index="0"> If $\prob{P}{\omega_1|\vec{x}} \gt \prob{P}{\omega_2|\vec{x}}$, decide $\omega_1$
+                  <li class="fragment roll-in" data-fragment-index="1"> If $\prob{P}{\omega_1|\vec{x}} \lt \prob{P}{\omega_2|\vec{x}}$, decide $\omega_2$
+                  <li class="fragment roll-in" data-fragment-index="2"> $\prob{P}{error|\vec{x}} = \min[\prob{P}{\omega_1|\vec{x}}, \prob{P}{\omega_2|\vec{x}}]$
+                  <li class="fragment roll-in" data-fragment-index="3"> $\prob{P}{\omega_1|\vec{x}} = \prob{P}{\omega_2|\vec{x}}$ decision boundary
+                  <li class="fragment roll-in" data-fragment-index="4"> $\log\frac{\prob{P}{\omega_1|\vec{x}}}{\prob{P}{\omega_2|\vec{x}}} = 0$
+                </ul>
+              </div>
+              <div class="col_left5">
+                <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                     src="figures/posterior_ratio.svg" alt="posterior">
+              </div>
+            </div>
+            <div class="fragment" data-fragment-index="3">
+              <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;">
+                If we know posteriors exactly, this is the optimal strategy!
+              </blockquote>
+            </div>
+          </section>
 
-            <script>
-              // Full list of configuration options available at:
-              // https://github.com/hakimel/reveal.js#configuration
+          <!-- 2.2 Motivation: Non-parametric DE -->
+          <section>
+            <h2>Non-parametric density estimation</h2>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;">
+              We have assumed that either
+            </blockquote>
+            <ul style="list-style-type: none; font-size: 22pt">
+              <li class="fragment roll-in" data-fragment-index="0"> The likelihoods $\prob{P}{\vec{x}|\omega_k}$ were known (likelihood ratio test), or
+              <li class="fragment roll-in" data-fragment-index="1"> At least their parametric form was known (parameter estimation)
+            </ul>
+            <div class="fragment" data-fragment-index="2">
+              <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;">
+                What if all that we have and know is the data?
+              </blockquote>
+            </div>
+            <div class="fragment" data-fragment-index="3">
+              <blockquote style="background-color: #eee8d5;">
+                Ooh! How <del>challenging</del> exciting!
+              </blockquote>
+              <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                   src="figures/data_to_density.svg" alt="density">
+            </div>
+          </section>
 
-              Reveal.initialize({
-                  // history: true,
-                  hash: true,
-                  margin: 0.01,
-                  minScale: 0.01,
-                  maxScale: 1.23,
+          <!-- 2.3 Histogram -->
+          <section>
+            <h2>Histogram</h2>
+            <div class="fragment" data-fragment-index="0">
+              <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%;">
+                The simplest form of non-parametric density estimation
+              </blockquote>
+            </div>
+            <ul style="list-style-type: alpha; font-size: 24px;">
+              <li class="fragment roll-in"> Divide the sample space into a number of bins;
+              <li class="fragment roll-in"> Approximate the density by the fraction of <em>training data</em> points that fall into each bin
+                <blockquote style="background-color: #eee8d5; font-size: 22px;">
+                  $$\prob{P}{\vec{x}} = \frac{1}{N}\frac{\text{# of } \vec{x}^i \text{ in the same bin as }\vec{x}}{\text{bin width}}$$
+                </blockquote>
+              <li class="fragment roll-in"> Need to define: <em>bin width</em> and <em>first bin starting position</em>
+              <li class="fragment roll-in" style="list-style-type: none;">
+                <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
+                     src="figures/histogram_example.svg" alt="histogram">
+            </ul>
+          </section>
 
-                  menu: {
-                      themes: false,
-                      openSlideNumber: true,
-                      openButton: false,
-                  },
+          <!-- 2.4 Histogram Pitfalls -->
+          <section>
+            <h2>Histogram is simple but problematic</h2>
+            <ul style="list-style-type: none;" class="fa-ul">
+              <li class="fragment roll-in"><span class="fa-li"><i class="fa fa-thumbs-down"></i></span>The density estimate depends on the starting bin position
+              <li class="fragment roll-in"><span class="fa-li"><i class="fa fa-thumbs-down"></i></span> The discontinuities of the estimate are only an artifact of the chosen bin locations
+              <li class="fragment roll-in"><span class="fa-li"><i class="fa fa-thumbs-down"></i></span> The curse of dimensionality, since the number of bins grows exponentially with the number of dimensions
+              <li class="fragment roll-in"><span class="fa-li"><i class="fa fa-thumbs-down"></i></span> Unsuitable for most practical applications except for quick visualizations in one or two dimensions
+              <li class="fragment roll-in"><span class="fa-li"><i class="fa fa-ban"></i></span> Let's leave it alone!
+            </ul>
+            <aside class="notes">
+              For multivariate data, the density estimate is also affected by the orientation of the bins.
+              These discontinuities make it very difficult to grasp the true underlying structure.
+              In high dimensions we require an astronomical number of examples or else most bins remain completely empty.
+            </aside>
+          </section>
 
-                  chalkboard: {
-                      boardmarkerWidth: 1,
-                      chalkWidth: 2,
-                      chalkEffect: 1,
-                      toggleNotesButton: false,
-                      toggleChalkboardButton: false,
-                      slideWidth: Reveal.width,
-                      slideHeight: Reveal.height,
-                      // src: "chalkboards/chalkboard_em2.json",
-                      readOnly: false,
-                      theme: "blackboard",
-                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
-                  },
+          <!-- 2.5 Interactive Demo 1: Histogram Sensitivity -->
+          <section>
+            <h3>Interactive: Histogram Sensitivity &amp; Artifacts</h3>
+            <div id="hist-demo-container" style="display: flex; flex-direction: column; align-items: center; width: 940px; margin: 0 auto; user-select: none;">
+              <!-- Status Toolbar -->
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 6px 14px; box-sizing: border-box; font-size: 13px; color: #586e75;">
+                <div style="display: flex; gap: 16px; align-items: center;">
+                  <span>Bin Width ($h$): <b id="hist-width-val" style="color: #268bd2; font-family: monospace;">1.60</b></span>
+                  <span>Origin ($x_0$): <b id="hist-origin-val" style="color: #dc322f; font-family: monospace;">0.00</b></span>
+                  <span>Occupied Bins: <b id="hist-bins-count" style="color: #859900; font-family: monospace;">--</b></span>
+                </div>
+                <div style="font-size: 11px; color: #cb4b16; font-weight: bold;">
+                  Shifting origin $x_0$ alters estimated density without changing any data!
+                </div>
+              </div>
 
-                  math: {
-                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
-                      config: 'TeX-AMS_SVG-full',
-                      // pass other options into `MathJax.Hub.Config()`
-                      TeX: {
-                          Macros: {
-        	              RR: '\\mathbb{R}',
-        	              PP: '\\mathbb{P}',
-        	              EE: '\\mathbb{E}',
-        	              NN: '\\mathbb{N}',
-        	              vth: '\\vec{\\theta}',
-                              loss: '{\\cal l}',
-                              hclass: '{\\cal H}',
-                              CD: '{\\cal D}',
-                              def: '\\stackrel{\\text{def}}{=}',
-                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
-                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
-        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
-                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
-                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
-                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
-                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
-                          },
-                          loader: {load: ['[tex]/color']},
-                          extensions: ["color.js"],
-                          tex: {packages: {'[+]': ['color']}},
-                          svg: {
-                              fontCache: 'global'
-                          }
-                      }
-                  },
+              <!-- Canvas Area -->
+              <div style="position: relative; width: 100%; height: 340px; box-sizing: border-box;">
+                <canvas id="hist-demo-canvas" width="940" height="340" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              </div>
 
-                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
-
-              });
-
-              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
-              Reveal.configure({ slideNumber: true });
-              //Reveal.configure({ history: true });
-              Reveal.configure({ slideNumber: 'c / t' });
-              Reveal.addEventListener( 'darkside', function() {
-                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
-              }, false );
-              Reveal.addEventListener( 'brightside', function() {
-                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
-              }, false );
-
-            </script>
-
-            <style type="text/css">
-              /* 1. Style header/footer <div> so they are positioned as desired. */
-              #header-left {
-                  position: absolute;
-                  top: 0%;
-                  left: 0%;
-              }
-              #header-right {
-                  position: absolute;
-                  top: 0%;
-                  right: 0%;
-              }
-              #footer-left {
-                  position: absolute;
-                  bottom: 0%;
-                  left: 0%;
-              }
-            </style>
-
-            <!-- // 2. Create hidden header/footer -->
-            <div id="hidden" style="display:none;">
-              <div id="header">
-                <div id="header-left"><h4>CS8850</h4></div>
-                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
-                <div id="footer-left">
-                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
-                       src="figures/valentino.png" alt="robot learning">
+              <!-- Controls Toolbar -->
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 12px; color: #586e75;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <b>Data:</b>
+                  <button id="btn-hist-bimodal" style="cursor: pointer; padding: 2px 8px; border: 1px solid #268bd2; background: #eee8d5; font-weight: bold; border-radius: 4px; font-size: 11px;">Bimodal</button>
+                  <button id="btn-hist-skewed" style="cursor: pointer; padding: 2px 8px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Skewed</button>
+                  <button id="btn-hist-separated" style="cursor: pointer; padding: 2px 8px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Separated</button>
+                  <button id="btn-hist-sliding-toggle" style="cursor: pointer; padding: 2px 8px; border: 1px solid #cb4b16; background: #fdf6e3; color: #cb4b16; border-radius: 4px; font-size: 11px; margin-left: 6px;">Compare Sliding Window</button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 14px;">
+                  <label style="display: flex; align-items: center; gap: 4px;">
+                    Bin Width:
+                    <input type="range" id="hist-width-slider" min="0.4" max="4.0" step="0.1" value="1.6" style="width: 90px; cursor: pointer;">
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 4px;">
+                    Origin Shift ($x_0$):
+                    <input type="range" id="hist-origin-slider" min="-1.5" max="1.5" step="0.05" value="0.0" style="width: 90px; cursor: pointer;">
+                  </label>
                 </div>
               </div>
             </div>
+            <aside class="notes">
+              Drag the Origin Shift slider: observe how the perceived modes and heights change dramatically even though the data is completely unchanged. This artifact of rigid grid placement is one of the primary reasons we move to Parzen window estimators, where a window is centered at every data point rather than aligned to an arbitrary grid.
+            </aside>
+          </section>
 
+          <!-- 2.6 Non-parametric DE Formulation 1 -->
+          <section>
+            <h3>Non-parametric DE</h3>
+            <h4>general formulation</h4>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 26px;">
+              What we are trying to accomplish?
+            </blockquote>
+            <ul style="list-style-type: alpha; font-size: 22px;">
+              <li class="fragment roll-in"> The probability that $\vec{x}\sim \prob{P}{\vec{x}}$, will fall in a given region $\cal R$ of the sample space is
+                \[
+                \theta = \int_{\cal R} \prob{P}{\vec{x}^{\prime}}d\vec{x}^{\prime}
+                \]
+              <li class="fragment roll-in"> Probability that $k$ of $N$ drawn vectors $\{\vec{x}^1, \dots, \vec{x}^N\}$ will fall in region ${\cal R}$ is
+                \[
+                \prob{P}{k} = {N \choose k} \theta^k (1 - \theta)^{N-k}
+                \]
+              <li class="fragment roll-in"> From properties of the binomial pmf
+                <row>
+                  <col50>
+                    $\prob{E}{\frac{k}{N}} = \theta$
+                  </col50>
+                  <col>
+                    $\prob{var}{\frac{k}{N}} = \frac{\theta(1-\theta)}{N}$
+                  </col>
+                </row>
+              <li class="fragment roll-in"> As $N\rightarrow\infty$, variance reduces and we can obtain a good estimate from
+                $
+                \theta \simeq \frac{k}{N}
+                $
+            </ul>
+          </section>
 
-            <script type="text/javascript">
-              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
-              var header = $('#header').html();
-              if ( window.location.search.match( /print-pdf/gi ) ) {
-                  Reveal.addEventListener( 'ready', function( event ) {
-                      $('.slide-background').append(header);
-                  });
+          <!-- 2.7 Non-parametric DE Formulation 2 -->
+          <section>
+            <h3>Non-parametric DE</h3>
+            <h4>general formulation</h4>
+            <ul style="list-style-type: disk; font-size: 28px">
+              <li class="fragment roll-in"> Assume $\cal R$ is so small that $\prob{P}{\vec{x}}$ does not much vary across it
+                \[
+                \theta = \int_{\cal R} \prob{P}{\vec{x}^{\prime}}d\vec{x}^{\prime} \simeq \prob{P}{\vec{x}}V
+                \]
+              <li class="fragment roll-in"> Combining with $\theta \simeq \frac{k}{N}$
+                \[
+                \prob{P}{x} \simeq \frac{k}{NV}
+                \]
+              <li class="fragment roll-in" style="list-style-type: none;">
+                <blockquote style="background-color: #eee8d5; width: 100%;">
+                  We obtain a more accurate estimate increasing $N$ and shrinking $V$
+                </blockquote>
+            </ul>
+            <aside class="notes">
+              V is the volume enclosed by region R.
+            </aside>
+          </section>
+
+          <!-- 2.8 Practical Considerations & Convergence -->
+          <section>
+            <h2>practical considerations</h2>
+            <ul style="list-style-type: disk; font-size: 22pt">
+              <li class="fragment roll-in"> As $V$ approaches zero ${\cal R}$ encloses no examples
+              <li class="fragment roll-in"> Have to find a compromise for $V$
+              <li class="fragment roll-in"> The general expression of nonparametric density becomes
+                <blockquote style="background-color: #eee8d5; width: 100%;">
+                \[
+                \prob{P}{x} \simeq \frac{k/N}{V} \mbox{, where } \begin{cases}
+                V & \text{volume surrounding } \vec{x} \\
+                N & \text{total #examples}\\
+                k & \text{#examples inside } V
+                \end{cases}
+                \]
+                </blockquote>
+              <li class="fragment roll-in"> For convergence of the estimator we need to provide for:
+                <blockquote style="background-color: #eee8d5; width: 40%; font-size:20px;">
+                \begin{align}
+                &\underset{n\to\infty}{\lim} V = 0\\
+                &\underset{n\to\infty}{\lim} k = \infty\\
+                &\underset{n\to\infty}{\lim} k/N = 0\\
+                \end{align}
+                </blockquote>
+            </ul>
+            <aside class="notes">
+              Large enough V to include enough samples within R.
+              Small enough to support p(x) being approximately constant in R.
+            </aside>
+          </section>
+
+          <!-- 2.9 Two Approaches: Fix V vs Fix k -->
+          <section>
+            <h2>Two approaches that provide this</h2>
+            <blockquote style="background-color: #eee8d5; width: 100%;">
+              <ul style="list-style-type: decimal; font-size: 22pt">
+                <li> Fix $V$ and estimate $k$ - <em>kernel density estimation</em> (KDE)
+                <li> Fix $k$ and estimate $V$ - <em>k-nearest neighbor</em> (kNN)
+              </ul>
+            </blockquote>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
+                 src="figures/kde_knn.png" alt="kde vs knn">
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 3: PARZEN WINDOWS & KERNEL DENSITY ESTIMATION                     -->
+        <!-- ========================================================================= -->
+        <section>
+          <!-- 3.0 Section Header -->
+          <section>
+            <h2>Parzen Windows &amp; KDE</h2>
+          </section>
+
+          <!-- 3.1 Parzen Windows Setup -->
+          <section>
+            <h2>Parzen windows</h2>
+            <row>
+              <col>
+                <ul style="list-style-type: disk; font-size: 22pt">
+                  <li class="fragment roll-in"> Assume the region $\cal R$ enclosing $k$ examples is a hypercube with side of length $h$ centered at $\vec{x}$
+                  <li class="fragment roll-in"> Its volume is $V = h^d$, where $d$ is the dimensionality
+                  <li class="fragment roll-in"> To find the number of examples that fall within this region we define a window function $K(u)$ (a.k.a. kernel)
+                    \[
+                    \prob{K}{u} = \begin{cases}
+                    1 & |u_j| \lt \frac{1}{2} \forall j = 1\dots d\\
+                    0 & \text{otherwise}
+                    \end{cases}
+                    \]
+                  <li class="fragment roll-in"> Known as a Parzen window or the naïve estimator and corresponds to a unit hypercube centered at the origin
+                  <li class="fragment roll-in"> $\prob{K}{\frac{(\vec{x} - \vec{x}^n)}{h}} = 1$ if $\vec{x}^n$ is inside a hypercube of side $h$ centered on $\vec{x}$, and zero otherwise
+                </ul>
+              </col>
+              <col30>
+                <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="300"
+                     src="figures/parzen_cube.svg" alt="Parzen cube">
+              </col30>
+            </row>
+          </section>
+
+          <!-- 3.2 Parzen Windows Formula -->
+          <section>
+            <h2>Parzen windows</h2>
+            <row>
+              <col>
+                <ul style="list-style-type: disk; font-size: 22pt">
+                  <li class="fragment roll-in" data-fragment-index="0"> The total number of points inside the hypercube is
+                    \[
+                    k = \sum_{n=1}^N \prob{K}{\frac{\vec{x} - \vec{x}^n}{h}}
+                    \]
+                  <li class="fragment roll-in" data-fragment-index="1"> The density estimate becomes
+                    \[
+                    \prob{P$_{KDE}$}{\vec{x}} = \frac{1}{Nh^d} \sum_{n=1}^N \prob{K}{\frac{\vec{x} - \vec{x}^n}{h}}
+                    \]
+                </ul>
+              </col>
+              <col40>
+                <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="90%"
+                     src="figures/parzen_box.svg" alt="Parzen example">
+              </col40>
+            </row>
+            <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22px; text-align: left;" class="fragment" data-fragment-index="2">
+              Note: Parzen window resembles a histogram, but with the window locations determined directly by the data!
+            </blockquote>
+          </section>
+
+          <!-- 3.3 Role of Kernel Function: Convolution -->
+          <section>
+            <h2>Parzen windows</h2>
+            <ul style="list-style-type: disk; font-size: 22pt">
+              <li class="fragment roll-in"> What's the role of the kernel function?
+              <li class="fragment roll-in"> Let us compute the expectation of the estimate $\prob{P$_{KDE}$}{\vec{x}}$
+                \begin{align}
+                E\left[\prob{P$_{KDE}$}{\vec{x}}\right] &= \frac{1}{Nh^d} \sum_{n=1}^N E\left[\prob{K}{\frac{\vec{x} - \vec{x}^n}{h}}\right]\\
+                & = \frac{1}{h^d} E\left[ \prob{K}{\frac{x-x^\prime}{h}}\right]\\
+                & = \frac{1}{h^d} \int \prob{K}{\frac{x-x^\prime}{h}} \prob{P}{x^\prime}dx^\prime\\
+                \end{align}
+              <li class="fragment roll-in"> $\prob{P$_{KDE}$}{\vec{x}}$ is a <b>convolution</b> of the true density with the kernel function!
+              <li class="fragment roll-in"> As $h\to 0$, the kernel approaches the Dirac delta and $\prob{P$_{KDE}$}{\vec{x}}$ approaches true density
+            </ul>
+            <aside class="notes">
+              Thus, kernel width h plays the role of a smoothing parameter: the wider h is, the smoother the estimate.
+              In practice with finite data, h cannot be arbitrarily small, or the density degenerates into delta spikes at the training points.
+            </aside>
+          </section>
+
+          <!-- 3.4 Lecture Exercise: 1D Parzen Calculation -->
+          <section>
+            <div id="header-right" style="font-size: 24px; right: -10%; top: -5%;">
+              <blockquote style="background-color: #eee8d5; width: 100%;">
+                \[
+                \prob{P$_{KDE}$}{\vec{x}} = \frac{1}{Nh^d} \sum_{n=1}^N \prob{K}{\frac{\vec{x} - \vec{x}^n}{h}}
+                \]
+              </blockquote>
+            </div>
+            <div id="header-left" style="font-size: 24px; left: -15%; top: -5%">
+              <blockquote style="background-color: #eee8d5; width: 100%;">
+                \[
+                \prob{K}{u} = \begin{cases}
+                1 & |u_j| \lt \frac{1}{2} \forall j = 1\dots d\\
+                0 & \text{otherwise}
+                \end{cases}
+                \]
+              </blockquote>
+            </div>
+            <h2>Exercise</h2>
+            <ul style="list-style-type: disk; font-size: 22px;">
+              <li class="fragment roll-in"> Given dataset $X = \{4, 5, 5, 6, 12, 14, 15, 15, 16, 17\}$ use Parzen windows to estimate the density at $y=3,10,15$; use $h=4$
+              <li class="fragment roll-in" style="list-style-type: none;">
+                <center><img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
+                   src="figures/kde_tight.svg" alt="kde combination"></center>
+              <li class="fragment roll-in"> Let's estimate $\prob{P}{y=3}$:
+                $$
+                \frac{1}{10\times 4^1} \left[ \prob{K}{\frac{3-4}{4}} + \prob{K}{\frac{3-5}{4}} + \cdots +\prob{K}{\frac{3-17}{4}}\right] = \frac{1}{40} = 0.025
+                $$
+              <li class="fragment roll-in">
+                $
+                \prob{P}{y=10} = \frac{1}{10\times 4^1} \left[ 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0\right] = \frac{0}{40} = 0
+                $
+              <li class="fragment roll-in">
+                $
+                \prob{P}{y=15} = \frac{1}{10\times 4^1} \left[ 0 + 0 + 0 + 0 + 0 + 1 + 1 + 1 + 1 + 0\right] = \frac{4}{40} = 0.1
+                $
+            </ul>
+          </section>
+
+          <!-- 3.5 Interactive Demo 2: Parzen Window & Box Accumulator -->
+          <section>
+            <h3>Interactive: Parzen Window (Box Kernel) Accumulator</h3>
+            <div id="parzen-demo-container" style="display: flex; flex-direction: column; align-items: center; width: 940px; margin: 0 auto; user-select: none;">
+              <!-- Calculation Display -->
+              <div id="parzen-calc-result" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 6px 14px; box-sizing: border-box; font-size: 13px; color: #073642; text-align: left;">
+                Calculating Parzen window estimate...
+              </div>
+
+              <!-- Canvas Area -->
+              <div style="position: relative; width: 100%; height: 330px; box-sizing: border-box;">
+                <canvas id="parzen-demo-canvas" width="940" height="330" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              </div>
+
+              <!-- Controls Toolbar -->
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 12px; color: #586e75;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <b>Exercise Presets:</b>
+                  <button id="btn-parzen-y3" style="cursor: pointer; padding: 2px 8px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Query y = 3</button>
+                  <button id="btn-parzen-y10" style="cursor: pointer; padding: 2px 8px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Query y = 10</button>
+                  <button id="btn-parzen-y15" style="cursor: pointer; padding: 2px 8px; border: 1px solid #268bd2; background: #eee8d5; font-weight: bold; border-radius: 4px; font-size: 11px;">Query y = 15</button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 14px;">
+                  <label style="display: flex; align-items: center; gap: 4px;">
+                    Bandwidth ($h$): <span id="parzen-h-val" style="font-family: monospace; font-weight: bold; color: #268bd2;">4.0</span>
+                    <input type="range" id="parzen-h-slider" min="1.0" max="8.0" step="0.5" value="4.0" style="width: 80px; cursor: pointer;">
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 4px;">
+                    Query Point ($y$): <span id="parzen-y-val" style="font-family: monospace; font-weight: bold; color: #dc322f;">15.0</span>
+                    <input type="range" id="parzen-y-slider" min="1.0" max="20.0" step="0.5" value="15.0" style="width: 90px; cursor: pointer;">
+                  </label>
+                </div>
+              </div>
+            </div>
+            <aside class="notes">
+              Use the preset buttons to reproduce the exact exercise calculations from the previous slide.
+              Point out the translucent boxes centered at each data point: when multiple boxes overlap, their step heights add up!
+              Moving the query point shows how many data points fall inside the window [y - h/2, y + h/2].
+            </aside>
+          </section>
+
+          <!-- 3.6 Smooth Kernels -->
+          <section>
+            <h2>Smooth kernels</h2>
+            <ul style="list-style-type: disk; font-size: 22px;">
+              <li class="fragment roll-in"> The Cube window has a few drawbacks
+                <ul>
+                  <li class="fragment roll-in"> Yields density estimates that have discontinuities
+                  <li class="fragment roll-in"> Weights equally all points $\vec{x}_i$, regardless of their distance to the estimation point $\vec{x}$
+                </ul>
+              <li class="fragment roll-in"> Often a smooth kernel is preferred
+                <ul>
+                  <li class="fragment roll-in"> $\prob{K}{\vec{x}} \ge 0$
+                  <li class="fragment roll-in"> $\displaystyle\int_{\cal R} \prob{K}{\vec{x}}d\vec{x} = 1$
+                  <li class="fragment roll-in"> Usually radially symmetric and unimodal, e.g. $\prob{K}{\vec{x}} = (2\pi)^{-d/2}e^{-\frac{1}{2}\vec{x}^T\vec{x}}$
+                </ul>
+              <li class="fragment roll-in"> Just use it in our density estimator:
+                <row>
+                  <col50 style="font-size: 22px;">
+                    $$
+                    \prob{P$_{KDE}$}{\vec{x}} = \frac{1}{Nh^d} \sum_{n=1}^N \prob{K}{\frac{\vec{x} - \vec{x}^n}{h}}
+                    $$
+                  </col50>
+                  <col70>
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); top: -10%;" width="100%"
+                         src="figures/parzen_kernel.svg" alt="smooth parzen">
+                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
+                         src="figures/kde_width_change.svg" alt="kde width">
+                  </col70>
+                </row>
+            </ul>
+          </section>
+
+          <!-- 3.7 Interpretation: Sum of Bumps -->
+          <section>
+            <h2>Interpretation</h2>
+            <ul style="list-style-type: disk; font-size: 22pt">
+              <li class="fragment roll-in"> The smooth kernel estimate is a sum of "bumps"
+              <li class="fragment roll-in"> The kernel function determines the shape of the bumps
+              <li class="fragment roll-in"> The parameter $h$, "smoothing parameter" determines their width
+              <li class="fragment roll-in" style="list-style-type: none;">
+                <center>
+                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="600"
+                       src="figures/kde_combines.svg" alt="kde combination">
+                </center>
+            </ul>
+          </section>
+
+          <!-- 3.8 Interactive Demo 3: Smooth KDE - Sum of Bumps Explorer -->
+          <section>
+            <h3>Interactive: Smooth KDE &amp; The "Sum of Bumps"</h3>
+            <div id="kde-smooth-container" style="display: flex; flex-direction: column; align-items: center; width: 940px; margin: 0 auto; user-select: none;">
+              <!-- Canvas Area -->
+              <div style="position: relative; width: 100%; height: 340px; box-sizing: border-box;">
+                <canvas id="kde-smooth-canvas" width="940" height="340" style="display: block; width: 100%; height: 100%; border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              </div>
+
+              <!-- Controls Toolbar -->
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 12px; color: #586e75;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <b>Kernel:</b>
+                  <button id="btn-kernel-gaussian" style="cursor: pointer; padding: 2px 7px; border: 1px solid #268bd2; background: #eee8d5; font-weight: bold; border-radius: 4px; font-size: 11px;">Gaussian</button>
+                  <button id="btn-kernel-epan" style="cursor: pointer; padding: 2px 7px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Epanechnikov</button>
+                  <button id="btn-kernel-box" style="cursor: pointer; padding: 2px 7px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Box</button>
+                  <button id="btn-kernel-tri" style="cursor: pointer; padding: 2px 7px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Triangular</button>
+                  <button id="btn-smooth-reset" style="cursor: pointer; padding: 2px 7px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 11px; margin-left: 4px;">Reset</button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 14px;">
+                  <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                    <input type="checkbox" id="chk-smooth-bumps" checked> Bumps
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                    <input type="checkbox" id="chk-smooth-true" checked> True PDF
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 4px;">
+                    Bandwidth ($h$): <span id="smooth-h-val" style="font-family: monospace; font-weight: bold; color: #268bd2;">0.90</span>
+                    <input type="range" id="smooth-h-slider" min="0.1" max="2.5" step="0.05" value="0.9" style="width: 85px; cursor: pointer;">
+                  </label>
+                </div>
+              </div>
+            </div>
+            <aside class="notes">
+              Show how KDE is literally the superposition of bumps. Toggle between Gaussian and Epanechnikov kernels (Epanechnikov is mathematically optimal under MSE).
+              Drag h down towards 0.1 to show Dirac impulse degeneration, then drag h up to 2.5 to show over-smoothing.
+              Click anywhere on the canvas to add custom points live!
+            </aside>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 4: BANDWIDTH SELECTION & BIAS-VARIANCE TRADEOFF                   -->
+        <!-- ========================================================================= -->
+        <section>
+          <!-- 4.0 Section Header -->
+          <section>
+            <h2>Bandwidth Selection</h2>
+          </section>
+
+          <!-- 4.1 Prior Knowledge vs Data -->
+          <section>
+            <h2>Prior knowledge vs data</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-top: -6%;" width="700"
+                 src="figures/kde_bumpy.png" alt="kde tuning">
+          </section>
+
+          <!-- 4.2 Spiky vs Over-smoothed -->
+          <section>
+            <h2>bandwidth selection</h2>
+            <ul style="list-style-type: disk; font-size: 22px;">
+              <li class="fragment roll-in"> Large $h$ over-smoothes the DE hiding structure
+              <li class="fragment roll-in"> Small $h$ yields a spiky uninterpretable DE
+            </ul>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="700"
+                 src="figures/kde_tuning.svg" alt="kde tuning">
+          </section>
+
+          <!-- 4.3 MSE Derivation & Bias-Variance Decomposition -->
+          <section>
+            <h2>bandwidth selection</h2>
+            <ul style="list-style-type: disk; font-size: 26px;">
+              <li class="fragment roll-in"> Pick $h$ that minimizes the error between the estimated density and the true density
+              <li class="fragment roll-in"> Let us use MSE for measuring this error
+              <li class="fragment roll-in" style="list-style-type: none;"> $E\left[ (\prob{P$_{KDE}$}{\vec{x}} - \prob{P}{\vec{x}})^2 \right] $
+              <li class="fragment roll-in" style="list-style-type: none;"> $ = E\left[ \prob{P$_{KDE}$}{\vec{x}}^2 - 2 \prob{P$_{KDE}$}{\vec{x}} \prob{P}{\vec{x}} + \prob{P}{\vec{x}}^2\right]$
+              <li class="fragment roll-in" style="list-style-type: none;"> $ = E\left[ \prob{P$_{KDE}$}{\vec{x}}^2\right] - 2 E\left[\prob{P$_{KDE}$}{\vec{x}}\right] \prob{P}{\vec{x}} + \prob{P}{\vec{x}}^2$
+
+              <li class="fragment roll-in" style="list-style-type: none;"> Add and subtract $E^2\left[ \prob{P$_{KDE}$}{\vec{x}} \right]$
+              <li class="fragment roll-in" style="list-style-type: none;">
+                \begin{align}
+                = & E^2\left[ \prob{P$_{KDE}$}{\vec{x}} \right] - 2 E\left[\prob{P$_{KDE}$}{\vec{x}}\right] \prob{P}{\vec{x}} + \prob{P}{\vec{x}}^2 \\
+                & + E\left[ \prob{P$_{KDE}$}{\vec{x}}^2\right] - E^2\left[ \prob{P$_{KDE}$}{\vec{x}} \right]
+                \end{align}
+              <li class="fragment roll-in" style="list-style-type: none;">
+                \begin{align}
+                = & (E\left[ \prob{P$_{KDE}$}{\vec{x}} \right] - \prob{P}{\vec{x}})^2 + E\left[ \prob{P$_{KDE}$}{\vec{x}}^2\right] - E^2\left[ \prob{P$_{KDE}$}{\vec{x}} \right]
+                \end{align}
+              <li class="fragment roll-in"> This is an exact example of the <b>bias-variance tradeoff</b>:
+                $$ \text{MSE}(h) = \text{Bias}^2(h) + \text{Variance}(h) $$
+            </ul>
+          </section>
+
+          <!-- 4.4 Bias-Variance Digression: Targets -->
+          <section>
+            <h2>Bias-variance tradeoff (digression)</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-top: -4%" width="600"
+                 src="figures/bias_variance_targets.png" alt="bias variance">
+          </section>
+
+          <!-- 4.5 Bias-Variance Digression: Model Complexity -->
+          <section>
+            <h2>Bias-variance tradeoff (digression)</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
+                 src="figures/model_complexity.png" alt="model complexity">
+          </section>
+
+          <!-- 4.6 Bias-Variance Digression: KDE Curves -->
+          <section>
+            <h2>Bias-variance tradeoff (digression)</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="900"
+                 src="figures/kde_bias_variance.svg" alt="kde bias variance">
+          </section>
+
+          <!-- 4.7 Silverman's Rule of Thumb -->
+          <section>
+            <div id="header-right" style="font-size: 24px;" class="fragment" data-fragment-index="3">
+              <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100"
+                   src="figures/itisfine.png" alt="normal">
+            </div>
+            <h2>bandwidth selection</h2>
+            <div class="fragment" data-fragment-index="0">
+              <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                Subjective choice
+              </blockquote>
+            </div>
+            <ul style="list-style-type: disk; font-size: 22pt">
+              <li class="fragment roll-in" data-fragment-index="1"> Plot out several curves and choose the estimate that best matches your subjective ideas
+              <li class="fragment roll-in" data-fragment-index="2"> Not too practical for high-dimensional data
+            </ul>
+            <div class="fragment" data-fragment-index="3">
+              <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                Assuming everything is Normal
+              </blockquote>
+            </div>
+            <ul style="list-style-type: disk; font-size: 22pt">
+              <li class="fragment roll-in" data-fragment-index="4"> Minimize the overall MSE
+                $
+                h = \argmin \{ E\left[ \int (\prob{P$_{KDE}$}{\vec{x}} - \prob{P}{\vec{x}})^2 d\vec{x} \right]\}
+                $
+              <li class="fragment roll-in" data-fragment-index="5"> Assuming the true distribution is Gaussian:
+                $
+                h^* = 1.06\sigma N^{-\frac{1}{5}}
+                $
+              <li class="fragment roll-in" data-fragment-index="6"> Can obtain better results with:
+                $$
+                h^* = 0.9A N^{-\frac{1}{5}} \mbox{ where } A = \min(\sigma, \frac{IQR}{1.34})
+                $$
+            </ul>
+          </section>
+
+          <!-- 4.8 Interactive Demo 4: Bias-Variance & Silverman's Rule -->
+          <section>
+            <h3>Interactive: Bias-Variance Tradeoff &amp; Silverman's Rule</h3>
+            <div id="bv-demo-container" style="display: flex; flex-direction: column; align-items: center; width: 940px; margin: 0 auto; user-select: none;">
+              <!-- Status Bar -->
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 5px 14px; box-sizing: border-box; font-size: 13px; color: #586e75;">
+                <div style="display: flex; gap: 14px; align-items: center;">
+                  <span>Bandwidth ($h$): <b id="bv-h-val" style="color: #268bd2; font-family: monospace;">0.55</b></span>
+                  <span>Empirical MSE: <b id="bv-mse-val" style="color: #859900; font-family: monospace;">--</b></span>
+                </div>
+                <div style="font-size: 11px; color: #6c71c4; font-weight: bold;">
+                  Notice: Optimal $h^*$ minimizes Bias² + Variance at the dip of the green MSE curve!
+                </div>
+              </div>
+
+              <!-- Dual Canvas Panel -->
+              <div style="position: relative; width: 100%; height: 330px; box-sizing: border-box;">
+                <canvas id="bandwidth-biasvar-canvas" width="940" height="330" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              </div>
+
+              <!-- Controls Toolbar -->
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 5px 12px; box-sizing: border-box; font-size: 12px; color: #586e75;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <b>Bandwidth Presets:</b>
+                  <button id="btn-bv-under" style="cursor: pointer; padding: 2px 6px; border: 1px solid #dc322f; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Under (h=0.12)</button>
+                  <button id="btn-bv-optimal" style="cursor: pointer; padding: 2px 6px; border: 1px solid #268bd2; background: #eee8d5; font-weight: bold; border-radius: 4px; font-size: 11px;">Silverman h*</button>
+                  <button id="btn-bv-robust" style="cursor: pointer; padding: 2px 6px; border: 1px solid #6c71c4; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Robust IQR</button>
+                  <button id="btn-bv-over" style="cursor: pointer; padding: 2px 6px; border: 1px solid #b58900; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Over (h=1.65)</button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span><b>N:</b></span>
+                  <button id="btn-bv-n50" style="cursor: pointer; padding: 2px 6px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 11px;">50</button>
+                  <button id="btn-bv-n100" style="cursor: pointer; padding: 2px 6px; border: 1px solid #93a1a1; background: #eee8d5; font-weight: bold; border-radius: 4px; font-size: 11px;">100</button>
+                  <button id="btn-bv-n300" style="cursor: pointer; padding: 2px 6px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 11px;">300</button>
+                  <label style="display: flex; align-items: center; gap: 4px; margin-left: 6px;">
+                    h:
+                    <input type="range" id="bv-h-slider" min="0.08" max="2.0" step="0.02" value="0.55" style="width: 80px; cursor: pointer;">
+                  </label>
+                </div>
+              </div>
+            </div>
+            <aside class="notes">
+              The bottom panel plots the exact theoretical trade-off: Bias squared increases with h (smoothing away details), while Variance decreases as 1/(Nh).
+              The minimum of the green curve is the optimal bandwidth. Note how Silverman's rule of thumb accurately locates the sweet spot near the MSE minimum!
+            </aside>
+          </section>
+
+          <!-- 4.9 Unimodal KDE Comparison -->
+          <section>
+            <h2>Unimodal distribution KDE</h2>
+            <ul style="font-size: 28px;">
+              <li>100 data points were drawn from the distribution
+              <li> True density (left), the estimates using $h=1.06\sigma N^{-1/5}$ (middle) and $h=0.9A N^{-1/5}$ (right)
+            </ul>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
+                 src="figures/unimodal_kde.png" alt="unimodal kde">
+          </section>
+
+          <!-- 4.10 Bimodal KDE Comparison -->
+          <section>
+            <h2>bimodal distribution KDE</h2>
+            <ul style="font-size: 28px;">
+              <li>100 data points were drawn from the distribution
+              <li> True density (left), the estimates using $h=1.06\sigma N^{-1/5}$ (middle) and $h=0.9A N^{-1/5}$ (right)
+            </ul>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-top: -5%;" width="1000"
+                 src="figures/bimodal_kde.png" alt="bimodal kde">
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 5: MULTIVARIATE DENSITY ESTIMATION                                -->
+        <!-- ========================================================================= -->
+        <section>
+          <!-- 5.0 Section Header -->
+          <section>
+            <h2>Multivariate KDE</h2>
+          </section>
+
+          <!-- 5.1 Multivariate Issues & Pre-whitening -->
+          <section>
+            <h2>Multivariate density estimation</h2>
+            <div class="fragment" data-fragment-index="0">
+              <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                Things to watch out for
+              </blockquote>
+            </div>
+            <ul style="list-style-type: disk; font-size: 22pt">
+              <li class="fragment roll-in" data-fragment-index="1"> $h$ is the same for all the axes, so this density estimate is weighting all axes equally
+              <li class="fragment roll-in" data-fragment-index="2"> A problem if one or several of the features has larger spread than the others
+            </ul>
+            <div class="fragment" data-fragment-index="3">
+              <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                A couple of "hacks" to fix this
+              </blockquote>
+            </div>
+            <ul style="list-style-type: disk; font-size: 22pt">
+              <li class="fragment roll-in" data-fragment-index="4"> <em>Pre-scaling</em> each axis (e.g. to unit variance)
+              <li class="fragment roll-in" data-fragment-index="5"> <em>Pre-whitening</em> the data
+                <ul>
+                  <li class="fragment roll-in" data-fragment-index="6"> Whiten the data $\vec{y}=\Lambda^{-1/2}V^T\vec{x}$
+                  <li class="fragment roll-in" data-fragment-index="7"> Estimate the density
+                  <li class="fragment roll-in" data-fragment-index="8"> Transform everything back
+                  <li class="fragment roll-in" data-fragment-index="9"> Equivalent to hyper-ellipsoidal kernel
+                </ul>
+            </ul>
+          </section>
+
+          <!-- 5.2 Product Kernels -->
+          <section>
+            <h2>Product kernels</h2>
+            <div class="fragment" data-fragment-index="0">
+              <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;">
+                Use it if "hacky" solutions are not your thing
+              </blockquote>
+            </div>
+            <ul style="list-style-type: disk; font-size: 22pt">
+              <li class="fragment roll-in" data-fragment-index="1" style="list-style-type: none;">
+                $\prob{P$_{KDE}$}{\vec{x}} = \frac{1}{N} \sum_{i=1}^N \prob{K}{\vec{x}, \vec{x}^i, h_1, \dots, h_d}$
+              <li class="fragment roll-in" data-fragment-index="2" style="list-style-type: none;">
+                $\prob{K}{\vec{x}, \vec{x}^i, h_1, \dots, h_d} = \frac{1}{h_1h_2\dots h_d} \prod_{j=1}^d \prob{K}{\frac{x_j-x_j^i}{h_j}} $
+              <li class="fragment roll-in" data-fragment-index="3"> Consists of the product of one-dimensional kernels
+              <li class="fragment roll-in" data-fragment-index="4"> Note, kernel independence does not imply feature independence!
+            </ul>
+          </section>
+
+          <!-- 5.3 Interactive Demo 5: 2D Multivariate KDE -->
+          <section>
+            <h3>Interactive: 2D Multivariate KDE &amp; Anisotropy</h3>
+            <div id="kde-2d-container" style="display: flex; flex-direction: column; align-items: center; width: 940px; margin: 0 auto; user-select: none;">
+              <!-- Canvas Area -->
+              <div style="position: relative; width: 100%; height: 350px; box-sizing: border-box;">
+                <canvas id="kde-2d-canvas" width="940" height="350" style="display: block; width: 100%; height: 100%; border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              </div>
+
+              <!-- Controls Toolbar -->
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 12px; color: #586e75;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <b>Kernel Mode:</b>
+                  <button id="btn-2d-iso" style="cursor: pointer; padding: 2px 8px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Isotropic (Circular)</button>
+                  <button id="btn-2d-prod" style="cursor: pointer; padding: 2px 8px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Product (Axis-Aligned)</button>
+                  <button id="btn-2d-white" style="cursor: pointer; padding: 2px 8px; border: 1px solid #2aa198; background: #eee8d5; font-weight: bold; border-radius: 4px; font-size: 11px;">Pre-whitened (Rotated)</button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 14px;">
+                  <label style="display: flex; align-items: center; gap: 4px;">
+                    Correlation Angle: <span id="corr-angle-val" style="font-family: monospace; font-weight: bold; color: #268bd2;">40</span>&deg;
+                    <input type="range" id="corr-angle-slider" min="0" max="90" step="5" value="40" style="width: 75px; cursor: pointer;">
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 4px;">
+                    Bandwidth ($h$): <span id="kde-2d-h-val" style="font-family: monospace; font-weight: bold; color: #859900;">0.80</span>
+                    <input type="range" id="kde-2d-h-slider" min="0.4" max="1.8" step="0.1" value="0.8" style="width: 75px; cursor: pointer;">
+                  </label>
+                </div>
+              </div>
+            </div>
+            <aside class="notes">
+              Change the correlation angle and toggle between modes:
+              Under Isotropic (single h), the density contours are circular and severely blur across the true diagonal data distribution.
+              Under Product kernel, independent bandwidths scale x and y separately, but cannot rotate.
+              Under Pre-whitened (covariance transform), the density contours naturally rotate to follow the principal axes of the data covariance!
+            </aside>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 6: NON-PARAMETRIC CLASSIFICATION & BRIDGE TO SVM                  -->
+        <!-- ========================================================================= -->
+        <section>
+          <!-- 6.0 Section Header -->
+          <section>
+            <h2>Non-parametric Classification</h2>
+          </section>
+
+          <!-- 6.1 Dual Formulation: k-Nearest Neighbors Density Estimation -->
+          <section>
+            <h2>The Dual: $k$-Nearest Neighbors</h2>
+            <div class="fragment" data-fragment-index="0">
+              <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 32px; width: 100%;">
+                Recall: $\prob{P}{\vec{x}} \simeq \frac{k / N}{V}$
+              </blockquote>
+            </div>
+            <ul style="font-size: 24px; line-height: 1.4;">
+              <li class="fragment roll-in"> In <b>KDE</b>, we fixed $V = h^d$ and estimated $k$ (count inside fixed volume)
+              <li class="fragment roll-in"> In <b>$k$-NN</b>, we fix $k$ and let the volume $V(\vec{x})$ adapt:
+                $$ \prob{P$_{k\text{NN}}$}{\vec{x}} = \frac{k}{N \cdot V(\vec{x})} = \frac{k}{N \cdot V_d \cdot r_k^d(\vec{x})} $$
+                where $r_k(\vec{x})$ is the Euclidean distance to the $k$-th nearest neighbor of $\vec{x}$, and $V_d$ is the volume of the unit sphere in $\mathbb{R}^d$.
+              <li class="fragment roll-in"> <b>Local Adaptive Resolution:</b>
+                <ul>
+                  <li> Dense regions $\implies$ small $r_k(\vec{x})$, tiny $V(\vec{x})$ $\implies$ high spatial resolution
+                  <li> Sparse regions $\implies$ large $r_k(\vec{x})$, large $V(\vec{x})$ $\implies$ heavy smoothing
+                </ul>
+            </ul>
+            <aside class="notes">
+              Remind students of slide 2.9: kNN density estimation is the exact dual of KDE. In KDE the window volume is fixed everywhere, while in kNN the number of neighbors k is fixed and the volume expands or contracts based on local point density.
+            </aside>
+          </section>
+
+          <!-- 6.2 k-NN Classifier as the Exact Bayes Optimal Rule -->
+          <section>
+            <h3>$k$-NN Classification as Bayes Decision</h3>
+            <div class="fragment" data-fragment-index="0">
+              <blockquote style="background-color: #eee8d5; width: 100%; font-size: 26px;">
+                Suppose we have $C$ classes and draw a sphere around $\vec{x}$ containing $k$ total points, with $k_i$ from class $\omega_i$.
+              </blockquote>
+            </div>
+            <ul style="font-size: 24px; line-height: 1.4;">
+              <li class="fragment roll-in"> Unconditional density estimate: $\prob{P}{\vec{x}} = \frac{k}{N V}$
+              <li class="fragment roll-in"> Class-conditional likelihood: $\prob{P}{\vec{x}|\omega_i} = \frac{k_i}{N_i V}$
+              <li class="fragment roll-in"> Class prior probability: $\prob{P}{\omega_i} = \frac{N_i}{N}$
+              <li class="fragment roll-in"> <b>Plugging into Bayes' Rule:</b>
+                $$
+                \prob{P}{\omega_i|\vec{x}} = \frac{\prob{P}{\vec{x}|\omega_i}\prob{P}{\omega_i}}{\prob{P}{\vec{x}}}
+                = \frac{\left(\frac{k_i}{N_i V}\right) \left(\frac{N_i}{N}\right)}{\frac{k}{N V}}
+                = \mathbf{\frac{k_i}{k}}
+                $$
+              <li class="fragment roll-in">
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 28px; width: 100%;">
+                  The intuitive $k$-NN majority vote is the <u>exact</u> Bayes posterior under $k$-NN density estimation!
+                </blockquote>
+            </ul>
+            <aside class="notes">
+              This is a profound theoretical result: the simple k-nearest neighbor voting heuristic that every practitioner uses is not just an ad-hoc trick. It is the mathematically exact Bayes posterior resulting from non-parametric k-NN density estimation!
+            </aside>
+          </section>
+
+          <!-- 6.3 Two-Class Decision Boundary via KDE -->
+          <section>
+            <h2>Decision boundary: 2 classes</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-top:-20px;" width="750"
+                 src="figures/kde_decision_boundary.svg" alt="kde decision boundary">
+            <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22px; text-align: left;">
+              In the general case, we estimate class densities non-parametrically using KDE:
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; font-size: 26px;" class="fragment" data-fragment-index="0">
+              $\prob{P$_{KDE}$}{\vec{x}|\omega} = \frac{1}{Nh^d} \sum_{n=1}^N \prob{K}{\frac{\vec{x} - \vec{x}^n}{h}}$, where $\prob{K}{\vec{x}} = (2\pi)^{-d/2}e^{-\frac{1}{2}\vec{x}^T\vec{x}}$
+            </blockquote>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 26px; width: 100%;" class="fragment" data-fragment-index="1">
+              Warning: The non-parametric decision boundary is highly sensitive to outliers!
+            </blockquote>
+            <aside class="notes">
+              When we estimate class posteriors non-parametrically with KDE, the decision boundary can curve flexibly around arbitrary distributions. But because kernels have local support, isolated outliers can violently distort the boundary, creating islands of high variance.
+            </aside>
+          </section>
+
+          <!-- 6.4 Interactive Demo 6: Two-Class Boundary & Outlier Vulnerability -->
+          <section>
+            <h3>Interactive: 2-Class KDE Boundary &amp; Outlier Vulnerability</h3>
+            <div id="clf-demo-container" style="display: flex; flex-direction: column; align-items: center; width: 940px; margin: 0 auto; user-select: none;">
+              <!-- Alert Box -->
+              <div id="clf-alert-box" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 6px 14px; box-sizing: border-box; font-size: 13px; color: #073642; text-align: left;">
+                Decision Boundary Status
+              </div>
+
+              <!-- Canvas Area -->
+              <div style="position: relative; width: 100%; height: 330px; box-sizing: border-box;">
+                <canvas id="kde-classifier-canvas" width="940" height="330" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              </div>
+
+              <!-- Controls Toolbar -->
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 12px; color: #586e75;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <b>Class Boundary:</b>
+                  <button id="btn-clf-outlier" style="cursor: pointer; padding: 2px 8px; border: 1px solid #dc322f; background: #fdf6e3; color: #dc322f; font-weight: bold; border-radius: 4px; font-size: 11px;">Add Boundary Outlier (x=4.9)</button>
+                  <button id="btn-clf-reset" style="cursor: pointer; padding: 2px 8px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 11px;">Reset</button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 14px;">
+                  <span style="color: #dc322f;">■ Class 1 ($\omega_1$)</span>
+                  <span style="color: #268bd2;">■ Class 2 ($\omega_2$)</span>
+                  <label style="display: flex; align-items: center; gap: 4px;">
+                    Bandwidth ($h$): <span id="clf-h-val" style="font-family: monospace; font-weight: bold; color: #268bd2;">0.45</span>
+                    <input type="range" id="clf-h-slider" min="0.25" max="1.5" step="0.05" value="0.45" style="width: 85px; cursor: pointer;">
+                  </label>
+                </div>
+              </div>
+            </div>
+            <aside class="notes">
+              Click 'Add Boundary Outlier' to insert a single red point inside the blue cluster.
+              Watch the decision ribbon along the bottom: the non-parametric boundary fractures into multiple disconnected regions!
+              This extreme sensitivity to outliers at fine bandwidth is the exact motivation for the next lecture: Support Vector Machines!
+            </aside>
+          </section>
+
+          <!-- 6.5 The Bridge to Lecture 13: Restricted Bayes Optimal & SVM -->
+          <section>
+            <h3>Restricted Bayes Optimal Classifier</h3>
+            <blockquote style="background-color: #eee8d5; width: 100%; font-size: 26px; text-align: left;">
+              <b>The Dilemma:</b> Non-parametric KDE boundaries have high variance and are sensitive to outliers. As $h \to 0$, the estimate degenerates into delta spikes at each point.
+            </blockquote>
+            <div class="row" style="margin-top: 15px;">
+              <div class="col60">
+                <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
+                     src="figures/kde_bumpy_SVM.png" alt="kde tuning">
+              </div>
+              <div class="col40" style="font-size: 21px; text-align: left; padding-left: 15px;">
+                <div class="fragment" data-fragment-index="0" style="margin-bottom: 12px;">
+                  <b>Tong &amp; Koller (AAAI 2000):</b><br>
+                  To control variance, restrict the hypothesis class $\mathcal{H}$ to linear hyperplanes.
+                </div>
+                <div class="fragment" data-fragment-index="1" style="background: rgba(238, 232, 213, 0.7); border-left: 4px solid #268bd2; padding: 6px 10px;">
+                  <b>Next Lecture:</b><br>
+                  The max-margin hyperplane is the <b>Restricted Bayes-Optimal Classifier</b>!
+                  <div style="font-size: 18px; color: #cb4b16; font-weight: bold; margin-top: 4px;">
+                    &rarr; Support Vector Machines (SVM)
+                  </div>
+                </div>
+              </div>
+            </div>
+            <aside class="notes">
+              Set up the cliffhanger into Lecture 13: Tong and Koller proved that if you define a KDE distribution with delta-spike kernels and find the classifier in a restricted linear hypothesis class that minimizes Bayes error, you get the max-margin separating hyperplane of Support Vector Machines!
+            </aside>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 7: TAKE HOME POINTS                                               -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h2>Take Home Points</h2>
+            <ul style="font-size: 26px; line-height: 1.45; max-width: 900px; margin: 30px auto; text-align: left;">
+              <li class="fragment" data-fragment-index="0"><b>Beyond Parametric Forms:</b> Estimate $p(\vec{x})$ directly from empirical data without assuming fixed distribution families.</li>
+              <li class="fragment" data-fragment-index="1"><b>Parzen Windows:</b> Eliminate rigid histogram bins by centering smooth kernels at each data point.</li>
+              <li class="fragment" data-fragment-index="2"><b>Bandwidth Controls Bias-Variance:</b> Kernel shape matters little; bandwidth $h$ governs overfitting vs. oversmoothing ($h^* \propto N^{-1/5}$).</li>
+              <li class="fragment" data-fragment-index="3"><b>Multivariate Scaling:</b> Isotropic kernels fail under correlated features; resolve with pre-whitening or product kernels.</li>
+              <li class="fragment" data-fragment-index="4"><b>Duality &amp; Bridge to SVMs:</b> $k$-NN adapts volume for fixed $k$; KDE boundary sensitivity motivates max-margin hyperplanes.</li>
+            </ul>
+            <aside class="notes">
+              Review:
+              1. Non-parametric methods allow probabilistic inference when functional density forms are unknown.
+              2. Parzen windows resolve histogram bin-origin and discontinuity artifacts through smooth kernel convolution.
+              3. The bias-variance tradeoff is primarily governed by bandwidth h, not the specific kernel shape.
+              4. Correlated multivariate features require pre-whitening via PCA/covariance to avoid distortion.
+              5. The dual relationship between KDE and k-NN, and how KDE boundary sensitivity motivates SVMs next lecture.
+            </aside>
+          </section>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/math/math.js"></script>
+    <script src="plugin/chalkboard/plugin.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/fullscreen/fullscreen.js"></script>
+    <script src="plugin/menu/menu.js"></script>
+
+    <script>
+      Reveal.initialize({
+          hash: true,
+          margin: 0.01,
+          minScale: 0.01,
+          maxScale: 1.23,
+
+          menu: {
+              themes: false,
+              openSlideNumber: true,
+              openButton: false,
+          },
+
+          chalkboard: {
+              boardmarkerWidth: 1,
+              chalkWidth: 2,
+              chalkEffect: 1,
+              toggleNotesButton: false,
+              toggleChalkboardButton: false,
+              slideWidth: Reveal.width,
+              slideHeight: Reveal.height,
+              readOnly: false,
+              theme: "blackboard",
+              eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+          },
+
+          math: {
+              mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+              config: 'TeX-AMS_SVG-full',
+              TeX: {
+                  Macros: {
+                      RR: '\\mathbb{R}',
+                      PP: '\\mathbb{P}',
+                      EE: '\\mathbb{E}',
+                      NN: '\\mathbb{N}',
+                      vth: '\\vec{\\theta}',
+                      loss: '{\\cal l}',
+                      hclass: '{\\cal H}',
+                      CD: '{\\cal D}',
+                      def: '\\stackrel{\\text{def}}{=}',
+                      pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                      vec: ['\\boldsymbol{\\mathbf #1}', 1],
+                      set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                      bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                      argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                      argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                      prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                  },
+                  loader: {load: ['[tex]/color']},
+                  extensions: ["color.js"],
+                  tex: {packages: {'[+]': ['color']}},
+                  svg: {
+                      fontCache: 'global'
+                  }
               }
-              else {
-                  $('div.reveal').append(header);
-              }
-            </script>
+          },
+
+          plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+      });
+
+      Reveal.configure({ fragments: true });
+      Reveal.configure({ slideNumber: true });
+      Reveal.configure({ slideNumber: 'c / t' });
+      Reveal.addEventListener( 'darkside', function() {
+          document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+      }, false );
+      Reveal.addEventListener( 'brightside', function() {
+          document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+      }, false );
+    </script>
+
+    <style type="text/css">
+      #header-left {
+          position: absolute;
+          top: 0%;
+          left: 0%;
+      }
+      #header-right {
+          position: absolute;
+          top: 0%;
+          right: 0%;
+      }
+      #footer-left {
+          position: absolute;
+          bottom: 0%;
+          left: 0%;
+      }
+    </style>
+
+    <!-- Hidden Header / Footer Template -->
+    <div id="hidden" style="display:none;">
+      <div id="header">
+        <div id="header-left"><h4>CS8850</h4></div>
+        <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+        <div id="footer-left">
+          <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+               src="figures/valentino.png" alt="robot learning">
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var header = $('#header').html();
+      if ( window.location.search.match( /print-pdf/gi ) ) {
+          Reveal.addEventListener( 'ready', function( event ) {
+              $('.slide-background').append(header);
+          });
+      }
+      else {
+          $('div.reveal').append(header);
+      }
+    </script>
+
+    <!-- Interactive Demonstrations for Lecture 12 -->
+    <script src="js/kde_demos.js"></script>
 
   </body>
 </html>
