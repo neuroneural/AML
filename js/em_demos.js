@@ -40,8 +40,8 @@
   function setupHiDPI(canvas) {
     const dpr = window.devicePixelRatio || 1;
     if (!canvas._logicalW) {
-      canvas._logicalW = parseInt(canvas.getAttribute('width'), 10) || 940;
-      canvas._logicalH = parseInt(canvas.getAttribute('height'), 10) || 330;
+      canvas._logicalW = parseInt(canvas.getAttribute('width'), 10) || 1180;
+      canvas._logicalH = parseInt(canvas.getAttribute('height'), 10) || 450;
     }
     const logW = canvas._logicalW;
     const logH = canvas._logicalH;
@@ -285,9 +285,9 @@
         const sy = toY(gy);
         ctx.beginPath(); ctx.moveTo(padL, sy); ctx.lineTo(padL + plotW, sy); ctx.stroke();
         ctx.fillStyle = SOL.base01;
-        ctx.font = '11px monospace';
+        ctx.font = '12.5px monospace';
         ctx.textAlign = 'right';
-        ctx.fillText(gy.toFixed(2), padL - 6, sy + 4);
+        ctx.fillText(gy.toFixed(2), padL - 7, sy + 4);
       }
 
       // Axes
@@ -300,19 +300,19 @@
       ctx.stroke();
 
       ctx.fillStyle = SOL.base02;
-      ctx.font = 'bold 12px sans-serif';
+      ctx.font = 'bold 14px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('Data Space x', padL + plotW / 2, H - 8);
       ctx.save();
-      ctx.translate(15, padT + plotH / 2);
+      ctx.translate(16, padT + plotH / 2);
       ctx.rotate(-Math.PI / 2);
       ctx.fillText('Density p(x)', 0, 0);
       ctx.restore();
 
       // Draw Component 1 (bulk Gaussian)
       ctx.strokeStyle = SOL.blue;
-      ctx.lineWidth = 2;
-      ctx.setLineDash([5, 4]);
+      ctx.lineWidth = 2.4;
+      ctx.setLineDash([6, 4]);
       ctx.beginPath();
       for (let px = 0; px <= plotW; px += 2) {
         const x = xMin + (px / plotW) * (xMax - xMin);
@@ -324,7 +324,7 @@
 
       // Draw Component 2 (collapsible Gaussian)
       ctx.strokeStyle = SOL.orange;
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 2.4;
       ctx.beginPath();
       for (let px = 0; px <= plotW; px += 1) {
         const x = xMin + (px / plotW) * (xMax - xMin);
@@ -337,7 +337,7 @@
 
       // Draw Total Mixture p(x)
       ctx.strokeStyle = SOL.red;
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 3.4;
       ctx.beginPath();
       for (let px = 0; px <= plotW; px += 1) {
         const x = xMin + (px / plotW) * (xMax - xMin);
@@ -357,7 +357,7 @@
 
         // Green likelihood stem
         ctx.strokeStyle = SOL.green;
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 2.8;
         ctx.beginPath();
         ctx.moveTo(sx, baseSy);
         ctx.lineTo(sx, sy);
@@ -366,46 +366,46 @@
         // Point on curve
         ctx.fillStyle = SOL.blue;
         ctx.beginPath();
-        ctx.arc(sx, sy, 5, 0, 2 * Math.PI);
+        ctx.arc(sx, sy, 6, 0, 2 * Math.PI);
         ctx.fill();
 
         // Data point on x-axis
         ctx.fillStyle = (i === data.length - 1) ? SOL.red : SOL.base03;
         ctx.beginPath();
-        ctx.arc(sx, baseSy, 5.5, 0, 2 * Math.PI);
+        ctx.arc(sx, baseSy, 6.5, 0, 2 * Math.PI);
         ctx.fill();
 
         if (i === data.length - 1) {
           ctx.fillStyle = SOL.red;
-          ctx.font = 'bold 11px sans-serif';
+          ctx.font = 'bold 13px sans-serif';
           ctx.textAlign = 'center';
-          ctx.fillText('xᵢ = 8.20', sx, baseSy + 16);
+          ctx.fillText('xᵢ = 8.20', sx, baseSy + 18);
         }
       }
 
       // Legend box
-      const legX = padL + 16, legY = padT + 10;
-      ctx.fillStyle = 'rgba(253, 246, 227, 0.92)';
+      const legX = padL + 18, legY = padT + 12;
+      ctx.fillStyle = 'rgba(253, 246, 227, 0.94)';
       ctx.strokeStyle = SOL.base1;
       ctx.lineWidth = 1;
-      ctx.fillRect(legX, legY, 245, 68);
-      ctx.strokeRect(legX, legY, 245, 68);
+      ctx.fillRect(legX, legY, 290, 78);
+      ctx.strokeRect(legX, legY, 290, 78);
 
-      ctx.font = '12px sans-serif';
+      ctx.font = '13.5px sans-serif';
       ctx.textAlign = 'left';
       // Mixture
-      ctx.strokeStyle = SOL.red; ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.moveTo(legX + 10, legY + 16); ctx.lineTo(legX + 34, legY + 16); ctx.stroke();
-      ctx.fillStyle = SOL.base02; ctx.fillText('Mixture p(x) = π₁N₁ + π₂N₂', legX + 42, legY + 20);
+      ctx.strokeStyle = SOL.red; ctx.lineWidth = 3.4;
+      ctx.beginPath(); ctx.moveTo(legX + 12, legY + 18); ctx.lineTo(legX + 38, legY + 18); ctx.stroke();
+      ctx.fillStyle = SOL.base02; ctx.fillText('Mixture p(x) = π₁N₁ + π₂N₂', legX + 46, legY + 23);
       // Comp 1
-      ctx.strokeStyle = SOL.blue; ctx.lineWidth = 2; ctx.setLineDash([4, 3]);
-      ctx.beginPath(); ctx.moveTo(legX + 10, legY + 35); ctx.lineTo(legX + 34, legY + 35); ctx.stroke();
-      ctx.fillStyle = SOL.base02; ctx.fillText('Component 1 (bulk, σ₁=1.45)', legX + 42, legY + 39);
+      ctx.strokeStyle = SOL.blue; ctx.lineWidth = 2.4; ctx.setLineDash([5, 3]);
+      ctx.beginPath(); ctx.moveTo(legX + 12, legY + 41); ctx.lineTo(legX + 38, legY + 41); ctx.stroke();
+      ctx.fillStyle = SOL.base02; ctx.fillText('Component 1 (bulk, σ₁=1.45)', legX + 46, legY + 46);
       // Comp 2
       ctx.strokeStyle = SOL.orange;
-      ctx.beginPath(); ctx.moveTo(legX + 10, legY + 54); ctx.lineTo(legX + 34, legY + 54); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(legX + 12, legY + 63); ctx.lineTo(legX + 38, legY + 63); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = SOL.base02; ctx.fillText(`Component 2 (μ₂=${mu2.toFixed(2)}, σ₂=${s2.toFixed(3)})`, legX + 42, legY + 58);
+      ctx.fillStyle = SOL.base02; ctx.fillText(`Component 2 (μ₂=${mu2.toFixed(2)}, σ₂=${s2.toFixed(3)})`, legX + 46, legY + 68);
 
       // Update readouts
       const ll = computeLogLikelihood();
@@ -537,17 +537,17 @@
         const sx = toX(gx);
         ctx.beginPath(); ctx.moveTo(sx, padT); ctx.lineTo(sx, padT + plotH); ctx.stroke();
         ctx.fillStyle = SOL.base01;
-        ctx.font = '11px monospace';
+        ctx.font = '12.5px monospace';
         ctx.textAlign = 'center';
-        ctx.fillText(gx.toFixed(1), sx, padT + plotH + 15);
+        ctx.fillText(gx.toFixed(1), sx, padT + plotH + 17);
       }
       for (let gy = -1.5; gy <= 1.5; gy += 0.5) {
         const sy = toY(gy);
         ctx.beginPath(); ctx.moveTo(padL, sy); ctx.lineTo(padL + plotW, sy); ctx.stroke();
         ctx.fillStyle = SOL.base01;
-        ctx.font = '11px monospace';
+        ctx.font = '12.5px monospace';
         ctx.textAlign = 'right';
-        ctx.fillText(gy.toFixed(1), padL - 6, sy + 4);
+        ctx.fillText(gy.toFixed(1), padL - 7, sy + 4);
       }
 
       // Zero line y = 0
@@ -569,7 +569,7 @@
 
       // Curve f(x)
       ctx.strokeStyle = SOL.blue;
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 3.4;
       ctx.beginPath();
       for (let px = 0; px <= plotW; px += 2) {
         const x = xMin + (px / plotW) * (xMax - xMin);
@@ -582,8 +582,8 @@
       // Helper to draw a text badge with a readable pill background
       function drawBadge(text, x, y, textColor, borderColor, align = 'center') {
         ctx.save();
-        ctx.font = 'bold 11.5px sans-serif';
-        const padX = 6, padY = 4, h = 19;
+        ctx.font = 'bold 13px sans-serif';
+        const padX = 8, h = 23;
         const w = ctx.measureText(text).width + padX * 2;
         let bx = x - w / 2;
         if (align === 'left') bx = x;
@@ -613,8 +613,8 @@
 
       // Secant chord between (x1, y1) and (x2, y2)
       ctx.strokeStyle = SOL.orange;
-      ctx.lineWidth = 2.4;
-      ctx.setLineDash([6, 4]);
+      ctx.lineWidth = 2.8;
+      ctx.setLineDash([7, 4]);
       ctx.beginPath();
       ctx.moveTo(toX(x1), toY(y1));
       ctx.lineTo(toX(x2), toY(y2));
@@ -623,7 +623,7 @@
 
       // Dashed vertical guides at x1, x2
       ctx.strokeStyle = 'rgba(88, 110, 117, 0.4)';
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 1.2;
       ctx.setLineDash([3, 3]);
       [ [x1, y1], [x2, y2] ].forEach(([xv, yv]) => {
         ctx.beginPath();
@@ -640,7 +640,7 @@
 
       // Vertical guide from axis to xBar
       ctx.strokeStyle = 'rgba(220, 50, 47, 0.45)';
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1.6;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(sxBar, padT + plotH);
@@ -650,7 +650,7 @@
 
       // Shaded vertical bar for the Jensen gap
       ctx.strokeStyle = SOL.red;
-      ctx.lineWidth = 4.5;
+      ctx.lineWidth = 5.5;
       ctx.beginPath();
       ctx.moveTo(sxBar, syCurve);
       ctx.lineTo(sxBar, syChord);
@@ -664,38 +664,38 @@
         const sx = toX(xv), sy = toY(yv);
         ctx.fillStyle = SOL.base03;
         ctx.beginPath();
-        ctx.arc(sx, sy, 5.5, 0, 2 * Math.PI);
+        ctx.arc(sx, sy, 6.5, 0, 2 * Math.PI);
         ctx.fill();
         ctx.fillStyle = SOL.base02;
-        ctx.font = 'bold 12px sans-serif';
+        ctx.font = 'bold 13.5px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(axisLbl, sx, padT + plotH - 6);
+        ctx.fillText(axisLbl, sx, padT + plotH - 7);
         if (Math.abs(x2 - x1) > 0.25 || idx === 0) {
           const badgeY = (mode === 'ln')
-            ? (idx === 0 ? sy - 16 : sy - 16)
-            : (idx === 0 ? sy + 18 : sy + 18);
+            ? (idx === 0 ? sy - 19 : sy - 19)
+            : (idx === 0 ? sy + 20 : sy + 20);
           drawBadge(ptLbl, sx, badgeY, SOL.base03, SOL.base1, 'center');
         }
       });
 
       // X-axis badge for E[X] = λx₁ + (1-λ)x₂
-      drawBadge(`E[X] = λx₁+(1−λ)x₂ = ${xBar.toFixed(2)}`, sxBar, padT + plotH - 12, SOL.red, SOL.red, 'center');
+      drawBadge(`E[X] = λx₁+(1−λ)x₂ = ${xBar.toFixed(2)}`, sxBar, padT + plotH - 14, SOL.red, SOL.red, 'center');
 
       // Draw Curve Point f(E[X]) (Green) and Chord Point E[f(X)] (Orange)
       ctx.fillStyle = SOL.green;
       ctx.beginPath();
-      ctx.arc(sxBar, syCurve, 6.5, 0, 2 * Math.PI);
+      ctx.arc(sxBar, syCurve, 7.5, 0, 2 * Math.PI);
       ctx.fill();
 
       ctx.fillStyle = SOL.orange;
       ctx.beginPath();
-      ctx.arc(sxBar, syChord, 6.5, 0, 2 * Math.PI);
+      ctx.arc(sxBar, syChord, 7.5, 0, 2 * Math.PI);
       ctx.fill();
 
       // Non-colliding pill badges for Curve Point (Log of Sum) and Chord Point (Sum of Logs)
       const gap = Math.abs(fOfExp - expOfF);
-      const curveBadgeY = (mode === 'ln') ? (syCurve - 18) : (syCurve + 18);
-      const chordBadgeY = (mode === 'ln') ? (syChord + 19) : (syChord - 19);
+      const curveBadgeY = (mode === 'ln') ? (syCurve - 21) : (syCurve + 21);
+      const chordBadgeY = (mode === 'ln') ? (syChord + 22) : (syChord - 22);
 
       drawBadge(
         `Curve (Log of Sum): ${fnName}(λx₁+(1−λ)x₂) = ${fOfExp.toFixed(3)}`,
@@ -718,23 +718,23 @@
       }
 
       // Formula callout card
-      const cardX = W - 345, cardY = (mode === 'ln') ? (padT + plotH - 86) : (padT + 10);
+      const cardX = W - 385, cardY = (mode === 'ln') ? (padT + plotH - 96) : (padT + 12);
       ctx.fillStyle = 'rgba(253, 246, 227, 0.95)';
       ctx.strokeStyle = SOL.base1;
       ctx.lineWidth = 1;
-      ctx.fillRect(cardX, cardY, 305, 72);
-      ctx.strokeRect(cardX, cardY, 305, 72);
+      ctx.fillRect(cardX, cardY, 345, 82);
+      ctx.strokeRect(cardX, cardY, 345, 82);
 
       ctx.textAlign = 'left';
-      ctx.font = 'bold 12px sans-serif';
+      ctx.font = 'bold 13.5px sans-serif';
       ctx.fillStyle = SOL.blue;
-      ctx.fillText(mode === 'ln' ? 'Concave f(x)=ln(x): Curve ≥ Secant Chord' : 'Convex f(x)=-ln(x): Curve ≤ Secant Chord', cardX + 10, cardY + 18);
-      ctx.font = '11.5px sans-serif';
+      ctx.fillText(mode === 'ln' ? 'Concave f(x)=ln(x): Curve ≥ Secant Chord' : 'Convex f(x)=-ln(x): Curve ≤ Secant Chord', cardX + 12, cardY + 22);
+      ctx.font = '13px sans-serif';
       ctx.fillStyle = SOL.base02;
-      ctx.fillText(mode === 'ln' ? 'EM Lower Bound: ln(E[X]) ≥ E[ln(X)]' : 'Jensen Inequality: -ln(E[X]) ≤ E[-ln(X)]', cardX + 10, cardY + 38);
+      ctx.fillText(mode === 'ln' ? 'EM Lower Bound: ln(E[X]) ≥ E[ln(X)]' : 'Jensen Inequality: -ln(E[X]) ≤ E[-ln(X)]', cardX + 12, cardY + 45);
       ctx.fillStyle = gap < 0.005 ? SOL.green : SOL.red;
-      ctx.font = 'bold 12px monospace';
-      ctx.fillText(gap < 0.005 ? 'Gap = 0.000 (Tight Bound: x₁ = x₂!)' : `Jensen Gap (Red Bar) = ${gap.toFixed(3)} > 0`, cardX + 10, cardY + 58);
+      ctx.font = 'bold 13.5px monospace';
+      ctx.fillText(gap < 0.005 ? 'Gap = 0.000 (Tight Bound: x₁ = x₂!)' : `Jensen Gap (Red Bar) = ${gap.toFixed(3)} > 0`, cardX + 12, cardY + 67);
 
       if (x1Val) x1Val.textContent = x1.toFixed(2);
       if (x2Val) x2Val.textContent = x2.toFixed(2);
@@ -865,17 +865,17 @@
         const sx = toX(gx);
         ctx.beginPath(); ctx.moveTo(sx, padT); ctx.lineTo(sx, padT + plotH); ctx.stroke();
         ctx.fillStyle = SOL.base01;
-        ctx.font = '11px monospace';
+        ctx.font = '12.5px monospace';
         ctx.textAlign = 'center';
-        ctx.fillText(gx.toString(), sx, padT + plotH + 15);
+        ctx.fillText(gx.toString(), sx, padT + plotH + 17);
       }
       for (let gy = -4.0; gy <= -1.0; gy += 0.5) {
         const sy = toY(gy);
         ctx.beginPath(); ctx.moveTo(padL, sy); ctx.lineTo(padL + plotW, sy); ctx.stroke();
         ctx.fillStyle = SOL.base01;
-        ctx.font = '11px monospace';
+        ctx.font = '12.5px monospace';
         ctx.textAlign = 'right';
-        ctx.fillText(gy.toFixed(1), padL - 6, sy + 4);
+        ctx.fillText(gy.toFixed(1), padL - 7, sy + 4);
       }
 
       // Axes
@@ -888,7 +888,7 @@
       ctx.stroke();
 
       ctx.fillStyle = SOL.base02;
-      ctx.font = 'bold 12px sans-serif';
+      ctx.font = 'bold 14px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('Parameter Space θ', padL + plotW / 2, H - 6);
 
@@ -999,36 +999,35 @@
         ctx.fill();
       }
 
-      // Labels for Local Maxima
-      ctx.font = '11px sans-serif';
-      ctx.fillStyle = SOL.base01;
-      ctx.textAlign = 'center';
-      ctx.fillText('Local Max (θ≈2.45)', toX(2.45), toY(trueLogLikelihood(2.45)) - 10);
-      ctx.fillStyle = SOL.green;
-      ctx.font = 'bold 11px sans-serif';
-      ctx.fillText('Global Max (θ≈6.85)', toX(6.85), toY(trueLogLikelihood(6.85)) - 10);
-
       // Legend
-      const legX = padL + 14, legY = padT + 10;
-      ctx.fillStyle = 'rgba(253, 246, 227, 0.93)';
+      const legX = padL + 12, legY = padT + 6;
+      ctx.fillStyle = 'rgba(253, 246, 227, 0.94)';
       ctx.strokeStyle = SOL.base1;
       ctx.lineWidth = 1;
-      ctx.fillRect(legX, legY, 275, 64);
-      ctx.strokeRect(legX, legY, 275, 64);
+      ctx.fillRect(legX, legY, 290, 66);
+      ctx.strokeRect(legX, legY, 290, 66);
 
       ctx.textAlign = 'left';
-      ctx.font = '12px sans-serif';
-      ctx.strokeStyle = SOL.base03; ctx.lineWidth = 3;
+      ctx.font = '13px sans-serif';
+      ctx.strokeStyle = SOL.base03; ctx.lineWidth = 3.2;
       ctx.beginPath(); ctx.moveTo(legX + 10, legY + 16); ctx.lineTo(legX + 34, legY + 16); ctx.stroke();
       ctx.fillStyle = SOL.base02; ctx.fillText('Marginal Log-Likelihood L(θ)', legX + 42, legY + 20);
 
-      ctx.strokeStyle = SOL.blue; ctx.lineWidth = 2.5;
+      ctx.strokeStyle = SOL.blue; ctx.lineWidth = 2.6;
       ctx.beginPath(); ctx.moveTo(legX + 10, legY + 35); ctx.lineTo(legX + 34, legY + 35); ctx.stroke();
       ctx.fillStyle = SOL.base02; ctx.fillText('ELBO Surrogate l(θ | θₜ) (tight at θₜ)', legX + 42, legY + 39);
 
-      ctx.strokeStyle = SOL.green; ctx.lineWidth = 3.5;
-      ctx.beginPath(); ctx.moveTo(legX + 10, legY + 52); ctx.lineTo(legX + 34, legY + 52); ctx.stroke();
-      ctx.fillStyle = SOL.base02; ctx.fillText('KL Gap D_KL(q || p) ≥ 0', legX + 42, legY + 56);
+      ctx.strokeStyle = SOL.green; ctx.lineWidth = 3.8;
+      ctx.beginPath(); ctx.moveTo(legX + 10, legY + 53); ctx.lineTo(legX + 34, legY + 53); ctx.stroke();
+      ctx.fillStyle = SOL.base02; ctx.fillText('KL Gap D_KL(q ∥ p) ≥ 0', legX + 42, legY + 57);
+
+      // Labels for Local & Global Maxima (drawn after legend so never occluded)
+      ctx.font = 'bold 13px sans-serif';
+      ctx.fillStyle = SOL.base01;
+      ctx.textAlign = 'center';
+      ctx.fillText('Local Max (θ≈2.45)', toX(2.45), toY(trueLogLikelihood(2.45)) + 22);
+      ctx.fillStyle = SOL.green;
+      ctx.fillText('Global Max (θ≈6.85)', toX(6.85), toY(trueLogLikelihood(6.85)) - 12);
 
       // Update status & readouts
       const curL = trueLogLikelihood(thetaCurr);
@@ -1144,13 +1143,13 @@
       const { ctx, width: W, height: H } = setupHiDPI(canvas);
       ctx.clearRect(0, 0, W, H);
 
-      const padT = 28, padB = 40;
+      const padT = 32, padB = 42;
       const plotH = H - padT - padB;
 
       // Left Panel: Densities p(x) and q(x)
-      const lPadL = 52, lW = 500;
+      const lPadL = 58, lW = 580;
       // Right Panel: Pointwise Integrand
-      const rPadL = 610, rW = W - rPadL - 24;
+      const rPadL = 705, rW = W - rPadL - 28;
 
       const xMin = -4.8, xMax = 4.8;
       const yMax = 0.65;
@@ -1164,16 +1163,16 @@
       for (let gx = -4; gx <= 4; gx += 2) {
         const sx = toLX(gx);
         ctx.beginPath(); ctx.moveTo(sx, padT); ctx.lineTo(sx, padT + plotH); ctx.stroke();
-        ctx.fillStyle = SOL.base01; ctx.font = '11px monospace'; ctx.textAlign = 'center';
-        ctx.fillText(gx.toString(), sx, padT + plotH + 15);
+        ctx.fillStyle = SOL.base01; ctx.font = '12.5px monospace'; ctx.textAlign = 'center';
+        ctx.fillText(gx.toString(), sx, padT + plotH + 17);
       }
       ctx.strokeStyle = SOL.base01; ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(lPadL, padT); ctx.lineTo(lPadL, padT + plotH); ctx.lineTo(lPadL + lW, padT + plotH);
       ctx.stroke();
 
-      ctx.fillStyle = SOL.base02; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText('Bimodal Target p(x) vs. Gaussian Approximation q(x)', lPadL + lW / 2, 16);
+      ctx.fillStyle = SOL.base02; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('Bimodal Target p(x) vs. Gaussian Approximation q(x)', lPadL + lW / 2, 19);
 
       // Draw p(x) (Blue solid with light fill)
       ctx.fillStyle = 'rgba(38, 139, 210, 0.12)';
@@ -1187,7 +1186,7 @@
       ctx.closePath();
       ctx.fill();
 
-      ctx.strokeStyle = SOL.blue; ctx.lineWidth = 3;
+      ctx.strokeStyle = SOL.blue; ctx.lineWidth = 3.2;
       ctx.beginPath();
       for (let px = 0; px <= lW; px += 2) {
         const x = xMin + (px / lW) * (xMax - xMin);
@@ -1197,7 +1196,7 @@
       ctx.stroke();
 
       // Draw q(x) (Green dashed)
-      ctx.strokeStyle = SOL.green; ctx.lineWidth = 3;
+      ctx.strokeStyle = SOL.green; ctx.lineWidth = 3.2;
       ctx.setLineDash([7, 5]);
       ctx.beginPath();
       for (let px = 0; px <= lW; px += 2) {
@@ -1221,8 +1220,8 @@
       for (let gx = -4; gx <= 4; gx += 2) {
         const sx = toRX(gx);
         ctx.beginPath(); ctx.moveTo(sx, padT); ctx.lineTo(sx, padT + plotH); ctx.stroke();
-        ctx.fillStyle = SOL.base01; ctx.font = '11px monospace'; ctx.textAlign = 'center';
-        ctx.fillText(gx.toString(), sx, padT + plotH + 15);
+        ctx.fillStyle = SOL.base01; ctx.font = '12.5px monospace'; ctx.textAlign = 'center';
+        ctx.fillText(gx.toString(), sx, padT + plotH + 17);
       }
       // Zero baseline for integrand
       const yZero = toRY(0);
@@ -1234,10 +1233,10 @@
       ctx.moveTo(rPadL, padT); ctx.lineTo(rPadL, padT + plotH); ctx.lineTo(rPadL + rW, padT + plotH);
       ctx.stroke();
 
-      ctx.fillStyle = SOL.base02; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillStyle = SOL.base02; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center';
       ctx.fillText(
         activeMode === 'forward' ? 'Integrand: p(x) ln[p(x)/q(x)]' : 'Integrand: q(x) ln[q(x)/p(x)] (EM / VI)',
-        rPadL + rW / 2, 16
+        rPadL + rW / 2, 19
       );
 
       // Plot Integrand Curve
@@ -1256,7 +1255,7 @@
       ctx.fill();
 
       ctx.strokeStyle = activeMode === 'forward' ? SOL.orange : SOL.violet;
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 2.8;
       ctx.beginPath();
       for (let px = 0; px <= rW; px += 2) {
         const x = xMin + (px / rW) * (xMax - xMin);
@@ -1270,14 +1269,14 @@
 
       // Explanation callout inside right panel
       ctx.fillStyle = SOL.base01;
-      ctx.font = '11.5px sans-serif';
+      ctx.font = '13.5px sans-serif';
       ctx.textAlign = 'left';
       if (activeMode === 'forward') {
-        ctx.fillText('• Mass-Covering: p(x)>0 forces q(x)>0 everywhere', rPadL + 10, padT + 20);
-        ctx.fillText('• Averages across modes (places mass in valley!)', rPadL + 10, padT + 36);
+        ctx.fillText('• Mass-Covering: p(x)>0 forces q(x)>0 everywhere', rPadL + 12, padT + 24);
+        ctx.fillText('• Averages across modes (places mass in valley!)', rPadL + 12, padT + 44);
       } else {
-        ctx.fillText('• Mode-Seeking (Zero-Forcing): p(x)≈0 forces q(x)≈0', rPadL + 10, padT + 20);
-        ctx.fillText('• Locks cleanly onto a single mode (used in EM & VI!)', rPadL + 10, padT + 36);
+        ctx.fillText('• Mode-Seeking (Zero-Forcing): p(x)≈0 forces q(x)≈0', rPadL + 12, padT + 24);
+        ctx.fillText('• Locks cleanly onto a single mode (used in EM & VI!)', rPadL + 12, padT + 44);
       }
 
       const { klFwd, klRev } = computeKLs();
@@ -1569,19 +1568,22 @@
       const { ctx, width: W, height: H } = setupHiDPI(canvas);
       ctx.clearRect(0, 0, W, H);
 
-      // Left Scatter Panel
-      const sPadL = 42, sPadT = 26, sPadB = 34;
-      const sW = 530, sH = H - sPadT - sPadB;
-      const xMin = -3.8, xMax = 3.8;
+      // Left Scatter Panel (exact 1:1 data-to-pixel aspect ratio so spherical Gaussians are true circles!)
+      const sPadL = 48, sPadT = 30, sPadB = 36;
+      const sH = H - sPadT - sPadB;
       const yMin = -3.2, yMax = 3.2;
+      const pxPerUnit = sH / (yMax - yMin); // 60 px/unit at H=450
+      const sW = 600;
+      const xHalf = (sW / pxPerUnit) / 2;   // 5.0 units at sW=600, H=450
+      const xMin = -xHalf, xMax = xHalf;
 
       function toSX(x) { return sPadL + ((x - xMin) / (xMax - xMin)) * sW; }
       function toSY(y) { return sPadT + sH - ((y - yMin) / (yMax - yMin)) * sH; }
 
-      // Scatter Grid & Frame
+      // Scatter Grid & Frame (square 1x1 grid cells)
       ctx.strokeStyle = 'rgba(147, 161, 161, 0.2)';
       ctx.lineWidth = 1;
-      for (let gx = -3; gx <= 3; gx++) {
+      for (let gx = -4; gx <= 4; gx++) {
         const sx = toSX(gx);
         ctx.beginPath(); ctx.moveTo(sx, sPadT); ctx.lineTo(sx, sPadT + sH); ctx.stroke();
       }
@@ -1594,9 +1596,9 @@
       ctx.strokeRect(sPadL, sPadT, sW, sH);
 
       ctx.fillStyle = SOL.base02;
-      ctx.font = 'bold 12px sans-serif';
+      ctx.font = 'bold 14px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('2D Feature Space (Pie-Charts = Latent Responsibilities γₙₖ; Click to Add Point)', sPadL + sW / 2, 16);
+      ctx.fillText('2D Feature Space (Pie-Charts = Latent Responsibilities γₙₖ; Click to Add Point)', sPadL + sW / 2, 19);
 
       // Draw Covariance Ellipses (1-sigma solid, 2-sigma dashed)
       for (let k = 0; k < K; k++) {
@@ -1605,7 +1607,7 @@
       }
 
       // Draw Data Points as Mini Responsibility Pie-Charts (matching Barnabas slides 61-68!)
-      const radius = 7.5;
+      const radius = 9.0;
       for (let n = 0; n < points.length; n++) {
         const sx = toSX(points[n].x);
         const sy = toSY(points[n].y);
@@ -1625,7 +1627,7 @@
           startAngle += sliceAngle;
         }
         ctx.strokeStyle = SOL.base03;
-        ctx.lineWidth = 1.1;
+        ctx.lineWidth = 1.2;
         ctx.beginPath();
         ctx.arc(sx, sy, radius, 0, 2 * Math.PI);
         ctx.stroke();
@@ -1636,41 +1638,41 @@
         const cx = toSX(params[k].mu[0]);
         const cy = toSY(params[k].mu[1]);
         ctx.fillStyle = '#fff';
-        ctx.beginPath(); ctx.arc(cx, cy, 7, 0, 2 * Math.PI); ctx.fill();
+        ctx.beginPath(); ctx.arc(cx, cy, 8, 0, 2 * Math.PI); ctx.fill();
         ctx.fillStyle = clusterColors[k];
         ctx.strokeStyle = SOL.base03;
         ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.arc(cx, cy, 5.5, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(cx, cy, 6.5, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
 
         // Mixing weight badge
-        ctx.fillStyle = 'rgba(253, 246, 227, 0.9)';
-        ctx.fillRect(cx + 8, cy - 10, 56, 16);
+        ctx.fillStyle = 'rgba(253, 246, 227, 0.92)';
+        ctx.fillRect(cx + 9, cy - 11, 64, 18);
         ctx.fillStyle = SOL.base03;
-        ctx.font = 'bold 11px monospace';
+        ctx.font = 'bold 12.5px monospace';
         ctx.textAlign = 'left';
-        ctx.fillText(`π=${params[k].pi.toFixed(2)}`, cx + 10, cy + 2);
+        ctx.fillText(`π=${params[k].pi.toFixed(2)}`, cx + 11, cy + 2);
       }
 
       // Right Panel: Log-Likelihood Convergence Curve
-      const rPadL = 620, rW = W - rPadL - 22;
+      const rPadL = 695, rW = W - rPadL - 25;
       ctx.strokeStyle = SOL.base1;
       ctx.lineWidth = 1.5;
       ctx.strokeRect(rPadL, sPadT, rW, sH);
 
       ctx.fillStyle = SOL.base02;
-      ctx.font = 'bold 12px sans-serif';
+      ctx.font = 'bold 14px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('Monotonic Log-Likelihood L(θ⁽ᵗ⁾)', rPadL + rW / 2, 16);
+      ctx.fillText('Monotonic Log-Likelihood L(θ⁽ᵗ⁾)', rPadL + rW / 2, 19);
 
       if (llHistory.length > 0) {
         const minLL = Math.min(...llHistory) - 5;
         const maxLL = Math.max(...llHistory) + 5;
         const maxT = Math.max(8, llHistory.length - 1);
 
-        function toRX(t) { return rPadL + 36 + (t / maxT) * (rW - 50); }
+        function toRX(t) { return rPadL + 42 + (t / maxT) * (rW - 58); }
         function toRY(ll) {
           const span = Math.max(1, maxLL - minLL);
-          return sPadT + sH - 28 - ((ll - minLL) / span) * (sH - 52);
+          return sPadT + sH - 32 - ((ll - minLL) / span) * (sH - 58);
         }
 
         // Horizontal grid lines
@@ -1679,16 +1681,16 @@
         for (let i = 0; i <= 3; i++) {
           const v = minLL + ((maxLL - minLL) * i) / 3;
           const sy = toRY(v);
-          ctx.beginPath(); ctx.moveTo(rPadL + 34, sy); ctx.lineTo(rPadL + rW - 10, sy); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(rPadL + 40, sy); ctx.lineTo(rPadL + rW - 12, sy); ctx.stroke();
           ctx.fillStyle = SOL.base01;
-          ctx.font = '10px monospace';
+          ctx.font = '11.5px monospace';
           ctx.textAlign = 'right';
-          ctx.fillText(Math.round(v).toString(), rPadL + 30, sy + 3);
+          ctx.fillText(Math.round(v).toString(), rPadL + 36, sy + 4);
         }
 
         // Curve
         ctx.strokeStyle = SOL.blue;
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 2.8;
         ctx.beginPath();
         for (let t = 0; t < llHistory.length; t++) {
           const sx = toRX(t), sy = toRY(llHistory[t]);
@@ -1702,14 +1704,14 @@
           const sx = toRX(t), sy = toRY(llHistory[t]);
           ctx.fillStyle = (t === llHistory.length - 1) ? SOL.red : SOL.blue;
           ctx.beginPath();
-          ctx.arc(sx, sy, (t === llHistory.length - 1) ? 5 : 3.5, 0, 2 * Math.PI);
+          ctx.arc(sx, sy, (t === llHistory.length - 1) ? 6 : 4, 0, 2 * Math.PI);
           ctx.fill();
         }
 
         ctx.fillStyle = SOL.base01;
-        ctx.font = '11px sans-serif';
+        ctx.font = '13px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('Iteration t', rPadL + rW / 2, sPadT + sH - 6);
+        ctx.fillText('Iteration t', rPadL + rW / 2, sPadT + sH - 8);
       }
 
       const curLL = llHistory.length > 0 ? llHistory[llHistory.length - 1] : 0;
@@ -1725,15 +1727,17 @@
     // Click on left plot to add custom data point
     canvas.addEventListener('click', (e) => {
       const rect = canvas.getBoundingClientRect();
-      const logW = canvas._logicalW || 940;
-      const logH = canvas._logicalH || 350;
+      const logW = canvas._logicalW || 1180;
+      const logH = canvas._logicalH || 450;
       const clickX = ((e.clientX - rect.left) / rect.width) * logW;
       const clickY = ((e.clientY - rect.top) / rect.height) * logH;
 
-      const sPadL = 42, sPadT = 26, sPadB = 34;
-      const sW = 530, sH = logH - sPadT - sPadB;
+      const sPadL = 48, sPadT = 30, sPadB = 36;
+      const sW = 600, sH = logH - sPadT - sPadB;
+      const pxPerUnit = sH / 6.4;
+      const xSpan = sW / pxPerUnit;
       if (clickX >= sPadL && clickX <= sPadL + sW && clickY >= sPadT && clickY <= sPadT + sH) {
-        const wx = -3.8 + ((clickX - sPadL) / sW) * 7.6;
+        const wx = -xSpan / 2 + ((clickX - sPadL) / sW) * xSpan;
         const wy = 3.2 - ((clickY - sPadT) / sH) * 6.4;
         points.push({ x: wx, y: wy });
         responsibilities.push(new Array(K).fill(1.0 / K));

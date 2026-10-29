@@ -128,7 +128,7 @@
 
           <!-- 1.4 Bridge Slide: Connecting Past Lectures to EM -->
           <section id="bridge-slide">
-            <h3>Connecting the Dots: The Road to Expectation Maximization</h3>
+            <h3 style="font-size: 46px; margin-bottom: 10px;">Connecting the Dots: The Road to Expectation Maximization</h3>
             <div id="bridge-container" style="position: relative; width: 940px; height: 500px; margin: 12px auto 0 auto; display: flex; justify-content: space-between; align-items: stretch;">
 
               <!-- Left Column: 5 Narrative Cards -->
@@ -326,43 +326,43 @@
 
           <!-- Demo 1: MLE Singularity & Collapse Explorer -->
           <section data-vertical-align-top>
-            <h3>GMM MLE Singularity &amp; Variance Collapse</h3>
-            <div style="display: flex; flex-direction: column; align-items: center; width: 940px; margin: 0 auto; user-select: none;">
+            <h3 style="margin: 4px 0 8px 0; font-size: 38px; line-height: 1.1;">GMM MLE Singularity &amp; Variance Collapse</h3>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 0 0 -110px; user-select: none;">
 
               <!-- Status Banner -->
-              <div id="sing-status-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 6px 14px; box-sizing: border-box; font-size: 12.5px; color: #073642; text-align: left;">
+              <div id="sing-status-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 7px 16px; box-sizing: border-box; font-size: 14.5px; color: #073642; text-align: left;">
                 Drag μ₂ onto xᵢ = 8.20 and shrink σ₂ → 0 to see unconstrained MLE blow up.
               </div>
 
               <!-- Canvas -->
-              <div style="position: relative; width: 100%; height: 320px; box-sizing: border-box;">
-                <canvas id="em-singularity-canvas" width="940" height="320" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="em-singularity-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
               </div>
 
               <!-- Controls Toolbar -->
-              <div style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 12px; color: #586e75; gap: 5px;">
+              <div style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 8px 16px; box-sizing: border-box; font-size: 14px; color: #586e75; gap: 6px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; white-space: nowrap;">
                   <div style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
-                    <button id="sing-btn-normal" style="cursor: pointer; padding: 3px 9px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Well-Behaved Fit (σ₂ = 0.75)</button>
-                    <button id="sing-btn-collapse" style="cursor: pointer; padding: 3px 9px; border: 1px solid #dc322f; background: #fdf6e3; color: #dc322f; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">⚡ Trigger Singularity Collapse (μ₂ → xᵢ, σ₂ → 0)</button>
-                    <label style="display: inline-flex; align-items: center; gap: 5px; cursor: pointer; margin-left: 4px; font-weight: bold; color: #859900; white-space: nowrap;">
+                    <button id="sing-btn-normal" style="cursor: pointer; padding: 4px 10px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">Well-Behaved Fit (σ₂ = 0.75)</button>
+                    <button id="sing-btn-collapse" style="cursor: pointer; padding: 4px 10px; border: 1px solid #dc322f; background: #fdf6e3; color: #dc322f; font-weight: bold; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">⚡ Trigger Singularity Collapse (μ₂ → xᵢ, σ₂ → 0)</button>
+                    <label style="display: inline-flex; align-items: center; gap: 5px; cursor: pointer; margin-left: 4px; font-weight: bold; color: #859900; font-size: 13px; white-space: nowrap;">
                       <input type="checkbox" id="sing-chk-floor"> <span>Covariance Floor (σ₂² + ε)</span>
                     </label>
                   </div>
-                  <div style="display: flex; align-items: center; gap: 14px; font-family: monospace; font-size: 12px; white-space: nowrap;">
+                  <div style="display: flex; align-items: center; gap: 16px; font-family: monospace; font-size: 13.5px; white-space: nowrap;">
                     <span>Spike Height: <b id="sing-peak-val" style="color: #cb4b16;">--</b></span>
                     <span>Log-Likelihood ln P(<b>X</b>|<b>θ</b>): <b id="sing-ll-val" style="color: #dc322f;">--</b></span>
                   </div>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 24px; border-top: 1px solid rgba(147,161,161,0.3); padding-top: 4px; white-space: nowrap;">
-                  <label style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+                <div style="display: flex; align-items: center; gap: 32px; border-top: 1px solid rgba(147,161,161,0.3); padding-top: 6px; white-space: nowrap;">
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
                     <span>Component 2 Mean (μ₂):</span> <span id="sing-mu2-val" style="font-family: monospace; font-weight: bold; color: #cb4b16;">6.50</span>
-                    <input type="range" id="sing-mu2-slider" min="1.50" max="9.20" step="0.02" value="6.50" style="width: 150px; cursor: pointer;">
+                    <input type="range" id="sing-mu2-slider" min="1.50" max="9.20" step="0.02" value="6.50" style="width: 190px; cursor: pointer;">
                   </label>
-                  <label style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
                     <span>Component 2 Std (σ₂):</span> <span id="sing-sig2-val" style="font-family: monospace; font-weight: bold; color: #cb4b16;">0.750</span>
-                    <input type="range" id="sing-sig2-slider" min="0.008" max="1.60" step="0.004" value="0.75" style="width: 150px; cursor: pointer;">
+                    <input type="range" id="sing-sig2-slider" min="0.008" max="1.60" step="0.004" value="0.75" style="width: 190px; cursor: pointer;">
                   </label>
                 </div>
               </div>
@@ -505,25 +505,104 @@
           </section>
 
           <section>
-            <h2>Shades of Convex</h2>
-            <row>
-              <col30>
-                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%;">
+            <h3>Shades of Convex</h3>
+            <row style="align-items: stretch; gap: 18px;">
+              <col30 style="width: 32%;">
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; text-align: center; font-size: 26px; padding: 6px 10px; margin-bottom: 8px;">
                   Convex
                 </blockquote>
-                <img width="100%" src="figures/just_convex.png" alt="convex">
+                <svg viewBox="0 0 320 220" style="width: 100%; height: auto; background: #fdf6e3; border: 1px solid #93a1a1; border-radius: 6px;">
+                  <!-- Grid -->
+                  <line x1="35" y1="120" x2="295" y2="120" stroke="#eee8d5" stroke-width="1"/>
+                  <line x1="35" y1="60" x2="295" y2="60" stroke="#eee8d5" stroke-width="1"/>
+                  <line x1="100" y1="20" x2="100" y2="185" stroke="#eee8d5" stroke-width="1"/>
+                  <line x1="230" y1="20" x2="230" y2="185" stroke="#eee8d5" stroke-width="1"/>
+                  <!-- Axes -->
+                  <line x1="35" y1="180" x2="295" y2="180" stroke="#586e75" stroke-width="1.5"/>
+                  <line x1="165" y1="20" x2="165" y2="190" stroke="#586e75" stroke-width="1.5"/>
+                  <text x="290" y="196" fill="#586e75" font-size="12" font-family="sans-serif">x</text>
+                  <text x="171" y="30" fill="#586e75" font-size="12" font-family="sans-serif">f(x)</text>
+                  <!-- Secant chord above curve -->
+                  <line x1="61" y1="88" x2="256" y2="109" stroke="#cb4b16" stroke-width="1.8" stroke-dasharray="5,3"/>
+                  <circle cx="61" cy="88" r="3.5" fill="#cb4b16"/>
+                  <circle cx="256" cy="109" r="3.5" fill="#cb4b16"/>
+                  <!-- Piecewise flat-bottom convex curve: f(x) = max(0, |x|-0.8)^2 -->
+                  <path d="M 35 42 Q 74 160 113 160 L 217 160 Q 256 160 295 42" fill="none" stroke="#268bd2" stroke-width="3.2"/>
+                  <!-- Highlight flat segment where chord == curve -->
+                  <line x1="113" y1="160" x2="217" y2="160" stroke="#dc322f" stroke-width="4"/>
+                  <circle cx="135" cy="160" r="4" fill="#dc322f"/>
+                  <circle cx="165" cy="160" r="4" fill="#dc322f"/>
+                  <circle cx="195" cy="160" r="4" fill="#dc322f"/>
+                  <text x="165" y="148" fill="#dc322f" font-size="11.5" font-weight="bold" text-anchor="middle" font-family="sans-serif">Flat plateau: f′′(x) = 0</text>
+                  <text x="165" y="206" fill="#073642" font-size="12" text-anchor="middle" font-family="sans-serif">f(x) = max(0, |x| − 1)²</text>
+                </svg>
+                <div style="font-size: 20px; color: #073642; margin-top: 8px; line-height: 1.3; text-align: left; background: #eee8d5; padding: 8px 12px; border-radius: 6px;">
+                  <b>$f''(x) \ge 0$</b> (chord $\ge$ curve).<br>
+                  Flat/linear segments allowed $\implies$ minimum <b>need not be unique</b>.
+                </div>
               </col30>
-              <col30>
-                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%;">
+
+              <col30 style="width: 32%;">
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; text-align: center; font-size: 26px; padding: 6px 10px; margin-bottom: 8px;">
                   Strictly convex
                 </blockquote>
-                <img width="100%" src="figures/strictly_convex.png" alt="strictly convex">
+                <svg viewBox="0 0 320 220" style="width: 100%; height: auto; background: #fdf6e3; border: 1px solid #93a1a1; border-radius: 6px;">
+                  <!-- Grid -->
+                  <line x1="35" y1="120" x2="295" y2="120" stroke="#eee8d5" stroke-width="1"/>
+                  <line x1="35" y1="60" x2="295" y2="60" stroke="#eee8d5" stroke-width="1"/>
+                  <line x1="100" y1="20" x2="100" y2="185" stroke="#eee8d5" stroke-width="1"/>
+                  <line x1="230" y1="20" x2="230" y2="185" stroke="#eee8d5" stroke-width="1"/>
+                  <!-- Axes -->
+                  <line x1="35" y1="180" x2="295" y2="180" stroke="#586e75" stroke-width="1.5"/>
+                  <line x1="165" y1="20" x2="165" y2="190" stroke="#586e75" stroke-width="1.5"/>
+                  <text x="290" y="196" fill="#586e75" font-size="12" font-family="sans-serif">x</text>
+                  <text x="171" y="30" fill="#586e75" font-size="12" font-family="sans-serif">f(x)</text>
+                  <!-- Secant chord strictly above curve -->
+                  <line x1="72" y1="90" x2="245" y2="117" stroke="#cb4b16" stroke-width="1.8" stroke-dasharray="5,3"/>
+                  <circle cx="72" cy="90" r="3.5" fill="#cb4b16"/>
+                  <circle cx="245" cy="117" r="3.5" fill="#cb4b16"/>
+                  <!-- Quartic curve f(x) = x^4 (very flat near 0: f''(0)=0, but strictly curving everywhere else) -->
+                  <path d="M 55 36 C 95 158, 125 160, 165 160 C 205 160, 235 158, 275 36" fill="none" stroke="#2aa198" stroke-width="3.2"/>
+                  <!-- Also show -ln(x) in right half as dashed reference -->
+                  <path d="M 182 32 C 192 95, 215 135, 290 164" fill="none" stroke="#6c71c4" stroke-width="2.2" stroke-dasharray="4,3"/>
+                  <text x="235" y="65" fill="#6c71c4" font-size="11.5" font-weight="bold" font-family="sans-serif">−ln(x)</text>
+                  <circle cx="165" cy="160" r="4.5" fill="#2aa198" stroke="#073642" stroke-width="1.2"/>
+                  <text x="165" y="174" fill="#073642" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Unique min (even with f′′(0) = 0)</text>
+                  <text x="165" y="206" fill="#073642" font-size="12" text-anchor="middle" font-family="sans-serif">f(x) = x⁴  or  −ln(x)</text>
+                </svg>
+                <div style="font-size: 19px; color: #073642; margin-top: 8px; line-height: 1.3; text-align: left; background: #eee8d5; padding: 8px 12px; border-radius: 6px;">
+                  Chord <b>strictly above</b> curve ($x_1 \ne x_2$).<br>
+                  No flat segments $\implies$ <b>unique</b> minimum (even if $f''(x)=0$ at a point).
+                </div>
               </col30>
-              <col30>
-                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%;">
+
+              <col30 style="width: 32%;">
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; text-align: center; font-size: 26px; padding: 6px 10px; margin-bottom: 8px;">
                   Strongly convex
                 </blockquote>
-                <img width="100%" src="figures/strongly_convex.png" alt="strongly convex">
+                <svg viewBox="0 0 320 220" style="width: 100%; height: auto; background: #fdf6e3; border: 1px solid #93a1a1; border-radius: 6px;">
+                  <!-- Grid -->
+                  <line x1="35" y1="120" x2="295" y2="120" stroke="#eee8d5" stroke-width="1"/>
+                  <line x1="35" y1="60" x2="295" y2="60" stroke="#eee8d5" stroke-width="1"/>
+                  <line x1="100" y1="20" x2="100" y2="185" stroke="#eee8d5" stroke-width="1"/>
+                  <line x1="230" y1="20" x2="230" y2="185" stroke="#eee8d5" stroke-width="1"/>
+                  <!-- Axes -->
+                  <line x1="35" y1="180" x2="295" y2="180" stroke="#586e75" stroke-width="1.5"/>
+                  <line x1="165" y1="20" x2="165" y2="190" stroke="#586e75" stroke-width="1.5"/>
+                  <text x="290" y="196" fill="#586e75" font-size="12" font-family="sans-serif">x</text>
+                  <text x="171" y="30" fill="#586e75" font-size="12" font-family="sans-serif">f(x)</text>
+                  <!-- Quadratic lower bound m/2 x^2 -->
+                  <path d="M 40 72 Q 165 248 290 72" fill="none" stroke="#b58900" stroke-width="2" stroke-dasharray="5,3"/>
+                  <!-- Strongly convex curve f(x) = x^2 -->
+                  <path d="M 48 36 Q 165 284 282 36" fill="none" stroke="#859900" stroke-width="3.2"/>
+                  <circle cx="165" cy="160" r="4.5" fill="#859900" stroke="#073642" stroke-width="1.2"/>
+                  <text x="165" y="105" fill="#859900" font-size="11.5" font-weight="bold" text-anchor="middle" font-family="sans-serif">f′′(x) ≥ m &gt; 0 everywhere</text>
+                  <text x="165" y="206" fill="#073642" font-size="12" text-anchor="middle" font-family="sans-serif">f(x) = x²  (bounded below by m/2 x²)</text>
+                </svg>
+                <div style="font-size: 19px; color: #073642; margin-top: 8px; line-height: 1.3; text-align: left; background: #eee8d5; padding: 8px 12px; border-radius: 6px;">
+                  <b>$f''(x) \ge m > 0$</b> everywhere.<br>
+                  Grows at least as fast as a quadratic bowl $\frac{m}{2}(x-x_0)^2$ $\implies$ fast convergence!
+                </div>
               </col30>
             </row>
           </section>
@@ -573,45 +652,45 @@
 
           <!-- Demo 2: Jensen's Inequality Visualizer -->
           <section data-vertical-align-top>
-            <h3>Jensen's Inequality: Log of Sum vs. Sum of Logs</h3>
-            <div style="display: flex; flex-direction: column; align-items: center; width: 940px; margin: 0 auto; user-select: none;">
+            <h3 style="margin: 4px 0 8px 0; font-size: 38px; line-height: 1.1;">Jensen's Inequality: Log of Sum vs. Sum of Logs</h3>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 0 0 -110px; user-select: none;">
 
               <!-- Top Readout Bar -->
-              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 5px 14px; box-sizing: border-box; font-size: 12.5px; color: #073642; white-space: nowrap;">
-                <div style="display: flex; gap: 16px; font-family: monospace; white-space: nowrap;">
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 7px 16px; box-sizing: border-box; font-size: 14px; color: #073642; white-space: nowrap;">
+                <div style="display: flex; gap: 22px; font-family: monospace; white-space: nowrap;">
                   <span style="color: #859900; font-weight: bold;">Curve (Log of Sum) f(E[X]): <span id="jensen-lhs-val">0.869</span></span>
                   <span style="color: #cb4b16; font-weight: bold;">Secant Chord (Sum of Logs) E[f(X)]: <span id="jensen-rhs-val">0.540</span></span>
                   <span style="color: #dc322f; font-weight: bold;">Jensen Gap: <span id="jensen-gap-val">0.329</span></span>
                 </div>
-                <div style="display: flex; gap: 6px; white-space: nowrap;">
-                  <button id="jensen-btn-ln" style="cursor: pointer; padding: 3px 9px; border: 1px solid #268bd2; background: #eee8d5; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Concave: ln(x)</button>
-                  <button id="jensen-btn-negln" style="cursor: pointer; padding: 3px 9px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Convex: −ln(x)</button>
+                <div style="display: flex; gap: 8px; white-space: nowrap;">
+                  <button id="jensen-btn-ln" style="cursor: pointer; padding: 4px 12px; border: 1px solid #268bd2; background: #eee8d5; font-weight: bold; border-radius: 4px; font-size: 13px; white-space: nowrap;">Concave: ln(x)</button>
+                  <button id="jensen-btn-negln" style="cursor: pointer; padding: 4px 12px; border: 1px solid #268bd2; background: #fdf6e3; border-radius: 4px; font-size: 13px; white-space: nowrap;">Convex: −ln(x)</button>
                 </div>
               </div>
 
               <!-- Canvas -->
-              <div style="position: relative; width: 100%; height: 320px; box-sizing: border-box;">
-                <canvas id="em-jensen-canvas" width="940" height="320" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="em-jensen-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
               </div>
 
               <!-- Controls -->
-              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 12px; color: #586e75; white-space: nowrap;">
-                <div style="display: flex; align-items: center; gap: 6px; white-space: nowrap;">
-                  <button id="jensen-btn-wide" style="cursor: pointer; padding: 3px 9px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Wide Gap (x₁ ≠ x₂)</button>
-                  <button id="jensen-btn-tight" style="cursor: pointer; padding: 3px 9px; border: 1px solid #859900; background: #fdf6e3; color: #859900; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Tight Bound: x₁ = x₂ (Gap = 0)</button>
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 8px 16px; box-sizing: border-box; font-size: 14px; color: #586e75; white-space: nowrap;">
+                <div style="display: flex; align-items: center; gap: 10px; white-space: nowrap;">
+                  <button id="jensen-btn-wide" style="cursor: pointer; padding: 4px 12px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 13px; white-space: nowrap;">Wide Gap (x₁ ≠ x₂)</button>
+                  <button id="jensen-btn-tight" style="cursor: pointer; padding: 4px 12px; border: 1px solid #859900; background: #fdf6e3; color: #859900; font-weight: bold; border-radius: 4px; font-size: 13px; white-space: nowrap;">Tight Bound: x₁ = x₂ (Gap = 0)</button>
                 </div>
-                <div style="display: flex; align-items: center; gap: 14px; white-space: nowrap;">
-                  <label style="display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;">
+                <div style="display: flex; align-items: center; gap: 22px; white-space: nowrap;">
+                  <label style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
                     <span>x₁:</span> <span id="jensen-x1-val" style="font-family: monospace; font-weight: bold; color: #268bd2;">0.65</span>
-                    <input type="range" id="jensen-x1-slider" min="0.30" max="4.20" step="0.05" value="0.65" style="width: 85px; cursor: pointer;">
+                    <input type="range" id="jensen-x1-slider" min="0.30" max="4.20" step="0.05" value="0.65" style="width: 120px; cursor: pointer;">
                   </label>
-                  <label style="display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;">
+                  <label style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
                     <span>x₂:</span> <span id="jensen-x2-val" style="font-family: monospace; font-weight: bold; color: #268bd2;">3.80</span>
-                    <input type="range" id="jensen-x2-slider" min="0.30" max="4.20" step="0.05" value="3.80" style="width: 85px; cursor: pointer;">
+                    <input type="range" id="jensen-x2-slider" min="0.30" max="4.20" step="0.05" value="3.80" style="width: 120px; cursor: pointer;">
                   </label>
-                  <label style="display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;">
+                  <label style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
                     <span>Weight λ:</span> <span id="jensen-lam-val" style="font-family: monospace; font-weight: bold; color: #cb4b16;">0.45</span>
-                    <input type="range" id="jensen-lam-slider" min="0.00" max="1.00" step="0.02" value="0.45" style="width: 85px; cursor: pointer;">
+                    <input type="range" id="jensen-lam-slider" min="0.00" max="1.00" step="0.02" value="0.45" style="width: 120px; cursor: pointer;">
                   </label>
                 </div>
               </div>
@@ -644,116 +723,153 @@
           </section>
 
           <section>
-            <h2>Introducing latent random variables $\vec{z}$</h2>
+            <h3>Introducing latent random variables $\vec{z}$</h3>
             <ul style="list-style-type: none; font-size: 30px; width: 100%; margin: 0;">
               <li class="fragment roll-in"> By marginalization over the hidden variables $\vec{z}$:
                 $$\prob{P}{\bm{X}|\vec{\theta}} = \sum_{\vec{z}} \prob{P}{\bm{X}|\vec{z}, \vth}\prob{P}{\vec{z}|\vth}$$
-              <li class="fragment roll-in"> Our objective difference:
+              <li class="fragment roll-in"> Our objective improvement:
                 $$\prob{L}{\vth} - \prob{L}{\vec{\theta}_n} = \ln\prob{P}{\bm{X}|\vec{\theta}} - \ln\prob{P}{\bm{X}|\vec{\theta}_n}$$
               <li class="fragment roll-in"> Becomes:
-                $$\prob{L}{\vth} - \prob{L}{\vec{\theta}_n} = \ln \sum_{\vec{z}} \prob{P}{\bm{X}|\vec{z}, \vth}\prob{P}{\vec{z}|\vth} - \ln\prob{P}{\bm{X}|\vec{\theta}_n}$$
+                $$\prob{L}{\vth} - \prob{L}{\vec{\theta}_n} = \underbrace{\ln \sum_{\vec{z}} \prob{P}{\bm{X}|\vec{z}, \vth}\prob{P}{\vec{z}|\vth}}_{\text{log of a sum!}} - \ln\prob{P}{\bm{X}|\vec{\theta}_n}$$
             </ul>
           </section>
 
-          <!-- Modernized MathJax Fragment Slide replacing EM_rearrangement1.svg -->
-          <section style="top: -20px !important;">
-            <h2 style="margin-top: -25px; margin-bottom: 10px;">Modifying the Objective via Jensen's Inequality</h2>
-            <div style="font-size: 22px; text-align: left; max-width: 940px; margin: 0 auto;">
-              <div class="fragment" data-fragment-index="0" style="margin-bottom: 6px;">
-                $$\prob{L}{\vth} - \prob{L}{\vth_n} = \ln \sum_{\vec{z}} \prob{P}{\bm{X}|\vec{z}, \vth}\prob{P}{\vec{z}|\vth} - \ln \prob{P}{\bm{X}|\vth_n}$$
+          <!-- Intuition Slide: How to apply Jensen's inequality -->
+          <section>
+            <h3>How can we push $\ln$ inside the sum?</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 26px;">
+              Jensen's inequality $\ln\left(\sum_{\vec{z}} \lambda_{\vec{z}} x_{\vec{z}}\right) \ge \sum_{\vec{z}} \lambda_{\vec{z}} \ln(x_{\vec{z}})$ needs weights $\lambda_{\vec{z}} \ge 0$ with $\sum_{\vec{z}} \lambda_{\vec{z}} = 1$.
+            </blockquote>
+            <ul style="list-style-type: none; font-size: 28px; width: 100%; margin: 12px 0 0 0;">
+              <li class="fragment roll-in"> Any probability distribution over the hidden variables $\vec{z}$ sums to $1$!
+              <li class="fragment roll-in"> At step $n$, what is our best guess for $\vec{z}$ given $\bm{X}$ and current $\vth_n$?
+              <li class="fragment roll-in">
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 28px; margin: 8px 0;">
+                  $$\lambda_{\vec{z}} = \prob{P}{\vec{z}|\bm{X}, \vth_n} \qquad \left(\text{since } \sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} = 1\right)$$
+                </blockquote>
+              <li class="fragment roll-in">
+                <alert>Trick: multiply and divide inside the sum by $\prob{P}{\vec{z}|\bm{X}, \vth_n}$!</alert>
+            </ul>
+          </section>
+
+          <!-- Clean Step-by-Step MathJax Slide replacing EM_rearrangement1.svg -->
+          <section>
+            <h3>Modifying the objective</h3>
+            <div style="font-size: 26px; width: 100%;">
+              <div class="fragment" data-fragment-index="0">
+                $$\prob{L}{\vth} - \prob{L}{\vth_n} = \ln \sum_{\vec{z}} \prob{P}{\bm{X}|\vec{z}, \vth}\prob{P}{\vec{z}|\vth} \cdot \color{#268bd2}{\frac{\prob{P}{\vec{z}|\bm{X}, \vth_n}}{\prob{P}{\vec{z}|\bm{X}, \vth_n}}} - \ln \prob{P}{\bm{X}|\vth_n}$$
               </div>
-              <div class="fragment" data-fragment-index="1" style="margin-bottom: 6px;">
-                <span style="font-size: 17px; color: #268bd2; font-weight: bold;">1. Multiply inside the sum by $1 = \frac{\prob{P}{\vec{z}|\bm{X}, \vth_n}}{\prob{P}{\vec{z}|\bm{X}, \vth_n}}$ (where $\sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} = 1$ acts as $\lambda_i$):</span>
-                $$= \ln \sum_{\vec{z}} \color{#268bd2}{\prob{P}{\vec{z}|\bm{X}, \vth_n}} \left( \frac{\prob{P}{\bm{X}|\vec{z}, \vth}\prob{P}{\vec{z}|\vth}}{\color{#268bd2}{\prob{P}{\vec{z}|\bm{X}, \vth_n}}} \right) - \ln \prob{P}{\bm{X}|\vth_n}$$
+              <div class="fragment" data-fragment-index="1">
+                $$\color{#cb4b16}{\ge} \sum_{\vec{z}} \color{#268bd2}{\prob{P}{\vec{z}|\bm{X}, \vth_n}} \ln \left( \frac{\prob{P}{\bm{X}|\vec{z}, \vth}\prob{P}{\vec{z}|\vth}}{\color{#268bd2}{\prob{P}{\vec{z}|\bm{X}, \vth_n}}} \right) - \ln \prob{P}{\bm{X}|\vth_n}$$
               </div>
-              <div class="fragment" data-fragment-index="2" style="margin-bottom: 6px;">
-                <span style="font-size: 17px; color: #cb4b16; font-weight: bold;">2. Apply Jensen's Inequality $\ln\left(\sum \lambda_i u_i\right) \ge \sum \lambda_i \ln(u_i)$:</span>
-                $$\color{#cb4b16}{\ge} \sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} \ln \left( \frac{\prob{P}{\bm{X}|\vec{z}, \vth}\prob{P}{\vec{z}|\vth}}{\prob{P}{\vec{z}|\bm{X}, \vth_n}} \right) - \ln \prob{P}{\bm{X}|\vth_n}$$
-              </div>
-              <div class="fragment" data-fragment-index="3" style="background: rgba(238, 232, 213, 0.9); border-left: 5px solid #859900; padding: 8px 14px; border-radius: 4px;">
-                <span style="font-size: 17px; color: #859900; font-weight: bold;">3. Absorb $\ln \prob{P}{\bm{X}|\vth_n} = \sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X},\vth_n}\ln \prob{P}{\bm{X}|\vth_n}$ into the logarithm:</span>
+              <div class="fragment" data-fragment-index="2">
                 $$= \sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} \ln \left( \frac{\prob{P}{\bm{X}|\vec{z}, \vth}\prob{P}{\vec{z}|\vth}}{\prob{P}{\vec{z}|\bm{X}, \vth_n}\prob{P}{\bm{X}|\vth_n}} \right) \;\def\; \mathbf{\Delta(\vth|\vth_n)}$$
               </div>
             </div>
+            <aside class="notes">
+              In the last step, since sum_z P(z|X, theta_n) = 1, we write ln P(X|theta_n) = sum_z P(z|X, theta_n) ln P(X|theta_n) and combine the two logarithms.
+            </aside>
           </section>
 
+          <!-- Why is Delta(theta|theta_n) tractable? -->
           <section>
-            <h2>Define the lower bound</h2>
-            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 32px;">
-              $$\begin{aligned}
-              {\cal L}(\vth|\vth_n) & \def \prob{L}{\vth_n} + \Delta(\vth|\vth_n)\\
-              \prob{L}{\vth} & \ge {\cal L}(\vth|\vth_n)
-              \end{aligned}$$
+            <h3 style="margin-bottom: 10px;">Why is $\Delta(\vth|\vth_n)$ tractable to optimize?</h3>
+            <p style="font-size: 25px; margin: 0 0 6px 0;">
+              Use $\ln(A/B) = \ln A - \ln B$ and $\prob{P}{\bm{X}|\vec{z},\vth}\prob{P}{\vec{z}|\vth} = \prob{P}{\bm{X},\vec{z}|\vth}$ to split the $\ln$:
+            </p>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 20.5px; padding: 8px 10px; margin: 4px 0 10px 0; text-align: center;">
+              $\displaystyle \Delta(\vth|\vth_n) = \sum_{\vec{z}} \underbrace{\color{#268bd2}{\prob{P}{\vec{z}|\bm{X}, \vth_n}}}_{\substack{\text{fixed weights}\\ \text{(only old }\vth_n\text{!)}}} \ln \underbrace{\color{#859900}{\prob{P}{\bm{X}, \vec{z}|\vth}}}_{\substack{\text{complete-data likelihood}\\ \text{(no sum inside }\ln\text{!)}}} \;-\; \underbrace{\sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} \ln \big(\prob{P}{\vec{z}|\bm{X}, \vth_n}\prob{P}{\bm{X}|\vth_n}\big)}_{\text{constant w.r.t. }\vth\text{!}}$
             </blockquote>
+            <ul style="list-style-type: none; font-size: 24.5px; width: 100%; margin: 6px 0 0 0;">
+              <li class="fragment roll-in"> <b>1. No sum inside $\ln$:</b> $\sum_{\vec{z}}$ sits <b>outside</b> the logarithm (a weighted sum of logs!).
+              <li class="fragment roll-in"> <b>2. Old $\vth_n$ terms are frozen:</b> $\prob{P}{\vec{z}|\bm{X}, \vth_n}$ and the second sum do not depend on $\vth$ at all!
+              <li class="fragment roll-in"> <b>3. Complete-data $\ln \prob{P}{\bm{X}, \vec{z}|\vth}$ is easy:</b> Pretends hidden $\vec{z}$ is observed, so $\ln$ acts directly on a single component distribution (where $\ln$ cancels $\exp$!).
+            </ul>
           </section>
 
-          <!-- Modernized MathJax Fragment Slide replacing EM_lower_bound.svg -->
+          <!-- Intuition for Delta(theta|theta_n) and L(theta|theta_n) -->
           <section>
-            <h3>Tightness: When does $\prob{L}{\vth} = {\cal L}(\vth|\vth_n)$?</h3>
-            <div style="font-size: 25px; text-align: left; max-width: 900px; margin: 0 auto;">
-              <p class="fragment" data-fragment-index="0" style="color: #586e75;">
-                Evaluate the surrogate lower bound at the current iterate $\vth = \vth_n$:
-              </p>
+            <h3 style="margin-bottom: 10px;">Why $\Delta(\vth|\vth_n)$ and what is ${\cal L}(\vth|\vth_n)$?</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 26px; padding: 6px 14px; margin: 0 0 8px 0; text-align: center;">
+              $\displaystyle \underbrace{\prob{L}{\vth} - \prob{L}{\vth_n}}_{\text{True improvement}} \;\ge\; \underbrace{\Delta(\vth|\vth_n)}_{\text{Guaranteed improvement}}$
+            </blockquote>
+            <ul style="list-style-type: none; font-size: 25px; width: 100%; margin: 6px 0 0 0;">
+              <li class="fragment roll-in"> <b>What is $\Delta(\vth|\vth_n)$?</b> A tractable floor on how much $\vth$ improves over $\vth_n$. If $\Delta(\vth|\vth_n) > 0$, then $\prob{L}{\vth} > \prob{L}{\vth_n}$ is <b>guaranteed</b>!
+              <li class="fragment roll-in" style="margin-top: 6px;"> Move $\prob{L}{\vth_n}$ to the right-hand side to define the <b>lower bound</b> ${\cal L}(\vth|\vth_n)$:
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 26px; margin: 6px 0; padding: 6px 14px; text-align: center;">
+                  $\displaystyle \prob{L}{\vth} \;\ge\; \underbrace{\prob{L}{\vth_n} + \Delta(\vth|\vth_n)}_{\def\; {\cal L}(\vth|\vth_n)}$
+                </blockquote>
+              <li class="fragment roll-in"> <b>What is ${\cal L}(\vth|\vth_n)$?</b> A simple curve (<b>sum of logs</b>!) that lies completely underneath the difficult log-likelihood $\prob{L}{\vth}$.
+            </ul>
+          </section>
+
+          <!-- Clean Tightness Slide replacing EM_lower_bound.svg -->
+          <section>
+            <h3>When does $\prob{L}{\vth} = {\cal L}(\vth|\vth_n)$?</h3>
+            <div style="font-size: 28px; width: 100%;">
+              <div class="fragment" data-fragment-index="0">
+                $${\cal L}(\vth_n|\vth_n) = \prob{L}{\vth_n} + \Delta(\vth_n|\vth_n)$$
+              </div>
               <div class="fragment" data-fragment-index="1">
-                $${\cal L}(\vth_n|\vth_n) = \prob{L}{\vth_n} + \Delta(\vth_n|\vth_n) = \prob{L}{\vth_n} + \sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} \ln \frac{\prob{P}{\bm{X}|\vec{z}, \vth_n}\prob{P}{\vec{z}|\vth_n}}{\prob{P}{\vec{z}|\bm{X}, \vth_n}\prob{P}{\bm{X}|\vth_n}}$$
+                $$= \prob{L}{\vth_n} + \sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} \ln \frac{\overbrace{\prob{P}{\bm{X}|\vec{z}, \vth_n}\prob{P}{\vec{z}|\vth_n}}^{\prob{P}{\bm{X}, \vec{z}|\vth_n}}}{\underbrace{\prob{P}{\vec{z}|\bm{X}, \vth_n}\prob{P}{\bm{X}|\vth_n}}_{\prob{P}{\bm{X}, \vec{z}|\vth_n}}}$$
               </div>
               <div class="fragment" data-fragment-index="2">
-                <span style="font-size: 19px; color: #268bd2;">By Bayes' rule, both numerator and denominator equal the joint distribution $\prob{P}{\bm{X}, \vec{z}|\vth_n}$:</span>
-                $$= \prob{L}{\vth_n} + \sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} \ln \frac{\prob{P}{\bm{X}, \vec{z}|\vth_n}}{\prob{P}{\bm{X}, \vec{z}|\vth_n}} = \prob{L}{\vth_n} + \sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} \underbrace{\ln 1}_{0}$$
+                $$= \prob{L}{\vth_n} + \sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} \underbrace{\ln 1}_{0} = \prob{L}{\vth_n}$$
               </div>
-              <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 26px; text-align: center;" class="fragment" data-fragment-index="3">
-                $${\cal L}(\vth_n|\vth_n) = \prob{L}{\vth_n} \quad \text{(The lower bound touches } \prob{L}{\vth} \text{ tangentially at } \vth_n\text{!)}$$
-              </blockquote>
+              <alert class="fragment" data-fragment-index="3">At $\vth = \vth_n$, the lower bound ${\cal L}(\vth|\vth_n)$ touches $\prob{L}{\vth}$!</alert>
             </div>
           </section>
 
           <section>
-            <h3>What happens when we optimize ${\cal L}(\vth|\vth_n)$?</h3>
-            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 150, 1);" width="1000"
+            <h3 style="margin-bottom: 6px;">What happens when we optimize ${\cal L}(\vth|\vth_n)$?</h3>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 150, 1); margin: 0 auto;" width="760"
                  src="figures/EM_iterative_lower_bounding.svg" alt="EM figure iterative">
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 26px; padding: 6px 14px; margin-top: 6px; text-align: center;">
+              $\displaystyle \prob{L}{\vth_{n+1}} \;\ge\; {\cal L}(\vth_{n+1}|\vth_n) \;\ge\; {\cal L}(\vth_n|\vth_n) \;=\; \prob{L}{\vth_n}$
+            </blockquote>
           </section>
 
           <!-- Demo 3: Iterative Surrogate Lower-Bound Stepper -->
           <section data-vertical-align-top>
-            <h3>Minorize-Maximize &amp; Surrogate Lower Bounds</h3>
-            <div style="display: flex; flex-direction: column; align-items: center; width: 940px; margin: 0 auto; user-select: none;">
+            <h3 style="margin: 4px 0 8px 0; font-size: 38px; line-height: 1.1;">Minorize-Maximize &amp; Surrogate Lower Bounds</h3>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 0 0 -110px; user-select: none;">
 
               <!-- Status Bar -->
-              <div id="lb-status-text" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 6px 14px; box-sizing: border-box; font-size: 12.5px; color: #268bd2; text-align: left;">
+              <div id="lb-status-text" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 7px 16px; box-sizing: border-box; font-size: 14.5px; color: #268bd2; text-align: left;">
                 E-Step Active: Surrogate touches L(θ) at θₜ.
               </div>
 
               <!-- Canvas -->
-              <div style="position: relative; width: 100%; height: 320px; box-sizing: border-box;">
-                <canvas id="em-lowerbound-canvas" width="940" height="320" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="em-lowerbound-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
               </div>
 
               <!-- Controls -->
-              <div style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 12px; color: #586e75; gap: 5px; white-space: nowrap;">
+              <div style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 8px 16px; box-sizing: border-box; font-size: 14px; color: #586e75; gap: 6px; white-space: nowrap;">
                 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; white-space: nowrap;">
-                  <div style="display: flex; align-items: center; gap: 6px; white-space: nowrap;">
+                  <div style="display: flex; align-items: center; gap: 10px; white-space: nowrap;">
                     <b>EM Cycle:</b>
-                    <button id="lb-btn-estep" style="cursor: pointer; padding: 3px 9px; border: 1px solid #268bd2; background: #eee8d5; color: #268bd2; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">1. E-Step (Tighten Bound at θₜ)</button>
-                    <button id="lb-btn-mstep" style="cursor: pointer; padding: 3px 9px; border: 1px solid #cb4b16; background: #fdf6e3; color: #cb4b16; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">2. M-Step (Jump to Peak θₜ₊₁)</button>
-                    <button id="lb-btn-fullstep" style="cursor: pointer; padding: 3px 9px; border: 1px solid #859900; background: #fdf6e3; color: #859900; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Full EM Step</button>
+                    <button id="lb-btn-estep" style="cursor: pointer; padding: 4px 12px; border: 1px solid #268bd2; background: #eee8d5; color: #268bd2; font-weight: bold; border-radius: 4px; font-size: 13px; white-space: nowrap;">1. E-Step (Tighten Bound at θₜ)</button>
+                    <button id="lb-btn-mstep" style="cursor: pointer; padding: 4px 12px; border: 1px solid #cb4b16; background: #fdf6e3; color: #cb4b16; font-weight: bold; border-radius: 4px; font-size: 13px; white-space: nowrap;">2. M-Step (Jump to Peak θₜ₊₁)</button>
+                    <button id="lb-btn-fullstep" style="cursor: pointer; padding: 4px 12px; border: 1px solid #859900; background: #fdf6e3; color: #859900; font-weight: bold; border-radius: 4px; font-size: 13px; white-space: nowrap;">Full EM Step</button>
                   </div>
-                  <div style="display: flex; align-items: center; gap: 14px; font-family: monospace; font-size: 12px; white-space: nowrap;">
+                  <div style="display: flex; align-items: center; gap: 18px; font-family: monospace; font-size: 14px; white-space: nowrap;">
                     <span>Iter: <b id="lb-iter-val">0</b></span>
                     <span>θₜ: <b id="lb-theta-val" style="color: #dc322f;">4.35</b></span>
                     <span>L(θₜ): <b id="lb-l-val" style="color: #859900;">--</b></span>
                   </div>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(147,161,161,0.3); padding-top: 4px; white-space: nowrap;">
-                  <div style="display: flex; align-items: center; gap: 6px; white-space: nowrap;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(147,161,161,0.3); padding-top: 6px; white-space: nowrap;">
+                  <div style="display: flex; align-items: center; gap: 10px; white-space: nowrap;">
                     <b>Seed Initialization:</b>
-                    <button id="lb-btn-left" style="cursor: pointer; padding: 3px 8px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Left Basin (θ₀ = 0.85 → Local Max)</button>
-                    <button id="lb-btn-mid" style="cursor: pointer; padding: 3px 8px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Saddle Slope (θ₀ = 4.35 → Global Max)</button>
-                    <button id="lb-btn-right" style="cursor: pointer; padding: 3px 8px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Far Right (θ₀ = 8.90 → Global Max)</button>
+                    <button id="lb-btn-left" style="cursor: pointer; padding: 4px 10px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 13px; white-space: nowrap;">Left Basin (θ₀ = 0.85 → Local Max)</button>
+                    <button id="lb-btn-mid" style="cursor: pointer; padding: 4px 10px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 13px; white-space: nowrap;">Saddle Slope (θ₀ = 4.35 → Global Max)</button>
+                    <button id="lb-btn-right" style="cursor: pointer; padding: 4px 10px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 13px; white-space: nowrap;">Far Right (θ₀ = 8.90 → Global Max)</button>
                   </div>
-                  <label style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
                     <span>Drag θ₀:</span>
-                    <input type="range" id="lb-theta-slider" min="0.40" max="9.50" step="0.05" value="4.35" style="width: 110px; cursor: pointer;">
+                    <input type="range" id="lb-theta-slider" min="0.40" max="9.50" step="0.05" value="4.35" style="width: 150px; cursor: pointer;">
                   </label>
                 </div>
               </div>
@@ -761,93 +877,126 @@
             </div>
             <aside class="notes">
               Step through E-Step and M-Step sequentially:
-              1. In the E-Step, we construct a concave lower bound l(theta | theta_t) that touches L(theta) tangentially at theta_t (where the KL divergence is 0).
-              2. In the M-Step, we jump to the maximum of the lower bound theta_{t+1} = argmax l(theta | theta_t). Because L(theta) lies above l(theta | theta_t) everywhere, L(theta_{t+1}) is guaranteed to improve by at least the surrogate gain plus the green KL gap!
-              3. Compare "Left Basin" vs "Saddle Slope" to show why EM is a local optimizer sensitive to initialization and requires multiple random restarts.
+              1. In the E-Step, we construct a concave lower bound l(theta | theta_t) that touches L(theta) tangentially at theta_t.
+              2. In the M-Step, we jump to the maximum of the lower bound theta_{t+1} = argmax l(theta | theta_t). Because L(theta) lies above l(theta | theta_t) everywhere, L(theta_{t+1}) is guaranteed to improve!
+              3. Compare "Left Basin" vs "Saddle Slope" to show why EM is a local optimizer sensitive to initialization.
             </aside>
           </section>
 
-          <!-- Modernized MathJax Fragment Slide replacing EM_EM.svg -->
-          <section style="top: -20px !important;">
-            <h2 style="margin-top: -25px; margin-bottom: 10px;">Simplifying the M-Step Objective: The $Q$-Function</h2>
-            <div style="font-size: 21px; text-align: left; max-width: 940px; margin: 0 auto;">
-              <div class="fragment" data-fragment-index="0" style="margin-bottom: 6px;">
-                $$\vth_{n+1} = \underset{\vth}{\argmax} \left\{ {\cal L}(\vth|\vth_n) \right\} = \underset{\vth}{\argmax} \left\{ \cancel{\prob{L}{\vth_n}} + \sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} \ln \frac{\prob{P}{\bm{X}|\vec{z}, \vth}\prob{P}{\vec{z}|\vth}}{\cancel{\prob{P}{\bm{X}|\vth_n}\prob{P}{\vec{z}|\bm{X}, \vth_n}}} \right\}$$
+          <!-- Clean M-Step Derivation replacing EM_EM.svg -->
+          <section>
+            <h3>What happens when we optimize ${\cal L}(\vth|\vth_n)$?</h3>
+            <div style="font-size: 26px; width: 100%;">
+              <div class="fragment" data-fragment-index="0" style="font-size: 22px;">
+                $$\vth_{n+1} = \underset{\vth}{\argmax}\; {\cal L}(\vth|\vth_n) = \underset{\vth}{\argmax} \left\{ \cancel{\prob{L}{\vth_n}} + \sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} \ln \frac{\prob{P}{\bm{X}|\vec{z}, \vth}\prob{P}{\vec{z}|\vth}}{\cancel{\prob{P}{\bm{X}|\vth_n}\prob{P}{\vec{z}|\bm{X}, \vth_n}}} \right\}$$
               </div>
-              <div class="fragment" data-fragment-index="1" style="margin-bottom: 8px;">
-                <span style="font-size: 17px; color: #268bd2; font-weight: bold;">Drop all terms constant w.r.t. $\vth$ and combine $\prob{P}{\bm{X}|\vec{z},\vth}\prob{P}{\vec{z}|\vth} = \prob{P}{\bm{X},\vec{z}|\vth}$:</span>
-                $$\vth_{n+1} = \underset{\vth}{\argmax} \left\{ \sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} \ln \prob{P}{\bm{X}, \vec{z}|\vth} \right\} = \underset{\vth}{\argmax} \left\{ \underbrace{\EE_{\vec{z}|\bm{X}, \vth_n}\!\left[ \ln \prob{P}{\bm{X}, \vec{z}|\vth} \right]}_{Q(\vth|\vth_n)} \right\}$$
+              <div class="fragment" data-fragment-index="1">
+                Drop terms that do not depend on $\vth$:
+                $$\vth_{n+1} = \underset{\vth}{\argmax} \left\{ \sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} \ln \prob{P}{\bm{X}, \vec{z}|\vth} \right\}$$
               </div>
-              <row class="fragment" data-fragment-index="2">
-                <col50>
-                  <div style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #268bd2; padding: 10px 14px; border-radius: 4px;">
-                    <div style="font-weight: bold; color: #268bd2; font-size: 20px;">1. Expectation Step (E-Step)</div>
-                    <div style="font-size: 17px; margin-top: 4px; color: #073642;">
-                      Compute posterior distribution of latent variables $q^{(n)}(\vec{z}) = \prob{P}{\vec{z}|\bm{X}, \vth_n}$ and form the expected complete-data log-likelihood:
-                      $$Q(\vth|\vth_n) = \EE_{\vec{z}|\bm{X},\vth_n}\!\left[\ln \prob{P}{\bm{X}, \vec{z}|\vth}\right]$$
-                    </div>
-                  </div>
-                </col50>
-                <col50>
-                  <div style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #cb4b16; padding: 10px 14px; border-radius: 4px;">
-                    <div style="font-weight: bold; color: #cb4b16; font-size: 20px;">2. Maximization Step (M-Step)</div>
-                    <div style="font-size: 17px; margin-top: 4px; color: #073642;">
-                      Update parameters by maximizing the expected complete-data log-likelihood:
-                      $$\vth_{n+1} = \underset{\vth}{\argmax} \; Q(\vth|\vth_n)$$
-                      <span style="font-size: 15px; color: #586e75;">(Inside $Q$, $\ln$ acts directly on the complete joint $\prob{P}{\bm{X},\vec{z}|\vth}$!)</span>
-                    </div>
-                  </div>
-                </col50>
-              </row>
+              <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 28px; padding: 6px 14px; text-align: center;" class="fragment" data-fragment-index="2">
+                $\displaystyle \vth_{n+1} = \underset{\vth}{\argmax} \; \underbrace{\EE_{\vec{z}|\bm{X}, \vth_n}\!\left[ \ln \prob{P}{\bm{X}, \vec{z}|\vth} \right]}_{\def\; Q(\vth|\vth_n)}$
+              </blockquote>
             </div>
           </section>
 
+          <!-- Clean 2-Step EM Summary Slide in Native Style -->
           <section>
-            <h3>Kullback-Leibler divergence</h3>
+            <h3 style="margin-bottom: 8px;">The EM Algorithm</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 24px; padding: 5px 14px; margin: 4px 0;" class="fragment" data-fragment-index="0">
+              1. Expectation Step (E-Step): Build the analytical objective $Q(\vth|\vth_n)$
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 23px; padding: 6px 14px; margin: 4px 0;" class="fragment" data-fragment-index="0">
+              Requires a <b>known analytical form</b> for the complete-data log-likelihood $\ln \prob{P}{\bm{X}, \vec{z}|\vth}$!<br>
+              Evaluate posterior $\prob{P}{\vec{z}|\bm{X}, \vth_n}$ at fixed $\vth_n$, keeping $\vth$ as a <b>free symbolic variable</b>:
+              <div style="text-align: center; margin-top: 4px;">
+                $\displaystyle Q(\vth|\vth_n) = \EE_{\vec{z}|\bm{X},\vth_n}\!\left[\ln \prob{P}{\bm{X}, \vec{z}|\vth}\right] = \sum_{\vec{z}} \underbrace{\prob{P}{\vec{z}|\bm{X}, \vth_n}}_{\text{numbers (at }\vth_n\text{)}} \;\cdot\; \underbrace{\ln \prob{P}{\bm{X}, \vec{z}|\vth}}_{\text{analytical formula in }\vth}$
+              </div>
+            </blockquote>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 24px; padding: 5px 14px; margin: 8px 0 4px 0;" class="fragment" data-fragment-index="1">
+              2. Maximization Step (M-Step): Maximize $Q(\vth|\vth_n)$ over $\vth$
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 24px; padding: 6px 14px; margin: 4px 0; text-align: center;" class="fragment" data-fragment-index="1">
+              $\displaystyle \vth_{n+1} = \underset{\vth}{\argmax} \; Q(\vth|\vth_n) \qquad \Big(\text{solve } \nabla_{\vth} Q(\vth|\vth_n) = \vec{0}\Big)$
+            </blockquote>
+          </section>
+
+          <!-- Intuition Slide: Where does KL Divergence come from? -->
+          <section>
+            <h3>How big is the gap $\prob{L}{\vth} - {\cal L}(\vth|\vth_n)$?</h3>
+            <ul style="list-style-type: none; font-size: 26px; width: 100%; margin: 0;">
+              <li class="fragment roll-in"> Away from $\vth_n$, the true log-likelihood $\prob{L}{\vth}$ sits strictly above the lower bound ${\cal L}(\vth|\vth_n)$.
+              <li class="fragment roll-in"> Using $\prob{P}{\bm{X}, \vec{z}|\vth} = \prob{P}{\vec{z}|\bm{X}, \vth}\prob{P}{\bm{X}|\vth}$, the vertical gap is:
+                $$\prob{L}{\vth} - {\cal L}(\vth|\vth_n) = \sum_{\vec{z}} \prob{P}{\vec{z}|\bm{X}, \vth_n} \ln \frac{\prob{P}{\vec{z}|\bm{X}, \vth_n}}{\prob{P}{\vec{z}|\bm{X}, \vth}} \;\ge\; 0$$
+              <li class="fragment roll-in">
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 26px;">
+                  This gap between two distributions $q(\vec{z})$ and $p(\vec{z})$ is the <b>Kullback-Leibler (KL) Divergence</b>!
+                </blockquote>
+            </ul>
+          </section>
+
+          <!-- Intuition Slide: What is KL Divergence? -->
+          <section>
+            <h3>Kullback-Leibler (KL) Divergence</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 26px; padding: 6px 14px;">
+              How different is distribution $q$ from target distribution $p$?
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 28px; padding: 6px 14px;">
+              $$D_{\text{KL}}(q \parallel p) \;\def\; \sum_{\vec{z}} q(\vec{z}) \ln \frac{q(\vec{z})}{p(\vec{z})} \;=\; \EE_{q}\!\left[\ln \frac{q(\vec{z})}{p(\vec{z})}\right]$$
+            </blockquote>
+            <ul style="list-style-type: none; font-size: 27px; width: 100%; margin: 10px 0 0 0;">
+              <li class="fragment roll-in"> <b>Always non-negative</b> (by Jensen's inequality): &nbsp; $D_{\text{KL}}(q \parallel p) \ge 0$
+              <li class="fragment roll-in"> <b>Zero iff distributions match</b>: &nbsp; $D_{\text{KL}}(q \parallel p) = 0 \iff q(\vec{z}) = p(\vec{z})$
+              <li class="fragment roll-in"> <b>Asymmetric</b> (order matters!): &nbsp; $D_{\text{KL}}(q \parallel p) \ne D_{\text{KL}}(p \parallel q)$
+            </ul>
+          </section>
+
+          <section>
+            <h3>Kullback-Leibler divergence: Asymmetry</h3>
             <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 150, 1);" width="920"
                  src="figures/bimodal_KL.png" alt="KLD">
-            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 22px;">
-              $D_{\text{KL}}(p \parallel q) = \int p(x) \ln \frac{p(x)}{q(x)} dx \ge 0$ &nbsp; (asymmetric! $D_{\text{KL}}(p\parallel q) \ne D_{\text{KL}}(q\parallel p)$)
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 24px;">
+              Left: $\argmin_q D_{\text{KL}}(p \parallel q)$ spreads over all modes &nbsp;|&nbsp; Right: $\argmin_q D_{\text{KL}}(q \parallel p)$ locks onto one mode (used in EM!)
             </blockquote>
           </section>
 
           <!-- Demo 4: Forward vs Reverse KL Divergence -->
           <section data-vertical-align-top>
-            <h3>Forward vs. Reverse KL Divergence</h3>
-            <div style="display: flex; flex-direction: column; align-items: center; width: 940px; margin: 0 auto; user-select: none;">
+            <h3 style="margin: 4px 0 8px 0; font-size: 38px; line-height: 1.1;">Forward vs. Reverse KL Divergence</h3>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 0 0 -110px; user-select: none;">
 
               <!-- Top Readout Bar -->
-              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 5px 14px; box-sizing: border-box; font-size: 12.5px; color: #073642; white-space: nowrap;">
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 6px 16px; box-sizing: border-box; font-size: 13.5px; color: #073642; white-space: nowrap;">
                 <div style="display: flex; gap: 6px; align-items: center; white-space: nowrap;">
                   <b>Optimize q(x):</b>
-                  <button id="kl-btn-forward" style="cursor: pointer; padding: 3px 9px; border: 1px solid #cb4b16; background: #fdf6e3; color: #cb4b16; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Min Forward D_KL(p ∥ q) (Mass-Covering)</button>
-                  <button id="kl-btn-rev-left" style="cursor: pointer; padding: 3px 9px; border: 1px solid #6c71c4; background: #fdf6e3; color: #6c71c4; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Min Reverse D_KL(q ∥ p) — Left Mode</button>
-                  <button id="kl-btn-rev-right" style="cursor: pointer; padding: 3px 9px; border: 1px solid #6c71c4; background: #fdf6e3; color: #6c71c4; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Min Reverse D_KL(q ∥ p) — Right Mode</button>
+                  <button id="kl-btn-forward" style="cursor: pointer; padding: 4px 9px; border: 1px solid #cb4b16; background: #fdf6e3; color: #cb4b16; font-weight: bold; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">Min Forward D_KL(p ∥ q) (Mass-Covering)</button>
+                  <button id="kl-btn-rev-left" style="cursor: pointer; padding: 4px 9px; border: 1px solid #6c71c4; background: #fdf6e3; color: #6c71c4; font-weight: bold; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">Min Reverse D_KL(q ∥ p) — Left Mode</button>
+                  <button id="kl-btn-rev-right" style="cursor: pointer; padding: 4px 9px; border: 1px solid #6c71c4; background: #fdf6e3; color: #6c71c4; font-weight: bold; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">Min Reverse D_KL(q ∥ p) — Right Mode</button>
                 </div>
-                <div style="display: flex; gap: 14px; font-family: monospace; font-size: 12px; white-space: nowrap;">
+                <div style="display: flex; gap: 14px; font-family: monospace; font-size: 13.5px; white-space: nowrap;">
                   <span style="color: #cb4b16;">D_KL(p∥q): <b id="kl-fwd-val">--</b></span>
                   <span style="color: #6c71c4;">D_KL(q∥p): <b id="kl-rev-val">--</b></span>
                 </div>
               </div>
 
               <!-- Canvas -->
-              <div style="position: relative; width: 100%; height: 320px; box-sizing: border-box;">
-                <canvas id="em-kl-canvas" width="940" height="320" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="em-kl-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
               </div>
 
               <!-- Controls -->
-              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 12px; color: #586e75; white-space: nowrap;">
-                <label style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 7px 16px; box-sizing: border-box; font-size: 14px; color: #586e75; white-space: nowrap;">
+                <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
                   <span>Approximation Mean (μ_q):</span> <span id="kl-mu-val" style="font-family: monospace; font-weight: bold; color: #859900;">0.00</span>
-                  <input type="range" id="kl-mu-slider" min="-3.20" max="3.20" step="0.05" value="0.00" style="width: 120px; cursor: pointer;">
+                  <input type="range" id="kl-mu-slider" min="-3.20" max="3.20" step="0.05" value="0.00" style="width: 150px; cursor: pointer;">
                 </label>
-                <label style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+                <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
                   <span>Approximation Std (σ_q):</span> <span id="kl-sig-val" style="font-family: monospace; font-weight: bold; color: #859900;">1.96</span>
-                  <input type="range" id="kl-sig-slider" min="0.40" max="2.80" step="0.05" value="1.96" style="width: 110px; cursor: pointer;">
+                  <input type="range" id="kl-sig-slider" min="0.40" max="2.80" step="0.05" value="1.96" style="width: 140px; cursor: pointer;">
                 </label>
-                <label style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+                <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
                   <span>Mode Separation (Δμ):</span>
-                  <input type="range" id="kl-sep-slider" min="0.90" max="2.50" step="0.05" value="1.85" style="width: 100px; cursor: pointer;">
+                  <input type="range" id="kl-sep-slider" min="0.90" max="2.50" step="0.05" value="1.85" style="width: 140px; cursor: pointer;">
                 </label>
               </div>
 
@@ -859,52 +1008,23 @@
             </aside>
           </section>
 
-          <!-- Populated ELBO / Free Energy Slide (formerly empty line 495) -->
-          <section style="top: -20px !important;">
-            <h2 style="margin-top: -25px; margin-bottom: 10px;">Yet Another View of EM: ELBO &amp; Free Energy</h2>
-            <div style="font-size: 21px; text-align: left; max-width: 940px; margin: 0 auto;">
-              <div class="fragment" data-fragment-index="0" style="background: rgba(238, 232, 213, 0.95); border-left: 5px solid #268bd2; padding: 8px 14px; border-radius: 4px; margin-bottom: 10px;">
-                For <b>any</b> distribution $q(\vec{z})$ over the latent variables, decompose $\ln \prob{P}{\bm{X}|\vth} = \sum_{\vec{z}} q(\vec{z}) \ln \prob{P}{\bm{X}|\vth}$:
-                $$\ln \prob{P}{\bm{X}|\vth} = \underbrace{\sum_{\vec{z}} q(\vec{z}) \ln \frac{\prob{P}{\bm{X}, \vec{z}|\vth}}{q(\vec{z})}}_{\text{ELBO / Free Energy } {\cal F}(q, \vth)} + \underbrace{D_{\text{KL}}\!\left(q(\vec{z}) \;\middle\|\; \prob{P}{\vec{z}|\bm{X}, \vth}\right)}_{\ge\, 0}$$
-              </div>
-
-              <div class="fragment" data-fragment-index="1" style="margin-bottom: 10px;">
-                Expanding the Evidence Lower Bound (ELBO) separates energy and entropy:
-                $${\cal F}(q, \vth) = \sum_{\vec{z}} q(\vec{z}) \ln \prob{P}{\bm{X}, \vec{z}|\vth} - \sum_{\vec{z}} q(\vec{z}) \ln q(\vec{z}) = \mathbf{Q(\vth | q) + H(q)} \le \ln \prob{P}{\bm{X}|\vth}$$
-              </div>
-
-              <row class="fragment" data-fragment-index="2">
-                <col50>
-                  <div style="background: rgba(253, 246, 227, 0.96); border-left: 4px solid #859900; padding: 8px 12px; font-size: 18px;">
-                    <b>EM = Coordinate Ascent on ${\cal F}(q, \vth)$:</b>
-                    <ul style="margin-top: 4px; line-height: 1.35;">
-                      <li><b>E-Step (fix $\vth_t$, optimize $q$):</b><br>
-                        $q^{(t)}(\vec{z}) = \argmax_q {\cal F}(q, \vth_t) = \argmin_q D_{\text{KL}}(q \parallel P(\vec{z}|\bm{X},\vth_t))$<br>
-                        Exact solution: $q^{(t)}(\vec{z}) = \prob{P}{\vec{z}|\bm{X},\vth_t} \implies D_{\text{KL}} = 0$!
-                      <li><b>M-Step (fix $q^{(t)}$, optimize $\vth$):</b><br>
-                        $\vth_{t+1} = \argmax_{\vth} {\cal F}(q^{(t)}, \vth) = \argmax_{\vth} Q(\vth|\vth_t)$
-                    </ul>
-                  </div>
-                </col50>
-                <col50>
-                  <div style="background: rgba(253, 246, 227, 0.96); border-left: 4px solid #6c71c4; padding: 8px 12px; font-size: 18px;">
-                    <b>Bridge to Variational Inference (VI &amp; VAEs):</b>
-                    <p style="margin-top: 4px; line-height: 1.35; color: #073642;">
-                      What if the true posterior $\prob{P}{\vec{z}|\bm{X}, \vth}$ is intractable?
-                    </p>
-                    <p style="margin-top: 4px; line-height: 1.35; color: #586e75;">
-                      Restrict $q(\vec{z}) \in {\cal Q}$ to a tractable family (e.g., factorized mean-field or a neural encoder $q_{\bm{\phi}}(\vec{z}|\vec{x})$) and maximize $\text{ELBO}(q, \vth)$ directly!
-                    </p>
-                  </div>
-                </col50>
-              </row>
-            </div>
-            <aside class="notes">
-              This identity is one of the most important equations in modern machine learning:
-              Log marginal likelihood = ELBO + KL(q || posterior).
-              In classical EM, we can compute the exact posterior P(z|X,theta), so the E-step sets KL = 0.
-              In Variational Inference and Variational Autoencoders (VAEs), the exact posterior is intractable, so we restrict q(z) to a tractable family and maximize the ELBO!
-            </aside>
+          <!-- Clean, Intuitive ELBO Slide -->
+          <section>
+            <h3>Yet another view of EM: ELBO</h3>
+            <p style="font-size: 25px; margin: 0 0 6px 0;">
+              For <b>any</b> probability distribution $q(\vec{z})$ over the hidden variables:
+            </p>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 23.5px; padding: 8px 14px; text-align: center;">
+              $\displaystyle \underbrace{\ln \prob{P}{\bm{X}|\vth}}_{\text{True Log-Likelihood } L(\vth)} \;=\; \underbrace{\sum_{\vec{z}} q(\vec{z}) \ln \frac{\prob{P}{\bm{X}, \vec{z}|\vth}}{q(\vec{z})}}_{\text{Evidence Lower Bound } \text{ELBO}(q, \vth)} \;+\; \underbrace{D_{\text{KL}}\!\left(q(\vec{z}) \;\middle\|\; \prob{P}{\vec{z}|\bm{X}, \vth}\right)}_{\text{Gap } \ge\, 0}$
+            </blockquote>
+            <ul style="list-style-type: none; font-size: 26px; width: 100%; margin: 10px 0 0 0;">
+              <li class="fragment roll-in"> <b>E-Step (fix $\vth_n$, optimize $q$):</b> Set $q(\vec{z}) = \prob{P}{\vec{z}|\bm{X}, \vth_n}$ so the gap $D_{\text{KL}} = 0$ (lower bound touches $L(\vth_n)$!).
+              <li class="fragment roll-in"> <b>M-Step (fix $q$, optimize $\vth$):</b> Maximize $\text{ELBO}(q, \vth)$ over $\vth$ (climb to the peak of the lower bound!).
+              <li class="fragment roll-in" style="margin-top: 6px;">
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 23px; padding: 6px 14px;">
+                  If true $\prob{P}{\vec{z}|\bm{X}, \vth}$ is intractable, pick the closest tractable $q(\vec{z})$ $\implies$ <b>Variational Inference &amp; VAEs</b>!
+                </blockquote>
+            </ul>
           </section>
         </section>
 
@@ -913,82 +1033,82 @@
         <!-- ========================================================================= -->
         <section>
           <section>
-            <h2>EM for General Gaussian Mixture Models</h2>
+            <h2>EM for Gaussian Mixture Models</h2>
           </section>
 
-          <section style="top: -20px !important;">
-            <h2 style="margin-top: -25px; margin-bottom: 10px;">Why Complete Data Makes GMM Estimation Easy</h2>
-            <div style="font-size: 21px; text-align: left; max-width: 940px; margin: 0 auto;">
-              <div class="fragment" data-fragment-index="0" style="background: rgba(253, 246, 227, 0.95); border-left: 5px solid #268bd2; padding: 8px 14px; margin-bottom: 10px;">
-                Introduce a one-hot latent indicator $\vec{z}_n = (z_{n1}, \dots, z_{nK}) \in \{0,1\}^K$ with $\sum_{k=1}^K z_{nk} = 1$:
-                $$\prob{P}{\vec{x}_n, \vec{z}_n | \vth} = \prod_{k=1}^K \left[ \pi_k \prob{N}{\vec{x}_n | \vec{\mu}_k, \bm{\Sigma}_k} \right]^{z_{nk}}$$
-              </div>
-
-              <div class="fragment" data-fragment-index="1" style="margin-bottom: 10px;">
-                <b>Take the logarithm of the complete data likelihood:</b> the product turns into a sum, and the exponent $z_{nk}$ comes out front — <b>no log-of-sums!</b>
-                $$\ln \prob{P}{\bm{X}, \bm{Z} | \vth} = \sum_{n=1}^N \sum_{k=1}^K z_{nk} \left[ \ln \pi_k + \ln \prob{N}{\vec{x}_n | \vec{\mu}_k, \bm{\Sigma}_k} \right]$$
-              </div>
-
-              <div class="fragment" data-fragment-index="2" style="background: rgba(238, 232, 213, 0.95); border-left: 5px solid #859900; padding: 8px 14px;">
-                <b>Take the expectation $\EE_{\bm{Z}|\bm{X},\vth^{(t)}}$:</b> since $\ln \prob{P}{\bm{X},\bm{Z}|\vth}$ is linear in $z_{nk}$, we simply replace $z_{nk}$ with its posterior expectation $\gamma_{nk} \def \EE[z_{nk}|\vec{x}_n, \vth^{(t)}] = \prob{P}{z_{nk}=1|\vec{x}_n, \vth^{(t)}}$:
-                $$Q(\vth | \vth^{(t)}) = \sum_{n=1}^N \sum_{k=1}^K \color{#cb4b16}{\gamma_{nk}} \left[ \ln \pi_k - \frac{1}{2}\ln|\bm{\Sigma}_k| - \frac{1}{2}(\vec{x}_n - \vec{\mu}_k)^T \bm{\Sigma}_k^{-1} (\vec{x}_n - \vec{\mu}_k) \right] + \text{const}$$
-              </div>
-            </div>
+          <section>
+            <h3 style="margin-bottom: 8px;">GMM: From Mixture Sum to Latent Product</h3>
+            <ul style="list-style-type: none; font-size: 24.5px; width: 100%; margin: 0;">
+              <li class="fragment roll-in"> <b>Observed (incomplete) log-likelihood</b> has a sum trapped inside the $\ln$:
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 24px; padding: 5px 14px; margin: 4px 0 8px 0; text-align: center;">
+                  $\displaystyle \ln \prob{P}{\bm{X}|\vth} = \sum_{n=1}^N \ln \left\{ \sum_{k=1}^K \pi_k \prob{N}{\vec{x}_n|\vec{\mu}_k, \bm{\Sigma}_k} \right\}$
+                </blockquote>
+              <li class="fragment roll-in"> Introduce a <b>1-of-$K$ binary indicator</b> $\vec{z}_n = (z_{n1}, \dots, z_{nK}) \in \{0, 1\}^K$ with $\sum_{k=1}^K z_{nk} = 1$ ($z_{nk}=1$ if point $\vec{x}_n$ came from cluster $k$, and $0$ otherwise).
+              <li class="fragment roll-in" style="margin-top: 6px;"> Since $a^1 = a$ and $a^0 = 1$, picking cluster $k$ becomes a <b>product of powers</b>:
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 23px; padding: 6px 14px; margin: 4px 0; text-align: center;">
+                  $\displaystyle \prob{P}{\vec{z}_n|\vth} = \prod_{k=1}^K \pi_k^{z_{nk}}, \qquad \prob{P}{\vec{x}_n|\vec{z}_n, \vth} = \prod_{k=1}^K \prob{N}{\vec{x}_n|\vec{\mu}_k, \bm{\Sigma}_k}^{z_{nk}}$<br>
+                  $\displaystyle \implies \prob{P}{\bm{X}, \bm{Z}|\vth} = \prod_{n=1}^N \prod_{k=1}^K \Big[ \pi_k \prob{N}{\vec{x}_n|\vec{\mu}_k, \bm{\Sigma}_k} \Big]^{z_{nk}}$
+                </blockquote>
+            </ul>
           </section>
 
-          <section style="top: -20px !important;">
-            <h2 style="margin-top: -25px; margin-bottom: 10px;">EM Algorithm for General Multivariate GMMs</h2>
-            <row>
-              <col50>
-                <div class="fragment" data-fragment-index="0" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #268bd2; padding: 12px 14px; border-radius: 4px; text-align: left; font-size: 20px;">
-                  <div style="font-weight: bold; color: #268bd2; font-size: 22px; margin-bottom: 6px;">1. E-Step: Responsibilities</div>
-                  <p style="font-size: 18px; color: #073642; line-height: 1.35;">
-                    For each data point $n=1,\dots,N$ and component $k=1,\dots,K$, evaluate the posterior membership probability:
-                  </p>
-                  $$\gamma_{nk} = \frac{\pi_k^{(t)} \prob{N}{\vec{x}_n \mid \vec{\mu}_k^{(t)}, \bm{\Sigma}_k^{(t)}}}{\sum_{j=1}^K \pi_j^{(t)} \prob{N}{\vec{x}_n \mid \vec{\mu}_j^{(t)}, \bm{\Sigma}_j^{(t)}}}$$
-                  <p style="font-size: 16px; color: #586e75; margin-top: 8px;">
-                    Define effective point count assigned to cluster $k$:
-                    $$N_k \def \sum_{n=1}^N \gamma_{nk} \quad \left(\sum_{k=1}^K N_k = N\right)$$
-                  </p>
-                </div>
-              </col50>
-              <col50>
-                <div class="fragment" data-fragment-index="1" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #cb4b16; padding: 12px 14px; border-radius: 4px; text-align: left; font-size: 20px;">
-                  <div style="font-weight: bold; color: #cb4b16; font-size: 22px; margin-bottom: 6px;">2. M-Step: Weighted MLE</div>
-                  <p style="font-size: 17px; color: #073642; margin-bottom: 4px;">
-                    Maximize $Q(\vth|\vth^{(t)})$ (with Lagrange multiplier $\sum_k \pi_k = 1$):
-                  </p>
-                  <div style="font-size: 18px;">
-                    $$\vec{\mu}_k^{(t+1)} = \frac{1}{N_k} \sum_{n=1}^N \gamma_{nk} \vec{x}_n$$
-                    $$\bm{\Sigma}_k^{(t+1)} = \frac{1}{N_k} \sum_{n=1}^N \gamma_{nk} (\vec{x}_n - \vec{\mu}_k^{(t+1)})(\vec{x}_n - \vec{\mu}_k^{(t+1)})^T$$
-                    $$\pi_k^{(t+1)} = \frac{N_k}{N}$$
-                  </div>
-                </div>
-              </col50>
-            </row>
+          <section>
+            <h3 style="margin-bottom: 8px;">Why latent variables make GMM easy</h3>
+            <p style="font-size: 25px; margin: 0 0 6px 0;">
+              Now take $\ln$ of the product $\prob{P}{\bm{X}, \bm{Z}|\vth}$ — the exponent $z_{nk}$ comes down in front!
+            </p>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21.5px; padding: 8px 12px; margin: 4px 0 10px 0; text-align: center;">
+              $\displaystyle \ln \prob{P}{\bm{X}, \bm{Z} | \vth} = \ln \prod_{n=1}^N \prod_{k=1}^K \Big[ \pi_k \prob{N}{\vec{x}_n|\vec{\mu}_k, \bm{\Sigma}_k} \Big]^{z_{nk}} = \sum_{n=1}^N \sum_{k=1}^K z_{nk} \Big[ \ln \pi_k + \ln \prob{N}{\vec{x}_n | \vec{\mu}_k, \bm{\Sigma}_k} \Big]$
+            </blockquote>
+            <ul style="list-style-type: none; font-size: 25px; width: 100%; margin: 6px 0 0 0;">
+              <li class="fragment roll-in"> Because $\ln \prob{P}{\bm{X}, \bm{Z}|\vth}$ is <b>linear in $z_{nk}$</b>, taking $\EE_{\bm{Z}|\bm{X}, \vth_n}[\cdot]$ in the <b>E-step</b> simply replaces $z_{nk}$ with its expected value $\gamma_{nk}$:
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 23.5px; margin: 6px 0; padding: 8px 14px; text-align: center;">
+                  $\displaystyle Q(\vth|\vth_n) = \sum_{n=1}^N \sum_{k=1}^K \gamma_{nk} \Big[ \ln \pi_k + \ln \prob{N}{\vec{x}_n | \vec{\mu}_k, \bm{\Sigma}_k} \Big]$<br>
+                  $\displaystyle \text{where } \gamma_{nk} \;\def\; \EE[z_{nk} | \vec{x}_n, \vth_n] = \prob{P}{z_{nk} = 1 | \vec{x}_n, \vth_n}$
+                </blockquote>
+            </ul>
+          </section>
+
+          <section>
+            <h3>GMM: E-Step and M-Step</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 24px; padding: 6px 14px;" class="fragment" data-fragment-index="0">
+              1. E-Step: Soft responsibilities $\gamma_{nk}$ and effective cluster size $N_k$
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 23px; padding: 6px 14px;" class="fragment" data-fragment-index="0">
+              $$\gamma_{nk} = \frac{\pi_k \prob{N}{\vec{x}_n \mid \vec{\mu}_k, \bm{\Sigma}_k}}{\sum_{j=1}^K \pi_j \prob{N}{\vec{x}_n \mid \vec{\mu}_j, \bm{\Sigma}_j}}, \qquad N_k = \sum_{n=1}^N \gamma_{nk}$$
+            </blockquote>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 24px; padding: 6px 14px;" class="fragment" data-fragment-index="1">
+              2. M-Step: Update means, covariances, and mixing weights
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 23px; padding: 6px 14px;" class="fragment" data-fragment-index="1">
+              $$\begin{aligned}
+              \vec{\mu}_k^{\text{new}} &= \frac{1}{N_k} \sum_{n=1}^N \gamma_{nk} \vec{x}_n, \qquad \pi_k^{\text{new}} = \frac{N_k}{N} \\
+              \bm{\Sigma}_k^{\text{new}} &= \frac{1}{N_k} \sum_{n=1}^N \gamma_{nk} (\vec{x}_n - \vec{\mu}_k^{\text{new}})(\vec{x}_n - \vec{\mu}_k^{\text{new}})^T
+              \end{aligned}$$
+            </blockquote>
           </section>
 
           <!-- Demo 5: 2D Full-Covariance GMM EM Playground -->
           <section data-vertical-align-top>
-            <h3>2D Multivariate GMM EM Playground</h3>
-            <div style="display: flex; flex-direction: column; align-items: center; width: 940px; margin: 0 auto; user-select: none;">
+            <h3 style="margin: 4px 0 8px 0; font-size: 38px; line-height: 1.1;">2D Multivariate GMM EM Playground</h3>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 0 0 -110px; user-select: none;">
 
               <!-- Canvas -->
-              <div style="position: relative; width: 100%; height: 340px; box-sizing: border-box;">
-                <canvas id="em-gmm2d-canvas" width="940" height="340" style="display: block; width: 100%; height: 100%; border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; background: rgba(253, 246, 227, 0.98); box-sizing: border-box; cursor: crosshair;"></canvas>
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="em-gmm2d-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; background: rgba(253, 246, 227, 0.98); box-sizing: border-box; cursor: crosshair;"></canvas>
               </div>
 
               <!-- Controls Toolbar -->
-              <div style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-top: none; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 12px; color: #586e75; gap: 5px; white-space: nowrap;">
+              <div style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-top: none; border-radius: 0 0 8px 8px; padding: 6px 16px; box-sizing: border-box; font-size: 13.5px; color: #586e75; gap: 5px; white-space: nowrap;">
                 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; white-space: nowrap;">
-                  <div style="display: flex; align-items: center; gap: 6px; white-space: nowrap;">
-                    <button id="gmm-btn-estep" style="cursor: pointer; padding: 3px 9px; border: 1px solid #268bd2; background: #fdf6e3; color: #268bd2; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">E-Step (γₙₖ)</button>
-                    <button id="gmm-btn-mstep" style="cursor: pointer; padding: 3px 9px; border: 1px solid #cb4b16; background: #fdf6e3; color: #cb4b16; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">M-Step (μₖ, Σₖ, πₖ)</button>
-                    <button id="gmm-btn-fullstep" style="cursor: pointer; padding: 3px 9px; border: 1px solid #859900; background: #eee8d5; color: #859900; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Full EM Step</button>
-                    <button id="gmm-btn-auto" style="cursor: pointer; padding: 3px 9px; border: 1px solid #2aa198; background: #fdf6e3; color: #2aa198; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">▶ Auto-Run</button>
-                    <button id="gmm-btn-reinit" style="cursor: pointer; padding: 3px 9px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">🎲 Re-Init Seeds</button>
+                  <div style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <button id="gmm-btn-estep" style="cursor: pointer; padding: 4px 11px; border: 1px solid #268bd2; background: #fdf6e3; color: #268bd2; font-weight: bold; border-radius: 4px; font-size: 13px; white-space: nowrap;">E-Step (γₙₖ)</button>
+                    <button id="gmm-btn-mstep" style="cursor: pointer; padding: 4px 11px; border: 1px solid #cb4b16; background: #fdf6e3; color: #cb4b16; font-weight: bold; border-radius: 4px; font-size: 13px; white-space: nowrap;">M-Step (μₖ, Σₖ, πₖ)</button>
+                    <button id="gmm-btn-fullstep" style="cursor: pointer; padding: 4px 11px; border: 1px solid #859900; background: #eee8d5; color: #859900; font-weight: bold; border-radius: 4px; font-size: 13px; white-space: nowrap;">Full EM Step</button>
+                    <button id="gmm-btn-auto" style="cursor: pointer; padding: 4px 11px; border: 1px solid #2aa198; background: #fdf6e3; color: #2aa198; font-weight: bold; border-radius: 4px; font-size: 13px; white-space: nowrap;">▶ Auto-Run</button>
+                    <button id="gmm-btn-reinit" style="cursor: pointer; padding: 4px 11px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 13px; white-space: nowrap;">🎲 Re-Init Seeds</button>
                   </div>
-                  <div style="display: flex; align-items: center; gap: 12px; font-family: monospace; font-size: 11.5px; white-space: nowrap;">
+                  <div style="display: flex; align-items: center; gap: 16px; font-family: monospace; font-size: 13.5px; white-space: nowrap;">
                     <span>Stage: <b id="gmm-stage-val" style="color: #268bd2;">Initialized</b></span>
                     <span>Iter: <b id="gmm-iter-val">0</b></span>
                     <span>ln P(<b>X</b>|<b>θ</b>): <b id="gmm-ll-val" style="color: #859900;">--</b></span>
@@ -996,16 +1116,16 @@
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(147,161,161,0.3); padding-top: 4px; white-space: nowrap;">
-                  <div style="display: flex; align-items: center; gap: 10px; white-space: nowrap;">
+                  <div style="display: flex; align-items: center; gap: 14px; white-space: nowrap;">
                     <label style="white-space: nowrap;"><b>Dataset:</b>
-                      <select id="gmm-sel-dataset" style="padding: 2px 6px; border: 1px solid #268bd2; border-radius: 4px; background: #fff; font-size: 11px;">
+                      <select id="gmm-sel-dataset" style="padding: 3px 8px; border: 1px solid #268bd2; border-radius: 4px; background: #fff; font-size: 12.5px;">
                         <option value="tilted" selected>Tilted Ellipses (K-Means Fails!)</option>
                         <option value="unequal">Unequal Variance Blobs</option>
                         <option value="barnabas">3 Classic Clusters</option>
                       </select>
                     </label>
                     <label style="white-space: nowrap;"><b>Covariance Model:</b>
-                      <select id="gmm-sel-cov" style="padding: 2px 6px; border: 1px solid #cb4b16; border-radius: 4px; background: #fff; font-size: 11px;">
+                      <select id="gmm-sel-cov" style="padding: 3px 8px; border: 1px solid #cb4b16; border-radius: 4px; background: #fff; font-size: 12.5px;">
                         <option value="full" selected>Full Covariance (Σₖ)</option>
                         <option value="diag">Diagonal (Axis-Aligned)</option>
                         <option value="spherical">Spherical (σₖ²I)</option>
@@ -1013,14 +1133,14 @@
                       </select>
                     </label>
                     <label style="white-space: nowrap;"><b>Clusters K:</b>
-                      <select id="gmm-sel-k" style="padding: 2px 6px; border: 1px solid #93a1a1; border-radius: 4px; background: #fff; font-size: 11px;">
+                      <select id="gmm-sel-k" style="padding: 3px 8px; border: 1px solid #93a1a1; border-radius: 4px; background: #fff; font-size: 12.5px;">
                         <option value="2">K = 2</option>
                         <option value="3" selected>K = 3</option>
                         <option value="4">K = 4</option>
                       </select>
                     </label>
                   </div>
-                  <span style="font-size: 11px; color: #586e75; white-space: nowrap;">Each point's pie chart shows γₙₖ = P(zₙ = k | <b>x</b>ₙ).</span>
+                  <span style="font-size: 12.5px; color: #586e75; white-space: nowrap;">Each point's pie chart shows γₙₖ = P(zₙ = k | <b>x</b>ₙ).</span>
                 </div>
               </div>
 
@@ -1031,39 +1151,18 @@
             </aside>
           </section>
 
-          <section style="top: -20px !important;">
-            <h2 style="margin-top: -25px; margin-bottom: 12px;">GMMs vs. K-Means &amp; Practical Engineering</h2>
-            <row>
-              <col50>
-                <div style="background: rgba(253, 246, 227, 0.95); border-left: 4px solid #268bd2; padding: 10px 14px; margin-bottom: 10px; text-align: left; font-size: 19px;">
-                  <b>1. K-Means as a Limit of GMM EM:</b><br>
-                  <span style="font-size: 16px; color: #073642;">
-                    Fix $\bm{\Sigma}_k = \sigma^2 \bm{I}$ and $\pi_k = 1/K$. As $\sigma^2 \to 0$, the softmax responsibilities $\gamma_{nk}$ collapse to $\{0, 1\}$ indicator variables, recovering <b>Hard K-Means</b>!
-                  </span>
-                </div>
-                <div style="background: rgba(253, 246, 227, 0.95); border-left: 4px solid #2aa198; padding: 10px 14px; text-align: left; font-size: 19px;">
-                  <b>2. Quadratic vs. Linear Boundaries:</b><br>
-                  <span style="font-size: 16px; color: #073642;">
-                    With general $\bm{\Sigma}_k$, the log posterior ratio $\ln \frac{P(y=i|\vec{x})}{P(y=j|\vec{x})} = \vec{x}^T\bm{W}\vec{x} + \vec{w}^T\vec{x} + c$ yields <b>quadratic decision boundaries</b> instead of linear Voronoi cells.
-                  </span>
-                </div>
-              </col50>
-              <col50>
-                <div style="background: rgba(253, 246, 227, 0.95); border-left: 4px solid #cb4b16; padding: 10px 14px; margin-bottom: 10px; text-align: left; font-size: 19px;">
-                  <b>3. Choosing $K$ (Model Selection):</b><br>
-                  <span style="font-size: 16px; color: #073642;">
-                    Training log-likelihood $\ln P(\bm{X}|\hat{\vth})$ increases monotonically with $K$. Select $K$ via <b>held-out validation likelihood</b> or <b>BIC</b> ($p$ = # of parameters):
-                    $$\text{BIC}(K) = -2\ln P(\bm{X}|\hat{\vth}) + p \ln N$$
-                  </span>
-                </div>
-                <div style="background: rgba(253, 246, 227, 0.95); border-left: 4px solid #859900; padding: 10px 14px; text-align: left; font-size: 19px;">
-                  <b>4. Initialization &amp; Regularization:</b><br>
-                  <span style="font-size: 16px; color: #073642;">
-                    Initialize $\vec{\mu}_k$ with <b>K-Means / K-Means++</b> across multiple random restarts, and add $\bm{\Sigma}_k \leftarrow \bm{\Sigma}_k + \epsilon\bm{I}$ ($\epsilon \approx 10^{-6}$) to prevent singularity collapse.
-                  </span>
-                </div>
-              </col50>
-            </row>
+          <section>
+            <h3>K-Means is a Limit of GMM EM</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 25px; padding: 6px 14px;">
+              Fix spherical covariance $\bm{\Sigma}_k = \sigma^2 \bm{I}$ and equal weights $\pi_k = 1/K$:
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 24px; padding: 8px 14px; text-align: center;">
+              $\displaystyle \gamma_{nk} = \frac{\exp\!\left(-\frac{\|\vec{x}_n - \vec{\mu}_k\|^2}{2\sigma^2}\right)}{\sum_{j=1}^K \exp\!\left(-\frac{\|\vec{x}_n - \vec{\mu}_j\|^2}{2\sigma^2}\right)} \;\xrightarrow{\;\sigma^2 \to 0\;}\; \begin{cases} 1 & \text{if } k = \argmin_j \|\vec{x}_n - \vec{\mu}_j\|^2 \\ 0 & \text{otherwise} \end{cases}$
+            </blockquote>
+            <ul style="list-style-type: none; font-size: 26px; width: 100%; margin: 10px 0 0 0;">
+              <li class="fragment roll-in"> <b>Hard K-Means:</b> $\sigma^2 \to 0$ limit with hard $\{0, 1\}$ assignments and spherical clusters.
+              <li class="fragment roll-in"> <b>Full GMM via EM:</b> Soft responsibilities $\gamma_{nk} \in [0, 1]$ and elliptical clusters $\bm{\Sigma}_k$.
+            </ul>
           </section>
         </section>
 
@@ -1072,22 +1171,22 @@
         <!-- ========================================================================= -->
         <section>
           <section>
-            <h2>Take Home Points</h2>
-            <ul style="font-size: 25px; line-height: 1.45; max-width: 920px; margin: 25px auto; text-align: left;">
+            <h3>Take Home Points</h3>
+            <ul style="font-size: 26px; line-height: 1.42; max-width: 920px; margin: 16px auto; text-align: left;">
               <li class="fragment" data-fragment-index="0">
-                <b>Why Direct MLE Fails on Mixtures:</b> The log-of-sums $\ln \sum_k \pi_k \prob{N}{\vec{x}_n|\vec{\mu}_k, \bm{\Sigma}_k}$ breaks exponential-family decoupling, couples all parameters nonlinearly, and suffers from variance-collapse singularities ($\sigma_k \to 0 \implies \mathcal{L} \to \infty$).
+                <b>Why Direct MLE Fails on Mixtures:</b> $\ln \sum_k \pi_k {\cal N}_k$ traps a sum inside the $\log$ and suffers from $\sigma_k \to 0$ singularities.
               </li>
               <li class="fragment" data-fragment-index="1">
-                <b>Latent Variables Restore Tractability:</b> Introducing unobserved cluster assignments $\vec{z}$ turns the complete-data log-likelihood $\ln \prob{P}{\bm{X}, \bm{Z}|\vth}$ back into a tractable sum of logs.
+                <b>Jensen's Inequality Builds a Lower Bound:</b> Concavity of $\ln$ turns the log-of-sums into a tractable sum-of-logs curve ${\cal L}(\vth|\vth_n) = \prob{L}{\vth_n} + \Delta(\vth|\vth_n) \le \prob{L}{\vth}$.
               </li>
               <li class="fragment" data-fragment-index="2">
-                <b>Jensen's Inequality &amp; The ELBO Surrogate:</b> By concavity of $\ln$, EM constructs a tight lower bound ${\cal L}(\vth|\vth_t) = {\cal F}(q, \vth) = \ln \prob{P}{\bm{X}|\vth} - D_{\text{KL}}(q(\vec{z}) \parallel \prob{P}{\vec{z}|\bm{X},\vth})$ tangent at $\vth_t$.
+                <b>Why EM Never Goes Downhill:</b> ${\cal L}(\vth|\vth_n)$ touches $\prob{L}{\vth}$ at $\vth_n$ ($\Delta(\vth_n|\vth_n)=0$), so maximizing ${\cal L}$ guarantees $\prob{L}{\vth_{n+1}} \ge \prob{L}{\vth_n}$.
               </li>
               <li class="fragment" data-fragment-index="3">
-                <b>EM as Coordinate Ascent:</b> The <b>E-step</b> computes posterior responsibilities $\gamma_{nk} = \prob{P}{z_n=k|\vec{x}_n,\vth_t}$ (closing the KL gap to zero); the <b>M-step</b> maximizes expected complete-data log-likelihood $Q(\vth|\vth_t)$ via weighted MLE.
+                <b>The Gap is KL Divergence:</b> $\prob{L}{\vth} = \text{ELBO}(q, \vth) + D_{\text{KL}}\!\left(q(\vec{z}) \parallel \prob{P}{\vec{z}|\bm{X},\vth}\right)$.
               </li>
               <li class="fragment" data-fragment-index="4">
-                <b>Monotonicity &amp; GMM vs. K-Means:</b> EM monotonically increases $\ln \prob{P}{\bm{X}|\vth}$ without a step-size hyperparameter, generalizes K-means ($\sigma^2 \to 0$ limit) to full covariance ellipsoids $\bm{\Sigma}_k$, and uses K-means++ restarts + BIC/validation for selecting $K$.
+                <b>E-Step vs. M-Step:</b> <b>E-step</b> sets $q(\vec{z}) = \prob{P}{\vec{z}|\bm{X},\vth_n}$ (closing the KL gap to $0$); <b>M-step</b> maximizes expected complete log-likelihood $Q(\vth|\vth_n)$.
               </li>
             </ul>
           </section>
@@ -1112,7 +1211,7 @@
           hash: true,
           margin: 0.01,
           minScale: 0.01,
-          maxScale: 1.23,
+          maxScale: 1.65,
 
           menu: {
               themes: false,
