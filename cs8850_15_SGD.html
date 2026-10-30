@@ -6,12 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="css/fontawesome-free-6.2.1-web/css/all.css" rel="stylesheet">
 
-
     <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
     <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
     <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
 
-    <title>Advanced Machine Learning</title>
+    <title>Advanced Machine Learning: Lecture 15 — Stochastic Gradient Descent</title>
 
     <meta name="description" content="CS8850 GSU class">
     <meta name="author" content="Sergey M Plis">
@@ -19,15 +18,26 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-
-
     <link rel="stylesheet" href="dist/reset.css">
     <link rel="stylesheet" href="dist/reveal.css">
     <!-- Code syntax highlighting -->
     <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
-    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <style>
+      .reveal .slide-footer {
+        bottom: 18px !important;
+      }
+      .reveal col50 ul, .reveal col50 ol {
+        display: block !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 26px !important;
+        padding-right: 10px !important;
+        box-sizing: border-box !important;
+      }
+    </style>
     <!-- Printing and PDF exports -->
     <script>
       var link = document.createElement( 'link' );
@@ -41,670 +51,1520 @@
 
   <body>
     <div class="reveal">
-      <!-- In between the <div="reveal"> and the <div class="slides">-->
-          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
-          <!-- In between the <div="reveal"> and the <div class="slides">-->
-              <!-- Any section element inside of this container is displayed as a slide -->
-              <div class="slides">
+      <div class="slides">
 
-	        <section>
-	          <section>
-	            <p>
-	              <h2>Advanced Machine Learning</h2>
-                      <h3>15: Stochastic Gradient Descent</h3>
-	            <p>
-	          </section>
+        <!-- ========================================================================= -->
+        <!-- SECTION 1: TITLE, SCHEDULE, OUTLINE, AND THE BRIDGE RECAP                 -->
+        <!-- ========================================================================= -->
+        <section>
+          <!-- 1.1 Title Slide -->
+          <section>
+            <p>
+              <h2>Advanced Machine Learning</h2>
+              <h3>15: Stochastic Gradient Descent</h3>
+            <p>
+          </section>
 
-                                    <section>
-                    <h3>Schedule</h3>
+          <!-- 1.2 Schedule Slide (Fall 2026 synced, Nov 02 marker) -->
+          <section>
+            <h3>Schedule (you are here <i class='fa fa-map-marker' style='color: #FA6900;'></i>)</h3>
+            <row>
+              <col50>
+                <table style="font-size:14px; white-space: nowrap;">
+                  <tr>
+                    <th>#</th>
+                    <th>date</th>
+                    <th>topic</th>
+                    <th>description</th>
+                  </tr>
+                  <tr><td>1</td><td>24-Aug-2026</td><td>Introduction</td><td></td></tr>
+                  <tr><td>2</td><td>26-Aug-2026</td><td>Foundations of learning</td><td>Drop/Add</td></tr>
+                  <tr><td>3</td><td>31-Aug-2026</td><td>PAC learnability</td><td>HW1</td></tr>
+                  <tr><td>4</td><td>02-Sep-2026</td><td>Linear learning models</td><td></td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>5</td><td>07-Sep-2026</td><td><em>Labor Day Holiday</em></td><td>Holiday</td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>6</td><td>09-Sep-2026</td><td>Principal Component Analysis</td><td>Project ideas</td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>7</td><td>14-Sep-2026</td><td>Curse of Dimensionality</td><td>HW2, HW1 due</td></tr>
+                  <tr><td>8</td><td>16-Sep-2026</td><td>Bayesian Decision Theory</td><td></td></tr>
+                  <tr><td>9</td><td>21-Sep-2026</td><td>Parameter estimation: MLE</td><td></td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>10</td><td>23-Sep-2026</td><td>Parameter estimation: MAP &amp; NB</td><td>finalize teams</td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>11</td><td>28-Sep-2026</td><td>Logistic Regression</td><td>HW3, HW2 due</td></tr>
+                  <tr><td>12</td><td>30-Sep-2026</td><td>Kernel Density Estimation</td><td></td></tr>
+                  <tr><td>13</td><td>05-Oct-2026</td><td>Support Vector Machines</td><td></td></tr>
+                  <tr><td>14</td><td>07-Oct-2026</td><td>Matrix Factorization</td><td></td></tr>
+                  <tr style="background-color:#E5DDCB;"><td>15</td><td>12-Oct-2026</td><td>* Midterm</td><td>Exam, HW3 due</td></tr>
+                  <tr><td>16</td><td>14-Oct-2026</td><td>k-means clustering</td><td></td></tr>
+                  <tr style='background-color: #69D2E7;'><td>17</td><td>19-Oct-2026</td><td>Invited: Intro to Causal Learning I</td><td></td></tr>
+                </table>
+              </col50>
 
-                    <row>
-                      <col50>
-                      <table style="font-size:14px">
-                        <tr>
-                          <th>#</th>
-                          <th>date</th>
-                          <th>topic</th>
-                          <th>description</th>
-                        </tr>
-                        <tr><td>1</td>
-                          <td> 22-Aug-2022 </td>
-                          <td> Introduction </td>
-                          <td></td>
-                        </tr>
-                        <tr>
-                          <td>  2 </td>
-                          <td> 24-Aug-2022 </td>
-                          <td> Foundations of learning </td>
-                          <td> </td>
-                        </tr>
-                        <tr><td>  3  </td><td> 29-Aug-2022 </td><td> PAC learnability </td><td>             </td></tr>
-                        <tr><td>  4 </td><td> 31-Aug-2022 </td><td>      Linear algebra (recap) </td><td>   hw1 released   </td></tr>
-                        <tr style='background-color: #FBEEC2;'><td>   </td><td> 05-Sep-2022 </td><td> <em>Holiday</em>         </td><td>         </td></tr>
-                        <tr style='background-color: #E0E4CC;'><td>  5 </td><td> 07-Sep-2022 </td><td> Linear learning models </td><td>   </td></tr>
-                        <tr><td>  6 </td><td> 12-Sep-2022 </td><td> Principal Component Analysis       </td><td> project ideas  </td></tr>
-                        <tr><td>  7 </td><td> 14-Sep-2022  </td><td>  Curse of Dimensionality          </td></td></td><td> hw1 due </td></tr>
-<tr><td> 8 </td><td> 19-Sep-2022  </td><td>  Bayesian Decision Theory  </td><td>hw2 release </td></tr>
-<tr><td> 9 </td><td> 21-Sep-2022  </td><td> Parameter estimation: MLE </td><td></td></tr>
-<tr><td> 10 </td><td> 26-Sep-2022 </td><td> Parameter estimation: MAP & NB</td><td>finalize teams</td></tr>
-<tr><td> 11 </td><td> 28-Sep-2022 </td><td> Logistic Regression  </td><td>             </td></tr>
-<tr><td> 12 </td><td> 03-Oct-2022 </td><td> Kernel Density Estimation </td><td>             </td></tr>
-<tr><td> 13 </td><td> 05-Oct-2022 </td><td> Support Vector Machines </td><td> hw3, hw2 due       </td></tr>
-<tr style='background-color: #E5DDCB;'><td>   </td><td> 10-Oct-2022 </td><td>   * Mid-point projects checkpoint     </td><td>    *    </td></tr>
-<tr style='background-color: #E5DDCB;'><td>   </td><td> 12-Oct-2022 </td><td>   * Midterm: Semester Midpoint       </td><td> exam   </td></tr>
-<tr><td> 14 </td><td> 17-Oct-2022  </td><td>Matrix Factorization</td><td>           </td></tr>
-<tr><td> 15 </td><td> 19-Oct-2022  </td><td>Stochastic Gradient Descent</td><td><i class='fa fa-map-marker' style='color: #FA6900;'></i>      </td></tr>
-</table>
-</col50>
-<col50>
-<table style="font-size:14px; vertical-align: top;">
-  <tr>
-    <th>#</th>
-    <th>date</th>
-    <th>topic</th>
-    <th>description</th>
-  </tr>
-  <tr><td> 16 </td><td> 24-Oct-2022 </td><td> k-means clustering  </td><td> </td></tr>
-  <tr><td> 17 </td><td> 26-Oct-2022 </td><td> Expectation Maximization </td><td> hw4, hw3 due             </td></tr>
-  <tr><td> 18 </td><td> 31-Oct-2022 </td><td> Automatic Differentiation </td><td> </td></tr>
-  <tr><td> 19  </td><td> 02-Nov-2022 </td><td> Nonlinear embedding approaches </td><td>  </td></tr>
-  <tr><td> 20 </td><td> 07-Nov-2022 </td><td> Model comparison I </td><td> </td></tr>
-  <tr><td> 21 </td><td> 09-Nov-2022 </td><td> Model comparison II  </td><td> hw5, hw4 due</td></tr>
-  <tr><td> 22 </td><td> 14-Nov-2022 </td><td> Model Calibration </td><td> </td></tr>
-  <tr><td> 23 </td><td> 16-Nov-2022  </td><td> Convolutional Neural Networks  </td><td>             </td></tr>
-  <tr style='background-color: #FBEEC2;'><td>  </td><td> 21-Nov-2022  </td><td> <em>Fall break</em> </td><td>            </td></tr>
-  <tr style='background-color: #FBEEC2;'><td>  </td><td> 23-Nov-2022 </td><td> <em>Fall break</em> </td><td>   </td></tr>
-  <tr><td> 24 </td><td> 28-Nov-2022 </td><td> Word Embedding </td><td> hw5 due </td></tr>
-  <tr style='background-color: #FBEEC2;'><td> </td><td> 30-Nov-2022 </td><td> Presentation and exam prep day </td><td> </td></tr>
-  <tr style='background-color: #E5DDCB;'><td>  </td><td> 02-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
-  <tr style='background-color: #E5DDCB;'><td>  </td><td> 07-Dec-2022 </td><td> * Project Final Presentations  </td><td>     *        </td></tr>
-  <tr style='background-color: #E5DDCB;'><td> </td><td> 12-Dec-2022 </td><td> * Final Exam    </td><td>   *     </td></tr>
-  <tr><td> </td><td> 15-Dec-2022  </td><td> Grades due   </td><td>             </td></tr>
-</table>
-</col50>
-</row>
-</section>
+              <col50>
+                <table style="font-size:14px; white-space: nowrap; vertical-align: top;">
+                  <tr>
+                    <th>#</th>
+                    <th>date</th>
+                    <th>topic</th>
+                    <th>description</th>
+                  </tr>
+                  <tr style='background-color: #69D2E7;'><td>18</td><td>21-Oct-2026</td><td>Invited: Intro to Causal Learning II</td><td></td></tr>
+                  <tr style="background-color:#E5DDCB;"><td>19</td><td>26-Oct-2026</td><td>* Mid-point projects checkpoint</td><td>HW4, P</td></tr>
+                  <tr><td>20</td><td>28-Oct-2026</td><td>Expectation Maximization</td><td></td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>21<i class='fa fa-map-marker' style='color: #FA6900;'></i></td><td>02-Nov-2026</td><td>Stochastic Gradient Descent</td><td><i class='fa fa-map-marker' style='color: #FA6900;'></i></td></tr>
+                  <tr><td>22</td><td>04-Nov-2026</td><td>Automatic Differentiation</td><td></td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>23</td><td>09-Nov-2026</td><td>Nonlinear embedding approaches</td><td>HW5, HW4 due</td></tr>
+                  <tr><td>24</td><td>11-Nov-2026</td><td>Model comparison</td><td></td></tr>
+                  <tr><td>25</td><td>16-Nov-2026</td><td>Model Calibration</td><td></td></tr>
+                  <tr><td>26</td><td>18-Nov-2026</td><td>Convolutional Neural Networks</td><td></td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>27</td><td>23-Nov-2026</td><td><em>Thanksgiving Break</em></td><td>Holiday</td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>28</td><td>25-Nov-2026</td><td><em>Thanksgiving Break</em></td><td>Holiday</td></tr>
+                  <tr><td>29</td><td>30-Nov-2026</td><td>Word Embedding</td><td></td></tr>
+                  <tr style="background-color:#E5DDCB;"><td>30</td><td>02-Dec-2026</td><td>Project Final Presentations</td><td>HW5 due, P</td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>31</td><td>07-Dec-2026</td><td>Presentation spillover / Exam prep</td><td>Classes End</td></tr>
+                  <tr style="background-color:#E5DDCB;"><td>32</td><td>09-Dec-2026</td><td>* Final Exam</td><td>Exam</td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>33</td><td>16-Dec-2026</td><td>Project Reports</td><td>due</td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>34</td><td>17-Dec-2026</td><td>Grades due 5 p.m.</td><td>PAWS</td></tr>
+                </table>
+              </col50>
+            </row>
+          </section>
 
-	          <section>
-	            <h3>Outline for the lecture</h3>
-                    <ul>
-                      <li class="fragment roll-in"> Stochastic Gradient Descent
-	            </ul>
-                  </section>
-                </section>
-                <!-- -------------------------------------------------------------------------         -->
-	        <section>
-                  <section data-background="figures/stochastic_grain.gif">
-                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Stochastic Gradient Descent</h2>
-                    <div class="slide-footer">
-                      heavily based on Sebastian Ruder's slides for <a href="https://arxiv.org/abs/1609.04747">An overview of gradient descent optimization algorithms</a>
-                    </div>
-                  </section>
+          <!-- 1.3 Outline Slide -->
+          <section>
+            <h3>Outline for the lecture</h3>
+            <ul>
+              <li class="fragment roll-in"> Gradient Descent Variants: Batch, Stochastic &amp; Mini-Batch
+              <li class="fragment roll-in"> Fluctuations, Sharp Minima &amp; Learning Rate Schedules
+              <li class="fragment roll-in"> Pathological Ravines, Momentum &amp; Nesterov Lookahead
+              <li class="fragment roll-in"> Adaptive &amp; Spectral Optimizers: AdaGrad, RMSprop, AdamW &amp; Muon
+              <li class="fragment roll-in"> Large-Scale Learning Trade-Offs (Bottou &amp; Bousquet)
+            </ul>
+          </section>
 
-                  <section>
-                    <h2>Gradient Descent</h2>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;">
-                      A way to minimize an objective function $\prob{J}{\theta}$
-                    </blockquote>
-                    <ul>
-                      <li> $\prob{J}{\theta}$: Objective function
-                      <li> $\theta \in \RR^d$: parameters of the model
-                      <li> $\eta$: Learning rate that determines the size of steps we take
-                    </ul>
-                    <row>
-                      <col50>
-                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;width: 100%;">
-                          Update Equation
-                        </blockquote>
-                        <blockquote style="background-color: #eee8d5; width: 100%;">
-                          $\theta = \theta - \eta \nabla_{\theta} \prob{J}{\theta}$
-                        </blockquote>
-                      </col50>
-                      <col50>
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="1000"
-                           src="figures/SGD_minimum.svg" alt="Gradient Descent">
-                      </col50>
-                    </row>
-                  </section>
+          <!-- 1.4 Bridge Slide: Connecting Past Lectures to SGD -->
+          <section id="bridge-slide">
+            <h3 style="font-size: 46px; margin-bottom: 10px;">Connecting the Dots: Why Stochastic Optimization?</h3>
+            <div id="bridge-container" style="position: relative; width: 940px; height: 500px; margin: 12px auto 0 auto; display: flex; justify-content: space-between; align-items: stretch;">
 
-                  <section>
-                    <h2>Gradient Descent Variants</h2>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;  width: 100%;">
-                      There are 3 of them
-                    </blockquote>
-                    <ul>
-                      <li class="fragment roll-in"> Batch gradient descent
-                      <li class="fragment roll-in"> Stochastic gradient descent
-                      <li class="fragment roll-in"> Mini-batch gradient descent
-                    </ul>
-                    <br>
-                    <br>
-                    <row>
-                      <col50>
-                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;">
-                          Update Equation
-                        </blockquote>
-                        <blockquote style="background-color: #eee8d5;  width: 100%;">
-                          $\theta = \theta - \eta {\color{red} \nabla_{\theta} \prob{J}{\theta}}$
-                        </blockquote>
-                      </col50>
-                      <col50>
-                        <blockquote style="background-color: #eee8d5;  width: 90%;">
-                          <alert>The red term</alert> is different for each method
-                        </blockquote>
-                      </col50>
-                    </row>
-                  </section>
+              <!-- Left Column: 5 Narrative Cards -->
+              <div style="width: 475px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2;">
 
-                  <section>
-                    <h2>Trade Off</h2>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
-                      Depending on the amount of data
-                    </blockquote>
-                    <ul>
-                      <li> The accuracy of the parameter update
-                      <li> The time is takes to perform an update
-                    </ul>
-                    <br>
-                    <br>
-                    <table>
-                      <tr>
-                        <th> Method </th>
-                        <th> Accuracy </th>
-                        <th> Time </th>
-                        <th> Memory </th>
-                        <th> Online </th>
-                      </tr>
-                      <tr>
-                        <td>Batch</td>
-                        <td><span class="far fa-thumbs-up"/></td>
-                        <td>slow</td>
-                        <td>high</td>
-                        <td><span class="fa fa-times"/></td>
-                      </tr>
-                      <tr>
-                        <td>Stochastic</td>
-                        <td><i class="far fa-thumbs-down"></i></td>
-                        <td>fast</td>
-                        <td>low</td>
-                        <td><span class="far fa-check-circle"/></td>
-                      </tr>
-                      <tr>
-                        <td>Mini-batch</td>
-                        <td><span class="far fa-thumbs-up"/></td>
-                        <td>moderate</td>
-                        <td>moderate</td>
-                        <td><span class="far fa-check-circle"/></td>
-                      </tr>
-                    </table>
-                  </section>
+                <!-- Fragment 0 -->
+                <div id="bridge-card-0" class="fragment" data-fragment-index="0" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #268bd2; border-radius: 6px; padding: 6px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #268bd2; font-size: 15.5px;">1. ERM &amp; Closed-Form Linear / Spectral Models</div>
+                  <div style="color: #586e75; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    Linear regression and PCA solve $\nabla \prob{J}{\vth} = \vec{0}$ analytically via $(\bm{X}^T\bm{X})^{-1}$ or SVD in $O(Nd^2 + d^3)$ time.
+                  </div>
+                </div>
 
-                  <section>
-                    <h2>Batch gradient descent</h2>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width:100%;">
-                      Compute the gradient of $\prob{J}{\theta}$ with respect to the entire dataset
-                    </blockquote>
-                    <row>
-                      <col50>
-                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
-                          Update Equation
-                        </blockquote>
-                        <blockquote style="background-color: #eee8d5;">
-                          $\theta = \theta - \eta \nabla_{\theta} \prob{J}{\theta}$
-                        </blockquote>
-                      </col50>
-                      <col50>
-                        <blockquote style="background-color: #eee8d5;  width: 100%;">
-                          We need to calculate the gradients for the whole dataset to perform <b>just one update</b>.
-                        </blockquote>
-                      </col50>
-                    </row>
-                    <pre><code>
-for i in range(number_of_epochs):
-   gradient = eval_gradient(loss_fun, data, parameters)
-   parameters = parameters - eta * gradient
-                    </code></pre>
-                  </section>
+                <!-- Fragment 1 -->
+                <div id="bridge-card-1" class="fragment" data-fragment-index="1" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #2aa198; border-radius: 6px; padding: 6px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #2aa198; font-size: 15.5px;">2. Non-Closed-Form Convex Objectives</div>
+                  <div style="color: #586e75; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    Logistic regression and SVMs couple parameters nonlinearly — requiring iterative gradient or QP solvers.
+                  </div>
+                </div>
 
-                  <section>
-                    <h2>Batch gradient descent</h2>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;" class="fragment" data-fragment-index="0">
-                      Advantages
-                    </blockquote>
-                    <ul style="font-size: 36px;">
-                      <li class="fragment roll-in" data-fragment-index="1"> We're working with the best possible error surface
-                      <li class="fragment roll-in" data-fragment-index="2"> Guaranteed to converge to a local or global minimum of <b>that</b> surface
-                    </ul>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;" class="fragment" data-fragment-index="3">
-                      Disadvantages
-                    </blockquote>
-                    <ul style="font-size: 36px;">
-                      <li class="fragment roll-in" data-fragment-index="4"> Can be very slow
-                      <li class="fragment roll-in" data-fragment-index="5"> Can be intractable due to memory requirements
-                      <li class="fragment roll-in" data-fragment-index="6"> No online updates
-                    </ul>
-                  </section>
+                <!-- Fragment 2 -->
+                <div id="bridge-card-2" class="fragment" data-fragment-index="2" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #859900; border-radius: 6px; padding: 6px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #859900; font-size: 15.5px;">3. Non-Convex Landscapes &amp; Latent Variables</div>
+                  <div style="color: #586e75; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    Matrix factorization ($\bm{W}\bm{H}$), K-means, and GMMs introduce curved valleys, saddle points, and local optima.
+                  </div>
+                </div>
 
-                  <section>
-                    <h2>Stochastic gradient descent</h2>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width:100%;">
-                      Perform a parameter update for each training example $\vec{x}_i$ and the corresponding label $y_i$
-                    </blockquote>
-                    <row>
-                      <col50>
-                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;width: 100%; ">
-                          Update Equation
-                        </blockquote>
-                        <blockquote style="background-color: #eee8d5; width: 100%;">
-                          $\theta = \theta - \eta \nabla_{\theta} \prob{J}{\theta; \vec{x}_i; y_i}$
-                        </blockquote>
-                      </col50>
-                      <col50>
-                        <blockquote style="background-color: #eee8d5; width: 90%;">
-                          We need to evaluate the gradient <b>only for a single data sample</b>.
-                        </blockquote>
-                      </col50>
-                    </row>
-                    <pre><code  data-trim data-noescape>
-for i in range(number_of_epochs):
-   np.random.shuffle(data)
-   for example in data:
-       gradient = eval_gradient(loss_fun, example, parameters)
-       parameters = parameters - eta * gradient
-                    </code></pre>
-                  </section>
+                <!-- Fragment 3 -->
+                <div id="bridge-card-3" class="fragment" data-fragment-index="3" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #b58900; border-radius: 6px; padding: 6px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #b58900; font-size: 15.5px;">4. The Big-Data &amp; High-Dimension Wall</div>
+                  <div style="color: #586e75; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    When $N \sim 10^8$ and $d \sim 10^9$, full-batch $O(N)$ gradients and $O(d^2)$ Hessians are computationally impossible.
+                  </div>
+                </div>
 
-                  <section>
-                    <h2>Stochastic gradient descent</h2>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;" class="fragment" data-fragment-index="0">
-                      Advantages
-                    </blockquote>
-                    <ul style="font-size: 36px;">
-                      <li class="fragment roll-in" data-fragment-index="1"> It is usually much faster than batch gradient descent.
-                      <li class="fragment roll-in" data-fragment-index="2"> It can be used to learn online.
-                    </ul>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;" class="fragment" data-fragment-index="3">
-                      Disadvantages
-                    </blockquote>
-                    <ul style="font-size: 36px;">
-                      <li class="fragment roll-in"  data-fragment-index="4"> It performs frequent updates with a high variance that cause the objective function to fluctuate heavily.
-                    </ul>
-                  </section>
-
-                  <section>
-                    <h2>The fluctuations</h2>
-                    <row>
-                      <col50>
-                        <ul style="font-size: 28px;">
-                          <li class="fragment roll-in"> Batch gradient descent converges to the minimum of the basin the parameters are placed in and the fluctuation is small.
-                          <li class="fragment roll-in"> SGD’s fluctuation is large but it enables to jump to new and potentially better local minima.
-                          <li class="fragment roll-in"> However, this ultimately complicates convergence to the exact minimum, as SGD will keep overshooting
-                        </ul>
-                      </col50>
-                      <col50>
-                      <img width="100%"
-                           src="figures/SGD_fluctuations.svg" alt="Fluctuations">
-                      </col50>
-                    </row>
-                  </section>
-
-                  <section>
-                    <h2>learning rate annealing</h2>
-                    <blockquote style="background-color: #eee8d5;">
-                      When we slowly decrease the learning rate, SGD shows the same convergence behaviour as batch gradient descent
-                    </blockquote>
-                  </section>
-
-                  <section>
-                    <h2>Mini-batch gradient descent</h2>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width:100%;">
-                      Perform an update on a small sample of data
-                    </blockquote>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px;">
-                      Update Equation
-                    </blockquote>
-                    <blockquote style="background-color: #eee8d5;">
-                      <center>
-                        $\theta = \theta - \eta \nabla_{\theta} \prob{J}{\theta; \vec{x}_{i:i+n}; y_{i:i+n}}$
-                      </center>
-                    </blockquote>
-                      <pre><code  data-trim data-noescape>
-for i in range(number_of_epochs):
-   np.random.shuffle(data)
-   for batch in batch_iterator(data, batch_size=32):
-       gradient = eval_gradient(loss_fun, batch, parameters)
-       parameters = parameters - eta * gradient
-                      </code></pre>
-                  </section>
-
-                  <section>
-                    <h2>Mini-batch gradient descent</h2>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;"  class="fragment" data-fragment-index="0">
-                      Advantages
-                    </blockquote>
-                    <ul style="font-size: 36px;">
-                      <li class="fragment roll-in"  data-fragment-index="1"> Reduces the variance of the parameter updates.
-                      <li class="fragment roll-in"  data-fragment-index="2"> Can make use of highly optimized matrix optimizations common to deep learning libraries that make computing the gradient very efficiently.
-                    </ul>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width: 100%;"  class="fragment" data-fragment-index="3">
-                      Disadvantages
-                    </blockquote>
-                    <ul style="font-size: 36px;">
-                      <li class="fragment roll-in"  data-fragment-index="4"> We have to set the mini-batch size
-                    </ul>
-                  </section>
-
-                  <section>
-                    <h2>Challenges</h2>
-                    <ul style="font-size: 36px;">
-                      <li class="fragment roll-in"> How to set the learning rate
-                      <li class="fragment roll-in"> How to set the learning rate schedule
-                      <li class="fragment roll-in"> How to change the learning rate per parameter
-                      <li class="fragment roll-in"> How to avoid local minima and saddle points
-                    </ul>
-                  </section>
-                  <section data-vertical-align-top data-background-iframe="https://www.deeplearning.ai/ai-notes/optimization/index.html"
-                           data-background-interactive>
-                    <h3>Batch?</h3>
-                    <div class='slide-footer'>
-                      <a href="https://www.deeplearning.ai/ai-notes/optimization/index.html">Source</a>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h3>Gradient descent optimization algorithms</h3>
-                    <ul>
-                      <li> Momentum
-                      <li> Nesterov accelerated gradient
-                      <li> Adagrad
-                      <li> RMSprop
-                      <li> Adadelta
-                      <li> Adam
-                    </ul>
-                  </section>
-
-                  <section>
-                    <h2>SGD problems</h2>
-                    <img width="800" src="figures/SGD_ravines.png" alt="Ravines"><br>
-                    <a href="https://distill.pub/2017/momentum/">Let's look at a simple demo</a>
-                  </section>
-
-                  <section data-background="figures/momentum.gif">
-                  </section>
-
-                  <section>
-                    <h2>Momentum</h2>
-                    <blockquote style="background-color: #eee8d5;">
-                      \begin{align*}
-                      \vec{v}_t & = \gamma \vec{v}_{t-1} + \eta \nabla_{\theta} \prob{J}{\theta}\\
-                      \vec{\theta} &= \vec{\theta} - \vec{v}_t \\
-                      \gamma &\simeq 0.9
-                      \end{align*}
-                    </blockquote>
-                    <div class="fragment" data-fragment-index="0" >
-                      Momentum is accumulated the farther the ball rolls downhill
-                      <br>
-                      <a href="https://distill.pub/2017/momentum/">Let's see the demo again</a>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h2>Nesterov accelerated gradient</h2>
-                    <h3>when we want to do better than that</h3>
-                    <blockquote style="background-color: #eee8d5;">
-                      \begin{align*}
-                      \vec{v}_t & = \gamma \vec{v}_{t-1} + \eta \nabla_{\theta} \prob{J}{\theta - \gamma \vec{v}_{t-1}}\\
-                      \vec{\theta} &= \vec{\theta} - \vec{v}_t \\
-                      \gamma &\simeq 0.9
-                      \end{align*}
-                    </blockquote>
-                  </section>
-
-                  <section>
-                    <h2>AdaGrad</h2>
-                    <h3>we want parameter-specific learning rate </h3>
-                    <blockquote style="background-color: #eee8d5;">
-                      \begin{align*}
-                      \vec{v}_t & = \vec{v}_{t-1} + (\nabla_{\theta} \prob{J}{\vec{\theta}})^2\\
-                      \vec{\theta} &= \vec{\theta} - \frac{\eta}{\sqrt{{\prob{diag}{\vec{v}_t} + \epsilon}}} \nabla_{\theta} \prob{J}{\vec{\theta}} \\
-                      \end{align*}
-                    </blockquote>
-                  </section>
-
-                  <section>
-                    <h3>RMSprop:
-                    stop diminishing learning rate</h3>
-                    <blockquote style="background-color: #eee8d5; width: 100%" class="fragment" data-fragment-index="0" >
-                      \begin{align*}
-                      \vec{g}_t & = \nabla_{\theta} \prob{J}{\vec{\theta}} \\
-                      \prob{E}{\vec{g}^2}_t & = \gamma\prob{E}{\vec{g}^2}_{t-1} + (1-\gamma)\vec{g}_t^2\\
-                      \vec{\theta} &= \vec{\theta} - \frac{\eta}{\sqrt{{\prob{diag}{\prob{E}{\vec{g}^2}_t} + \epsilon}}} \vec{g}_t \\
-                      \end{align*}
-                    </blockquote>
-                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 32px;" class="fragment" data-fragment-index="1" >
-                      \begin{align*}
-                      \mbox{units of}\, \Delta\vec{\theta} \propto \mbox{units of } \vec{g} \propto \mbox{units of } \frac{\partial J}{\partial \vec{\theta}}\propto \frac{1}{\mbox{units of}\, \vec{\theta}}\\
-                      \mbox{but} \quad \Delta\vec{\theta} \propto \mathbf{H}^{-1}\vec{g} \propto \frac{ \frac{\partial J}{\partial \vec{\theta}}}{ \frac{\partial^2 J}{\partial \vec{\theta}^2}} \propto \mbox{units of }\, \vec{\theta}
-                      \end{align*}
-                    </blockquote>
-                  </section>
-
-                  <section>
-                    <h3>Adadelta:
-                    get everything right</h3>
-                    <blockquote style="background-color: #eee8d5; width: 100%" >
-                      \begin{align*}
-                      \vec{g}_t & = \nabla_{\theta} \prob{J}{\vec{\theta}} \\
-                      \Delta\vec{\theta}_{t-1} & =  \frac{\eta}{\sqrt{{\prob{diag}{\prob{E}{\vec{g}^2}_{t-1}} + \epsilon}}} \\
-                      \prob{E}{\Delta\vec{\theta}^2}_{t-1} & = \gamma\prob{E}{\Delta\vec{\theta}^2}_{t-2} + (1-\gamma)\Delta\vec{\theta}^2_{t-1}\\
-                      \prob{E}{\vec{g}^2}_t & = \gamma\prob{E}{\vec{g}^2}_{t-1} + (1-\gamma)\vec{g}_t^2\\
-                      \vec{\theta} &= \vec{\theta} -  \frac{{\sqrt{{\prob{diag}{\prob{E}{\Delta\vec{\theta}^2}_{t-1}} + \epsilon}}} }{{\sqrt{{\prob{diag}{\prob{E}{\vec{g}^2}_{t}} + \epsilon}}} }\vec{g}_t \\
-                      \end{align*}
-                    </blockquote>
-                  </section>
-
-                  <section>
-                    <h2>Adam (adaptive moment)</h2>
-                    <blockquote style="background-color: #eee8d5; font-size:32px">
-                      \begin{align*}
-                      \vec{m}_t & = \beta_1 \vec{m}_{t-1} + (1 - \beta_1) \nabla_{\theta} \prob{J}{\theta}\\
-                      \vec{v}_t & = \beta_2 \vec{v}_{t-1} + (1 - \beta_2) (\nabla_{\theta} \prob{J}{\theta})^2\\
-                      \hat{\vec{m}}_t &= \frac{\vec{m}_t}{1 - \beta_1^t}\\
-                      \hat{\vec{v}}_t &= \frac{\vec{v}_t}{1 - \beta_2^t}\\
-                      \vec{\theta}_{t+1} &= \vec{\theta}_t - \frac{\eta}{\sqrt{\hat{\vec{v}}_t} + \epsilon} \hat{\vec{m}}_t\\
-                      \beta_1 &\simeq 0.9 \quad
-                      \beta_2 \simeq 0.999 \quad
-                      \epsilon \simeq 10^{-8}
-                      \end{align*}
-                    </blockquote>
-                  </section>
-
-
-                  <section>
-                    <h2>Many more</h2>
-                    <ul>
-                      <li> AdaMax
-                      <li> Nadam
-                      <li> AMSgrad
-                      <li> AdamW
-                      <li> QHAdam
-                      <li> AggMo
-                    </ul>
-                    <h2>but use Adam if in doubt</h2>
-                  </section>
-
-                  <section data-background="figures/sgd_approaches.gif" data-background-size="contain">
-                  </section>
-
-                  <section data-vertical-align-top data-background-iframe="https://www.deeplearning.ai/ai-notes/optimization/index.html"
-                           data-background-interactive>
-                    <h3>Momentum?</h3>
-                    <div class='slide-footer'>
-                      <a href="https://www.deeplearning.ai/ai-notes/optimization/index.html">Source</a>
-                    </div>
-                  </section>
-
-                  <section data-vertical-align-top data-background-iframe="https://losslandscape.com/explorer"
-                           data-background-interactive>
-                    <div class='slide-footer'>
-                      <a href="https://losslandscape.com/explorer">Source</a>
-                    </div>
-                  </section>
-
-
-                  <section>
-                    <h2>The rise of the SGD</h2>
-                    <img width="1000" src="figures/sgd_table.png" alt="Ravines"><br>
-                    <div class="slide-footer"><a href="https://ai.googleblog.com/2018/12/the-neurips-2018-test-of-time-award.html">
-                        "The Trade-Offs of Large Scale Learning" by Léon Bottou and Olivier Bousquet 2007
-                    </a></div>
-                    <aside class="notes">
-                      Talk about why and how SGD became
-                    </aside>
-                  </section>
-
-                </section>
-
+                <!-- Fragment 4 -->
+                <div id="bridge-card-4" class="fragment" data-fragment-index="4" style="background: rgba(253, 246, 227, 0.98); border-left: 5px solid #cb4b16; border-radius: 6px; padding: 7px 12px; box-shadow: 0 3px 8px rgba(203,75,22,0.18); text-align: left;">
+                  <div style="font-weight: bold; color: #cb4b16; font-size: 15.5px;">5. Today: Stochastic &amp; Adaptive Optimization</div>
+                  <div style="color: #073642; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    How do noisy <b>$O(1)$ mini-batch gradients</b>, <b>momentum</b>, and <b>adaptive/spectral preconditioners</b> train modern ML?
+                  </div>
+                </div>
 
               </div>
 
+              <!-- SVG Connectors -->
+              <svg id="bridge-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;" viewBox="0 0 940 500">
+                <defs>
+                  <marker id="arr-blue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#268bd2" />
+                  </marker>
+                  <marker id="arr-cyan" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#2aa198" />
+                  </marker>
+                  <marker id="arr-green" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#859900" />
+                  </marker>
+                  <marker id="arr-yellow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#b58900" />
+                  </marker>
+                  <marker id="arr-orange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#cb4b16" />
+                  </marker>
+                </defs>
+
+                <g class="fragment" data-fragment-index="0">
+                  <path id="conn-0-2" fill="none" stroke="#268bd2" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-blue)" />
+                  <path id="conn-0-6" fill="none" stroke="#268bd2" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-blue)" />
+                </g>
+                <g class="fragment" data-fragment-index="1">
+                  <path id="conn-1-9" fill="none" stroke="#2aa198" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-cyan)" />
+                  <path id="conn-1-11" fill="none" stroke="#2aa198" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-cyan)" />
+                  <path id="conn-1-13" fill="none" stroke="#2aa198" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-cyan)" />
+                </g>
+                <g class="fragment" data-fragment-index="2">
+                  <path id="conn-2-14" fill="none" stroke="#859900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-green)" />
+                  <path id="conn-2-16" fill="none" stroke="#859900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-green)" />
+                  <path id="conn-2-20" fill="none" stroke="#859900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-green)" />
+                </g>
+                <g class="fragment" data-fragment-index="3">
+                  <path id="conn-3-7" fill="none" stroke="#b58900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-yellow)" />
+                  <path id="conn-3-20" fill="none" stroke="#b58900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-yellow)" />
+                </g>
+                <g class="fragment" data-fragment-index="4">
+                  <path id="conn-4-21" fill="none" stroke="#cb4b16" stroke-width="3.5" marker-end="url(#arr-orange)" />
+                </g>
+              </svg>
+
+              <!-- Right Column: Compact Schedule Progression -->
+              <div style="width: 425px; margin-left: 20px; z-index: 2;">
+                <table style="font-size: 12.2px; line-height: 1.2; width: 100%; border-collapse: collapse;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid #586e75;">
+                      <th style="padding: 3px 6px; width: 22px;">#</th>
+                      <th style="padding: 3px 6px; width: 75px;">date</th>
+                      <th style="padding: 3px 6px;">topic</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr id="bridge-row-2" style="background-color: #E0E4CC;"><td style="padding: 2.2px 6px;">2–4</td><td style="padding: 2.2px 6px;">Aug–Sep</td><td style="padding: 2.2px 6px;">ERM, PAC &amp; Linear Models</td></tr>
+                    <tr id="bridge-row-6" style="background-color: #E0E4CC;"><td style="padding: 2.2px 6px;">6</td><td style="padding: 2.2px 6px;">09-Sep-2026</td><td style="padding: 2.2px 6px;">Principal Component Analysis</td></tr>
+                    <tr id="bridge-row-7" style="background-color: #E0E4CC;"><td style="padding: 2.2px 6px;">7</td><td style="padding: 2.2px 6px;">14-Sep-2026</td><td style="padding: 2.2px 6px;">Curse of Dimensionality</td></tr>
+                    <tr id="bridge-row-9" style="background-color: #E0E4CC;"><td style="padding: 2.2px 6px;">9–10</td><td style="padding: 2.2px 6px;">21–23 Sep</td><td style="padding: 2.2px 6px;">Parameter Estimation: MLE &amp; MAP</td></tr>
+                    <tr id="bridge-row-11" style="background-color: #E0E4CC;"><td style="padding: 2.2px 6px;">11</td><td style="padding: 2.2px 6px;">28-Sep-2026</td><td style="padding: 2.2px 6px;">Logistic Regression</td></tr>
+                    <tr id="bridge-row-13" style="background-color: #E0E4CC;"><td style="padding: 2.2px 6px;">13</td><td style="padding: 2.2px 6px;">05-Oct-2026</td><td style="padding: 2.2px 6px;">Support Vector Machines</td></tr>
+                    <tr id="bridge-row-14" style="background-color: #E0E4CC;"><td style="padding: 2.2px 6px;">14</td><td style="padding: 2.2px 6px;">07-Oct-2026</td><td style="padding: 2.2px 6px;">Matrix Factorization</td></tr>
+                    <tr id="bridge-row-16" style="background-color: #E0E4CC;"><td style="padding: 2.2px 6px;">16</td><td style="padding: 2.2px 6px;">14-Oct-2026</td><td style="padding: 2.2px 6px;">k-means clustering</td></tr>
+                    <tr style="background-color: #69D2E7; opacity: 0.75;"><td style="padding: 2.2px 6px;">17–18</td><td style="padding: 2.2px 6px;">19–21 Oct</td><td style="padding: 2.2px 6px;">Intro to Causal Learning I &amp; II</td></tr>
+                    <tr id="bridge-row-20" style="background-color: #E0E4CC;"><td style="padding: 2.2px 6px;">20</td><td style="padding: 2.2px 6px;">28-Oct-2026</td><td style="padding: 2.2px 6px;">Expectation Maximization</td></tr>
+                    <tr id="bridge-row-21" style="background-color: #FBEEC2; border: 2px solid #cb4b16; font-weight: bold;"><td style="padding: 4px 6px; color: #cb4b16;">21<i class='fa fa-map-marker' style='color: #FA6900;'></i></td><td style="padding: 4px 6px; color: #cb4b16;">02-Nov-2026</td><td style="padding: 4px 6px; color: #cb4b16;">Stochastic Gradient Descent</td></tr>
+                    <tr style="opacity: 0.65;"><td style="padding: 2.2px 6px;">22</td><td style="padding: 2.2px 6px;">04-Nov-2026</td><td style="padding: 2.2px 6px;">Automatic Differentiation</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
             </div>
+            <aside class="notes">
+              In early lectures, we had closed-form analytical solutions (Least Squares, PCA, Gaussian MLE).
+              Then we met Logistic Regression, Matrix Factorization, and GMMs, where closed-form solutions vanish.
+              Today we ask: when both dataset size N and parameter dimension d are huge, how do we optimize general objective functions J(theta) efficiently?
+            </aside>
+          </section>
+        </section>
 
-            <script src="dist/reveal.js"></script>
+        <!-- ========================================================================= -->
+        <!-- SECTION 2: GRADIENT DESCENT VARIANTS (BATCH, STOCHASTIC, MINI-BATCH)      -->
+        <!-- ========================================================================= -->
+        <section>
+          <!-- 2.1 Section Cover -->
+          <section>
+            <h2>Gradient Descent Variants</h2>
+            <blockquote style="background-color: #eee8d5; width: 82%; margin: 20px auto; box-sizing: border-box; font-size: 28px; padding: 14px 20px; text-align: center;">
+              From $O(N)$ full-batch passes to $O(1)$ stochastic and mini-batch updates
+            </blockquote>
+            <div class="slide-footer">
+              Based in part on Sebastian Ruder (2016), <a href="https://arxiv.org/abs/1609.04747" target="_blank">An overview of gradient descent optimization algorithms</a>.
+            </div>
+          </section>
 
-            <link rel="stylesheet" href="plugin/highlight/monokai.css">
-            <script src="plugin/highlight/highlight.js"></script>
-            <script src="plugin/math/math.js"></script>
-            <script src="plugin/chalkboard/plugin.js"></script>
-            <script src="plugin/notes/notes.js"></script>
-            <script src="plugin/zoom/zoom.js"></script>
-            <script src="plugin/fullscreen/fullscreen.js"></script>
-            <script src="plugin/menu/menu.js"></script>
+          <!-- 2.2 Gradient Descent Basics -->
+          <section>
+            <h3>Gradient Descent: Steepest Downhill Step</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 28px; width: 100%; box-sizing: border-box; padding: 6px 16px;">
+              First-order iterative minimization of an objective function $\prob{J}{\vth}$
+            </blockquote>
+            <ul style="font-size: 26px; margin: 8px 0;">
+              <li> $\prob{J}{\vth}$: Objective / empirical loss function
+              <li> $\vth \in \RR^d$: Parameters of the model
+              <li> $\eta > 0$: Learning rate (step size along the negative gradient)
+            </ul>
+            <row style="align-items: center;">
+              <col50>
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 26px; width: 100%; box-sizing: border-box; padding: 6px 14px;">
+                  Update Equation
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; text-align: center; font-size: 28px; padding: 10px 14px;">
+                  $\vth_{t+1} = \vth_t - \eta \nabla_{\vth} \prob{J}{\vth_t}$
+                </blockquote>
+              </col50>
+              <col50>
+                <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); max-height: 270px; margin: 6px 0;"
+                     src="figures/SGD_minimum.svg" alt="Gradient Descent">
+              </col50>
+            </row>
+            <div class="slide-footer">
+              Cauchy, A. (1847). <a href="https://gallica.bnf.fr/ark:/12148/bpt6k2982c/f540.item" target="_blank">Méthode générale pour la résolution des systèmes d'équations simultanées</a>. <i>Comptes Rendus Acad. Sci. Paris</i>, 25, 536–538.
+            </div>
+          </section>
 
-            <script>
-              // Full list of configuration options available at:
-              // https://github.com/hakimel/reveal.js#configuration
+          <!-- 2.3 NEW Intuition Slide: Why Can We Sample the Gradient? -->
+          <section>
+            <h3>Why Can We Sample the Gradient?</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 24px; padding: 5px 14px; margin: 4px 0;">
+              In ERM and MLE, the total objective is an <b>average</b> over $N$ training examples $\{(\vec{x}_i, y_i)\}_{i=1}^N$:
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 20px; padding: 6px 10px; margin: 4px 0; text-align: center;">
+              $\displaystyle \prob{J}{\vth} = \frac{1}{N}\sum_{i=1}^N \loss(\vth; \vec{x}_i, y_i) \implies \nabla_{\vth}\prob{J}{\vth} = \frac{1}{N}\sum_{i=1}^N \nabla_{\vth}\loss(\vth; \vec{x}_i, y_i) = \EE_{i \sim \text{Unif}}\!\Big[\nabla_{\vth}\loss(\vth; \vec{x}_i, y_i)\Big]$
+            </blockquote>
+            <ul style="list-style-type: none; display: block; width: 100%; box-sizing: border-box; font-size: 23.5px; margin: 6px 0 0 0; padding: 0;">
+              <li class="fragment roll-in"> <b>1. Linearity of differentiation:</b> The gradient of an average is the <b>average of the per-sample gradients</b>.
+              <li class="fragment roll-in" style="margin-top: 4px;"> <b>2. Unbiased Mini-Batch Estimator:</b> Draw a uniform random subset ${\cal B} \subset \{1,\dots,N\}$ of size $B = |{\cal B}|$:
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 20.5px; padding: 6px 10px; margin: 4px 0; text-align: center;">
+                  $\displaystyle \hat{\vec{g}}_{\cal B}(\vth) \;\def\; \frac{1}{B}\sum_{i \in {\cal B}} \nabla_{\vth}\loss(\vth; \vec{x}_i, y_i) \implies \underbrace{\EE\!\left[\hat{\vec{g}}_{\cal B}(\vth)\right] = \nabla_{\vth}\prob{J}{\vth}}_{\text{unbiased downhill direction!}}, \qquad \underbrace{\text{Cov}\!\left(\hat{\vec{g}}_{\cal B}(\vth)\right) \approx \frac{\bm{\Sigma}_g}{B}}_{\text{variance shrinks as } 1/B}$
+                </blockquote>
+              <li class="fragment roll-in" style="font-size: 22px; margin-top: 4px;"> <alert>Key Insight: Step cost scales as $O(B)$, while gradient noise std. dev. shrinks as $1/\sqrt{B}$!</alert>
+            </ul>
+          </section>
 
-              Reveal.initialize({
-                  // history: true,
-                  hash: true,
-                  margin: 0.01,
-                  minScale: 0.01,
-                  maxScale: 1.93,
+          <!-- 2.4 Three Gradient Descent Variants -->
+          <section>
+            <h3>Three Gradient Descent Variants</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 30px; width: 100%; box-sizing: border-box; padding: 8px 16px;">
+              How many examples $B$ do we use per parameter update?
+            </blockquote>
+            <ul style="font-size: 28px; margin: 14px 0;">
+              <li class="fragment roll-in"> <b>Batch Gradient Descent</b> ($B = N$: entire dataset)
+              <li class="fragment roll-in"> <b>Stochastic Gradient Descent</b> ($B = 1$: a single random example)
+              <li class="fragment roll-in"> <b>Mini-Batch Gradient Descent</b> ($1 < B \ll N$: a small batch, e.g. $B = 32\text{–}512$)
+            </ul>
+            <row style="margin-top: 18px; align-items: stretch;">
+              <col50>
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 28px; width: 100%; box-sizing: border-box; padding: 6px 14px;">
+                  Unified Update Rule
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; text-align: center; font-size: 30px; padding: 12px 14px;">
+                  $\vth_{t+1} = \vth_t - \eta \, {\color{#dc322f} \hat{\vec{g}}_t(\vth_t)}$
+                </blockquote>
+              </col50>
+              <col50 style="display: flex; align-items: center;">
+                <blockquote style="background-color: #eee8d5; width: 92%; box-sizing: border-box; font-size: 27px; padding: 16px;">
+                  <alert>The red gradient estimate $\hat{\vec{g}}_t$</alert> is the only difference between the three methods!
+                </blockquote>
+              </col50>
+            </row>
+          </section>
 
-                  menu: {
-                      themes: false,
-                      openSlideNumber: true,
-                      openButton: false,
-                  },
+          <!-- 2.5 Trade-Off Table -->
+          <section>
+            <h3>Trade-Offs Across the Three Variants</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 28px; width: 100%; box-sizing: border-box; padding: 6px 16px;">
+              Balancing update accuracy vs. wall-clock time per step
+            </blockquote>
+            <ul style="font-size: 26px; margin: 10px 0 16px 0;">
+              <li> <b>Accuracy of each gradient step:</b> Variance scales as $\bm{\Sigma}_g / B$
+              <li> <b>Compute time per update:</b> Evaluations scale as $O(B)$
+            </ul>
+            <table style="font-size: 24px; width: 100%;">
+              <tr>
+                <th>Method</th>
+                <th>Batch Size $B$</th>
+                <th>Step Accuracy</th>
+                <th>Step Time</th>
+                <th>Memory</th>
+                <th>Online</th>
+              </tr>
+              <tr>
+                <td><b>Batch</b></td>
+                <td>$N$</td>
+                <td><span class="far fa-thumbs-up" style="color: #859900;"></span> Exact ($\text{Var}=0$)</td>
+                <td>Slow $O(N)$</td>
+                <td>High</td>
+                <td><span class="fa fa-times" style="color: #dc322f;"></span></td>
+              </tr>
+              <tr>
+                <td><b>Stochastic</b></td>
+                <td>$1$</td>
+                <td><i class="far fa-thumbs-down" style="color: #cb4b16;"></i> Noisy ($\text{Var}=\bm{\Sigma}_g$)</td>
+                <td>Fast $O(1)$</td>
+                <td>Low</td>
+                <td><span class="far fa-check-circle" style="color: #859900;"></span></td>
+              </tr>
+              <tr style="background-color: #eee8d5;">
+                <td><b>Mini-Batch</b></td>
+                <td>$32\text{–}512$</td>
+                <td><span class="far fa-thumbs-up" style="color: #859900;"></span> Low Var ($\bm{\Sigma}_g/B$)</td>
+                <td>Fast (GPU GEMM)</td>
+                <td>Moderate</td>
+                <td><span class="far fa-check-circle" style="color: #859900;"></span></td>
+              </tr>
+            </table>
+          </section>
 
-                  chalkboard: {
-                      boardmarkerWidth: 1,
-                      chalkWidth: 2,
-                      chalkEffect: 1,
-                      toggleNotesButton: false,
-                      toggleChalkboardButton: false,
-                      slideWidth: Reveal.width,
-                      slideHeight: Reveal.height,
-                      // src: "chalkboards/chalkboard_em2.json",
-                      readOnly: false,
-                      theme: "blackboard",
-                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
-                  },
+          <!-- 2.6 Batch Gradient Descent -->
+          <section>
+            <h3>Batch Gradient Descent (B = N)</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 28px; width: 100%; box-sizing: border-box; padding: 6px 14px;">
+              Compute the exact gradient of $\prob{J}{\vth}$ over the entire dataset
+            </blockquote>
+            <row style="margin: 10px 0; align-items: stretch;">
+              <col50>
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 26px; width: 100%; box-sizing: border-box; padding: 5px 14px;">
+                  Update Equation
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; text-align: center; font-size: 25px; padding: 10px;">
+                  $\displaystyle \vth_{t+1} = \vth_t - \frac{\eta}{N}\sum_{i=1}^N \nabla_{\vth}\loss(\vth_t; \vec{x}_i, y_i)$
+                </blockquote>
+              </col50>
+              <col50 style="display: flex; align-items: center;">
+                <blockquote style="background-color: #eee8d5; width: 95%; box-sizing: border-box; font-size: 25px; padding: 12px;">
+                  We must evaluate gradients for all $N$ examples to perform <b>just one update</b>.
+                </blockquote>
+              </col50>
+            </row>
+            <pre style="width: 100%; box-sizing: border-box; font-size: 21px;"><code class="language-python" data-trim data-noescape>
+for epoch in range(number_of_epochs):
+    gradient = eval_gradient(loss_fun, data, params)  # O(N) full pass
+    params = params - eta * gradient
+            </code></pre>
+          </section>
 
-                  math: {
-                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
-                      config: 'TeX-AMS_SVG-full',
-                      // pass other options into `MathJax.Hub.Config()`
-                      TeX: {
-                          Macros: {
-        	              RR: '\\mathbb{R}',
-        	              PP: '\\mathbb{P}',
-        	              EE: '\\mathbb{E}',
-        	              NN: '\\mathbb{N}',
-        	              vth: '\\vec{\\theta}',
-                              loss: '{\\cal l}',
-                              hclass: '{\\cal H}',
-                              CD: '{\\cal D}',
-                              def: '\\stackrel{\\text{def}}{=}',
-                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
-                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
-        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
-                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
-                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
-                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
-                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
-                          },
-                          loader: {load: ['[tex]/color']},
-                          extensions: ["color.js"],
-                          tex: {packages: {'[+]': ['color']}},
-                          svg: {
-                              fontCache: 'global'
-                          }
-                      }
-                  },
+          <!-- 2.7 Batch Gradient Descent Pros & Cons -->
+          <section>
+            <h3>Batch Gradient Descent: Pros &amp; Cons</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 28px; width: 100%; box-sizing: border-box; padding: 6px 14px;" class="fragment" data-fragment-index="0">
+              Advantages
+            </blockquote>
+            <ul style="display: block; width: 100%; box-sizing: border-box; font-size: 26px; padding-left: 28px;">
+              <li class="fragment roll-in" data-fragment-index="1"> Deterministic trajectory on the exact empirical risk surface $\prob{J}{\vth}$
+              <li class="fragment roll-in" data-fragment-index="2"> Guaranteed to converge to the global minimum (if convex) or a local minimum (if non-convex) for suitable $\eta$
+            </ul>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 28px; width: 100%; box-sizing: border-box; padding: 6px 14px; margin-top: 10px;" class="fragment" data-fragment-index="3">
+              Disadvantages
+            </blockquote>
+            <ul style="display: block; width: 100%; box-sizing: border-box; font-size: 26px; padding-left: 28px;">
+              <li class="fragment roll-in" data-fragment-index="4"> Prohibitive $O(N)$ compute cost per step when $N$ is large (redundant gradients across similar examples!)
+              <li class="fragment roll-in" data-fragment-index="5"> Intractable when the full dataset exceeds RAM / GPU memory
+              <li class="fragment roll-in" data-fragment-index="6"> Cannot incorporate new streaming data on the fly (no online learning)
+            </ul>
+          </section>
 
-                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+          <!-- 2.8 Stochastic Gradient Descent -->
+          <section>
+            <h3>Stochastic Gradient Descent (B = 1)</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 28px; width: 100%; box-sizing: border-box; padding: 6px 14px;">
+              Perform a parameter update for each single training example $(\vec{x}_i, y_i)$
+            </blockquote>
+            <row style="margin: 10px 0; align-items: stretch;">
+              <col50>
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 26px; width: 100%; box-sizing: border-box; padding: 5px 14px;">
+                  Update Equation
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; text-align: center; font-size: 26px; padding: 10px;">
+                  $\vth_{t+1} = \vth_t - \eta \nabla_{\vth} \loss(\vth_t; \vec{x}_i, y_i)$
+                </blockquote>
+              </col50>
+              <col50 style="display: flex; align-items: center;">
+                <blockquote style="background-color: #eee8d5; width: 95%; box-sizing: border-box; font-size: 25px; padding: 12px;">
+                  Evaluates the gradient on <b>a single data sample</b> ($N\times$ faster per update!).
+                </blockquote>
+              </col50>
+            </row>
+            <pre style="width: 100%; box-sizing: border-box; font-size: 21px;"><code class="language-python" data-trim data-noescape>
+for epoch in range(number_of_epochs):
+    np.random.shuffle(data)  # Break ordering bias each epoch!
+    for example in data:
+        gradient = eval_gradient(loss_fun, example, params)  # O(1) cost
+        params = params - eta * gradient
+            </code></pre>
+          </section>
 
-              });
+          <!-- 2.9 Stochastic Gradient Descent Pros & Cons -->
+          <section>
+            <h3>Stochastic Gradient Descent: Pros &amp; Cons</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 30px; width: 100%; box-sizing: border-box; padding: 6px 14px;" class="fragment" data-fragment-index="0">
+              Advantages
+            </blockquote>
+            <ul style="font-size: 28px;">
+              <li class="fragment roll-in" data-fragment-index="1"> Makes immediate progress from the very first example ($N$ updates per pass through the dataset)
+              <li class="fragment roll-in" data-fragment-index="2"> Natural fit for <b>online / streaming learning</b> where new samples arrive continuously
+            </ul>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 30px; width: 100%; box-sizing: border-box; padding: 6px 14px; margin-top: 12px;" class="fragment" data-fragment-index="3">
+              Disadvantages
+            </blockquote>
+            <ul style="font-size: 28px;">
+              <li class="fragment roll-in" data-fragment-index="4"> High per-step variance $\bm{\Sigma}_g$ causes the objective $\prob{J}{\vth_t}$ to fluctuate heavily
+              <li class="fragment roll-in" data-fragment-index="5"> Sequential $B=1$ updates underutilize modern SIMD / GPU vector hardware
+            </ul>
+          </section>
 
-              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
-              Reveal.configure({ slideNumber: true });
-              //Reveal.configure({ history: true });
-              Reveal.configure({ slideNumber: 'c / t' });
-              Reveal.addEventListener( 'darkside', function() {
-                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
-              }, false );
-              Reveal.addEventListener( 'brightside', function() {
-                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
-              }, false );
+          <!-- 2.10 Mini-Batch Gradient Descent -->
+          <section>
+            <h3>Mini-Batch Gradient Descent (1 &lt; B ≪ N)</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 25px; width: 100%; box-sizing: border-box; padding: 5px 14px; margin: 4px 0;">
+              The best of both worlds: low-variance updates + GPU matrix parallelism
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; text-align: center; font-size: 24px; padding: 6px 14px; margin: 6px 0;">
+              $\displaystyle \vth_{t+1} = \vth_t - \frac{\eta}{B}\sum_{j=i}^{i+B-1} \nabla_{\vth}\loss(\vth_t; \vec{x}_j, y_j)$
+            </blockquote>
+            <pre style="width: 100%; box-sizing: border-box; font-size: 20px; margin: 4px 0;"><code class="language-python" data-trim data-noescape>
+for epoch in range(number_of_epochs):
+    np.random.shuffle(data)
+    for batch in batch_iterator(data, batch_size=32):
+        gradient = eval_gradient(loss_fun, batch, params)  # GPU GEMM!
+        params = params - eta * gradient
+            </code></pre>
+            <ul style="display: block; width: 100%; box-sizing: border-box; font-size: 23px; margin-top: 4px; padding-left: 28px;">
+              <li class="fragment roll-in"> <b>Pros:</b> Shrinks gradient variance by $1/B$ and saturates GPU tensor cores via matrix-matrix multiplies.
+              <li class="fragment roll-in"> <b>Con:</b> Adds mini-batch size $B \in \{32, 64, 128, 256, \dots\}$ as a hyperparameter (linear scaling rule: $\eta \propto B$).
+            </ul>
+            <div class="slide-footer">
+              Goyal, P. et al. (2017). <a href="https://arxiv.org/abs/1706.02677" target="_blank">Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour</a> (<i>arXiv:1706.02677</i>).
+            </div>
+          </section>
+        </section>
 
-            </script>
+        <!-- ========================================================================= -->
+        <!-- SECTION 3: FLUCTUATIONS, SHARP MINIMA & LEARNING RATE SCHEDULES           -->
+        <!-- ========================================================================= -->
+        <section>
+          <!-- 3.1 Section Cover -->
+          <section data-background="figures/stochastic_grain.gif" data-background-image="figures/stochastic_grain.gif" data-preload>
+            <h2 style="text-shadow: 4px 4px 4px #002b36; color: #fdf6e3;">Stochastic Fluctuations</h2>
+            <blockquote style="background-color: rgba(7, 54, 66, 0.78); color: #fdf6e3; width: 82%; margin: 20px auto; box-sizing: border-box; font-size: 27px; padding: 12px 20px; text-align: center; border-radius: 8px;">
+              How stochastic gradient agitation escapes sharp local traps — and why $\eta_t$ must anneal to settle at $\vth^*$
+            </blockquote>
+          </section>
 
-            <style type="text/css">
-              /* 1. Style header/footer <div> so they are positioned as desired. */
-              #header-left {
-                  position: absolute;
-                  top: 0%;
-                  left: 0%;
-              }
-              #header-right {
-                  position: absolute;
-                  top: 0%;
-                  right: 0%;
-              }
-              #footer-left {
-                  position: absolute;
-                  bottom: 0%;
-                  left: 0%;
-              }
-            </style>
+          <!-- 3.2 The Fluctuations (with Animated Dual-Panel SVG) -->
+          <section>
+            <h3>The Fluctuations of Stochastic Updates</h3>
+            <row style="align-items: center; gap: 14px;">
+              <col50 style="width: 48%;">
+                <ul style="font-size: 23.5px; line-height: 1.36; margin: 0;">
+                  <li class="fragment roll-in"> <b>Batch GD:</b> Follows a smooth, deterministic path straight into the nearest basin — getting <b>trapped in sharp local minima</b>.
+                  <li class="fragment roll-in" style="margin-top: 10px;"> <b>SGD's Thermal Noise:</b> Random per-sample kicks $-\eta\nabla\loss_i$ jump over narrow barriers into <b>wider, flatter basins</b> that generalize better!
+                  <li class="fragment roll-in" style="margin-top: 10px;"> <b>The Catch:</b> Near $\vth^*$, constant-$\eta$ SGD never halts — it orbits inside an $O(\sqrt{\eta\sigma^2})$ <b>noise ball</b>.
+                </ul>
+              </col50>
+              <col50 style="width: 50%;">
+                <svg viewBox="0 0 475 335" style="width: 100%; height: auto; display: block;">
+                  <!-- PANEL 1: 1D Non-Convex Escape from Sharp Local Minimum to Flat Global Basin -->
+                  <text x="237" y="20" fill="#073642" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">1. Non-Convex Escape: Sharp Local Trap vs. Flat Basin</text>
+                  <!-- Shaded area under landscape -->
+                  <path d="M 24,38 C 52,38 66,130 96,130 C 122,130 132,68 154,68 C 184,68 215,144 312,144 C 395,144 428,64 452,38 L 452,155 L 24,155 Z" fill="rgba(238,232,213,0.65)"/>
+                  <!-- Landscape curve J(theta) -->
+                  <path d="M 24,38 C 52,38 66,130 96,130 C 122,130 132,68 154,68 C 184,68 215,144 312,144 C 395,144 428,64 452,38" fill="none" stroke="#586e75" stroke-width="2.6"/>
 
-            <!-- // 2. Create hidden header/footer -->
-            <div id="hidden" style="display:none;">
-              <div id="header">
-                <div id="header-left"><h4>CS8850</h4></div>
-                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
-                <div id="footer-left">
-                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
-                       src="figures/valentino.png" alt="robot learning">
+                  <!-- Labels for Sharp Trap and Wide Flat Basin -->
+                  <text x="96" y="148" fill="#268bd2" font-size="11.5" font-weight="bold" text-anchor="middle" font-family="sans-serif">Sharp Local Trap (Batch Stuck)</text>
+                  <text x="318" y="158" fill="#859900" font-size="11.5" font-weight="bold" text-anchor="middle" font-family="sans-serif">Wide Flat Basin θ* (Better Generalization)</text>
+                  <!-- Barrier arrow annotation -->
+                  <path d="M 104,116 Q 130,45 178,86" fill="none" stroke="#dc322f" stroke-width="1.8" stroke-dasharray="4,3"/>
+                  <text x="155" y="54" fill="#dc322f" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Noise kick −η∇ℓᵢ jumps barrier!</text>
+
+                  <!-- Animated Batch GD Ball (Blue): slides smoothly into sharp trap and stays stuck -->
+                  <circle r="6" fill="#268bd2" stroke="#fdf6e3" stroke-width="1.5">
+                    <animateMotion dur="5s" repeatCount="indefinite"
+                      keyPoints="0;0.35;0.55;1" keyTimes="0;0.25;0.45;1" calcMode="linear"
+                      path="M 38,52 C 58,78 74,130 96,130 L 96,130"/>
+                  </circle>
+
+                  <!-- Animated SGD Ball (Red): bounces out of sharp trap over barrier into flat basin and jitters -->
+                  <circle r="6.5" fill="#dc322f" stroke="#fdf6e3" stroke-width="1.5">
+                    <animateMotion dur="5s" repeatCount="indefinite"
+                      path="M 38,52 L 72,108 L 96,128 L 116,96 L 102,118 L 138,76 L 154,66 L 195,108 L 245,134 L 302,143 L 332,141 L 292,142 L 322,143 L 308,144"/>
+                  </circle>
+
+                  <!-- Divider line -->
+                  <line x1="16" y1="168" x2="459" y2="168" stroke="#93a1a1" stroke-width="1" stroke-dasharray="4,4"/>
+
+                  <!-- PANEL 2: 2D Contour Basin: Smooth Batch GD vs. Fluctuating SGD + Noise Ball -->
+                  <text x="237" y="186" fill="#073642" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">2. 2D Contour Basin: Smooth Batch GD vs. Fluctuating SGD</text>
+
+                  <!-- Concentric Contour Arcs around Optimum (356, 256) strictly within viewBox -->
+                  <path d="M 455,204 A 295,62 0 0,0 62,256 A 295,62 0 0,0 455,308" fill="none" stroke="#eee8d5" stroke-width="2"/>
+                  <path d="M 455,216 A 220,46 0 0,0 136,256 A 220,46 0 0,0 455,296" fill="none" stroke="#eee8d5" stroke-width="2"/>
+                  <ellipse cx="356" cy="256" rx="105" ry="32" fill="none" stroke="#93a1a1" stroke-width="1.2" stroke-opacity="0.45"/>
+                  <ellipse cx="356" cy="256" rx="62" ry="19" fill="none" stroke="#93a1a1" stroke-width="1.2" stroke-opacity="0.55"/>
+
+                  <!-- Stationary Noise Ball around theta* -->
+                  <circle cx="356" cy="256" r="28" fill="rgba(220,50,47,0.09)" stroke="#dc322f" stroke-width="1.6" stroke-dasharray="4,3"/>
+                  <circle cx="356" cy="256" r="4.5" fill="#002b36"/>
+                  <text x="390" y="260" fill="#002b36" font-size="13" font-weight="bold" font-family="sans-serif">θ*</text>
+                  <text x="356" y="300" fill="#dc322f" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Noise Ball O(√ησ²)</text>
+
+                  <!-- Start Point theta_0 -->
+                  <circle cx="62" cy="292" r="5.5" fill="#073642"/>
+                  <text x="38" y="297" fill="#073642" font-size="13" font-weight="bold" font-family="sans-serif">θ₀</text>
+
+                  <!-- Smooth Batch GD Path (Blue) -->
+                  <path id="batch-svg-path" d="M 62,292 Q 185,264 356,256" fill="none" stroke="#268bd2" stroke-width="3"/>
+                  <text x="175" y="294" fill="#268bd2" font-size="12" font-weight="bold" font-family="sans-serif">Batch GD (exact −η∇J)</text>
+
+                  <!-- Fluctuating SGD Path (Red zig-zag into noise ball) -->
+                  <path id="sgd-svg-path" d="M 62,292 L 96,226 L 142,276 L 188,214 L 236,268 L 284,218 L 328,266 L 352,232 L 376,262 L 338,272 L 364,236 L 344,258" fill="none" stroke="#dc322f" stroke-width="2.2" stroke-dasharray="5,3"/>
+                  <text x="148" y="207" fill="#dc322f" font-size="12" font-weight="bold" font-family="sans-serif">Stochastic GD (noisy −η∇ℓᵢ)</text>
+
+                  <!-- Animated Dots on 2D Paths -->
+                  <circle r="5.5" fill="#268bd2" stroke="#fdf6e3" stroke-width="1.4">
+                    <animateMotion dur="5s" repeatCount="indefinite" path="M 62,292 Q 185,264 356,256 L 356,256"/>
+                  </circle>
+                  <circle r="5.5" fill="#dc322f" stroke="#fdf6e3" stroke-width="1.4">
+                    <animateMotion dur="5s" repeatCount="indefinite" path="M 62,292 L 96,226 L 142,276 L 188,214 L 236,268 L 284,218 L 328,266 L 352,232 L 376,262 L 338,272 L 364,236 L 344,258"/>
+                  </circle>
+                </svg>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              Keskar, N. S. et al. (2017). <a href="https://arxiv.org/abs/1609.04836" target="_blank">On Large-Batch Training for Deep Learning: Generalization Gap and Sharp Minima</a>. <i>ICLR 2017</i>.
+            </div>
+          </section>
+
+          <!-- 3.3 Learning Rate Annealing & Robbins-Monro -->
+          <section>
+            <h3>Learning Rate Annealing &amp; Robbins–Monro</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 24px; padding: 5px 14px; margin: 4px 0;">
+              Why doesn't constant-step SGD stop at the minimum $\vth^*$?
+            </blockquote>
+            <ul style="list-style-type: none; display: block; width: 100%; box-sizing: border-box; font-size: 23px; margin: 4px 0; padding: 0;">
+              <li class="fragment roll-in"> At $\vth^*$, the full gradient is zero ($\nabla\prob{J}{\vth^*} = \frac{1}{N}\sum_{i=1}^N \nabla\loss_i(\vth^*) = \vec{0}$), so <b>Batch GD halts automatically</b>.
+              <li class="fragment roll-in" style="margin-top: 4px;"> But individual sample gradients $\nabla\loss_i(\vth^*) \ne \vec{0}$ only <em>cancel on average</em>! With fixed $\eta$, SGD bounces perpetually inside a <b>noise ball</b> of radius $O(\sqrt{\eta \sigma^2})$.
+              <li class="fragment roll-in" style="margin-top: 4px;"> To converge to $\vth^*$ (<a href="https://projecteuclid.org/journals/annals-of-mathematical-statistics/volume-22/issue-3/A-Stochastic-Approximation-Method/10.1214/aoms/1177729586.full" target="_blank">Robbins &amp; Monro, 1951</a>), decay $\eta_t$ so that:
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 22.5px; padding: 5px 12px; margin: 4px 0; text-align: center;">
+                  $\displaystyle \underbrace{\sum_{t=1}^{\infty} \eta_t = \infty}_{\text{can reach }\vth^*\text{ from any }\vth_0} \qquad \text{and} \qquad \underbrace{\sum_{t=1}^{\infty} \eta_t^2 < \infty}_{\text{cumulative noise variance }\sum \eta_t^2\sigma^2\text{ stays finite!}}$
+                </blockquote>
+              <li class="fragment roll-in" style="font-size: 21.5px; color: #586e75; margin-top: 2px;">
+                <b>Schedules in practice:</b> Polynomial $\eta_t = \frac{\eta_0}{1 + \alpha t}$ (satisfies Robbins–Monro), Step Decay, Cosine Annealing $\eta_t = \frac{1}{2}\eta_0\!\left(1 + \cos\frac{t\pi}{T}\right)$.
+            </ul>
+            <div class="slide-footer">
+              Robbins, H., &amp; Monro, S. (1951). <a href="https://projecteuclid.org/journals/annals-of-mathematical-statistics/volume-22/issue-3/A-Stochastic-Approximation-Method/10.1214/aoms/1177729586.full" target="_blank">A Stochastic Approximation Method</a>. <i>Ann. Math. Statist.</i>, 22(3), 400–407; &nbsp; Loshchilov &amp; Hutter (2017). <a href="https://arxiv.org/abs/1608.03983" target="_blank">SGDR: Cosine Annealing (ICLR 2017)</a>.
+            </div>
+          </section>
+
+          <!-- 3.4 Interactive Demo 1: Batch vs. Mini-Batch vs. SGD Explorer -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 4px 0 8px 0; font-size: 38px; line-height: 1.1;">Batch vs. Mini-Batch vs. Stochastic Gradient Descent</h3>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 0 0 -110px; user-select: none;">
+
+              <!-- Top Readout Banner -->
+              <div id="var-status-banner" style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 6px 14px; box-sizing: border-box; font-size: 13px; color: #073642; white-space: nowrap;">
+                <div>
+                  <b>Click 2D contour plot</b> to set $\vec{\theta}_0$ and compare trajectories ($N = 64$).
+                </div>
+                <div style="display: flex; gap: 14px; font-family: monospace; font-size: 13px; white-space: nowrap;">
+                  <span>Step: <b id="var-step-val">0</b></span>
+                  <span style="color: #268bd2;">Batch J: <b id="var-loss-batch">--</b></span>
+                  <span style="color: #859900;">Mini-Batch J: <b id="var-loss-mb">--</b></span>
+                  <span style="color: #dc322f;">SGD J: <b id="var-loss-sgd">--</b></span>
                 </div>
               </div>
+
+              <!-- Canvas -->
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="sgd-variants-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box; cursor: crosshair;"></canvas>
+              </div>
+
+              <!-- Controls Toolbar -->
+              <div style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 16px; box-sizing: border-box; font-size: 13.5px; color: #586e75; gap: 5px; white-space: nowrap;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; white-space: nowrap;">
+                  <div style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <button id="var-btn-step" style="cursor: pointer; padding: 4px 11px; border: 1px solid #268bd2; background: #fdf6e3; color: #268bd2; font-weight: bold; border-radius: 4px; font-size: 13px; white-space: nowrap;">1 Step</button>
+                    <button id="var-btn-10step" style="cursor: pointer; padding: 4px 11px; border: 1px solid #859900; background: #fdf6e3; color: #859900; font-weight: bold; border-radius: 4px; font-size: 13px; white-space: nowrap;">+10 Steps</button>
+                    <button id="var-btn-auto" style="cursor: pointer; padding: 4px 11px; border: 1px solid #2aa198; background: #eee8d5; color: #2aa198; font-weight: bold; border-radius: 4px; font-size: 13px; white-space: nowrap;">▶ Auto-Run</button>
+                    <button id="var-btn-reset" style="cursor: pointer; padding: 4px 11px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 13px; white-space: nowrap;">↺ Reset</button>
+                    <label style="display: inline-flex; align-items: center; gap: 5px; cursor: pointer; margin-left: 6px; font-weight: bold; color: #cb4b16; font-size: 13px; white-space: nowrap;">
+                      <input type="checkbox" id="var-chk-anneal"> <span>Anneal ηₜ = η₀ / (1 + 0.04t)</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; gap: 5px; cursor: pointer; margin-left: 6px; font-weight: bold; color: #6c71c4; font-size: 13px; white-space: nowrap;">
+                      <input type="checkbox" id="var-chk-fan" checked> <span>Show Sample Gradient Fan ∇ℓᵢ</span>
+                    </label>
+                  </div>
+                  <div style="font-size: 12.5px; color: #586e75; white-space: nowrap;">
+                    Source inspiration: <a href="https://www.deeplearning.ai/ai-notes/optimization/index.html" target="_blank">deeplearning.ai optimization notes</a>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(147,161,161,0.3); padding-top: 4px; white-space: nowrap;">
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Mini-Batch Size (B):</span> <span id="var-b-val" style="font-family: monospace; font-weight: bold; color: #859900;">8</span>
+                    <input type="range" id="var-b-slider" min="2" max="32" step="2" value="8" style="width: 150px; cursor: pointer;">
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Learning Rate (η₀):</span> <span id="var-eta-val" style="font-family: monospace; font-weight: bold; color: #268bd2;">0.18</span>
+                    <input type="range" id="var-eta-slider" min="0.03" max="0.45" step="0.01" value="0.18" style="width: 150px; cursor: pointer;">
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Sample Gradient Spread (σ_g):</span> <span id="var-noise-val" style="font-family: monospace; font-weight: bold; color: #dc322f;">1.20</span>
+                    <input type="range" id="var-noise-slider" min="0.20" max="2.40" step="0.10" value="1.20" style="width: 150px; cursor: pointer;">
+                  </label>
+                </div>
+              </div>
+
             </div>
+            <aside class="notes">
+              What to demonstrate in class:
+              1. Look at the purple fan of vectors at the current SGD position: those are individual sample gradients grad l_i(theta). Their average is the true gradient grad J(theta).
+              2. Click "Auto-Run" with Constant eta: notice how SGD (red) and Mini-Batch (green) reach the vicinity of the minimum after far fewer gradient evaluations (top-right plot) than Batch GD (blue), which spends 64 evaluations per single step!
+              3. Once near the minimum, watch SGD (red) bounce inside the dashed "Noise Ball" because individual gradients don't vanish at theta*.
+              4. Check "Anneal eta_t = eta_0 / (1 + 0.04t)": watch the noise ball shrink and SGD converge cleanly onto the exact minimum!
+            </aside>
+          </section>
+        </section>
 
+        <!-- ========================================================================= -->
+        <!-- SECTION 4: PATHOLOGICAL CURVATURE, MOMENTUM & NESTEROV ACCELERATION       -->
+        <!-- ========================================================================= -->
+        <section>
+          <!-- 4.1 Section Cover -->
+          <section>
+            <h2>Momentum &amp; Nesterov</h2>
+            <blockquote style="background-color: #eee8d5; width: 82%; margin: 20px auto; box-sizing: border-box; font-size: 28px; padding: 14px 20px; text-align: center;">
+              Overcoming pathological curvature ($\kappa = \lambda_{\max}/\lambda_{\min} \gg 1$), narrow canyons, and oscillations
+            </blockquote>
+          </section>
 
-            <script type="text/javascript">
-              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
-              var header = $('#header').html();
-              if ( window.location.search.match( /print-pdf/gi ) ) {
-                  Reveal.addEventListener( 'ready', function( event ) {
-                      $('.slide-background').append(header);
-                  });
+          <!-- 4.2 Challenges & Algorithms Roadmap -->
+          <section>
+            <h3>Four Core Challenges of Vanilla SGD</h3>
+            <ul style="font-size: 26px; line-height: 1.38; margin-bottom: 12px;">
+              <li class="fragment roll-in"> <b>1. Global Learning Rate Sensitivity:</b> Too small $\eta \implies$ glacial progress; too large $\eta \implies$ divergence.
+              <li class="fragment roll-in"> <b>2. Schedule Tuning:</b> Annealing rates must be hand-tuned to problem geometry and dataset size.
+              <li class="fragment roll-in"> <b>3. Uniform Step Size Across Coordinates:</b> Uses the same scalar $\eta$ for both steep/frequent and flat/rare features.
+              <li class="fragment roll-in"> <b>4. Ravines &amp; Saddle Points:</b> Oscillates wildly across narrow canyons and stalls on flat high-dimensional saddles.
+            </ul>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 23.5px; padding: 8px 14px; text-align: center;" class="fragment roll-in">
+              <b>Our Toolkit:</b> &nbsp; Momentum $\to$ Nesterov (NAG) $\to$ AdaGrad $\to$ RMSprop $\to$ Adadelta $\to$ Adam / AdamW $\to$ <b>Muon</b>
+            </blockquote>
+            <div class="slide-footer">
+              Ruder, S. (2016). <a href="https://arxiv.org/abs/1609.04747" target="_blank">An overview of gradient descent optimization algorithms</a> (<i>arXiv:1609.04747</i>).
+            </div>
+          </section>
+
+          <!-- 4.3 Why Ravines Defeat Vanilla SGD (Condition Number) -->
+          <section>
+            <h3>Pathological Curvature: Ravines &amp; Conditioning</h3>
+            <row style="align-items: center; gap: 14px;">
+              <col50 style="width: 48%;">
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 23px; padding: 6px 12px;">
+                  Local quadratic canyon $\prob{J}{\vth} = \frac{1}{2}\!\left(\lambda_{\min}\theta_1^2 + \lambda_{\max}\theta_2^2\right)$
+                </blockquote>
+                <ul style="display: block; width: 100%; box-sizing: border-box; font-size: 22px; line-height: 1.35; margin: 8px 0; padding-left: 24px;">
+                  <li> <b>Condition number</b> $\kappa \def \frac{\lambda_{\max}}{\lambda_{\min}} \gg 1$ (steep walls $\theta_2$, gentle floor $\theta_1$).
+                  <li class="fragment roll-in" data-fragment-index="1" style="margin-top: 6px;"> <b>Light Ball (Vanilla GD, $\gamma=0$):</b> Zero inertia; gradient step $-\eta\nabla\prob{J}{\vth}$ points across the canyon and bounces wall-to-wall!
+                  <li class="fragment roll-in" data-fragment-index="2" style="margin-top: 6px;"> <b>Heavy Ball (Momentum, $\gamma>0$):</b> Physical inertia damps wall oscillations and accelerates down the $\theta_1$ floor (<a href="https://distill.pub/2017/momentum/" target="_blank">Goh, 2017</a>).
+                </ul>
+              </col50>
+              <col50 style="width: 50%;">
+                <svg viewBox="0 0 490 320" style="width: 100%; height: auto; display: block;">
+                  <defs>
+                    <!-- 3D Glossy Gradients for Light Ball (Red) and Heavy Ball (Cobalt Blue) -->
+                    <radialGradient id="lightBallGrad" cx="35%" cy="32%" r="68%">
+                      <stop offset="0%" stop-color="#ff9b99"/>
+                      <stop offset="45%" stop-color="#dc322f"/>
+                      <stop offset="100%" stop-color="#8b1a18"/>
+                    </radialGradient>
+                    <radialGradient id="heavyBallGrad" cx="34%" cy="30%" r="70%">
+                      <stop offset="0%" stop-color="#9ad4ff"/>
+                      <stop offset="40%" stop-color="#268bd2"/>
+                      <stop offset="82%" stop-color="#073642"/>
+                      <stop offset="100%" stop-color="#002b36"/>
+                    </radialGradient>
+                    <linearGradient id="leftWallShade" x1="0%" y1="0%" x2="100%" y2="85%">
+                      <stop offset="0%" stop-color="#eee8d5" stop-opacity="0.88"/>
+                      <stop offset="100%" stop-color="#93a1a1" stop-opacity="0.28"/>
+                    </linearGradient>
+                    <linearGradient id="rightWallShade" x1="0%" y1="15%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#93a1a1" stop-opacity="0.22"/>
+                      <stop offset="100%" stop-color="#eee8d5" stop-opacity="0.72"/>
+                    </linearGradient>
+                  </defs>
+
+                  <!-- Title Header Inside SVG (Visible from start with Canyon) -->
+                  <text x="245" y="21" fill="#073642" font-size="13.5" font-weight="bold" text-anchor="middle" font-family="sans-serif">3D Quadratic Ravine: Light Ball (GD) vs. Heavy Ball (Momentum)</text>
+
+                  <!-- 3D Canyon Shaded Left & Right Walls (Visible from start) -->
+                  <polygon points="222.5,34.8 215.7,41.3 208.9,47.9 202.1,54.4 195.2,60.9 188.4,67.5 181.6,74 174.8,80.5 168,87.1 161.2,93.6 154.4,100.1 147.6,106.7 140.8,113.2 134,119.7 127.2,126.3 120.4,132.8 113.6,139.3 106.7,145.9 99.9,152.4 93.1,158.9 86.3,165.5 175.9,252.3 182.7,245.8 189.5,239.3 196.3,232.7 203.2,226.2 210,219.7 216.8,213.1 223.6,206.6 230.4,200.1 237.2,193.5 244,187 250.8,180.5 257.6,173.9 264.4,167.4 271.2,160.9 278,154.3 284.8,147.8 291.7,141.3 298.5,134.7 305.3,128.2 312.1,121.7" fill="url(#leftWallShade)"/>
+                  <polygon points="312.1,121.7 305.3,128.2 298.5,134.7 291.7,141.3 284.8,147.8 278,154.3 271.2,160.9 264.4,167.4 257.6,173.9 250.8,180.5 244,187 237.2,193.5 230.4,200.1 223.6,206.6 216.8,213.1 210,219.7 203.2,226.2 196.3,232.7 189.5,239.3 182.7,245.8 175.9,252.3 265.5,196.8 272.3,190.3 279.1,183.7 285.9,177.2 292.8,170.7 299.6,164.2 306.4,157.6 313.2,151.1 320,144.6 326.8,138 333.6,131.5 340.4,125 347.2,118.4 354,111.9 360.8,105.4 367.6,98.8 374.4,92.3 381.3,85.8 388.1,79.2 394.9,72.7 401.7,66.2" fill="url(#rightWallShade)"/>
+
+                  <!-- 6 U-Shaped 3D Canyon Cross-Section Ribs -->
+                  <path d="M 222.5,34.8 L 229.9,38.8 L 237.4,43.8 L 244.9,50 L 252.3,57.5 L 259.8,66.2 L 267.3,76 L 274.7,86.2 L 282.2,96.4 L 289.7,105.7 L 297.1,113.5 L 304.6,118.9 L 312.1,121.7 L 319.5,121.5 L 327,118.7 L 334.5,113.6 L 341.9,106.8 L 349.4,99.3 L 356.9,91.6 L 364.3,84.5 L 371.8,78.4 L 379.3,73.5 L 386.7,69.9 L 394.2,67.5 L 401.7,66.2" fill="none" stroke="#93a1a1" stroke-width="1.4"/>
+                  <path d="M 195.8,60.4 L 203.3,64.3 L 210.8,69.4 L 218.2,75.6 L 225.7,83.1 L 233.2,91.8 L 240.6,101.5 L 248.1,111.8 L 255.6,121.9 L 263,131.3 L 270.5,139 L 278,144.5 L 285.4,147.2 L 292.9,147.1 L 300.4,144.2 L 307.8,139.1 L 315.3,132.4 L 322.8,124.8 L 330.2,117.2 L 337.7,110.1 L 345.2,104 L 352.6,99.1 L 360.1,95.5 L 367.6,93.1 L 375,91.7" fill="none" stroke="#93a1a1" stroke-width="1.4"/>
+                  <path d="M 169.2,85.9 L 176.7,89.9 L 184.1,94.9 L 191.6,101.1 L 199.1,108.6 L 206.5,117.4 L 214,127.1 L 221.5,137.3 L 228.9,147.5 L 236.4,156.8 L 243.9,164.6 L 251.3,170.1 L 258.8,172.8 L 266.3,172.7 L 273.7,169.8 L 281.2,164.7 L 288.7,158 L 296.1,150.4 L 303.6,142.8 L 311.1,135.7 L 318.5,129.5 L 326,124.7 L 333.5,121 L 340.9,118.7 L 348.4,117.3" fill="none" stroke="#93a1a1" stroke-width="1.4"/>
+                  <path d="M 142.6,111.5 L 150,115.5 L 157.5,120.5 L 165,126.7 L 172.4,134.2 L 179.9,142.9 L 187.4,152.6 L 194.8,162.9 L 202.3,173.1 L 209.8,182.4 L 217.2,190.1 L 224.7,195.6 L 232.2,198.4 L 239.6,198.2 L 247.1,195.4 L 254.6,190.2 L 262,183.5 L 269.5,176 L 277,168.3 L 284.4,161.2 L 291.9,155.1 L 299.4,150.2 L 306.8,146.6 L 314.3,144.2 L 321.8,142.9" fill="none" stroke="#93a1a1" stroke-width="1.4"/>
+                  <path d="M 115.9,137.1 L 123.4,141 L 130.9,146 L 138.3,152.3 L 145.8,159.8 L 153.3,168.5 L 160.7,178.2 L 168.2,188.5 L 175.7,198.6 L 183.1,208 L 190.6,215.7 L 198.1,221.2 L 205.5,223.9 L 213,223.8 L 220.5,220.9 L 227.9,215.8 L 235.4,209.1 L 242.9,201.5 L 250.3,193.9 L 257.8,186.8 L 265.3,180.7 L 272.7,175.8 L 280.2,172.2 L 287.7,169.8 L 295.1,168.4" fill="none" stroke="#93a1a1" stroke-width="1.4"/>
+                  <path d="M 89.3,162.6 L 96.7,166.6 L 104.2,171.6 L 111.7,177.8 L 119.1,185.3 L 126.6,194 L 134.1,203.8 L 141.5,214 L 149,224.2 L 156.5,233.5 L 163.9,241.3 L 171.4,246.7 L 178.9,249.5 L 186.3,249.3 L 193.8,246.5 L 201.3,241.4 L 208.7,234.6 L 216.2,227.1 L 223.7,219.4 L 231.1,212.3 L 238.6,206.2 L 246.1,201.3 L 253.5,197.7 L 261,195.3 L 268.5,194" fill="none" stroke="#93a1a1" stroke-width="1.5"/>
+
+                  <!-- Canyon Rim Edges & Valley Floor Spine -->
+                  <path d="M 222.5,34.8 L 86.3,165.5" fill="none" stroke="#586e75" stroke-width="1.6" stroke-opacity="0.6"/>
+                  <path d="M 401.7,66.2 L 265.5,196.8" fill="none" stroke="#586e75" stroke-width="1.6" stroke-opacity="0.6"/>
+                  <path d="M 315,118.8 L 173,255.2" fill="none" stroke="#859900" stroke-width="2" stroke-dasharray="5,4"/>
+
+                  <!-- 3D Coordinate Axes Labels (theta_1 gentle slope, theta_2 steep walls) -->
+                  <line x1="50" y1="210" x2="188" y2="39" stroke="#586e75" stroke-width="1.5"/>
+                  <polygon points="188,39 179,44 185,49" fill="#586e75"/>
+                  <text x="108" y="114" fill="#073642" font-size="12.5" font-weight="bold" text-anchor="middle" font-family="sans-serif" transform="rotate(-51, 108, 114)">θ₁ (gentle floor λₘᵢₙ)</text>
+
+                  <line x1="50" y1="210" x2="310" y2="210" stroke="#586e75" stroke-width="1.5"/>
+                  <polygon points="310,210 301,206 301,214" fill="#586e75"/>
+                  <text x="248" y="228" fill="#073642" font-size="12.5" font-weight="bold" font-family="sans-serif">θ₂ (steep wall λₘₐₓ)</text>
+
+                  <!-- Start & Goal Markers (Visible from start) -->
+                  <circle cx="238.7" cy="50" r="4.5" fill="#073642"/>
+                  <text x="228" y="42" fill="#073642" font-size="12" font-weight="bold" text-anchor="end" font-family="sans-serif">Start θ₀</text>
+                  <circle cx="178.9" cy="249.5" r="5.5" fill="#859900" stroke="#fdf6e3" stroke-width="1.5"/>
+                  <text x="163" y="264" fill="#859900" font-size="13" font-weight="bold" text-anchor="end" font-family="sans-serif">Floor θ*</text>
+
+                  <!-- Legend Container Box at Bottom -->
+                  <rect x="6" y="274" width="478" height="38" rx="6" fill="#eee8d5" stroke="#93a1a1" stroke-width="1"/>
+
+                  <!-- FRAGMENT 1: Light Ball (Vanilla GD) Trajectory, Animated Ball & Legend -->
+                  <g class="fragment" data-fragment-index="1">
+                    <!-- Faint Discrete GD Chords (Wall-to-Wall Jumps) -->
+                    <path d="M 238.7,50 L 362.9,88.7 L 224.6,81.9 L 329.6,118.3 L 210.6,115.9 L 296.3,149.7 L 196.5,151.3 L 263,182.2 L 182.4,187.2" fill="none" stroke="#dc322f" stroke-width="1.3" stroke-dasharray="3,3" stroke-opacity="0.55"/>
+
+                    <!-- Light Ball 3D Surface Trajectory (Red: violent wall-to-wall oscillations) -->
+                    <path d="M 238.7,50 L 239.3,51.6 L 241.6,54.8 L 245.5,59.8 L 250.9,67 L 257.6,76.6 L 265.4,88.5 L 274.1,101.8 L 283.5,114.8 L 293.3,124.9 L 303.2,130.2 L 313,129.8 L 322.5,124.7 L 331.4,116.9 L 339.5,108.7 L 346.5,101.5 L 352.3,96.1 L 356.8,92.4 L 359.8,90.3 L 361.3,89.5 L 361.1,89.8 L 359.5,91.1 L 356.2,93.5 L 351.6,97.2 L 345.6,102.5 L 338.4,109.4 L 330.2,117.8 L 321.2,126.8 L 311.5,134.9 L 301.5,140.3 L 291.4,141.6 L 281.3,138.2 L 271.6,130.9 L 262.4,121.4 L 253.9,111.5 L 246.4,102.5 L 240,95.3 L 234.8,90 L 231,86.6 L 228.5,85 L 227.5,85.1 L 227.9,86.8 L 229.7,90.1 L 232.8,95.3 L 237.1,102.2 L 242.5,111 L 248.8,121 L 255.9,131.6 L 263.5,141.4 L 271.4,148.9 L 279.5,152.9 L 287.5,153.1 L 295.2,149.9 L 302.4,144.6 L 309,138.4 L 314.6,132.6 L 319.3,127.8 L 322.9,124.2 L 325.2,122 L 326.3,121 L 326.1,121.2 L 324.7,122.6 L 321.9,125.1 L 318,128.9 L 312.9,134 L 306.9,140.1 L 300,147 L 292.5,153.9 L 284.5,159.8 L 276.1,163.5 L 267.7,164.3 L 259.3,161.9 L 251.2,156.8 L 243.5,150 L 236.5,142.6 L 230.2,135.5 L 224.8,129.5 L 220.4,124.9 L 217.2,121.8 L 215,120.3 L 214.1,120.4 L 214.3,122.1 L 215.7,125.3 L 218.1,130 L 221.6,136.1 L 225.9,143.4 L 231,151.5 L 236.7,159.7 L 242.9,167 L 249.3,172.5 L 255.8,175.6 L 262.3,176.2 L 268.5,174.3 L 274.4,170.9 L 279.6,166.6 L 284.2,162.2 L 288,158.4 L 290.8,155.4 L 292.6,153.5 L 293.4,152.6 L 293.2,152.9 L 291.8,154.2 L 289.5,156.6 L 286.1,160 L 281.9,164.3 L 276.8,169.3 L 271,174.7 L 264.7,179.8 L 258,183.9 L 251.1,186.5 L 244,187 L 237,185.4 L 230.2,181.9 L 223.8,177.1 L 217.9,171.7 L 212.6,166.4 L 208.1,161.8 L 204.4,158.1 L 201.6,155.6 L 199.7,154.4 L 198.9,154.6 L 198.9,156.1 L 200,158.9 L 201.9,162.9 L 204.6,168 L 208.1,173.9 L 212.1,180.1 L 216.7,186.3 L 221.7,191.7 L 226.9,195.9 L 232.2,198.4 L 237.4,199.1 L 242.4,198.2 L 247.1,196 L 251.3,193.2 L 255,190.2 L 258,187.4 L 260.2,185.2 L 261.6,183.8 L 262.1,183.2 L 261.8,183.5 L 260.6,184.6 L 258.6,186.7 L 255.7,189.6 L 252.1,193 L 247.8,197 L 243,201 L 237.7,204.6 L 232.1,207.6 L 226.2,209.3 L 220.3,209.7 L 214.5,208.6 L 208.8,206.3 L 203.4,203 L 198.4,199.2 L 194,195.4 L 190.1,192 L 187,189.3 L 184.6,187.5 L 183,186.6 L 182.1,186.9" fill="none" stroke="#dc322f" stroke-width="2.1"/>
+
+                    <!-- Animated Light Ball (Red, smaller r=6.5: bounces wildly between walls) -->
+                    <circle r="6.5" fill="url(#lightBallGrad)" stroke="#fdf6e3" stroke-width="1.2">
+                      <animateMotion id="ravine-light-anim" dur="5.2s" repeatCount="indefinite"
+                        path="M 238.7,50 L 239.3,51.6 L 241.6,54.8 L 245.5,59.8 L 250.9,67 L 257.6,76.6 L 265.4,88.5 L 274.1,101.8 L 283.5,114.8 L 293.3,124.9 L 303.2,130.2 L 313,129.8 L 322.5,124.7 L 331.4,116.9 L 339.5,108.7 L 346.5,101.5 L 352.3,96.1 L 356.8,92.4 L 359.8,90.3 L 361.3,89.5 L 361.1,89.8 L 359.5,91.1 L 356.2,93.5 L 351.6,97.2 L 345.6,102.5 L 338.4,109.4 L 330.2,117.8 L 321.2,126.8 L 311.5,134.9 L 301.5,140.3 L 291.4,141.6 L 281.3,138.2 L 271.6,130.9 L 262.4,121.4 L 253.9,111.5 L 246.4,102.5 L 240,95.3 L 234.8,90 L 231,86.6 L 228.5,85 L 227.5,85.1 L 227.9,86.8 L 229.7,90.1 L 232.8,95.3 L 237.1,102.2 L 242.5,111 L 248.8,121 L 255.9,131.6 L 263.5,141.4 L 271.4,148.9 L 279.5,152.9 L 287.5,153.1 L 295.2,149.9 L 302.4,144.6 L 309,138.4 L 314.6,132.6 L 319.3,127.8 L 322.9,124.2 L 325.2,122 L 326.3,121 L 326.1,121.2 L 324.7,122.6 L 321.9,125.1 L 318,128.9 L 312.9,134 L 306.9,140.1 L 300,147 L 292.5,153.9 L 284.5,159.8 L 276.1,163.5 L 267.7,164.3 L 259.3,161.9 L 251.2,156.8 L 243.5,150 L 236.5,142.6 L 230.2,135.5 L 224.8,129.5 L 220.4,124.9 L 217.2,121.8 L 215,120.3 L 214.1,120.4 L 214.3,122.1 L 215.7,125.3 L 218.1,130 L 221.6,136.1 L 225.9,143.4 L 231,151.5 L 236.7,159.7 L 242.9,167 L 249.3,172.5 L 255.8,175.6 L 262.3,176.2 L 268.5,174.3 L 274.4,170.9 L 279.6,166.6 L 284.2,162.2 L 288,158.4 L 290.8,155.4 L 292.6,153.5 L 293.4,152.6 L 293.2,152.9 L 291.8,154.2 L 289.5,156.6 L 286.1,160 L 281.9,164.3 L 276.8,169.3 L 271,174.7 L 264.7,179.8 L 258,183.9 L 251.1,186.5 L 244,187 L 237,185.4 L 230.2,181.9 L 223.8,177.1 L 217.9,171.7 L 212.6,166.4 L 208.1,161.8 L 204.4,158.1 L 201.6,155.6 L 199.7,154.4 L 198.9,154.6 L 198.9,156.1 L 200,158.9 L 201.9,162.9 L 204.6,168 L 208.1,173.9 L 212.1,180.1 L 216.7,186.3 L 221.7,191.7 L 226.9,195.9 L 232.2,198.4 L 237.4,199.1 L 242.4,198.2 L 247.1,196 L 251.3,193.2 L 255,190.2 L 258,187.4 L 260.2,185.2 L 261.6,183.8 L 262.1,183.2 L 261.8,183.5 L 260.6,184.6 L 258.6,186.7 L 255.7,189.6 L 252.1,193 L 247.8,197 L 243,201 L 237.7,204.6 L 232.1,207.6 L 226.2,209.3 L 220.3,209.7 L 214.5,208.6 L 208.8,206.3 L 203.4,203 L 198.4,199.2 L 194,195.4 L 190.1,192 L 187,189.3 L 184.6,187.5 L 183,186.6 L 182.1,186.9"/>
+                    </circle>
+
+                    <!-- Light Ball Legend Entry -->
+                    <circle cx="24" cy="293" r="6" fill="url(#lightBallGrad)"/>
+                    <text x="36" y="297" fill="#dc322f" font-size="11.2" font-weight="bold" font-family="sans-serif">Light Ball (GD, γ=0): Bounces on walls</text>
+                  </g>
+
+                  <!-- FRAGMENT 2: Heavy Ball (Momentum) Trajectory, Animated Ball & Legend -->
+                  <g class="fragment" data-fragment-index="2">
+                    <!-- Heavy Ball 3D Surface Trajectory (Blue: damped wall sway + fast floor acceleration) -->
+                    <path d="M 238.7,50 L 240.7,53.1 L 243,57 L 245.7,61.7 L 248.8,67.2 L 252.1,73.5 L 255.6,80.5 L 259.3,88.1 L 263.1,96 L 267,104 L 270.8,111.8 L 274.6,119.1 L 278.2,125.6 L 281.7,131.2 L 285.1,135.7 L 288.1,139.2 L 291,141.6 L 293.5,143.2 L 295.8,144.1 L 297.7,144.5 L 299.3,144.6 L 300.5,144.5 L 301.4,144.3 L 302,144.3 L 302.2,144.4 L 302.1,144.7 L 301.6,145.3 L 300.8,146.1 L 299.8,147.1 L 298.4,148.4 L 296.8,150 L 294.9,151.7 L 292.8,153.6 L 290.5,155.7 L 288.1,157.9 L 285.4,160.2 L 282.7,162.6 L 279.8,164.9 L 276.8,167.3 L 273.7,169.6 L 270.6,171.8 L 267.5,173.9 L 264.4,175.9 L 261.2,177.8 L 258.1,179.5 L 255,181.1 L 252,182.6 L 249.1,183.9 L 246.2,185.2 L 243.4,186.4 L 240.7,187.6 L 238.1,188.7 L 235.6,189.8 L 233.2,190.9 L 230.9,192 L 228.7,193.2 L 226.6,194.4 L 224.6,195.7 L 222.7,197 L 221,198.3 L 219.3,199.8 L 217.7,201.3 L 216.2,202.8 L 214.7,204.4 L 213.4,206 L 212.1,207.7 L 210.8,209.4 L 209.6,211.2 L 208.4,212.9 L 207.3,214.7 L 206.2,216.4 L 205.1,218.2 L 204.1,220 L 203,221.7 L 201.9,223.5 L 200.9,225.2 L 199.8,226.9 L 198.7,228.6 L 197.5,230.3 L 196.4,232 L 195.2,233.6 L 194,235.3 L 192.8,236.9 L 191.5,238.5 L 190.2,240.1 L 188.8,241.7 L 187.4,243.4 L 186,245 L 184.5,246.6 L 183,248.2 L 181.4,249.8" fill="none" stroke="#268bd2" stroke-width="3.2"/>
+
+                    <!-- Animated Heavy Ball (Cobalt Blue, larger r=8.5: inertia damps wall wobble & speeds down floor) -->
+                    <circle r="8.5" fill="url(#heavyBallGrad)" stroke="#fdf6e3" stroke-width="1.3">
+                      <animateMotion id="ravine-heavy-anim" dur="5.2s" repeatCount="indefinite"
+                        keyPoints="0;0.55;1;1" keyTimes="0;0.35;0.72;1" calcMode="linear"
+                        path="M 238.7,50 L 240.7,53.1 L 243,57 L 245.7,61.7 L 248.8,67.2 L 252.1,73.5 L 255.6,80.5 L 259.3,88.1 L 263.1,96 L 267,104 L 270.8,111.8 L 274.6,119.1 L 278.2,125.6 L 281.7,131.2 L 285.1,135.7 L 288.1,139.2 L 291,141.6 L 293.5,143.2 L 295.8,144.1 L 297.7,144.5 L 299.3,144.6 L 300.5,144.5 L 301.4,144.3 L 302,144.3 L 302.2,144.4 L 302.1,144.7 L 301.6,145.3 L 300.8,146.1 L 299.8,147.1 L 298.4,148.4 L 296.8,150 L 294.9,151.7 L 292.8,153.6 L 290.5,155.7 L 288.1,157.9 L 285.4,160.2 L 282.7,162.6 L 279.8,164.9 L 276.8,167.3 L 273.7,169.6 L 270.6,171.8 L 267.5,173.9 L 264.4,175.9 L 261.2,177.8 L 258.1,179.5 L 255,181.1 L 252,182.6 L 249.1,183.9 L 246.2,185.2 L 243.4,186.4 L 240.7,187.6 L 238.1,188.7 L 235.6,189.8 L 233.2,190.9 L 230.9,192 L 228.7,193.2 L 226.6,194.4 L 224.6,195.7 L 222.7,197 L 221,198.3 L 219.3,199.8 L 217.7,201.3 L 216.2,202.8 L 214.7,204.4 L 213.4,206 L 212.1,207.7 L 210.8,209.4 L 209.6,211.2 L 208.4,212.9 L 207.3,214.7 L 206.2,216.4 L 205.1,218.2 L 204.1,220 L 203,221.7 L 201.9,223.5 L 200.9,225.2 L 199.8,226.9 L 198.7,228.6 L 197.5,230.3 L 196.4,232 L 195.2,233.6 L 194,235.3 L 192.8,236.9 L 191.5,238.5 L 190.2,240.1 L 188.8,241.7 L 187.4,243.4 L 186,245 L 184.5,246.6 L 183,248.2 L 181.4,249.8"/>
+                    </circle>
+
+                    <!-- Heavy Ball Legend Entry -->
+                    <circle cx="256" cy="293" r="7.5" fill="url(#heavyBallGrad)"/>
+                    <text x="268" y="297" fill="#268bd2" font-size="11.2" font-weight="bold" font-family="sans-serif">Heavy Ball (Momentum): Rides floor</text>
+                  </g>
+                </svg>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              Sutton, R. S. (1986). <a href="http://incompleteideas.net/papers/sutton-86.pdf" target="_blank">Two problems with backpropagation and other steepest-descent learning procedures for networks</a>; &nbsp; Goh, G. (2017). <a href="https://distill.pub/2017/momentum/" target="_blank">Why Momentum Really Works</a>.
+            </div>
+          </section>
+
+          <!-- 3.3 Full-Bleed Momentum Animation -->
+          <section data-background="figures/momentum.gif">
+          </section>
+
+          <!-- 3.4 Heavy-Ball Momentum -->
+          <section>
+            <h3>Heavy-Ball Momentum (Polyak, 1964)</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 25px; padding: 6px 14px;">
+              Give the parameter vector physical <b>inertia</b> via a velocity vector $\vec{v}_t$
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 26px; padding: 8px 14px; text-align: center;">
+              $\displaystyle \vec{v}_t = \underbrace{\gamma \vec{v}_{t-1}}_{\text{momentum }(\gamma \approx 0.9)} + \underbrace{\eta \nabla_{\vth} \prob{J}{\vth_t}}_{\text{current gradient pull}}, \qquad \vth_{t+1} = \vth_t - \vec{v}_t$
+            </blockquote>
+            <ul style="list-style-type: none; display: block; width: 100%; box-sizing: border-box; font-size: 24px; margin: 8px 0 0 0; padding: 0;">
+              <li class="fragment roll-in"> <b>1. Unrolling the recursion:</b> $\vec{v}_t = \eta \sum_{\tau=0}^t \gamma^\tau \nabla_{\vth}\prob{J}{\vth_{t-\tau}}$ is an exponentially weighted sum of past gradients.
+              <li class="fragment roll-in" style="margin-top: 6px;"> <b>2. Across steep canyon walls ($\theta_2$):</b> Alternating signs $(+, -, +, -)$ <b>cancel out</b>, damping zig-zag oscillations!
+              <li class="fragment roll-in" style="margin-top: 6px;"> <b>3. Along the valley floor ($\theta_1$):</b> Steady gradients accumulate to terminal velocity $\frac{\eta}{1 - \gamma}\nabla\prob{J}{\vth}$ (<b>$10\times$ speedup</b> for $\gamma = 0.9$!).
+            </ul>
+            <div class="slide-footer">
+              Polyak, B. T. (1964). <a href="https://doi.org/10.1016/0041-5553(64)90137-5" target="_blank">Some methods of speeding up the convergence of iteration methods</a>. <i>USSR Comput. Math. Math. Phys.</i>, 4(5), 1–17; &nbsp; Qian, N. (1999). <a href="https://doi.org/10.1016/S0893-6080(98)00116-6" target="_blank">On the momentum term in gradient descent learning algorithms</a>.
+            </div>
+          </section>
+
+          <!-- 3.5 Nesterov Accelerated Gradient (NAG) with Inline Vector Diagram -->
+          <section>
+            <h3>Nesterov Accelerated Gradient: Lookahead Step</h3>
+            <row style="align-items: center; gap: 16px;">
+              <col50>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 22px; padding: 8px 10px; text-align: center; margin: 0;">
+                  $\displaystyle \vec{v}_t = \gamma \vec{v}_{t-1} + \eta \nabla_{\vth} \text{J}\big(\!\underbrace{\vth_t - \gamma \vec{v}_{t-1}}_{\text{lookahead }\tilde{\vth}_t}\!\big)$<br>
+                  $\displaystyle \vth_{t+1} = \vth_t - \vec{v}_t \qquad (\gamma \approx 0.9)$
+                </blockquote>
+                <ul style="display: block; width: 100%; box-sizing: border-box; font-size: 22px; line-height: 1.35; margin: 10px 0 0 0; padding-left: 24px;">
+                  <li class="fragment roll-in"> <b>Momentum:</b> Evaluates $\nabla\prob{J}{\vth_t}$ at the <em>old</em> position, then blindly adds $-\gamma\vec{v}_{t-1}$.
+                  <li class="fragment roll-in" style="margin-top: 6px;"> <b>Nesterov (1983):</b> First steps to the <b>lookahead point</b> $\tilde{\vth}_t = \vth_t - \gamma\vec{v}_{t-1}$, then evaluates $\nabla\prob{J}{\tilde{\vth}_t}$ <em>there</em> to brake before overshooting!
+                </ul>
+              </col50>
+              <col50>
+                <svg viewBox="0 0 460 285" style="width: 100%; height: auto; display: block;">
+                  <!-- Subtle ravine contour arcs clipped to viewBox -->
+                  <path d="M 450,67 A 360,78 0 0,0 60,145 A 360,78 0 0,0 450,223" fill="none" stroke="#eee8d5" stroke-width="2"/>
+                  <path d="M 450,93 A 260,52 0 0,0 160,145 A 260,52 0 0,0 450,197" fill="none" stroke="#eee8d5" stroke-width="2"/>
+                  <path d="M 450,117 A 150,28 0 0,0 270,145 A 150,28 0 0,0 450,173" fill="none" stroke="#eee8d5" stroke-width="2"/>
+
+                  <!-- Start node theta_t -->
+                  <circle cx="65" cy="195" r="6" fill="#073642"/>
+                  <text x="32" y="218" fill="#073642" font-size="16" font-weight="bold" font-family="sans-serif">θₜ</text>
+
+                  <!-- Standard Momentum Path: grad at theta_t (short brown) + momentum step (long dashed brown) -->
+                  <line x1="65" y1="195" x2="108" y2="245" stroke="#b58900" stroke-width="2.6"/>
+                  <polygon points="108,245 98,241 105,235" fill="#b58900"/>
+                  <text x="18" y="264" fill="#b58900" font-size="13" font-weight="bold" font-family="sans-serif">1. −η∇J(θₜ)</text>
+
+                  <line x1="108" y1="245" x2="338" y2="175" stroke="#b58900" stroke-width="2.4" stroke-dasharray="5,3"/>
+                  <polygon points="338,175 328,174 331,182" fill="#b58900"/>
+                  <text x="195" y="238" fill="#b58900" font-size="13" font-weight="bold" font-family="sans-serif">2. −γvₜ₋₁ (Momentum)</text>
+                  <circle cx="342" cy="174" r="5" fill="#b58900"/>
+                  <text x="348" y="196" fill="#b58900" font-size="13.5" font-weight="bold" font-family="sans-serif">θₜ₊₁ (Mom)</text>
+
+                  <!-- Nesterov Path: 1. Lookahead jump -gamma v_{t-1} (blue) -->
+                  <line x1="65" y1="195" x2="295" y2="125" stroke="#268bd2" stroke-width="3"/>
+                  <polygon points="295,125 285,124 288,132" fill="#268bd2"/>
+                  <text x="115" y="142" fill="#268bd2" font-size="13.5" font-weight="bold" font-family="sans-serif">1. Lookahead −γvₜ₋₁</text>
+                  <circle cx="299" cy="124" r="5.5" fill="#268bd2"/>
+                  <text x="235" y="96" fill="#268bd2" font-size="14" font-weight="bold" font-family="sans-serif">θ̃ₜ = θₜ − γvₜ₋₁</text>
+
+                  <!-- 2. Corrective gradient at lookahead point (red) -->
+                  <line x1="299" y1="124" x2="368" y2="148" stroke="#dc322f" stroke-width="3"/>
+                  <polygon points="368,148 358,149 361,141" fill="#dc322f"/>
+                  <text x="310" y="118" fill="#dc322f" font-size="12.5" font-weight="bold" font-family="sans-serif">2. −η∇J(θ̃ₜ) (brakes!)</text>
+
+                  <!-- Resulting Nesterov step (green) -->
+                  <line x1="65" y1="195" x2="365" y2="150" stroke="#859900" stroke-width="3.2"/>
+                  <polygon points="368,149 358,146 360,155" fill="#859900"/>
+                  <circle cx="372" cy="149" r="6" fill="#859900"/>
+                  <text x="382" y="153" fill="#859900" font-size="14" font-weight="bold" font-family="sans-serif">θₜ₊₁ (NAG)</text>
+                </svg>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              Nesterov, Y. (1983). <a href="https://www.mathnet.ru/eng/dan46009" target="_blank">A method for solving the convex programming problem with convergence rate $O(1/k^2)$</a>. <i>Dokl. Akad. Nauk SSSR</i>, 269, 543–547; &nbsp; Sutskever et al. (<a href="https://proceedings.mlr.press/v28/sutskever13.html" target="_blank">ICML 2013</a>).
+            </div>
+          </section>
+
+          <!-- 3.6 Interactive Demo 2: Ravines, Condition Number, Momentum & Nesterov Lookahead -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 4px 0 8px 0; font-size: 38px; line-height: 1.1;">Ravines, Condition Number, Momentum &amp; Nesterov Lookahead</h3>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 0 0 -110px; user-select: none;">
+
+              <!-- Top Banner -->
+              <div id="mom-status-banner" style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 6px 14px; box-sizing: border-box; font-size: 13px; color: #073642; white-space: nowrap;">
+                <div>
+                  <b>Left (1:1 scale):</b> Canyon $\prob{J}{\theta_1,\theta_2} = \frac{1}{2}(\theta_1^2 + \kappa\theta_2^2)$. &nbsp; <b>Right:</b> Live lookahead vector magnifier.
+                </div>
+                <div style="display: flex; gap: 14px; font-family: monospace; font-size: 13px; white-space: nowrap;">
+                  <span>Step t: <b id="mom-step-val">0</b></span>
+                  <span style="color: #dc322f;">GD J: <b id="mom-gd-val">--</b></span>
+                  <span style="color: #b58900;">Mom J: <b id="mom-hb-val">--</b></span>
+                  <span style="color: #859900;">NAG J: <b id="mom-nag-val">--</b></span>
+                </div>
+              </div>
+
+              <!-- Canvas -->
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="sgd-momentum-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box; cursor: crosshair;"></canvas>
+              </div>
+
+              <!-- Controls Toolbar -->
+              <div style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 16px; box-sizing: border-box; font-size: 13.5px; color: #586e75; gap: 5px; white-space: nowrap;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; white-space: nowrap;">
+                  <div style="display: flex; align-items: center; gap: 7px; white-space: nowrap;">
+                    <button id="mom-btn-step" style="cursor: pointer; padding: 4px 10px; border: 1px solid #268bd2; background: #fdf6e3; color: #268bd2; font-weight: bold; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">+1 Step</button>
+                    <button id="mom-btn-auto" style="cursor: pointer; padding: 4px 10px; border: 1px solid #2aa198; background: #eee8d5; color: #2aa198; font-weight: bold; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">▶ Auto-Run</button>
+                    <button id="mom-btn-reset" style="cursor: pointer; padding: 4px 10px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">↺ Reset</button>
+                    <span style="margin-left: 6px; font-weight: bold;">Presets:</span>
+                    <button id="mom-pre-isotropic" style="cursor: pointer; padding: 3px 9px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 12px; white-space: nowrap;">Isotropic Bowl (κ = 1)</button>
+                    <button id="mom-pre-ravine" style="cursor: pointer; padding: 3px 9px; border: 1px solid #cb4b16; background: #fdf6e3; color: #cb4b16; font-weight: bold; border-radius: 4px; font-size: 12px; white-space: nowrap;">Steep Ravine (κ = 20)</button>
+                    <button id="mom-pre-unstable" style="cursor: pointer; padding: 3px 9px; border: 1px solid #dc322f; background: #fdf6e3; color: #dc322f; font-weight: bold; border-radius: 4px; font-size: 12px; white-space: nowrap;">⚡ Wall Overshoot (η → 2/λ_max)</button>
+                  </div>
+                  <div style="font-family: monospace; font-size: 12.5px; color: #586e75; white-space: nowrap;">
+                    Stability Limit (2/κ): <b id="mom-limit-val" style="color: #dc322f;">0.100</b>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(147,161,161,0.3); padding-top: 4px; white-space: nowrap;">
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Condition Number (κ = λ₂/λ₁):</span> <span id="mom-kappa-val" style="font-family: monospace; font-weight: bold; color: #cb4b16;">20</span>
+                    <input type="range" id="mom-kappa-slider" min="1" max="36" step="1" value="20" style="width: 150px; cursor: pointer;">
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Learning Rate (η):</span> <span id="mom-eta-val" style="font-family: monospace; font-weight: bold; color: #268bd2;">0.065</span>
+                    <input type="range" id="mom-eta-slider" min="0.010" max="0.140" step="0.005" value="0.065" style="width: 150px; cursor: pointer;">
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Momentum (γ):</span> <span id="mom-gamma-val" style="font-family: monospace; font-weight: bold; color: #859900;">0.78</span>
+                    <input type="range" id="mom-gamma-slider" min="0.00" max="0.96" step="0.02" value="0.78" style="width: 150px; cursor: pointer;">
+                  </label>
+                </div>
+              </div>
+
+            </div>
+            <aside class="notes">
+              What to show in class:
+              1. Click "Steep Ravine (kappa = 20)" and step forward one step at a time (+1 Step):
+                 - Vanilla GD (red) zig-zags violently across the steep vertical wall while barely moving toward theta_1 = 0.
+                 - Heavy-Ball Momentum (gold) builds horizontal speed, but overshoots the valley axis because it evaluates the gradient BEFORE jumping.
+                 - Nesterov (green) jumps to the blue lookahead point first, sees that it has crossed the canyon floor, and its red corrective gradient pulls it right back toward the axis!
+              2. Click "Wall Overshoot (eta -> 2/lambda_max)" to show how vanilla GD diverges when eta exceeds 2/kappa.
+            </aside>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 5: ADAPTIVE & SPECTRAL OPTIMIZERS (ADAGRAD -> ADAMW -> MUON)      -->
+        <!-- ========================================================================= -->
+        <section>
+          <!-- 5.1 Section Cover -->
+          <section>
+            <h2>Adaptive &amp; Spectral Optimizers</h2>
+            <blockquote style="background-color: #eee8d5; width: 84%; margin: 20px auto; box-sizing: border-box; font-size: 27px; padding: 14px 20px; text-align: center;">
+              From coordinate-wise second moments (AdaGrad, RMSprop, Adadelta, AdamW) to matrix orthogonalization (<b>Muon</b>)
+            </blockquote>
+          </section>
+
+          <!-- 5.2 AdaGrad -->
+          <section>
+            <h3>AdaGrad: Per-Coordinate Adaptive Learning Rates</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 24px; padding: 5px 14px; margin: 4px 0;">
+              Duchi, Hazan &amp; Singer (2011): Give <b>rare/flat</b> features large steps and <b>frequent/steep</b> features small steps
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 22.5px; padding: 6px 12px; margin: 6px 0; text-align: center;">
+              $\displaystyle \vec{g}_t = \nabla_{\vth}\prob{J}{\vth_t}, \qquad \underbrace{\vec{v}_t = \vec{v}_{t-1} + \vec{g}_t^2 = \sum_{\tau=1}^t \vec{g}_\tau^2}_{\text{cumulative sum of squared gradients}}, \qquad \vth_{t+1} = \vth_t - \underbrace{\frac{\eta}{\sqrt{\vec{v}_t + \epsilon}}}_{\text{effective }\vec{\eta}_t} \odot \vec{g}_t$
+            </blockquote>
+            <ul style="list-style-type: none; display: block; width: 100%; box-sizing: border-box; font-size: 23.5px; margin: 6px 0 0 0; padding: 0;">
+              <li class="fragment roll-in"> <b>Why it works:</b> Coordinates with huge past gradients ($v_{t,j} \gg 1$) have their step size automatically damped; sparse features ($v_{t,j} \approx 0$) keep full step size $\eta$.
+              <li class="fragment roll-in" style="margin-top: 4px;"> <b>The Fatal Flaw:</b> Because $\vec{g}_\tau^2 \ge 0$, the sum $\vec{v}_t = \sum_{\tau=1}^t \vec{g}_\tau^2$ grows monotonically without bound ($\vec{v}_t \to \infty$).
+              <li class="fragment roll-in" style="margin-top: 4px;"> <alert>Eventually $\eta / \sqrt{\vec{v}_t} \to 0$ and learning freezes completely before reaching the optimum!</alert>
+            </ul>
+            <div class="slide-footer">
+              Duchi, J., Hazan, E., &amp; Singer, Y. (2011). <a href="https://jmlr.org/papers/v12/duchi11a.html" target="_blank">Adaptive Subgradient Methods for Online Learning and Stochastic Optimization</a>. <i>JMLR</i>, 12, 2121–2159.
+            </div>
+          </section>
+
+          <!-- 4.2 RMSprop -->
+          <section>
+            <h3>RMSprop: Stop the Diminishing Learning Rate</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 23.5px; padding: 5px 14px; margin: 4px 0;">
+              Tieleman &amp; Hinton (2012): Replace AdaGrad's unbounded sum with a <b>leaky Exponential Moving Average</b>
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 22px; padding: 6px 12px; margin: 6px 0; text-align: center;">
+              $$\begin{aligned}
+              \vec{g}_t &= \nabla_{\vth} \prob{J}{\vth_t}, \qquad \prob{E}{\vec{g}^2}_t = \gamma \prob{E}{\vec{g}^2}_{t-1} + (1 - \gamma)\vec{g}_t^2 \quad (\text{leaky average, }\gamma \approx 0.9) \\
+              \vth_{t+1} &= \vth_t - \frac{\eta}{\underbrace{\sqrt{\prob{E}{\vec{g}^2}_t + \epsilon}}_{\text{RMS}[\vec{g}]_t}} \odot \vec{g}_t
+              \end{aligned}$$
+            </blockquote>
+            <ul style="list-style-type: none; display: block; width: 100%; box-sizing: border-box; font-size: 23px; margin: 6px 0 0 0; padding: 0;">
+              <li class="fragment roll-in"> Divides each gradient coordinate by its <b>local Root-Mean-Square</b> $\text{RMS}[\vec{g}]_t$ over the last $\approx \frac{1}{1-\gamma}$ steps.
+              <li class="fragment roll-in" style="margin-top: 4px;"> Ancient gradients decay exponentially ($\gamma^\tau \to 0$), so the step size adapts dynamically to current terrain!
+            </ul>
+            <div class="slide-footer">
+              Tieleman, T., &amp; Hinton, G. (2012). <a href="https://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf" target="_blank">Lecture 6.5—rmsprop: Divide the gradient by a running average of its recent magnitude</a>. <i>COURSERA: Neural Networks for Machine Learning</i>.
+            </div>
+          </section>
+
+          <!-- 4.3 Dimensional Analysis (Units) -->
+          <section>
+            <h3>A Subtle Flaw: Do the Parameter Units Match?</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 23.5px; padding: 5px 14px; margin: 4px 0;">
+              Zeiler (2012): Check the physical units of $\Delta\vth$ (assuming dimensionless objective $J$):
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 20px; padding: 5px 12px; margin: 5px 0;" class="fragment" data-fragment-index="0">
+              $$\begin{aligned}
+              \text{1. SGD / Momentum:} \quad & \text{units of } \Delta\vth \propto \text{units of } \vec{g} = \text{units of } \frac{\partial J}{\partial \vth} \propto \color{#dc322f}{\frac{1}{\text{units of }\vth}} \\
+              \text{2. AdaGrad / RMSprop:} \quad & \text{units of } \Delta\vth \propto \text{units of } \frac{\vec{g}}{\text{RMS}[\vec{g}]} \propto \color{#cb4b16}{1 \quad (\text{dimensionless!})}
+              \end{aligned}$$
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 18.5px; padding: 5px 12px; margin: 5px 0;" class="fragment" data-fragment-index="1">
+              $$\text{3. Newton's Method (2nd Order):} \quad \Delta\vth = -\bm{H}^{-1}\vec{g} \propto \frac{\partial J / \partial \vth}{\partial^2 J / \partial \vth^2} \propto \frac{1 / \text{units of }\vth}{1 / (\text{units of }\vth)^2} = \color{#859900}{\text{units of }\vth \; \checkmark}$$
+            </blockquote>
+            <div style="font-size: 24px; margin-top: 6px;" class="fragment" data-fragment-index="2">
+              <alert>Since $\Big|\frac{\partial^2 J}{\partial \vth^2}\Big|^{-1} \propto \Big|\frac{\Delta\vth}{\vec{g}}\Big|$, we restore the right units by multiplying by $\text{RMS}[\Delta\vth]_{t-1}$!</alert>
+            </div>
+            <div class="slide-footer">
+              Zeiler, M. D. (2012). <a href="https://arxiv.org/abs/1212.5701" target="_blank">ADADELTA: An Adaptive Learning Rate Method</a> (<i>arXiv:1212.5701</i>).
+            </div>
+          </section>
+
+          <!-- 4.4 Adadelta -->
+          <section>
+            <h3>Adadelta: Matching Units Without Learning Rate η</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 24px; padding: 5px 14px; margin: 4px 0;">
+              Replace the arbitrary scalar $\eta$ in RMSprop's numerator with $\text{RMS}[\Delta\vth]_{t-1}$:
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 22.5px; padding: 6px 14px; margin: 6px 0;">
+              $$\begin{aligned}
+              \vec{g}_t &= \nabla_{\vth} \prob{J}{\vth_t}, \qquad \prob{E}{\vec{g}^2}_t = \gamma\prob{E}{\vec{g}^2}_{t-1} + (1-\gamma)\vec{g}_t^2 \\
+              \Delta\vth_t &= -\frac{\text{RMS}[\Delta\vth]_{t-1}}{\text{RMS}[\vec{g}]_t} \odot \vec{g}_t = -\frac{\sqrt{\prob{E}{\Delta\vth^2}_{t-1} + \epsilon}}{\sqrt{\prob{E}{\vec{g}^2}_t + \epsilon}} \odot \vec{g}_t \\
+              \prob{E}{\Delta\vth^2}_t &= \gamma\prob{E}{\Delta\vth^2}_{t-1} + (1-\gamma)\Delta\vth_t^2, \qquad \vth_{t+1} = \vth_t + \Delta\vth_t
+              \end{aligned}$$
+            </blockquote>
+            <div style="font-size: 23px; color: #073642; margin-top: 6px;" class="fragment">
+              <b>Result:</b> $\Delta\vth_t$ has the exact units of $\vth$, acts as a diagonal secant approximation, and needs no global $\eta$!
+            </div>
+            <div class="slide-footer">
+              Zeiler, M. D. (2012). <a href="https://arxiv.org/abs/1212.5701" target="_blank">ADADELTA: An Adaptive Learning Rate Method</a> (<i>arXiv:1212.5701</i>).
+            </div>
+          </section>
+
+          <!-- 4.5 Adam -->
+          <section>
+            <h3>Adam: Adaptive Moment Estimation (2015)</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 24px; padding: 5px 14px; margin: 4px 0;">
+              Fuse <b>Momentum</b> (1st moment $\vec{m}_t$) + <b>RMSprop</b> (2nd moment $\vec{v}_t$) + <b>Zero-Init Bias Correction</b>
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 20px; padding: 6px 12px; margin: 6px 0;">
+              $$\begin{aligned}
+              \vec{m}_t &= \beta_1 \vec{m}_{t-1} + (1 - \beta_1) \nabla_{\vth} \prob{J}{\vth_t} \qquad &&\text{(1st moment: Momentum EMA, }\beta_1 \simeq 0.9\text{)} \\
+              \vec{v}_t &= \beta_2 \vec{v}_{t-1} + (1 - \beta_2) \big(\nabla_{\vth} \prob{J}{\vth_t}\big)^2 \qquad &&\text{(2nd moment: RMSprop EMA, }\beta_2 \simeq 0.999\text{)} \\
+              \hat{\vec{m}}_t &= \frac{\vec{m}_t}{1 - \beta_1^t}, \qquad \hat{\vec{v}}_t = \frac{\vec{v}_t}{1 - \beta_2^t} \qquad &&\text{(Corrects }\vec{m}_0 = \vec{v}_0 = \vec{0}\text{ startup bias!)} \\
+              \vth_{t+1} &= \vth_t - \frac{\eta}{\sqrt{\hat{\vec{v}}_t} + \epsilon} \odot \hat{\vec{m}}_t \qquad &&(\epsilon \simeq 10^{-8})
+              \end{aligned}$$
+            </blockquote>
+            <div style="font-size: 22px; color: #073642; margin-top: 6px;" class="fragment">
+              <b>Why divide by $1 - \beta_2^t$?</b> At $t=1$ with $\beta_2=0.999$, $\vec{v}_1 = 0.001\vec{g}_1^2$ underestimates variance by $1000\times$ — without bias correction, the first step $1/\sqrt{\vec{v}_1}$ would be $\approx 31.6\times$ too huge!
+            </div>
+            <div class="slide-footer">
+              Kingma, D. P., &amp; Ba, J. (2015). <a href="https://arxiv.org/abs/1412.6980" target="_blank">Adam: A Method for Stochastic Optimization</a>. <i>ICLR 2015</i> (<i>arXiv:1412.6980</i>).
+            </div>
+          </section>
+
+          <!-- 4.6 Many More + AdamW -->
+          <section>
+            <h3>The Coordinate-Wise Optimizer Family &amp; AdamW</h3>
+            <row style="align-items: stretch; gap: 18px;">
+              <col50>
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 24px; width: 100%; box-sizing: border-box; padding: 5px 14px; margin: 4px 0;">
+                  Notable Extensions
+                </blockquote>
+                <ul style="display: block; width: 100%; box-sizing: border-box; font-size: 22px; line-height: 1.35; margin-top: 6px; padding-left: 26px;">
+                  <li> <b>AdaMax:</b> $\ell_\infty$-norm second moment $\max(\beta_2\vec{v}_{t-1}, |\vec{g}_t|)$
+                  <li> <b>Nadam:</b> Nesterov lookahead inside Adam's $\hat{\vec{m}}_t$
+                  <li> <b>AMSGrad:</b> Non-decreasing $\hat{\vec{v}}_t = \max(\hat{\vec{v}}_{t-1}, \vec{v}_t)$
+                  <li> <b>QHAdam / AggMo:</b> Multi-damping momentum
+                  <li> <b>AdamW</b> (Loshchilov &amp; Hutter, 2019): <b>Decoupled weight decay</b>
+                </ul>
+              </col50>
+              <col50>
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 24px; width: 100%; box-sizing: border-box; padding: 5px 14px; margin: 4px 0;">
+                  Why AdamW Beats Adam + $L_2$
+                </blockquote>
+                <div style="background: #eee8d5; padding: 8px 14px; border-radius: 6px; font-size: 21px; text-align: left; line-height: 1.32;">
+                  Adding $\frac{\lambda}{2}\|\vth\|^2$ to $J(\vth)$ puts $\lambda\vth_t$ inside $\vec{g}_t$, so Adam divides weight decay by $\sqrt{\hat{\vec{v}}_t}$ — weakening regularization on large-gradient weights!<br><br>
+                  <b>AdamW</b> decouples decay directly on $\vth_t$:
+                  <div style="text-align: center; margin-top: 4px; font-size: 21.5px;">
+                    $\displaystyle \vth_{t+1} = (1 - \eta\lambda)\vth_t - \frac{\eta}{\sqrt{\hat{\vec{v}}_t}+\epsilon}\odot\hat{\vec{m}}_t$
+                  </div>
+                </div>
+              </col50>
+            </row>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 23px; padding: 5px 14px; margin-top: 8px; text-align: center;" class="fragment">
+              Rule of thumb: <b>Use AdamW if in doubt</b> — unless optimizing 2D hidden matrices, where <b>Muon</b> shines!
+            </blockquote>
+            <div class="slide-footer">
+              Dozat (2016) <a href="https://openreview.net/forum?id=OM0jvwB8jIp57ZJjtNEZ" target="_blank">Nadam</a>; Reddi et al. (2018) <a href="https://openreview.net/forum?id=ryQu7f-RZ" target="_blank">AMSGrad</a>; Ma &amp; Yarats (2019) <a href="https://arxiv.org/abs/1810.06801" target="_blank">QHAdam</a>; Lucas et al. (2019) <a href="https://arxiv.org/abs/1804.00325" target="_blank">AggMo</a>; Loshchilov &amp; Hutter (2019) <a href="https://arxiv.org/abs/1711.05101" target="_blank">AdamW (ICLR 2019)</a>.
+            </div>
+          </section>
+
+          <!-- 4.7 NEW Slide: Muon (MomentUm Orthogonalized by Newton-Schulz) -->
+          <section>
+            <h3>The Latest &amp; Greatest: Muon Optimizer</h3>
+            <row style="align-items: center; gap: 16px;">
+              <col50 style="width: 52%;">
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 21px; padding: 5px 12px; margin: 0 0 6px 0;">
+                  Jordan et al. (2024) / Bernstein &amp; Newhouse: Matrix-Aware Steepest Descent
+                </blockquote>
+                <ul style="display: block; width: 100%; box-sizing: border-box; font-size: 19.5px; line-height: 1.28; margin: 0; padding-left: 22px;">
+                  <li class="fragment roll-in" data-fragment-index="0"> <b>Why Coordinate-Wise Adam Falls Short:</b> Hidden layers are <b>2D matrices</b> $\bm{W} \in \RR^{m\times n}$. Momentum $\bm{M}_t = \mu\bm{M}_{t-1} + \nabla_{\bm{W}}\prob{J}{\bm{W}_t}$ has skewed singular values ($\sigma_1 \gg \sigma_r$), so a few directions dominate while rare singular directions starve!
+                  <li class="fragment roll-in" data-fragment-index="1" style="margin-top: 5px;"> <b>Muon's Idea (SVD $\bm{M}_t = \bm{U}\bm{\Sigma}\bm{V}^T$):</b> Replace $\bm{M}_t$ with its nearest <b>semi-orthogonal matrix</b> ($\sigma_i \mapsto 1$ for all $i$):
+                    <div style="background: #eee8d5; padding: 4px 8px; border-radius: 4px; text-align: center; margin: 4px 0; font-size: 17.5px;">
+                      $\displaystyle \bm{W}_{t+1} = \bm{W}_t - \eta\,\text{Ortho}(\bm{M}_t), \; \text{Ortho}(\bm{M}_t) = \bm{U}\bm{V}^T$
+                    </div>
+                  <li class="fragment roll-in" data-fragment-index="2" style="margin-top: 5px;"> <b>Fast GPU Trick (No $O(n^3)$ SVD!):</b> Normalize $\bm{X}_0 = \bm{M}_t / \|\bm{M}_t\|_F$ and run <b>5 steps of Newton–Schulz</b> in $\text{bf16}$ ($<1\%$ FLOP overhead!):
+                    <div style="background: #eee8d5; padding: 4px 8px; border-radius: 4px; text-align: center; margin: 4px 0; font-size: 17.5px;">
+                      $\displaystyle \bm{X}_{k+1} = a\bm{X}_k + b(\bm{X}_k\bm{X}_k^T)\bm{X}_k + c(\bm{X}_k\bm{X}_k^T)^2\bm{X}_k$
+                    </div>
+                </ul>
+              </col50>
+              <col50 style="width: 46%;">
+                <svg viewBox="0 0 430 330" style="width: 100%; height: auto; background: #fdf6e3; border: 1px solid #93a1a1; border-radius: 8px;">
+                  <!-- Top Panel: Newton-Schulz Polynomial p_5(sigma) -->
+                  <text x="215" y="22" fill="#073642" font-size="13.5" font-weight="bold" text-anchor="middle" font-family="sans-serif">5-Step Newton–Schulz Maps All σᵢ ∈ (0, 1] → 1</text>
+                  <!-- Axes -->
+                  <line x1="48" y1="138" x2="395" y2="138" stroke="#586e75" stroke-width="1.5"/>
+                  <line x1="48" y1="34" x2="48" y2="142" stroke="#586e75" stroke-width="1.5"/>
+                  <!-- Target line y = 1 -->
+                  <line x1="48" y1="54" x2="395" y2="54" stroke="#859900" stroke-width="1.5" stroke-dasharray="5,3"/>
+                  <text x="38" y="58" fill="#859900" font-size="11.5" font-weight="bold" text-anchor="end" font-family="monospace">1.0</text>
+                  <text x="38" y="141" fill="#586e75" font-size="11.5" text-anchor="end" font-family="monospace">0.0</text>
+                  <text x="392" y="153" fill="#586e75" font-size="11" text-anchor="end" font-family="sans-serif">Input Singular Value σᵢ</text>
+                  <!-- Identity line y = x (Raw Momentum) -->
+                  <line x1="48" y1="138" x2="380" y2="54" stroke="#b58900" stroke-width="2" stroke-dasharray="4,3"/>
+                  <text x="275" y="108" fill="#b58900" font-size="11.5" font-weight="bold" text-anchor="middle" font-family="sans-serif">Raw Mₜ (σᵢ)</text>
+                  <!-- 1-step NS curve -->
+                  <path d="M 48 138 C 90 50, 160 46, 380 54" fill="none" stroke="#268bd2" stroke-width="1.8" opacity="0.65"/>
+                  <!-- 5-step NS curve (oscillates tightly around 1.0 across [0.05, 1.0]) -->
+                  <path d="M 48 138 L 62 56 L 95 50 L 145 58 L 210 50 L 290 57 L 380 53" fill="none" stroke="#dc322f" stroke-width="3"/>
+                  <text x="195" y="44" fill="#dc322f" font-size="12" font-weight="bold" font-family="sans-serif">5-Step Newton–Schulz p⁽⁵⁾(σᵢ) ≈ 1</text>
+
+                  <!-- Divider -->
+                  <line x1="20" y1="168" x2="410" y2="168" stroke="#eee8d5" stroke-width="2"/>
+
+                  <!-- Bottom Panel: Anisotropic Momentum vs Orthogonalized Muon Step -->
+                  <text x="110" y="188" fill="#cb4b16" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">Raw Momentum Mₜ = UΣVᵀ</text>
+                  <text x="320" y="188" fill="#859900" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">Muon Ortho(Mₜ) = UVᵀ</text>
+
+                  <!-- Left: Skewed Ellipse -->
+                  <g transform="translate(110, 242) rotate(-25)">
+                    <ellipse cx="0" cy="0" rx="68" ry="16" fill="rgba(203,75,22,0.14)" stroke="#cb4b16" stroke-width="2.5"/>
+                    <line x1="0" y1="0" x2="64" y2="0" stroke="#cb4b16" stroke-width="2.5"/>
+                    <line x1="0" y1="0" x2="0" y2="-14" stroke="#268bd2" stroke-width="2.5"/>
+                  </g>
+                  <text x="110" y="294" fill="#586e75" font-size="11.5" text-anchor="middle" font-family="sans-serif">σ₁ ≫ σ₂ (rare directions starve)</text>
+
+                  <!-- Arrow between them -->
+                  <text x="215" y="246" fill="#073642" font-size="18" font-weight="bold" text-anchor="middle" font-family="sans-serif">⇒</text>
+
+                  <!-- Right: Isotropic Circle -->
+                  <g transform="translate(320, 242) rotate(-25)">
+                    <circle cx="0" cy="0" r="42" fill="rgba(133,153,0,0.15)" stroke="#859900" stroke-width="2.5"/>
+                    <line x1="0" y1="0" x2="40" y2="0" stroke="#859900" stroke-width="2.5"/>
+                    <line x1="0" y1="0" x2="0" y2="-40" stroke="#268bd2" stroke-width="2.5"/>
+                  </g>
+                  <text x="320" y="294" fill="#586e75" font-size="11.5" text-anchor="middle" font-family="sans-serif">σ₁ = σ₂ = 1 (all directions move!)</text>
+
+                  <!-- Footer note inside SVG -->
+                  <rect x="14" y="302" width="402" height="22" rx="4" fill="#eee8d5"/>
+                  <text x="215" y="317" fill="#073642" font-size="10.5" font-weight="bold" text-anchor="middle" font-family="sans-serif">Rule: Muon for 2D hidden matrices W + AdamW for 1D embeddings/biases/heads</text>
+                </svg>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              Jordan, K. et al. (2024). <a href="https://kellerjordan.github.io/posts/muon/" target="_blank">Muon: An optimizer for hidden layers in neural networks</a>; &nbsp; Bernstein, J., &amp; Newhouse, L. (2024). <a href="https://arxiv.org/abs/2409.20325" target="_blank">Old Optimizer, New Norm: An Anthology</a>.
+            </div>
+            <aside class="notes">
+              Connect Muon directly to Lecture 4 (SVD) and Lecture 14 (Matrix Factorization):
+              1. In deep learning (LLMs, ViTs, MLPs), 95%+ of parameters live in 2D linear layer matrices W.
+              2. Standard Adam normalizes element-by-element, which is basis-dependent and still lets the top singular vector of the gradient dominate.
+              3. Muon (Keller Jordan et al. 2024, setting NanoGPT & LLM training speed records) orthogonalizes the momentum matrix M_t = U Sigma V^T -> U V^T using 5 fast Newton-Schulz matrix-multiply iterations!
+            </aside>
+          </section>
+
+          <!-- 4.8 Classic Animation Slide -->
+          <section data-background="figures/sgd_approaches.gif" data-background-size="contain">
+          </section>
+
+          <!-- 4.9 Interactive Demo 3: Adaptive Optimizers Arena -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 4px 0 8px 0; font-size: 38px; line-height: 1.1;">Adaptive Optimizers: Saddle Points, Valleys &amp; Spectral Steps</h3>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 0 0 -110px; user-select: none;">
+
+              <!-- Top Banner -->
+              <div id="ada-status-banner" style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 6px 14px; box-sizing: border-box; font-size: 12.5px; color: #073642; white-space: nowrap;">
+                <div>
+                  <b>Click 2D landscape</b> to place $\vec{\theta}_0$ and race 6 optimizers!
+                </div>
+                <div style="display: flex; gap: 10px; font-family: monospace; font-size: 12.5px; white-space: nowrap;">
+                  <span>t:<b id="ada-step-val">0</b></span>
+                  <span style="color: #dc322f;">SGD:<b id="ada-loss-sgd">--</b></span>
+                  <span style="color: #b58900;">Mom:<b id="ada-loss-mom">--</b></span>
+                  <span style="color: #6c71c4;">AdaG:<b id="ada-loss-adagrad">--</b></span>
+                  <span style="color: #2aa198;">RMS:<b id="ada-loss-rms">--</b></span>
+                  <span style="color: #268bd2;">Adam:<b id="ada-loss-adam">--</b></span>
+                  <span style="color: #859900;">Muon:<b id="ada-loss-muon">--</b></span>
+                </div>
+              </div>
+
+              <!-- Canvas -->
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="sgd-adaptive-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box; cursor: crosshair;"></canvas>
+              </div>
+
+              <!-- Controls Toolbar -->
+              <div style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 16px; box-sizing: border-box; font-size: 13.5px; color: #586e75; gap: 5px; white-space: nowrap;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; white-space: nowrap;">
+                  <div style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <label style="white-space: nowrap;"><b>Landscape:</b>
+                      <select id="ada-sel-surface" style="padding: 3px 8px; border: 1px solid #268bd2; border-radius: 4px; background: #fff; font-size: 12.5px; cursor: pointer;">
+                        <option value="saddle" selected>1. Saddle Point Plateau (θ₁² − θ₂² + 0.15θ₂⁴)</option>
+                        <option value="rosenbrock">2. Curved Banana Valley (Rosenbrock)</option>
+                        <option value="sparse">3. Sparse / Ill-Scaled Ravine (AdaGrad Stalls!)</option>
+                      </select>
+                    </label>
+                    <button id="ada-btn-step" style="cursor: pointer; padding: 4px 10px; border: 1px solid #268bd2; background: #fdf6e3; color: #268bd2; font-weight: bold; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">+1 Step</button>
+                    <button id="ada-btn-auto" style="cursor: pointer; padding: 4px 10px; border: 1px solid #2aa198; background: #eee8d5; color: #2aa198; font-weight: bold; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">▶ Auto-Race</button>
+                    <button id="ada-btn-reset" style="cursor: pointer; padding: 4px 10px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">↺ Reset</button>
+                    <label style="display: inline-flex; align-items: center; gap: 5px; cursor: pointer; margin-left: 4px; font-weight: bold; color: #268bd2; font-size: 12.5px; white-space: nowrap;">
+                      <input type="checkbox" id="ada-chk-bias" checked> <span>Adam Bias Correction (1 − βᵗ)</span>
+                    </label>
+                  </div>
+                  <div style="font-size: 12px; color: #586e75; white-space: nowrap;">
+                    Click anywhere on contour plot to relocate $\vec{\theta}_0$!
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(147,161,161,0.3); padding-top: 4px; white-space: nowrap;">
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Base Learning Rate (η):</span> <span id="ada-eta-val" style="font-family: monospace; font-weight: bold; color: #268bd2;">0.08</span>
+                    <input type="range" id="ada-eta-slider" min="0.02" max="0.25" step="0.01" value="0.08" style="width: 150px; cursor: pointer;">
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Momentum (β₁ / γ):</span> <span id="ada-b1-val" style="font-family: monospace; font-weight: bold; color: #b58900;">0.90</span>
+                    <input type="range" id="ada-b1-slider" min="0.50" max="0.98" step="0.02" value="0.90" style="width: 150px; cursor: pointer;">
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>2nd Moment Decay (β₂):</span> <span id="ada-b2-val" style="font-family: monospace; font-weight: bold; color: #2aa198;">0.95</span>
+                    <input type="range" id="ada-b2-slider" min="0.70" max="0.999" step="0.01" value="0.95" style="width: 150px; cursor: pointer;">
+                  </label>
+                </div>
+              </div>
+
+            </div>
+            <aside class="notes">
+              What to show in class:
+              1. On "1. Saddle Point Plateau": the starting point is near the saddle (0, 0) where the vertical gradient is tiny (dJ/dtheta_2 approx 0). Watch Vanilla SGD (red) get stuck on the saddle ridge while Adam (blue), RMSprop (cyan), and Muon (green) amplify the tiny vertical gradient via 1/sqrt(v_t) and escape immediately!
+              2. Uncheck "Adam Bias Correction (1 - beta^t)" and hit Reset: watch Adam's first few steps jump wildly because v_1 is biased toward 0!
+              3. Switch to "3. Sparse / Ill-Scaled Ravine": watch AdaGrad (purple) start fast and then freeze midway as its cumulative sum v_t grows large, while RMSprop, Adam, and Muon race all the way to the minimum!
+            </aside>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 6: LARGE-SCALE LEARNING TRADE-OFFS (BOTTOU & BOUSQUET)            -->
+        <!-- ========================================================================= -->
+        <section>
+          <!-- 6.1 Section Cover -->
+          <section>
+            <h2>Large-Scale Learning</h2>
+            <blockquote style="background-color: #eee8d5; width: 82%; margin: 20px auto; box-sizing: border-box; font-size: 28px; padding: 14px 20px; text-align: center;">
+              Why $O(1)$ stochastic updates beat $O(N)$ batch solvers when data is abundant
+            </blockquote>
+          </section>
+
+          <!-- 6.2 Bottou & Bousquet Table Slide -->
+          <section>
+            <h3>The Rise of SGD: Large-Scale Learning</h3>
+            <img width="920" style="border: 0; box-shadow: none;" src="figures/sgd_table.png" alt="Bottou and Bousquet 2007 Table"><br>
+            <div class="slide-footer">
+              Bottou, L., &amp; Bousquet, O. (2007). <a href="https://proceedings.neurips.cc/paper/2007/hash/0d3180d672e08b4c5312dcdafdf6ef36-Abstract.html" target="_blank">The Tradeoffs of Large Scale Learning</a>. <i>NeurIPS 2007</i> (<a href="https://research.google/blog/the-neurips-2018-test-of-time-award-the-trade-offs-of-large-scale-learning/" target="_blank">NeurIPS 2018 Test of Time Award</a>).
+            </div>
+            <aside class="notes">
+              Explain why this 2007 paper won the NeurIPS Test of Time Award: before 2007, optimization researchers looked down on SGD because its convergence rate O(1/t) is much slower than Newton/L-BFGS quadratic convergence. Bottou & Bousquet proved why SGD wins anyway when N is huge!
+            </aside>
+          </section>
+
+          <!-- 6.3 NEW Intuition Slide: Why O(1) SGD Beats O(N) Batch Optimization -->
+          <section>
+            <h3>Why O(1) SGD Beats O(N) Batch Solvers at Scale</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 23.5px; padding: 5px 14px; margin: 4px 0;">
+              Bottou &amp; Bousquet (2007): Decompose total excess test risk ${\cal E}$ (recall Lectures 2–3!):
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 22px; padding: 6px 12px; margin: 6px 0; text-align: center;">
+              $\displaystyle {\cal E} \;=\; \underbrace{\big(\prob{R}{f^*_{\hclass}} - \prob{R}{f^*}\big)}_{{\cal E}_{\text{app}}\text{: Model Capacity}} \;+\; \underbrace{\big(\prob{R}{f_N} - \prob{R}{f^*_{\hclass}}\big)}_{{\cal E}_{\text{est}}\text{: Statistical Noise } \sim O(1/\sqrt{N})} \;+\; \underbrace{\big(\prob{R}{\tilde{f}_N} - \prob{R}{f_N}\big)}_{{\cal E}_{\text{opt}}\text{: Optimization Error } \le \rho}$
+            </blockquote>
+            <ul style="list-style-type: none; display: block; width: 100%; box-sizing: border-box; font-size: 23px; margin: 6px 0 0 0; padding: 0;">
+              <li class="fragment roll-in"> <b>1. Don't Over-Optimize Statistical Noise:</b> Since empirical risk $f_N$ already differs from true risk $f^*_{\hclass}$ by ${\cal E}_{\text{est}} \propto 1/\sqrt{N}$, driving optimization tolerance $\rho \ll {\cal E}_{\text{est}}$ (e.g. $\rho = 10^{-12}$) gives <b>zero test-set benefit</b>!
+              <li class="fragment roll-in" style="margin-top: 5px;"> <b>2. Fixed Time Budget $T_{\max}$:</b> Batch GD / 2nd-order methods spend $O(N)$ per step to shrink $\rho$ exponentially ($\log\frac{1}{\rho}$), but can only afford a few steps when $N \sim 10^8$.
+              <li class="fragment roll-in" style="margin-top: 5px;"> <b>3. Why SGD Wins:</b> SGD's per-step cost is <b>$O(1)$ (independent of $N$!)</b> — to reach statistical precision $\rho \propto 1/N$, total time $T(\rho)$ is $O(1/\rho)$ for SGD vs. $O(N\log\frac{1}{\rho})$ for Batch GD!
+            </ul>
+            <div class="slide-footer">
+              Bottou, L., &amp; Bousquet, O. (2007). <a href="https://proceedings.neurips.cc/paper/2007/hash/0d3180d672e08b4c5312dcdafdf6ef36-Abstract.html" target="_blank">The Tradeoffs of Large Scale Learning</a>. <i>Advances in Neural Information Processing Systems (NeurIPS)</i>, 20.
+            </div>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 7: TAKE HOME POINTS (STANDALONE SINGLE-SLIDE COLUMN ON RIGHT)     -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h3>Take Home Points</h3>
+            <ul style="font-size: 24.5px; line-height: 1.38; max-width: 940px; margin: 10px auto; text-align: left;">
+              <li class="fragment" data-fragment-index="0">
+                <b>Unbiased Mini-Batch Gradients:</b> $\hat{\vec{g}}_{\cal B}(\vth)$ is an unbiased estimate of $\nabla\prob{J}{\vth}$ with cost $O(B)$ and variance $\bm{\Sigma}_g / B$, unlocking GPU matrix parallelism.
+              </li>
+              <li class="fragment" data-fragment-index="1" style="margin-top: 6px;">
+                <b>Noise Ball &amp; Robbins–Monro Schedules:</b> Constant-$\eta$ SGD oscillates in an $O(\sqrt{\eta\sigma^2})$ ball around $\vth^*$; annealing $\eta_t$ ($\sum \eta_t = \infty, \sum \eta_t^2 < \infty$) guarantees convergence.
+              </li>
+              <li class="fragment" data-fragment-index="2" style="margin-top: 6px;">
+                <b>Ravines, Momentum &amp; Nesterov Lookahead:</b> Steep canyons ($\kappa = \lambda_{\max}/\lambda_{\min} \gg 1$) make GD zig-zag; Momentum damps oscillations and NAG evaluates $\nabla\prob{J}{\vth_t - \gamma\vec{v}_{t-1}}$ at the lookahead point.
+              </li>
+              <li class="fragment" data-fragment-index="3" style="margin-top: 6px;">
+                <b>Adaptive Preconditioning (AdaGrad $\to$ RMSprop $\to$ AdamW):</b> Normalizing by $\sqrt{\EE[\vec{g}^2]_t} + \epsilon$ with bias correction $(1-\beta^t)$ equalizes per-coordinate step sizes.
+              </li>
+              <li class="fragment" data-fragment-index="4" style="margin-top: 6px;">
+                <b>Muon &amp; Large-Scale Learning:</b> <b>Muon</b> orthogonalizes 2D momentum matrices ($\bm{U}\bm{V}^T$ via 5-step Newton–Schulz) so every singular direction advances equally; at large $N$, $O(1)$ stochastic steps beat $O(N)$ batch methods.
+              </li>
+            </ul>
+          </section>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/math/math.js"></script>
+    <script src="plugin/chalkboard/plugin.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/fullscreen/fullscreen.js"></script>
+    <script src="plugin/menu/menu.js"></script>
+
+    <script>
+      Reveal.initialize({
+          hash: true,
+          margin: 0.01,
+          minScale: 0.01,
+          maxScale: 1.65,
+          viewDistance: 100,
+          mobileViewDistance: 100,
+          preloadIframes: true,
+
+          menu: {
+              themes: false,
+              openSlideNumber: true,
+              openButton: false,
+          },
+
+          chalkboard: {
+              boardmarkerWidth: 1,
+              chalkWidth: 2,
+              chalkEffect: 1,
+              toggleNotesButton: false,
+              toggleChalkboardButton: false,
+              slideWidth: Reveal.width,
+              slideHeight: Reveal.height,
+              readOnly: false,
+              theme: "blackboard",
+              eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+          },
+
+          math: {
+              mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+              config: 'TeX-AMS_SVG-full',
+              TeX: {
+                  Macros: {
+                      RR: '\\mathbb{R}',
+                      PP: '\\mathbb{P}',
+                      EE: '\\mathbb{E}',
+                      NN: '\\mathbb{N}',
+                      vth: '\\vec{\\theta}',
+                      loss: '{\\cal l}',
+                      hclass: '{\\cal H}',
+                      CD: '{\\cal D}',
+                      def: '\\stackrel{\\text{def}}{=}',
+                      pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                      vec: ['\\boldsymbol{\\mathbf #1}', 1],
+                      set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                      bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                      argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                      argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                      prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                  },
+                  loader: {load: ['[tex]/color', '[tex]/cancel']},
+                  extensions: ["color.js", "cancel.js"],
+                  tex: {packages: {'[+]': ['color', 'cancel']}},
+                  svg: {
+                      fontCache: 'global'
+                  }
               }
-              else {
-                  $('div.reveal').append(header);
+          },
+
+          plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+      });
+
+      Reveal.configure({ fragments: true });
+      Reveal.configure({ slideNumber: true });
+      Reveal.configure({ slideNumber: 'c / t' });
+      function ensureAllSlidesLoaded() {
+          if (!Reveal.isReady()) return;
+          Reveal.getSlides().forEach(function(s) {
+              Reveal.loadSlide(s);
+          });
+      }
+      Reveal.addEventListener('ready', ensureAllSlidesLoaded, false);
+      Reveal.addEventListener('slidechanged', ensureAllSlidesLoaded, false);
+      Reveal.addEventListener('overviewshown', ensureAllSlidesLoaded, false);
+      Reveal.addEventListener('fragmentshown', function(event) {
+          var fragments = event.fragments || (event.fragment ? [event.fragment] : []);
+          fragments.forEach(function(frag) {
+              var idx = frag.getAttribute('data-fragment-index');
+              var slide = Reveal.getCurrentSlide();
+              if (!slide || !slide.querySelector('#ravine-light-anim')) return;
+              var lightAnim = document.getElementById('ravine-light-anim');
+              var heavyAnim = document.getElementById('ravine-heavy-anim');
+              if (idx === '1' && lightAnim && typeof lightAnim.beginElement === 'function') {
+                  lightAnim.beginElement();
+              } else if (idx === '2') {
+                  if (lightAnim && typeof lightAnim.beginElement === 'function') lightAnim.beginElement();
+                  if (heavyAnim && typeof heavyAnim.beginElement === 'function') heavyAnim.beginElement();
               }
-            </script>
+          });
+      }, false);
+      Reveal.addEventListener( 'darkside', function() {
+          document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+      }, false );
+      Reveal.addEventListener( 'brightside', function() {
+          document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+      }, false );
+    </script>
+
+    <style type="text/css">
+      /* 1. Style header/footer <div> so they are positioned as desired. */
+      #header-left {
+          position: absolute;
+          top: 0%;
+          left: 0%;
+      }
+      #header-right {
+          position: absolute;
+          top: 0%;
+          right: 0%;
+      }
+      #footer-left {
+          position: absolute;
+          bottom: 0%;
+          left: 0%;
+      }
+    </style>
+
+    <!-- // 2. Create hidden header/footer -->
+    <div id="hidden" style="display:none;">
+      <div id="header">
+        <div id="header-left"><h4>CS8850</h4></div>
+        <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+        <div id="footer-left">
+          <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+               src="figures/valentino.png" alt="robot learning">
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+      var header = $('#header').html();
+      if ( window.location.search.match( /print-pdf/gi ) ) {
+          Reveal.addEventListener( 'ready', function( event ) {
+              $('.slide-background').append(header);
+          });
+      }
+      else {
+          $('div.reveal').append(header);
+      }
+    </script>
+
+    <!-- Interactive Demonstrations for Lecture 15 -->
+    <script src="js/sgd_demos.js"></script>
 
   </body>
 </html>

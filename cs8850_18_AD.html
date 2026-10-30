@@ -4,15 +4,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+    <link href="css/fontawesome-free-6.2.1-web/css/all.css" rel="stylesheet">
 
     <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
     <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
     <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
 
-    <title>Advanced Machine Learning</title>
+    <title>Advanced Machine Learning: Lecture 18 — Automatic Differentiation</title>
 
     <meta name="description" content="CS8850 GSU class">
     <meta name="author" content="Sergey M Plis">
@@ -20,18 +18,17 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-
-    <script src="plugin/math/math.js"></script>
-    <!-- <script src="plugin/math/tex_fragments.js"></script> -->
-
-
     <link rel="stylesheet" href="dist/reset.css">
     <link rel="stylesheet" href="dist/reveal.css">
     <!-- Code syntax highlighting -->
     <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
-    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <style>
+      .reveal .slide-footer {
+        bottom: 18px !important;
+      }
+    </style>
     <!-- Printing and PDF exports -->
     <script>
       var link = document.createElement( 'link' );
@@ -45,591 +42,952 @@
 
   <body>
     <div class="reveal">
-      <!-- In between the <div="reveal"> and the <div class="slides">-->
-          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
-          <!-- In between the <div="reveal"> and the <div class="slides">-->
-              <!-- Any section element inside of this container is displayed as a slide -->
-              <div class="slides">
-	        <section>
-	          <section>
-	            <p>
-	              <h2>Advanced Machine Learning</h2>
-                      <h3>18: Algorithmic Differentiation</h3>
-	            <p>
-	          </section>
+      <div class="slides">
 
-                  <section data-fullscreen>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="50%"
-                         src="figures/Oct28_2021_youarehere.png" alt="you are here">
+        <!-- ========================================================================= -->
+        <!-- SECTION 1: TITLE, SCHEDULE, AND OUTLINE                                   -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <p>
+              <h2>Advanced Machine Learning</h2>
+              <h3>18: Algorithmic Differentiation</h3>
+            <p>
+          </section>
 
-                  </section>
+          <!-- Schedule Slide (Fall 2026 synced, Nov 04 marker) -->
+          <section>
+            <h3>Schedule (you are here <i class='fa fa-map-marker' style='color: #FA6900;'></i>)</h3>
+            <row>
+              <col50>
+                <table style="font-size:14px; white-space: nowrap;">
+                  <tr>
+                    <th>#</th>
+                    <th>date</th>
+                    <th>topic</th>
+                    <th>description</th>
+                  </tr>
+                  <tr><td>1</td><td>24-Aug-2026</td><td>Introduction</td><td></td></tr>
+                  <tr><td>2</td><td>26-Aug-2026</td><td>Foundations of learning</td><td>Drop/Add</td></tr>
+                  <tr><td>3</td><td>31-Aug-2026</td><td>PAC learnability</td><td>HW1</td></tr>
+                  <tr><td>4</td><td>02-Sep-2026</td><td>Linear learning models</td><td></td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>5</td><td>07-Sep-2026</td><td><em>Labor Day Holiday</em></td><td>Holiday</td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>6</td><td>09-Sep-2026</td><td>Principal Component Analysis</td><td>Project ideas</td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>7</td><td>14-Sep-2026</td><td>Curse of Dimensionality</td><td>HW2, HW1 due</td></tr>
+                  <tr><td>8</td><td>16-Sep-2026</td><td>Bayesian Decision Theory</td><td></td></tr>
+                  <tr><td>9</td><td>21-Sep-2026</td><td>Parameter estimation: MLE</td><td></td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>10</td><td>23-Sep-2026</td><td>Parameter estimation: MAP &amp; NB</td><td>finalize teams</td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>11</td><td>28-Sep-2026</td><td>Logistic Regression</td><td>HW3, HW2 due</td></tr>
+                  <tr><td>12</td><td>30-Sep-2026</td><td>Kernel Density Estimation</td><td></td></tr>
+                  <tr><td>13</td><td>05-Oct-2026</td><td>Support Vector Machines</td><td></td></tr>
+                  <tr><td>14</td><td>07-Oct-2026</td><td>Matrix Factorization</td><td></td></tr>
+                  <tr style="background-color:#E5DDCB;"><td>15</td><td>12-Oct-2026</td><td>* Midterm</td><td>Exam, HW3 due</td></tr>
+                  <tr><td>16</td><td>14-Oct-2026</td><td>k-means clustering</td><td></td></tr>
+                  <tr style='background-color: #69D2E7;'><td>17</td><td>19-Oct-2026</td><td>Invited: Intro to Causal Learning I</td><td></td></tr>
+                </table>
+              </col50>
 
-	          <section>
-	            <h3>Outline for the lecture</h3>
-                    <ul>
-                      <li class="fragment roll-in"> <h3> Algorithmic differentiation</h3>
-                      <li class="fragment roll-in"> <h3> Forward mode AD </h3>
-                      <li class="fragment roll-in"> <h3> Backpropagation </h3>
-                      <li class="fragment roll-in"> <h3> Reverse mode AD </h3>
-	            </ul>
-                  </section>
-                </section>
+              <col50>
+                <table style="font-size:14px; white-space: nowrap; vertical-align: top;">
+                  <tr>
+                    <th>#</th>
+                    <th>date</th>
+                    <th>topic</th>
+                    <th>description</th>
+                  </tr>
+                  <tr style='background-color: #69D2E7;'><td>18</td><td>21-Oct-2026</td><td>Invited: Intro to Causal Learning II</td><td></td></tr>
+                  <tr style="background-color:#E5DDCB;"><td>19</td><td>26-Oct-2026</td><td>* Mid-point projects checkpoint</td><td>HW4, P</td></tr>
+                  <tr><td>20</td><td>28-Oct-2026</td><td>Expectation Maximization</td><td></td></tr>
+                  <tr><td>21</td><td>02-Nov-2026</td><td>Stochastic Gradient Descent</td><td></td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>22<i class='fa fa-map-marker' style='color: #FA6900;'></i></td><td>04-Nov-2026</td><td>Automatic Differentiation</td><td><i class='fa fa-map-marker' style='color: #FA6900;'></i></td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>23</td><td>09-Nov-2026</td><td>Nonlinear embedding approaches</td><td>HW5, HW4 due</td></tr>
+                  <tr><td>24</td><td>11-Nov-2026</td><td>Model comparison</td><td></td></tr>
+                  <tr><td>25</td><td>16-Nov-2026</td><td>Model Calibration</td><td></td></tr>
+                  <tr><td>26</td><td>18-Nov-2026</td><td>Convolutional Neural Networks</td><td></td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>27</td><td>23-Nov-2026</td><td><em>Thanksgiving Break</em></td><td>Holiday</td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>28</td><td>25-Nov-2026</td><td><em>Thanksgiving Break</em></td><td>Holiday</td></tr>
+                  <tr><td>29</td><td>30-Nov-2026</td><td>Word Embedding</td><td></td></tr>
+                  <tr style="background-color:#E5DDCB;"><td>30</td><td>02-Dec-2026</td><td>Project Final Presentations</td><td>HW5 due, P</td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>31</td><td>07-Dec-2026</td><td>Presentation spillover / Exam prep</td><td>Classes End</td></tr>
+                  <tr style="background-color:#E5DDCB;"><td>32</td><td>09-Dec-2026</td><td>* Final Exam</td><td>Exam</td></tr>
+                  <tr style='background-color: #E0E4CC;'><td>33</td><td>16-Dec-2026</td><td>Project Reports</td><td>due</td></tr>
+                  <tr style="background-color:#FBEEC2;"><td>34</td><td>17-Dec-2026</td><td>Grades due 5 p.m.</td><td>PAWS</td></tr>
+                </table>
+              </col50>
+            </row>
+          </section>
 
-	        <section>
-                  <section>
-                    <h2>Algorithmic Differentiation (AD)</h2>
-                    <blockquote style="width: 100%;">
-                      ".. may be one of the best scientific computing techniques you’ve never heard of."
-                      <br>
-                      <a href="https://alexey.radul.name/ideas/2013/introduction-to-automatic-differentiation/">Alexey Radul</a>
-                    </blockquote>
-                  </section>
+          <section>
+            <h3>Outline for the lecture</h3>
+            <ul>
+              <li class="fragment roll-in"> Algorithmic differentiation
+              <li class="fragment roll-in"> Forward mode AD
+              <li class="fragment roll-in"> Backpropagation
+              <li class="fragment roll-in"> Reverse mode AD
+            </ul>
+          </section>
+        </section>
 
-                  <section>
-                    <blockquote style="background-color: #eee8d5; width: 100%;" class="fragment" data-fragment-index="0">
-                      The very first computer science PhD dissertation introduced forward accumulation mode automatic differentiation.
-                    </blockquote>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;" class="fragment" data-fragment-index="1">
-                      <center>
-                        Wengert (1964)
-                      </center>
-                    </blockquote>
-                  </section>
+        <!-- ========================================================================= -->
+        <!-- SECTION 2: ALGORITHMIC DIFFERENTIATION (AD)                               -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h3>Algorithmic Differentiation (AD)</h3>
+            <blockquote style="width: 100%; box-sizing: border-box;">
+              ".. may be one of the best scientific computing techniques you’ve never heard of."
+              <br>
+              <a href="https://alexey.radul.name/ideas/2013/introduction-to-automatic-differentiation/">Alexey Radul</a>
+            </blockquote>
+          </section>
 
-                  <section  data-background="figures/AD_paper.png" background-size="cover">
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%">
-                      Robert Edwin Wengert. A simple automatic derivative evaluation program. Communications of the ACM 7(8):463–4, Aug 1964.
-                    </blockquote>
-                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 32px;" class="left bordered">
-                      A procedure for automatic evaluation of total/partial derivatives of arbitrary algebraic functions is presented. The technique permits computation of numerical values of derivatives without developing analytical expressions for the derivatives. <span class="fragment highlight-red" data-fragment-index="0">The key to the method is the decomposition of the given function</span>, by introduction of intermediate variables, <span class="fragment highlight-red" data-fragment-index="0">into a series of elementary functional steps</span>. A library of elementary function subroutines is provided for the automatic evaluation and differentiation of these new variables. The final step in this process produces the desired function’s derivative. The main feature of this approach is its simplicity. It can be used as a quick-reaction tool where the derivation of analytical derivatives is laborious and also as a debugging tool for programs which contain derivatives.
-                    </blockquote>
-                  </section>
+          <section>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box;" class="fragment" data-fragment-index="0">
+              The very first computer science PhD dissertation introduced forward accumulation mode automatic differentiation.
+            </blockquote>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%; box-sizing: border-box; text-align: center;" class="fragment" data-fragment-index="1">
+              Wengert (1964)
+            </blockquote>
+          </section>
 
-                  <section data-background="figures/wengert.png" background-size="cover">
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                         src="figures/wengert2.png" class="bordered" alt="Wengert dissertation">
-                  </section>
+          <section data-background="figures/AD_paper.png" background-size="cover">
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 26px;">
+              Robert Edwin Wengert. A simple automatic derivative evaluation program. Communications of the ACM 7(8):463–4, Aug 1964.
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 26px;" class="left bordered">
+              A procedure for automatic evaluation of total/partial derivatives of arbitrary algebraic functions is presented. The technique permits computation of numerical values of derivatives without developing analytical expressions for the derivatives. <span class="fragment highlight-red" data-fragment-index="0">The key to the method is the decomposition of the given function</span>, by introduction of intermediate variables, <span class="fragment highlight-red" data-fragment-index="0">into a series of elementary functional steps</span>. A library of elementary function subroutines is provided for the automatic evaluation and differentiation of these new variables. The final step in this process produces the desired function’s derivative. The main feature of this approach is its simplicity. It can be used as a quick-reaction tool where the derivation of analytical derivatives is laborious and also as a debugging tool for programs which contain derivatives.
+            </blockquote>
+          </section>
 
-                  <section>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%">
-                      R. E. Bellman, H. Kagiwada, and R. E. Kalaba (1965) Wengert’s numerical method for partial derivatives, orbit determination and quasilinearization, Communications of the ACM 8(4):231–2, April 1965, doi:10.1145/363831.364886
-                    </blockquote>
-                    <blockquote style="background-color: #eee8d5; font-size: 34px; width: 100%" class="left">
-                      In a recent article in the Communications of the ACM, R. Wengert suggested a technique for machine evaluation of the partial derivatives of a function given in analytical form. In solving nonlinear boundary-value problems using quasilinearization many partial derivatives must be formed analytically and then evaluated numerically. <span class="fragment highlight-red" data-fragment-index="0">Wengert’s method</span> appears very attractive from the programming viewpoint and <span class="fragment highlight-red" data-fragment-index="0">permits the treatment of large systems</span> of differential equations <span class="fragment highlight-red" data-fragment-index="0">which might not otherwise be undertaken</span>.
-                    </blockquote>
-                  </section>
+          <section data-background="figures/wengert.png" background-size="cover">
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="860"
+                 src="figures/wengert2.png" class="bordered" alt="Wengert dissertation">
+          </section>
 
-                  <section>
-                    <blockquote style="background-color: #eee8d5; font-size: 40px;" class="left">
-                      Automatic Differentiation (AD) mechanically calculates the derivatives (Leibnitz, 1664; Newton, 1704) of functions expressed as computer programs, at machine precision, and with complexity guarantees.
-                    </blockquote>
-                  </section>
+          <section>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 26px;">
+              R. E. Bellman, H. Kagiwada, and R. E. Kalaba (1965) Wengert’s numerical method for partial derivatives, orbit determination and quasilinearization, Communications of the ACM 8(4):231–2, April 1965, doi:10.1145/363831.364886
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; font-size: 28px; width: 100%; box-sizing: border-box;" class="left">
+              In a recent article in the Communications of the ACM, R. Wengert suggested a technique for machine evaluation of the partial derivatives of a function given in analytical form. In solving nonlinear boundary-value problems using quasilinearization many partial derivatives must be formed analytically and then evaluated numerically. <span class="fragment highlight-red" data-fragment-index="0">Wengert’s method</span> appears very attractive from the programming viewpoint and <span class="fragment highlight-red" data-fragment-index="0">permits the treatment of large systems</span> of differential equations <span class="fragment highlight-red" data-fragment-index="0">which might not otherwise be undertaken</span>.
+            </blockquote>
+          </section>
 
-                  <section>
-                    <h2>Automatic Differentiation</h2>
-                    <ul  style="list-style-type: disk;">
-                      <li class="fragment roll-in" data-fragment-index="1"> Derivative of $f: \RR^n \to \RR^m$ is $m\times n$ "Jacobian matrix" $\bm{J}$.
-                      <li class="fragment roll-in" data-fragment-index="2"> AD in the forward accumulation mode: $\bm{J}v$ (Wengert, 1964)
-                      <li class="fragment roll-in" data-fragment-index="3"> AD in the reverse accumulation mode, $\bm{J}^Tv$ (Speelpenning, 1980)
-                      <li class="fragment roll-in" data-fragment-index="4"> About a zillion other modes and tricks
-                      <li class="fragment roll-in" data-fragment-index="5"> Vibrant field with regular workshops, conferences, updated community portal
-                        (<a href="http://autodiff.org" target="_blank">http://autodiff.org</a>)
-                    </ul>
-                  </section>
+          <section>
+            <blockquote style="background-color: #eee8d5; font-size: 38px; width: 100%; box-sizing: border-box;" class="left">
+              Automatic Differentiation (AD) mechanically calculates the derivatives (Leibnitz, 1664; Newton, 1704) of functions expressed as computer programs, at machine precision, and with complexity guarantees.
+            </blockquote>
+          </section>
 
-                  <section>
-                    <h2>What is AD?</h2>
-                    <ul  style="list-style-type: none; font-size: 22pt">
-                      <li class="fragment roll-in" data-fragment-index="0"> <em>Automatic Differentiation</em>
-                        <ul  style="list-style-type: none; font-size: 22pt">
-                          <li class="fragment roll-in" data-fragment-index="1"> aka <em>Algorithmic Differentiation</em>
-                            <ul  style="list-style-type: none; font-size: 22pt">
-                              <li class="fragment roll-in" data-fragment-index="2"> aka <em>Computational Differentiation</em>
-                            </ul>
-                        </ul>
-                    </ul>
-                    <dl  style="list-style-type: disk; font-size: 22pt">
-                      <span class="fragment roll-in" data-fragment-index="3">
-                        <dt>AD Type I</dt>
-                        <dd>A calculus for efficiently calculating derivatives of functions specified by a set of equations.
-                        </dd>
-                      </span>
-                      <span class="fragment roll-in" data-fragment-index="4">
-                        <dt>AD Type II</dt>
-                        <dd>A way of transforming a computer program implementing a numeric function to also efficiently calculate some derivatives.</dd>
-                      </span>
-                      <span class="fragment roll-in" data-fragment-index="5">
-                        <dt>AD Type III</dt>
-                        <dd>
-                          A computer program which automatically transforms an input computer program specifying a numeric function into one that also efficiently calculates derivatives.
-                        </dd>
-                      </span>
-                    </dl>
-                  </section>
+          <section>
+            <h2>Automatic Differentiation</h2>
+            <ul style="list-style-type: disc;">
+              <li class="fragment roll-in" data-fragment-index="1"> Derivative of $f: \RR^n \to \RR^m$ is $m\times n$ "Jacobian matrix" $\bm{J}$.
+              <li class="fragment roll-in" data-fragment-index="2"> AD in the forward accumulation mode: $\bm{J}\vec{v}$ (Wengert, 1964)
+              <li class="fragment roll-in" data-fragment-index="3"> AD in the reverse accumulation mode: $\bm{J}^T\vec{v}$ (Speelpenning, 1980)
+              <li class="fragment roll-in" data-fragment-index="4"> About a zillion other modes and tricks
+              <li class="fragment roll-in" data-fragment-index="5"> Vibrant field with regular workshops, conferences, updated community portal
+                (<a href="http://autodiff.org" target="_blank">http://autodiff.org</a>)
+            </ul>
+          </section>
 
-                  <section data-background="figures/logisticbifurcation.png" background-size="cover">
-                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">
-                      AD is not Numerical Differentiation</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="1000"
-                         src="figures/ADnotND.svg" alt="ADnotND">
-                    <blockquote style="background-color: #eee8d5; font-size: 40px; width: 100%;" class="fragment roll-in">
-                      Numerical diffirentiation is a problematic approximation
-                      <ul  style="list-style-type: disk; font-size: 22pt">
-                        <li class="fragment roll-in"> though shalt not add small numbers to big numbers
-                        <li class="fragment roll-in"> though shalt not subtract numbers which are approximately equal
-                      </ul>
-                    </blockquote>
-                  </section>
+          <section>
+            <h2>What is AD?</h2>
+            <ul style="list-style-type: none; font-size: 26px; margin-bottom: 10px;">
+              <li class="fragment roll-in" data-fragment-index="0"> <em>Automatic Differentiation</em> $\;\equiv\;$ <em>Algorithmic Differentiation</em> $\;\equiv\;$ <em>Computational Differentiation</em>
+            </ul>
+            <dl style="font-size: 25px; width: 100%;">
+              <span class="fragment roll-in" data-fragment-index="1">
+                <dt>AD Type I</dt>
+                <dd>A calculus for efficiently calculating derivatives of functions specified by a set of equations.</dd>
+              </span>
+              <span class="fragment roll-in" data-fragment-index="2">
+                <dt>AD Type II</dt>
+                <dd>A way of transforming a computer program implementing a numeric function to also efficiently calculate some derivatives.</dd>
+              </span>
+              <span class="fragment roll-in" data-fragment-index="3">
+                <dt>AD Type III</dt>
+                <dd>A computer program which automatically transforms an input computer program specifying a numeric function into one that also efficiently calculates derivatives.</dd>
+              </span>
+            </dl>
+          </section>
 
-                  <section data-background="figures/logisticbifurcation.png" background-size="cover">
-                    <h3 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">
-                      What is wrong with Numerical Differentiation
-                    </h3>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="80%"
-                         src="figures/truncation_error.svg" alt="round off and truncation errors">
-                  </section>
+          <section data-background="figures/logisticbifurcation.png" background-size="cover">
+            <h3 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">
+              AD is not Numerical Differentiation
+            </h3>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="940"
+                 src="figures/ADnotND.svg" alt="ADnotND">
+            <blockquote style="background-color: #eee8d5; font-size: 32px; width: 100%; box-sizing: border-box;" class="fragment roll-in">
+              Numerical differentiation is a problematic approximation:
+              <ul style="list-style-type: disc; font-size: 26px; margin-top: 6px;">
+                <li class="fragment roll-in"> thou shalt not add small numbers to big numbers
+                <li class="fragment roll-in"> thou shalt not subtract numbers which are approximately equal
+              </ul>
+            </blockquote>
+          </section>
 
-                  <section data-background="figures/logisticbifurcation.png" background-size="cover">
-                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">
-                      AD is not Symbolic Differentiation
-                    </h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0); margin-bottom: -10px; margin-top: -10px;" width="1000"
-                         src="figures/ADsnotSymbolic.svg" alt="ADnotSymbolic">
-                    <blockquote class="fragment roll-in" style="background-color: #eee8d5; font-size: 20px; width: 100%; margin-top: -100px;">
-                      \begin{align}
-                      f(\vec{x}) & = \prod_{i=1}^d x_i \\
-                      \nabla f(\vec{x}) & = \left(\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \dots, \frac{\partial f}{\partial x_d},\right)
-                      = \left(\begin{array}{ccccc}
-                      x_2x_3x_4\cdots x_{d-1}x_d, \\
-                      x_1x_3x_4\cdots x_{d-1}x_d, \\
-                      x_1x_2x_4\cdots x_{d-1}x_d, \\
-                      \vdots \\
-                      x_1x_2x_3\cdots x_{d-1} \\
-                      \end{array}\right)
-                      \end{align}
-                    </blockquote>
-                    <div class="slide-footer">
-                      Example from Speelpenning, figure modified from Baydin<br>
-                      For an alternative opinion see: <a href="https://arxiv.org/abs/1904.02990v3" target="blank_">On the Equivalence of Forward Mode Automatic Differentiation and Symbolic Differentiation
-</a>
-                    </div>
-                  </section>
+          <section data-background="figures/logisticbifurcation.png" background-size="cover">
+            <h3 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">
+              What is wrong with Numerical Differentiation
+            </h3>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="700"
+                 src="figures/truncation_error.svg" alt="round off and truncation errors">
+          </section>
 
-                  <section>
-                    <h2>
-                      We want exact derivative at a point!
-                    </h2>
-                    <img width="100%" src="figures/example_derivatives.svg" alt="Derivatives">
-                  </section>
-                </section>
+          <!-- Clarification Slide: Two Competing Errors + O(n) Scaling -->
+          <section>
+            <h3>Why Finite Differences Fail in Machine Learning</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 25px; padding: 6px 14px;">
+              Taylor expansion of $\frac{f(x+h)-f(x)}{h}$ in finite-precision floating point ($\varepsilon_{\text{mach}} \approx 10^{-16}$):
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; padding: 8px 12px; text-align: center;">
+              $\displaystyle \frac{\text{fl}(f(x+h)) - \text{fl}(f(x))}{h} \;=\; f'(x) \;+\; \underbrace{\frac{h}{2}f''(x) + O(h^2)}_{\substack{\text{Truncation Error } O(h)\\ \text{dominates when } h \text{ is large}}} \;+\; \underbrace{\frac{\pm 2\,\varepsilon_{\text{mach}}|f(x)|}{h}}_{\substack{\text{Cancellation Error } O(\varepsilon_{\text{mach}}/h)\\ \text{explodes as } h \to 0}}$
+            </blockquote>
+            <ul style="list-style-type: none; font-size: 26px; width: 100%; margin: 10px 0 0 0;">
+              <li class="fragment roll-in"> <b>1. Precision Trap:</b> Even at the optimal step $h^* \approx \sqrt{\varepsilon_{\text{mach}}} \approx 10^{-8}$, half of the 16 float64 digits are lost!
+              <li class="fragment roll-in"> <b>2. Complexity Wall:</b> For $f: \RR^n \to \RR$, perturbing each coordinate $x_i + h$ takes <b>$n + 1$ function evaluations</b> ($10^9$ forward passes for a 1B-parameter model!).
+            </ul>
+          </section>
 
-                <!-- -------------------------------------------------------------------------         -->
-	        <section>
-                  <section>
-                    <h1>Forward Mode AD</h1>
-                  </section>
+          <!-- Interactive Demo 1: Numerical Differentiation vs. Exact AD -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 4px 0 8px 0; font-size: 38px; line-height: 1.1;">Numerical Differentiation: Truncation vs. Cancellation</h3>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 0 0 -110px; user-select: none;">
 
-                  <section data-background="figures/logisticbifurcation.png" background-size="cover">
-                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">
-                      AD is</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="1000"
-                         src="figures/ADis.svg" alt="ADis">
-                    <div class="slide-footer">
-                      Figure modified from Baydin
-                    </div>
-                  </section>
-
-                  <section data-background="figures/logisticbifurcation.png" background-size="cover">
-                    <h2>AD is</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0); margin-bottom: -10px; margin-top: -70px;" width="780"
-                         src="figures/whatisADnot.svg" alt="AD">
-                    <div class="slide-footer">
-                      Figure from Baydin
-                    </div>
-                  </section>
-
-                  <section>
-                    <h2>AD graph</h2>
-                    $$
-                    y = f(x_1, x_2) = \ln(x_1) + x_1x_2 - \sin(x_2)
-                    $$
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="800"
-                         src="figures/computation_graph.svg" alt="graph">
-                  </section>
-
-                  <section>
-                    <div id="header-left" style="font-size: 24px; left: -15%; top: -3%">
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="500"
-                           src="figures/computation_graph.svg" alt="dice">
-                    </div>
-                    <h2>AD trace</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="75%"
-                         src="figures/computation_trace.svg" alt="trace">
-                  </section>
-
-                  <section data-fullscreen>
-                    <div id="header-left" style="font-size: 24px; left: -1%; top: -3%">
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="500"
-                           src="figures/computation_graph.svg" alt="dice">
-                    </div>
-                    <h2>AD</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="130%"
-                         src="figures/forwardAD_example.svg" alt="forward">
-                  </section>
-
-                  <section>
-                    <h2>AD: a Jacobian column in a pass</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="1000"
-                         src="figures/JacobianAD.svg" alt="forward">
-                  </section>
-
-                  <section>
-                    <h2>AD: directional derivative</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="1000"
-                         src="figures/JacobianADdirectional.svg" alt="directional">
-                  </section>
-
-                  <section>
-                    <h3>Dual numbers (1873)</h3>
-                    \begin{align}
-                    v + \dot{v}\epsilon &\\
-                    v, \dot{v} \in \RR, & \epsilon \ne 0, \epsilon^2 = 0 \\
-                    (v + \dot{v}\epsilon) + (u + \dot{u}\epsilon) & = (v + u) + (\dot{v} + \dot{u})\epsilon\\
-                    (v + \dot{v}\epsilon)(u + \dot{u}\epsilon) & = (vu) + (v\dot{u} + u\dot{v})\epsilon\\
-                    f(v+\dot{v}\epsilon) & = f(v) + f^{\prime}(v)\dot{v}\epsilon
-                    \end{align}
-                    <div class="slide-footer">
-                      Clifford (1873)
-                    </div>
-                  </section>
-
-                </section>
-                <!-- -------------------------------------------------------------------------         -->
-                <section>
-                  <section>
-                    <h1>Back propagation</h1>
-                  </section>
-
-                  <section>
-                    <h2>the classical presentation</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="780"
-                         src="figures/backprop.svg" alt="BP">
-                    <div class="slide-footer">
-                      Figure from Baydin
-                    </div>
-                  </section>
-
-                </section>
-                <!-- -------------------------------------------------------------------------         -->
-                <section>
-                  <section>
-                    <h1>Reverse Mode AD</h1>
-                  </section>
-
-                  <section>
-                    <blockquote style="background-color: #eee8d5; width: 100%;" class="left">
-                      In the 1970s, tools for automated generation of adjoint codes (aka reverse accumulation mode automatic differentiation, aka backpropagation) were developed.
-                    </blockquote>
-                    <dl  style="list-style-type: disk; font-size: 22pt">
-                      <dt>Type I</dt>
-                      <dd> Geniuses transforming mathematical systems
-                        (Gauss; Feynman (1939); Rozonoer and Pontryagin (1959))
-                      </dd>
-                      <dt>Type II</dt>
-                      <dd> Manual transformation of computational processes
-                        (Bryson (1962); Werbos (1974); Le Cun (1985); Rumelhart et al. (1986))
-                      </dd>
-                      <dt>Type III</dt>
-                      <dd> Computer programs transform other computer programs
-                        (Speelpenning (1980); <a href="https://lush.sourceforge.net/">LUSH</a>; TAPENADE)
-                      </dd>
-                      <dt>Type IV</dt>
-                      <dd> First-class AD operators; closure
-                        (STALIN$\nabla$; R$^6$RS-AD; AUTOGRAD; DIFFSHARP)
-                      </dd>
-
-                    </dl>
-                  </section>
-
-                  <section>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="400"
-                         src="figures/Speelpenning.jpeg" alt="Speelpenning">
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3;">
-                      <center>
-                        Bert Speelpenning
-                      </center>
-                    </blockquote>
-                  </section>
-
-                  <section data-background="figures/SPAD_1.png" background-size="cover">
-                  </section>
-                  <section data-background="figures/SPAD_2.png" background-size="cover">
-                  </section>
-
-                  <section data-background="figures/SPAD_3.png" background-size="cover">
-                  </section>
-
-                  <section data-background="figures/SPAD_4.png" background-size="cover">
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="1200"
-                         src="figures/SPAD_4w.png" alt="Speelpenning">
-                  </section>
-
-                  <section>
-                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment" data-fragment-index="0">
-                      \begin{align}
-                      y &= \log(\sin(x^2))
-                      \end{align}
-                    </blockquote>
-
-                    <row>
-                      <col80>
-                        <ul  style="list-style-type: none; font-size: 22pt">
-                          <li class="fragment roll-in" data-fragment-index="1"> Traces:
-                          <li class="fragment roll-in" data-fragment-index="2"> Primal
-                          <li class="fragment roll-in" data-fragment-index="3"> Tangent Derivative
-                          <li class="fragment roll-in" data-fragment-index="4"> Cotangent Derivative
-                        </ul>
-                      </col80>
-                      <col80>
-                        <ul  style="list-style-type: none; font-size: 22pt">
-                          <li class="fragment roll-in" data-fragment-index="1"> Direction:
-                          <li class="fragment roll-in" data-fragment-index="2"> $\rightarrow$ Forward
-                          <li class="fragment roll-in" data-fragment-index="3"> $\rightarrow$ Forward
-                          <li class="fragment roll-in" data-fragment-index="4"> $\leftarrow$ Reverse
-                        </ul>
-                      </col80>
-                    </row>
-
-                  </section>
-                  <section>
-                    <h3>Computation Graph</h3>
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px;" >
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                           src="figures/graph.png" alt="computational graph">
-                    </blockquote>
-
-                    <ul  style="list-style-type: none; font-size: 22pt">
-                      <li class="fragment roll-in" data-fragment-index="0"> Following precedence rules
-                      <li class="fragment roll-in" data-fragment-index="1"> binary/n-ary operators allowed $\rightarrow$ DAG (tree)
-                      <li class="fragment roll-in" data-fragment-index="1"> $y =$ root, $x =$ leaves
-                    </ul>
-                  </section>
-
-                  <section>
-                    <h3>Intermediate Variables: $z_i$</h3>
-                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22pt" class="fragment" data-fragment-index="0">
-                      \begin{align}
-                      x &\\
-                      z_1 &= x^2\\
-                      z_2 &= \sin(z_1)\\
-                      z_3 &= \log(z_2)\\
-                      y &= z_3\\
-                      \end{align}
-                    </blockquote>
-                  </section>
-
-                  <section>
-                    <h3>Adjoint: $\bar{z_i} = \frac{\partial y}{\partial z_i}$</h3>
-                  </section>
-                  <section >
-                    <h3>Example</h3>
-                    <blockquote style="background-color: #eee8d5; width: 100%; font-size: 22px" class="fragment" data-fragment-index="0">
-                      <div class="row">
-                        <div class="col-40">
-                          \begin{align}
-                          x &\\
-                          z_1 &= x^2\\
-                          z_2 &= \sin(z_1)\\
-                          z_3 &= \log(z_2)\\
-                          y &= z_3\\
-                          \end{align}
-                        </div>
-                        <div class="col">
-                          <ul style="font-size: 26px;">
-                            <li class="fragment roll-in" data-fragment-index="5"> $\bar{x} = \left(\left(\frac{\partial y}{\partial z_3}\frac{\partial z_3}{\partial z_2}\right) \frac{\partial z_2}{\partial
-                              l z_1}\right)\frac{\partial z_1}{\partial x}$
-                            <li class="fragment roll-in" data-fragment-index="4"> $\bar{x} = \frac{\partial y}{\partial x} = \frac{\partial y}{\partial z_1}\frac{\partial z_1}{\partial x} = \bar{z}_1 2 x$
-                            <li class="fragment roll-in" data-fragment-index="3"> $\bar{z}_1 = \frac{\partial y}{\partial z_1} = \frac{\partial y}{\partial z_2}\frac{\partial z_2}{\partial z_1} = \bar{z}_
-                              2\mathrm{cos}(z_1)$
-                            <li class="fragment roll-in" data-fragment-index="2"> $\bar{z}_2 = \frac{\partial y}{\partial z_2} = \frac{\partial y}{\partial z_3}\frac{\partial z_3}{\partial z_2} = \bar{y}\
-                              \frac{1}{z_2}$
-                            <li class="fragment roll-in" data-fragment-index="1"> $\bar{z}_3 = \frac{\partial y}{\partial z_3} = \frac{\partial y}{\partial y} = \bar{y} = 1$ (seed)
-                          </ul>
-                        </div>
-                      </div>
-                    </blockquote>
-                    <blockquote style="background-color: rgba(0,0,0,0); width: 100%; font-size: 20px" class="fragment" data-fragment-index="6">
-                      \begin{align}
-                      \bar{x} & \fragment{6}{= \bar{z}_1 2 x}\\
-                      &\fragment{7}{= (\bar{z}_2\mathrm{cos}(z_1) ) 2 x}\\
-                      &\fragment{8}{= \left(\left(\bar{z}_3 \frac{1}{z_2} \right) \mathrm{cos}(x^2) \right) 2 x}\\
-                      &\fragment{9}{= \left(\left( \frac{1}{\mathrm{sin}(z_1)} \right) \mathrm{cos}(x^2) \right) 2 x}\\
-                      &\fragment{10}{= \left(\left( \frac{1}{\mathrm{sin}(x^2)} \right) \mathrm{cos}(x^2) \right) 2 x}\\
-                      &\fragment{11}{= \left( \mathrm{cot}(x^2)  \right) 2 x\ = 2 x ~\mathrm{tan} \left( \frac{\pi}{2} - x^2\right)}\\
-                      \end{align}
-                    </blockquote>
-                  </section>
-
-                  <section>
-                    <h3>References</h3>
-                    <ul  style="list-style-type: none; font-size: 22pt">
-                      <li class="fragment roll-in" data-fragment-index="0"> Appendix III of https://arxiv.org/pdf/1911.04048.pdf
-                      <li class="fragment roll-in" data-fragment-index="0"> https://arxiv.org/pdf/1502.05767.pdf
-                      <li class="fragment roll-in" data-fragment-index="0"> https://arxiv.org/pdf/1703.02311.pdf
-                    </ul>
-                  </section>
-                </section>
-
-
+              <!-- Status Banner -->
+              <div id="nd-status-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 6px 16px; box-sizing: border-box; font-size: 14px; color: #073642; text-align: left; white-space: nowrap;">
+                Slide step size h from 10⁻¹ down to 10⁻¹⁶ to see truncation error give way to catastrophic cancellation.
               </div>
 
-            </div>
+              <!-- Canvas -->
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="ad-numdiff-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              </div>
 
-            <script src="dist/reveal.js"></script>
+              <!-- Controls Toolbar -->
+              <div style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 7px 16px; box-sizing: border-box; font-size: 13.5px; color: #586e75; gap: 5px; white-space: nowrap;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; white-space: nowrap;">
+                  <div style="display: flex; align-items: center; gap: 6px; white-space: nowrap;">
+                    <label style="white-space: nowrap;"><b>Function:</b>
+                      <select id="nd-sel-fn" style="padding: 2px 6px; border: 1px solid #268bd2; border-radius: 4px; background: #fff; font-size: 12px;">
+                        <option value="logistic" selected>Logistic Map l₄(x)</option>
+                        <option value="trig">Smooth Trig: sin(4x) + x²</option>
+                      </select>
+                    </label>
+                    <button id="nd-btn-trunc" style="cursor: pointer; padding: 3px 7px; border: 1px solid #cb4b16; background: #fdf6e3; color: #cb4b16; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Truncation (h=10⁻¹·⁸)</button>
+                    <button id="nd-btn-sweet" style="cursor: pointer; padding: 3px 7px; border: 1px solid #859900; background: #fdf6e3; color: #859900; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">Sweet Spot (h=10⁻⁸)</button>
+                    <button id="nd-btn-cancel" style="cursor: pointer; padding: 3px 7px; border: 1px solid #dc322f; background: #fdf6e3; color: #dc322f; font-weight: bold; border-radius: 4px; font-size: 11.5px; white-space: nowrap;">⚡ Cancellation (h=10⁻¹⁵·²)</button>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 8px; font-family: monospace; font-size: 12px; white-space: nowrap;">
+                    <span>Exact AD f′(x₀): <b id="nd-exact-val" style="color: #859900;">--</b></span>
+                    <span>Fwd Err: <b id="nd-fwd-err" style="color: #dc322f;">--</b></span>
+                    <span>Cen Err: <b id="nd-cen-err" style="color: #268bd2;">--</b></span>
+                  </div>
+                </div>
 
-            <link rel="stylesheet" href="plugin/highlight/monokai.css">
-            <script src="plugin/highlight/highlight.js"></script>
-            <script src="plugin/chalkboard/plugin.js"></script>
-            <script src="plugin/notes/notes.js"></script>
-            <script src="plugin/zoom/zoom.js"></script>
-            <script src="plugin/fullscreen/fullscreen.js"></script>
-            <script src="plugin/menu/menu.js"></script>
-
-            <script>
-              // Full list of configuration options available at:
-              // https://github.com/hakimel/reveal.js#configuration
-
-              Reveal.initialize({
-                  // history: true,
-                  hash: true,
-                  margin: 0.01,
-                  minScale: 0.01,
-                  maxScale: 1.23,
-
-                  menu: {
-                      themes: false,
-                      openSlideNumber: true,
-                      openButton: false,
-                  },
-
-                  chalkboard: {
-                      boardmarkerWidth: 1,
-                      chalkWidth: 2,
-                      chalkEffect: 1,
-                      toggleNotesButton: false,
-                      toggleChalkboardButton: false,
-                      slideWidth: Reveal.width,
-                      slideHeight: Reveal.height,
-                      // src: "chalkboards/chalkboard_em2.json",
-                      readOnly: false,
-                      theme: "blackboard",
-                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
-                  },
-
-                  math: {
-                      //mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
-                      config: 'TeX-AMS_SVG-full',
-                      // pass other options into `MathJax.Hub.Config()`
-                      TeX: {
-                          Macros: {
-        	              RR: '\\mathbb{R}',
-        	              PP: '\\mathbb{P}',
-        	              EE: '\\mathbb{E}',
-        	              NN: '\\mathbb{N}',
-        	              vth: '\\vec{\\theta}',
-                              loss: '{\\cal l}',
-                              hclass: '{\\cal H}',
-                              CD: '{\\cal D}',
-                              def: '\\stackrel{\\text{def}}{=}',
-                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
-                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
-        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
-                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
-                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
-                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
-                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
-                          },
-                          loader: {
-                              load: ['[tex]/color'],
-//                              load: ['/plugin/math/tex_fragments.js'],
-//                              paths: {custom: 'plugin/math/'} // custom tex extensions
-
-                          },
-                          extensions: ["color.js"],
-//                                       "tex_fragments.js"],
-                          tex: {
-                              packages: {
-                                  '[+]': ['color'],
-//                                  '[+]': ['tex_fragments'] // tex_fragments
-                              }
-                          },
-                          svg: {
-                              fontCache: 'global'
-                          }
-                      }
-                  },
-
-                  plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
-
-              });
-
-              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
-              Reveal.configure({ slideNumber: true });
-              //Reveal.configure({ history: true });
-              Reveal.configure({ slideNumber: 'c / t' });
-              Reveal.addEventListener( 'darkside', function() {
-                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
-              }, false );
-              Reveal.addEventListener( 'brightside', function() {
-                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
-              }, false );
-
-            </script>
-
-            <style type="text/css">
-              /* 1. Style header/footer <div> so they are positioned as desired. */
-              #header-left {
-                  position: absolute;
-                  top: 0%;
-                  left: 0%;
-              }
-              #header-right {
-                  position: absolute;
-                  top: 0%;
-                  right: 0%;
-              }
-              #footer-left {
-                  position: absolute;
-                  bottom: 0%;
-                  left: 0%;
-              }
-            </style>
-
-            <!-- // 2. Create hidden header/footer -->
-            <div id="hidden" style="display:none;">
-              <div id="header">
-                <div id="header-left"><h4>CS8850</h4></div>
-                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
-                <div id="footer-left">
-                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-bottom: -10px;" width="200"
-                       src="figures/valentino.png" alt="robot learning">
+                <div style="display: flex; align-items: center; gap: 32px; border-top: 1px solid rgba(147,161,161,0.3); padding-top: 5px; white-space: nowrap;">
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Step Size h = <b id="nd-h-val" style="font-family: monospace; color: #cb4b16;">10^(-8.0)</b>:</span>
+                    <input type="range" id="nd-h-slider" min="-16.0" max="-1.0" step="0.1" value="-8.0" style="width: 240px; cursor: pointer;">
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Evaluation Point x₀ = <b id="nd-x0-val" style="font-family: monospace; color: #268bd2;">0.28</b>:</span>
+                    <input type="range" id="nd-x0-slider" min="0.06" max="0.94" step="0.01" value="0.28" style="width: 190px; cursor: pointer;">
+                  </label>
                 </div>
               </div>
+
             </div>
+            <aside class="notes">
+              1. Click "Truncation (h = 10^-1.8)": look at the left plot — the red dashed secant line visibly diverges from the green Exact AD tangent because h is too large.
+              2. Drag the h slider left toward 10^-15 or click "Cancellation": watch the IEEE-754 float64 box on the bottom left! Green digits are identical between f(x_0+h) and f(x_0); subtracting them wipes out 15 of the 16 significant digits, making the finite-difference error shoot back up to O(1) while AD stays exact at ~10^-16!
+            </aside>
+          </section>
 
+          <section data-background="figures/logisticbifurcation.png" background-size="cover">
+            <h3 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">
+              AD is not Symbolic Differentiation
+            </h3>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0); margin-bottom: 4px;" width="800"
+                 src="figures/ADsnotSymbolic.svg" alt="ADnotSymbolic">
+            <blockquote class="fragment roll-in" style="background-color: #eee8d5; font-size: 18px; width: 100%; box-sizing: border-box; padding: 6px 12px; margin-top: 2px;">
+              $$\begin{aligned}
+              f(\vec{x}) = \prod_{i=1}^d x_i \implies \nabla f(\vec{x}) &= \left(\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \dots, \frac{\partial f}{\partial x_d}\right)
+              = \Big(\underbrace{x_2 x_3 \cdots x_d}_{d-1 \text{ mults}}, \;\; \underbrace{x_1 x_3 \cdots x_d}_{d-1 \text{ mults}}, \;\; \dots, \;\; \underbrace{x_1 x_2 \cdots x_{d-1}}_{d-1 \text{ mults}}\Big)
+              \end{aligned}$$
+            </blockquote>
+            <div class="slide-footer" style="bottom: 10px;">
+              Example from Speelpenning, figure modified from Baydin<br>
+              For an alternative opinion see: <a href="https://arxiv.org/abs/1904.02990v3" target="_blank">On the Equivalence of Forward Mode Automatic Differentiation and Symbolic Differentiation</a>
+            </div>
+          </section>
 
-            <script type="text/javascript">
-              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
-              var header = $('#header').html();
-              if ( window.location.search.match( /print-pdf/gi ) ) {
-                  Reveal.addEventListener( 'ready', function( event ) {
-                      $('.slide-background').append(header);
-                  });
+          <section>
+            <h3>We want exact derivative at a point!</h3>
+            <img width="920" src="figures/example_derivatives.svg" alt="Derivatives">
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 3: FORWARD MODE AD                                                -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h2>Forward Mode AD</h2>
+          </section>
+
+          <section data-background="figures/logisticbifurcation.png" background-size="cover">
+            <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">
+              AD is</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="940"
+                 src="figures/ADis.svg" alt="ADis">
+            <div class="slide-footer" style="bottom: 10px;">
+              Figure modified from Baydin
+            </div>
+          </section>
+
+          <section data-background="figures/logisticbifurcation.png" background-size="cover">
+            <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1; margin-bottom: 6px;">AD is</h2>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="590"
+                 src="figures/whatisADnot.svg" alt="AD">
+            <div class="slide-footer" style="bottom: 10px;">
+              Figure from Baydin
+            </div>
+          </section>
+
+          <section>
+            <h2>AD graph</h2>
+            $$
+            y = f(x_1, x_2) = \ln(x_1) + x_1x_2 - \sin(x_2)
+            $$
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="800"
+                 src="figures/computation_graph.svg" alt="graph">
+          </section>
+
+          <section>
+            <h2>AD trace</h2>
+            <row style="align-items: center; gap: 16px;">
+              <col40>
+                <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); width: 100%;"
+                     src="figures/computation_graph.svg" alt="computation graph">
+              </col40>
+              <col60>
+                <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0); width: 92%;"
+                     src="figures/computation_trace.svg" alt="trace">
+              </col60>
+            </row>
+          </section>
+
+          <section>
+            <h3>Forward Mode AD: Primal &amp; Tangent Trace</h3>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0); margin-bottom: 6px;" width="380"
+                 src="figures/computation_graph.svg" alt="computation graph">
+            <br>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="860"
+                 src="figures/forwardAD_example.svg" alt="forward">
+          </section>
+
+          <section>
+            <h3>AD: a Jacobian column in a pass</h3>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="820"
+                 src="figures/JacobianAD.svg" alt="forward">
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 25px; margin-top: 12px; text-align: center;">
+              For $f: \RR^n \to \RR^m$, seeding $\dot{\vec{x}} = \vec{e}_j$ computes column $j$ of $\bm{J}_f$ $\implies$ <b>$n$ forward passes</b> for the full Jacobian.
+            </blockquote>
+          </section>
+
+          <section>
+            <h3>AD: directional derivative (JVP)</h3>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="820"
+                 src="figures/JacobianADdirectional.svg" alt="directional">
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 25px; margin-top: 12px; text-align: center;">
+              Seeding $\dot{\vec{x}} = \vec{r}$ computes the <b>Jacobian-Vector Product (JVP)</b> $\bm{J}_f \vec{r} = \nabla_{\vec{x}} f(\vec{x}) \cdot \vec{r}$ in a <b>single pass</b>!
+            </blockquote>
+          </section>
+
+          <section>
+            <h3>Dual numbers (1873)</h3>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 28px; padding: 10px 16px;">
+              $$\begin{aligned}
+              v + \dot{v}\epsilon, &\qquad v, \dot{v} \in \RR, \quad \epsilon \ne 0, \quad \mathbf{\epsilon^2 = 0} \\
+              (v + \dot{v}\epsilon) + (u + \dot{u}\epsilon) &= (v + u) + (\dot{v} + \dot{u})\epsilon\\
+              (v + \dot{v}\epsilon)(u + \dot{u}\epsilon) &= (vu) + (v\dot{u} + u\dot{v})\epsilon + \cancel{\dot{v}\dot{u}\epsilon^2}\\
+              f(v+\dot{v}\epsilon) &= \underbrace{f(v)}_{\text{primal}} + \underbrace{f^{\prime}(v)\dot{v}}_{\text{tangent}}\epsilon
+              \end{aligned}$$
+            </blockquote>
+            <div class="slide-footer" style="bottom: 10px;">
+              Clifford (1873) — Operator overloading on $(v, \dot{v})$ implements Forward-Mode AD automatically!
+            </div>
+          </section>
+
+          <!-- Interactive Demo 2: Forward-Mode AD & Dual Numbers Graph Tracer -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 4px 0 8px 0; font-size: 38px; line-height: 1.1;">Forward-Mode AD &amp; Dual Numbers Graph Tracer</h3>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 0 0 -110px; user-select: none;">
+
+              <!-- Status Banner -->
+              <div id="fwd-status-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 6px 16px; box-sizing: border-box; font-size: 14px; color: #073642; text-align: left; white-space: nowrap;">
+                Step through the Wengert trace to watch dual numbers vᵢ + v̇ᵢε propagate forward.
+              </div>
+
+              <!-- Canvas -->
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="ad-forward-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              </div>
+
+              <!-- Controls Toolbar -->
+              <div style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 7px 16px; box-sizing: border-box; font-size: 13.5px; color: #586e75; gap: 5px; white-space: nowrap;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; white-space: nowrap;">
+                  <div style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <button id="fwd-btn-reset" style="cursor: pointer; padding: 4px 10px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">⏮ Reset</button>
+                    <button id="fwd-btn-step" style="cursor: pointer; padding: 4px 11px; border: 1px solid #cb4b16; background: #fdf6e3; color: #cb4b16; font-weight: bold; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">Step Forward (vᵢ + v̇ᵢε) →</button>
+                    <button id="fwd-btn-all" style="cursor: pointer; padding: 4px 10px; border: 1px solid #859900; background: #eee8d5; color: #859900; font-weight: bold; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">⏭ Complete Pass</button>
+                    <button id="fwd-btn-auto" style="cursor: pointer; padding: 4px 10px; border: 1px solid #2aa198; background: #fdf6e3; color: #2aa198; font-weight: bold; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">▶ Auto-Trace</button>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <b>Tangent Seed:</b>
+                    <button id="fwd-btn-seed1" style="cursor: pointer; padding: 4px 9px; border: 1px solid #268bd2; background: #eee8d5; color: #268bd2; font-weight: bold; border-radius: 4px; font-size: 12px; white-space: nowrap;">ẋ = (1, 0) ⇒ ∂y/∂x₁</button>
+                    <button id="fwd-btn-seed2" style="cursor: pointer; padding: 4px 9px; border: 1px solid #268bd2; background: #fdf6e3; color: #268bd2; font-weight: bold; border-radius: 4px; font-size: 12px; white-space: nowrap;">ẋ = (0, 1) ⇒ ∂y/∂x₂</button>
+                    <button id="fwd-btn-seeddir" style="cursor: pointer; padding: 4px 9px; border: 1px solid #6c71c4; background: #fdf6e3; color: #6c71c4; font-weight: bold; border-radius: 4px; font-size: 12px; white-space: nowrap;">JVP ẋ = (0.6, 0.8)</button>
+                  </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 36px; border-top: 1px solid rgba(147,161,161,0.3); padding-top: 5px; white-space: nowrap;">
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Input x₁ = <b id="fwd-x1-val" style="font-family: monospace; color: #268bd2;">2.00</b>:</span>
+                    <input type="range" id="fwd-x1-slider" min="0.50" max="5.00" step="0.10" value="2.00" style="width: 200px; cursor: pointer;">
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Input x₂ = <b id="fwd-x2-val" style="font-family: monospace; color: #268bd2;">5.00</b>:</span>
+                    <input type="range" id="fwd-x2-slider" min="0.00" max="8.00" step="0.10" value="5.00" style="width: 200px; cursor: pointer;">
+                  </label>
+                </div>
+              </div>
+
+            </div>
+            <aside class="notes">
+              1. Click "Reset" and then "Step Forward" to walk through v_{-1}..v_5 one node at a time, watching each dual number v_i + \dot{v}_i \epsilon evaluate simultaneously.
+              2. Switch Tangent Seed from x_dot = (1, 0) (which gives dy/dx_1 = 5.5) to x_dot = (0, 1) (which gives dy/dx_2 = 1.716). Point out that we need 2 separate forward passes for 2 inputs!
+            </aside>
+          </section>
+
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 4: BACKPROPAGATION                                                -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h2>Backpropagation</h2>
+          </section>
+
+          <section>
+            <h3>The classical presentation</h3>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 0);" width="740"
+                 src="figures/backprop.svg" alt="BP">
+            <div class="slide-footer" style="bottom: 10px;">
+              Figure from Baydin
+            </div>
+          </section>
+
+          <section>
+            <h3>Why Classical "Backprop" Is Confusing</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 25px; padding: 8px 14px;">
+              <b>No "errors" propagate backward!</b> We are just evaluating the <b>linearization (gradient)</b> of a function at a point.
+            </blockquote>
+            <ul style="list-style-type: none; font-size: 25px; width: 100%; margin: 10px 0;">
+              <li class="fragment roll-in" data-fragment-index="0" style="margin-bottom: 10px;">
+                <b>1. Misleading metaphor:</b> Nothing physical flows backward through neurons — it is simply the chain rule $\bm{J}^T \bar{\vec{y}}$ evaluated in reverse order.
+              <li class="fragment roll-in" data-fragment-index="1" style="margin-bottom: 10px;">
+                <b>2. Scalar index soup:</b> Element-wise chain rules ($\frac{\partial E}{\partial w_{jk}} = \delta_j z_k, \; \delta_j = h'(a_j)\sum_i w_{ij}\delta_i$) bury simple linear algebra under tedious scalar indices.
+              <li class="fragment roll-in" data-fragment-index="2">
+                <b>3. The Reverse-Mode AD cure:</b> Keep variables as <b>matrices &amp; vectors</b> and differentiate at the matrix level!
+            </ul>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 5: REVERSE MODE AD                                                -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h2>Reverse Mode AD</h2>
+          </section>
+
+          <section>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 26px;" class="left">
+              In the 1970s, tools for automated generation of adjoint codes (aka reverse accumulation mode automatic differentiation, aka backpropagation) were developed.
+            </blockquote>
+            <dl style="font-size: 24px; width: 100%;">
+              <dt>Type I</dt>
+              <dd>Geniuses transforming mathematical systems (Gauss; Feynman (1939); Rozonoer and Pontryagin (1959))</dd>
+              <dt>Type II</dt>
+              <dd>Manual transformation of computational processes (Bryson (1962); Werbos (1974); Le Cun (1985); Rumelhart et al. (1986))</dd>
+              <dt>Type III</dt>
+              <dd>Computer programs transform other computer programs (Speelpenning (1980); <a href="https://lush.sourceforge.net/">LUSH</a>; TAPENADE)</dd>
+              <dt>Type IV</dt>
+              <dd>First-class AD operators; closure (STALIN$\nabla$; R$^6$RS-AD; AUTOGRAD; DIFFSHARP)</dd>
+            </dl>
+          </section>
+
+          <section>
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="400"
+                 src="figures/Speelpenning.jpeg" alt="Speelpenning">
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; text-align: center;">
+              Bert Speelpenning
+            </blockquote>
+          </section>
+
+          <section data-background="figures/SPAD_1.png" background-size="cover">
+          </section>
+          <section data-background="figures/SPAD_2.png" background-size="cover">
+          </section>
+          <section data-background="figures/SPAD_3.png" background-size="cover">
+          </section>
+
+          <section data-background="figures/SPAD_4.png" background-size="cover">
+            <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="760"
+                 src="figures/SPAD_4w.png" alt="Speelpenning">
+          </section>
+
+          <section>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 28px;" class="fragment" data-fragment-index="0">
+              $$y = \log(\sin(x^2))$$
+            </blockquote>
+
+            <row>
+              <col50>
+                <ul style="list-style-type: none; font-size: 28px;">
+                  <li class="fragment roll-in" data-fragment-index="1"> <b>Traces:</b>
+                  <li class="fragment roll-in" data-fragment-index="2"> Primal ($z_i$)
+                  <li class="fragment roll-in" data-fragment-index="3"> Tangent Derivative ($\dot{z}_i = \frac{\partial z_i}{\partial x}$)
+                  <li class="fragment roll-in" data-fragment-index="4"> Cotangent / Adjoint ($\bar{z}_i = \frac{\partial y}{\partial z_i}$)
+                </ul>
+              </col50>
+              <col50>
+                <ul style="list-style-type: none; font-size: 28px;">
+                  <li class="fragment roll-in" data-fragment-index="1"> <b>Direction:</b>
+                  <li class="fragment roll-in" data-fragment-index="2"> $\rightarrow$ Forward
+                  <li class="fragment roll-in" data-fragment-index="3"> $\rightarrow$ Forward
+                  <li class="fragment roll-in" data-fragment-index="4"> $\leftarrow$ Reverse
+                </ul>
+              </col50>
+            </row>
+          </section>
+
+          <section>
+            <h3>Computation Graph</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width: 100%; box-sizing: border-box; padding: 14px;">
+              <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); width: 95%;"
+                   src="figures/graph.png" alt="computational graph">
+            </blockquote>
+
+            <ul style="list-style-type: none; font-size: 28px;">
+              <li class="fragment roll-in" data-fragment-index="0"> Following precedence rules
+              <li class="fragment roll-in" data-fragment-index="1"> binary/n-ary operators allowed $\rightarrow$ DAG (tree)
+              <li class="fragment roll-in" data-fragment-index="1"> $y =$ root, $x =$ leaves
+            </ul>
+          </section>
+
+          <section>
+            <h3>Intermediate Variables: $z_i$</h3>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 30px;" class="fragment" data-fragment-index="0">
+              $$\begin{aligned}
+              x &\\
+              z_1 &= x^2\\
+              z_2 &= \sin(z_1)\\
+              z_3 &= \log(z_2)\\
+              y &= z_3
+              \end{aligned}$$
+            </blockquote>
+          </section>
+
+          <section>
+            <h3>Adjoint: $\bar{z}_i$</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 26px; padding: 8px 14px;">
+              How sensitive is the final scalar output $y$ to intermediate variable $z_i$? $\quad \bar{z}_i \;\def\; \frac{\partial y}{\partial z_i}$
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 25px; padding: 10px 14px; text-align: center;">
+              $$\begin{aligned}
+              \text{Seed at output: } \quad \bar{y} &= \frac{\partial y}{\partial y} = 1 \\[6pt]
+              \text{Propagate backward: } \quad \bar{z}_i &= \frac{\partial y}{\partial z_i} = \sum_{j \in \text{children}(i)} \underbrace{\bar{z}_j}_{\frac{\partial y}{\partial z_j}} \frac{\partial z_j}{\partial z_i}
+              \end{aligned}$$
+            </blockquote>
+          </section>
+
+          <section>
+            <h3 style="margin-bottom: 6px;">Example</h3>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 20px; padding: 6px 14px; margin-bottom: 6px;" class="fragment" data-fragment-index="0">
+              <div class="row" style="align-items: center;">
+                <div class="col30">
+                  $$\begin{aligned}
+                  x &\\
+                  z_1 &= x^2\\
+                  z_2 &= \sin(z_1)\\
+                  z_3 &= \log(z_2)\\
+                  y &= z_3
+                  \end{aligned}$$
+                </div>
+                <div class="col">
+                  <ul style="font-size: 21px; line-height: 1.28; list-style-type: none; margin: 0;">
+                    <li class="fragment roll-in" data-fragment-index="5"> $\bar{x} = \left(\left(\frac{\partial y}{\partial z_3}\frac{\partial z_3}{\partial z_2}\right) \frac{\partial z_2}{\partial z_1}\right)\frac{\partial z_1}{\partial x}$
+                    <li class="fragment roll-in" data-fragment-index="4"> $\bar{x} = \frac{\partial y}{\partial x} = \frac{\partial y}{\partial z_1}\frac{\partial z_1}{\partial x} = \bar{z}_1 2 x$
+                    <li class="fragment roll-in" data-fragment-index="3"> $\bar{z}_1 = \frac{\partial y}{\partial z_1} = \frac{\partial y}{\partial z_2}\frac{\partial z_2}{\partial z_1} = \bar{z}_2\mathrm{cos}(z_1)$
+                    <li class="fragment roll-in" data-fragment-index="2"> $\bar{z}_2 = \frac{\partial y}{\partial z_2} = \frac{\partial y}{\partial z_3}\frac{\partial z_3}{\partial z_2} = \bar{y}\frac{1}{z_2}$
+                    <li class="fragment roll-in" data-fragment-index="1"> $\bar{z}_3 = \frac{\partial y}{\partial z_3} = \frac{\partial y}{\partial y} = \bar{y} = 1$ (seed)
+                  </ul>
+                </div>
+              </div>
+            </blockquote>
+            <div style="font-size: 19px; line-height: 1.32; width: 100%; text-align: left; padding-left: 60px; box-sizing: border-box;">
+              <div class="fragment" data-fragment-index="6">$\displaystyle \bar{x} = \bar{z}_1 2 x$</div>
+              <div class="fragment" data-fragment-index="7">$\displaystyle \phantom{\bar{x}} = (\bar{z}_2\mathrm{cos}(z_1) ) 2 x$</div>
+              <div class="fragment" data-fragment-index="8">$\displaystyle \phantom{\bar{x}} = \left(\left(\bar{z}_3 \frac{1}{z_2} \right) \mathrm{cos}(x^2) \right) 2 x$</div>
+              <div class="fragment" data-fragment-index="9">$\displaystyle \phantom{\bar{x}} = \left(\left( \frac{1}{\mathrm{sin}(z_1)} \right) \mathrm{cos}(x^2) \right) 2 x$</div>
+              <div class="fragment" data-fragment-index="10">$\displaystyle \phantom{\bar{x}} = \left(\left( \frac{1}{\mathrm{sin}(x^2)} \right) \mathrm{cos}(x^2) \right) 2 x$</div>
+              <div class="fragment" data-fragment-index="11">$\displaystyle \phantom{\bar{x}} = \left( \mathrm{cot}(x^2) \right) 2 x = 2 x ~\mathrm{tan} \left( \frac{\pi}{2} - x^2\right)$</div>
+            </div>
+          </section>
+
+          <!-- Interactive Demo 3: Reverse-Mode AD Tape & Adjoint Tracer -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 4px 0 8px 0; font-size: 38px; line-height: 1.1;">Reverse-Mode AD: Forward Tape &amp; Backward Adjoints</h3>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 0 0 -110px; user-select: none;">
+
+              <!-- Status Banner -->
+              <div id="rev-status-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 6px 16px; box-sizing: border-box; font-size: 14px; color: #073642; text-align: left; white-space: nowrap;">
+                Step through Phase 1 (Forward Primal Tape) and Phase 2 (Reverse Adjoint Pass).
+              </div>
+
+              <!-- Canvas -->
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="ad-reverse-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              </div>
+
+              <!-- Controls Toolbar -->
+              <div style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 7px 16px; box-sizing: border-box; font-size: 13.5px; color: #586e75; gap: 5px; white-space: nowrap;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; white-space: nowrap;">
+                  <div style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <label style="white-space: nowrap;"><b>Graph:</b>
+                      <select id="rev-sel-graph" style="padding: 3px 8px; border: 1px solid #268bd2; border-radius: 4px; background: #fff; font-size: 12.5px;">
+                        <option value="dag2d" selected>2-Input DAG: y = ln(x₁) + x₁x₂ − sin(x₂) (Fan-Out!)</option>
+                        <option value="chain1d">1D Chain: y = log(sin(x²))</option>
+                      </select>
+                    </label>
+                    <button id="rev-btn-reset" style="cursor: pointer; padding: 4px 9px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">⏮ Reset</button>
+                    <button id="rev-btn-fwd" style="cursor: pointer; padding: 4px 10px; border: 1px solid #268bd2; background: #fdf6e3; color: #268bd2; font-weight: bold; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">1. Step Forward Tape →</button>
+                    <button id="rev-btn-rev" style="cursor: pointer; padding: 4px 10px; border: 1px solid #dc322f; background: #fdf6e3; color: #dc322f; font-weight: bold; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">← 2. Step Reverse Adjoint</button>
+                    <button id="rev-btn-auto" style="cursor: pointer; padding: 4px 10px; border: 1px solid #859900; background: #eee8d5; color: #859900; font-weight: bold; border-radius: 4px; font-size: 12.5px; white-space: nowrap;">▶ Auto-Play Both Passes</button>
+                  </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 36px; border-top: 1px solid rgba(147,161,161,0.3); padding-top: 5px; white-space: nowrap;">
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Input x₁ (or x) = <b id="rev-x1-val" style="font-family: monospace; color: #268bd2;">2.00</b>:</span>
+                    <input type="range" id="rev-x1-slider" min="0.50" max="4.00" step="0.10" value="2.00" style="width: 200px; cursor: pointer;">
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Input x₂ = <b id="rev-x2-val" style="font-family: monospace; color: #268bd2;">5.00</b>:</span>
+                    <input type="range" id="rev-x2-slider" min="0.00" max="8.00" step="0.10" value="5.00" style="width: 200px; cursor: pointer;">
+                  </label>
+                </div>
+              </div>
+
+            </div>
+            <aside class="notes">
+              1. Click "Reset", then step through "1. Step Forward Tape" to see why Reverse Mode must first evaluate and save every intermediate primal value v_i in memory.
+              2. Then click "2. Step Reverse Adjoint": starting from \bar{y} = 1, watch the adjoints flow backward along the red dashed arrows. Notice how scalar node-by-node graphs quickly turn into a tangle of arrows! Next we see how Matrix Reverse-Mode AD makes this effortless.
+            </aside>
+          </section>
+
+          <!-- Matrix-Level Reverse-Mode AD (Silva et al., Appendix III) -->
+          <section>
+            <h3 style="margin-bottom: 6px;">Reverse-Mode AD in Matrix Form</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 22px; padding: 6px 14px; margin-bottom: 8px;">
+              Every matrix $\bm{Z}_i \in \RR^{r \times c}$ has an adjoint $\bar{\bm{Z}}_i \;\def\; \frac{\partial y}{\partial \bm{Z}_i} \in \RR^{r \times c}$ of the <b>exact same shape</b>! (Silva et al., Appendix III)
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 18.5px; padding: 8px 12px; margin-bottom: 8px;">
+              $$\begin{aligned}
+              \text{Matrix Product:} \quad \bm{Z} &= \bm{A}\bm{B} &\implies \quad \bar{\bm{A}} &= \bar{\bm{Z}}\bm{B}^T, \qquad \bar{\bm{B}} = \bm{A}^T\bar{\bm{Z}} \\
+              \text{Hadamard Product:} \quad \bm{Z} &= \bm{A} \odot \bm{B} &\implies \quad \bar{\bm{A}} &= \bar{\bm{Z}} \odot \bm{B}, \qquad \bar{\bm{B}} = \bm{A} \odot \bar{\bm{Z}} \\
+              \text{Element-wise } \phi: \quad \bm{Z} &= \phi(\bm{A}) &\implies \quad \bar{\bm{A}} &= \bar{\bm{Z}} \odot \phi'(\bm{A}) \quad \left(\text{element-wise } \log(\bm{A}) \implies \bar{\bm{Z}} \oslash \bm{A}\right) \\
+              \text{Inverse &amp; Log-Det:} \quad \bm{Z} &= \bm{A}^{-1} &\implies \quad \bar{\bm{A}} &= -\bm{A}^{-T}\bar{\bm{Z}}\bm{A}^{-T}; \quad z = \ln|\det\bm{A}| \implies \bar{\bm{A}} = \bar{z}\bm{A}^{-T} \\
+              \text{Sum &amp; Transpose:} \quad \bm{Z} &= \bm{A} \pm \bm{B} &\implies \quad \bar{\bm{A}} &= \bar{\bm{Z}}, \;\; \bar{\bm{B}} = \pm\bar{\bm{Z}}; \quad \bm{Z} = \bm{A}^T \implies \bar{\bm{A}} = \bar{\bm{Z}}^T
+              \end{aligned}$$
+            </blockquote>
+            <div style="font-size: 22px; text-align: center; color: #073642;">
+              <alert>Dimension trick:</alert> If $\bm{Z}_{(r\times c)} = \bm{A}_{(r\times k)}\bm{B}_{(k\times c)}$, the <b>only</b> way shapes match is $\bar{\bm{A}}_{(r\times k)} = \bar{\bm{Z}}_{(r\times c)}\bm{B}^T_{(c\times k)}$!
+            </div>
+          </section>
+
+          <!-- Interactive Demo 3b: Matrix Reverse-Mode AD vs Scalar Backprop -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 4px 0 8px 0; font-size: 38px; line-height: 1.1;">Matrix Reverse-Mode AD: Clean Matrices vs. Scalar Mess</h3>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 0 0 -110px; user-select: none;">
+
+              <!-- Status Banner -->
+              <div id="mat-status-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 6px 16px; box-sizing: border-box; font-size: 14px; color: #073642; text-align: left; white-space: nowrap;">
+                Step backward in Matrix Mode: watch dimensions lock together without a single scalar index!
+              </div>
+
+              <!-- Canvas -->
+              <div style="position: relative; width: 100%; height: 400px; box-sizing: border-box;">
+                <canvas id="ad-matrix-canvas" width="1180" height="400" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              </div>
+
+              <!-- Controls Toolbar -->
+              <div style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 16px; box-sizing: border-box; font-size: 13px; color: #586e75; gap: 5px; white-space: nowrap;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; white-space: nowrap;">
+                  <div style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <label style="white-space: nowrap;"><b>Objective:</b>
+                      <select id="mat-sel-prob" style="padding: 3px 8px; border: 1px solid #268bd2; border-radius: 4px; background: #fff; font-size: 12px;">
+                        <option value="mlp" selected>2-Layer Neural Net: L = ½‖W₂σ(W₁x) − y‖²</option>
+                        <option value="silva">Matrix Log-Sum (Silva App. III): y = 1ᵀ log(W X + B) 1</option>
+                        <option value="hw5">Pairwise Distance Matrix: 1ᵀ log((x⊙x)1ᵀ + 1(x⊙x)ᵀ − 2xxᵀ + I)1</option>
+                      </select>
+                    </label>
+                    <button id="mat-btn-prev" style="cursor: pointer; padding: 4px 10px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 12px; white-space: nowrap;">◀ Prev Step</button>
+                    <button id="mat-btn-next" style="cursor: pointer; padding: 4px 10px; border: 1px solid #dc322f; background: #fdf6e3; color: #dc322f; font-weight: bold; border-radius: 4px; font-size: 12px; white-space: nowrap;">Step Backward (Matrix Adjoint) ▶</button>
+                    <button id="mat-btn-all" style="cursor: pointer; padding: 4px 10px; border: 1px solid #859900; background: #eee8d5; color: #859900; font-weight: bold; border-radius: 4px; font-size: 12px; white-space: nowrap;">⏭ Show Full Derivation</button>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <button id="mat-btn-spaghetti" style="cursor: pointer; padding: 4px 10px; border: 1px solid #cb4b16; background: #fdf6e3; color: #cb4b16; font-weight: bold; border-radius: 4px; font-size: 12px; white-space: nowrap;">🍝 Compare Scalar Backprop Mess</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live MathJax Expression Being Differentiated -->
+              <div style="width: 1020px; background: #eee8d5; border: 1.5px solid #93a1a1; border-radius: 6px; padding: 4px 12px; margin: 5px auto 0 auto; box-sizing: border-box; font-size: 14.5px; color: #073642; text-align: center;">
+                <div id="mat-latex-mlp">
+                  $\textbf{Differentiating:}\;\; L(\bm{W}_1, \bm{W}_2) = \tfrac{1}{2}\big\|\underbrace{\bm{W}_2}_{(2\times 4)}\sigma(\underbrace{\bm{W}_1}_{(4\times 3)}\underbrace{\vec{x}}_{(3\times 1)}) - \underbrace{\vec{y}}_{(2\times 1)}\big\|_2^2 \;\xrightarrow{\text{Reverse AD}}\; \bar{\bm{W}}_1 = \tfrac{\partial L}{\partial \bm{W}_1} = \big[(\bm{W}_2^T(\bm{W}_2\bm{Z}_2 - \vec{y})) \odot \sigma'(\bm{Z}_1)\big]\vec{x}^T$
+                </div>
+                <div id="mat-latex-silva" style="display: none;">
+                  $\textbf{Differentiating:}\;\; y(\bm{W}) = \vec{1}^T \log\big(\underbrace{\bm{W}}_{(3\times 4)}\underbrace{\bm{X}}_{(4\times 3)} + \underbrace{\bm{B}}_{(3\times 3)}\big)\vec{1} \;\xrightarrow{\text{Reverse AD}}\; \bar{\bm{W}} = \tfrac{\partial y}{\partial \bm{W}} = \big((\vec{1}\vec{1}^T) \oslash (\bm{W}\bm{X} + \bm{B})\big)\bm{X}^T$
+                </div>
+                <div id="mat-latex-hw5" style="display: none;">
+                  $\textbf{Differentiating:}\;\; L(\vec{x}) = \vec{1}^T \log\big(\underbrace{(\vec{x}\odot\vec{x})\vec{1}^T}_{\bm{Z}_4} + \underbrace{\vec{1}(\vec{x}\odot\vec{x})^T}_{\bm{Z}_5} - 2\underbrace{\vec{x}\vec{x}^T}_{\bm{Z}_6} + \bm{I}\big)\vec{1} \;\xrightarrow{\text{Reverse AD}}\; \bar{\vec{x}} = \tfrac{\partial L}{\partial \vec{x}} = 4\big((\bar{\bm{Z}}_3\vec{1})\odot\vec{x} - \bar{\bm{Z}}_3\vec{x}\big)$
+                </div>
+              </div>
+
+            </div>
+            <aside class="notes">
+              1. Walk through the 2-Layer Neural Net in Matrix Mode: instead of 24 scalar nodes and index sums, the entire forward and backward pass is 4 clean matrix equations where dimensions dictate every transpose!
+              2. Click "Compare Scalar Backprop Mess" to show what happens when you expand those 4 matrix steps into scalar neuron-by-neuron backpropagation.
+              3. Switch Objective to "Pairwise Distance Matrix" to show how the exact same 5 rules from Silva et al. Appendix III differentiate complex matrix objectives by hand!
+            </aside>
+          </section>
+
+          <!-- Interactive Demo 4: Forward JVP vs Reverse VJP Complexity -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 4px 0 8px 0; font-size: 38px; line-height: 1.1;">Forward JVP vs. Reverse VJP Complexity</h3>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 0 0 -110px; user-select: none;">
+
+              <!-- Status Banner -->
+              <div id="cmp-status-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 6px 16px; box-sizing: border-box; font-size: 14px; color: #073642; text-align: left; white-space: nowrap;">
+                Compare column-wise Forward JVP (O(n) passes) vs. row-wise Reverse VJP (O(m) passes).
+              </div>
+
+              <!-- Canvas -->
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="ad-complexity-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: rgba(253, 246, 227, 0.98); box-sizing: border-box;"></canvas>
+              </div>
+
+              <!-- Controls Toolbar -->
+              <div style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 7px 16px; box-sizing: border-box; font-size: 13.5px; color: #586e75; gap: 5px; white-space: nowrap;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; white-space: nowrap;">
+                  <div style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <b>Presets:</b>
+                    <button id="cmp-btn-ml" style="cursor: pointer; padding: 4px 9px; border: 1px solid #859900; background: #eee8d5; color: #859900; font-weight: bold; border-radius: 4px; font-size: 12px; white-space: nowrap;">Deep Learning Loss (n=450, m=1)</button>
+                    <button id="cmp-btn-square" style="cursor: pointer; padding: 4px 9px; border: 1px solid #93a1a1; background: #fdf6e3; border-radius: 4px; font-size: 12px; white-space: nowrap;">Square (n=50, m=50)</button>
+                    <button id="cmp-btn-curve" style="cursor: pointer; padding: 4px 9px; border: 1px solid #268bd2; background: #fdf6e3; color: #268bd2; font-weight: bold; border-radius: 4px; font-size: 12px; white-space: nowrap;">Tall Jacobian (n=2, m=150)</button>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 12px; font-family: monospace; font-size: 12.5px; white-space: nowrap;">
+                    <span>Fwd: <b id="cmp-fwd-cost" style="color: #268bd2;">--</b></span>
+                    <span>Rev: <b id="cmp-rev-cost" style="color: #859900;">--</b></span>
+                    <span>Speedup: <b id="cmp-speedup" style="color: #cb4b16;">--</b></span>
+                  </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 36px; border-top: 1px solid rgba(147,161,161,0.3); padding-top: 5px; white-space: nowrap;">
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Inputs n = <b id="cmp-n-val" style="font-family: monospace; color: #268bd2;">120</b>:</span>
+                    <input type="range" id="cmp-n-slider" min="1" max="500" step="1" value="120" style="width: 220px; cursor: pointer;">
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                    <span>Outputs m = <b id="cmp-m-val" style="font-family: monospace; color: #859900;">1</b>:</span>
+                    <input type="range" id="cmp-m-slider" min="1" max="200" step="1" value="1" style="width: 220px; cursor: pointer;">
+                  </label>
+                </div>
+              </div>
+
+            </div>
+            <aside class="notes">
+              1. In the "Deep Learning Loss (n = 450, m = 1)" preset, the Jacobian is a single row (the gradient). Forward Mode sweeps column-by-column (450 passes), whereas Reverse Mode computes the entire row in 1 backward pass!
+              2. Switch to "Few Inputs, Many Outputs (n = 2, m = 150)": now the Jacobian is tall and skinny, so Forward Mode needs only 2 passes while Reverse Mode needs 150 passes.
+            </aside>
+          </section>
+
+          <section>
+            <h3>References</h3>
+            <ul style="list-style-type: disc; font-size: 28px; line-height: 1.6;">
+              <li class="fragment roll-in" data-fragment-index="0">
+                <a href="https://arxiv.org/pdf/1911.04048.pdf" target="_blank">Manual Reverse-Mode AD for Complex Analytical Gradients (Silva et al., Appendix III)</a>
+              <li class="fragment roll-in" data-fragment-index="1">
+                <a href="https://arxiv.org/pdf/1502.05767.pdf" target="_blank">Automatic Differentiation in Machine Learning: a Survey (Baydin et al.)</a>
+              <li class="fragment roll-in" data-fragment-index="2">
+                <a href="https://arxiv.org/pdf/1703.02311.pdf" target="_blank">Tricks from Deep Learning (Baydin et al.)</a>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>Take Home Points</h3>
+            <ul style="list-style-type: none; font-size: 25px; width: 100%; line-height: 1.38; margin: 0;">
+              <li class="fragment roll-in" data-fragment-index="0" style="margin-bottom: 10px;">
+                <b>1. Exact at Machine Precision:</b> AD is <em>neither</em> finite differences (no truncation/cancellation error) <em>nor</em> naive symbolic differentiation (no expression swell).
+              <li class="fragment roll-in" data-fragment-index="1" style="margin-bottom: 10px;">
+                <b>2. Forward Mode ($\bm{J}\vec{v}$, Wengert 1964):</b> Propagates dual numbers $v_i + \dot{v}_i\epsilon$ ($\epsilon^2=0$) forward; computes 1 Jacobian column per pass ($O(n)$ passes).
+              <li class="fragment roll-in" data-fragment-index="2" style="margin-bottom: 10px;">
+                <b>3. Reverse Mode ($\bm{J}^T\bar{\vec{y}}$, Speelpenning 1980):</b> Propagates adjoints $\bar{z}_i = \frac{\partial y}{\partial z_i}$ backward from $\bar{y}=1$; computes the full gradient $\nabla_{\vec{\theta}}\mathcal{L} \in \RR^n$ in <b>1 pass</b>!
+              <li class="fragment roll-in" data-fragment-index="3">
+                <b>4. Think in Matrices, Not Scalar Backprop:</b> Using matrix adjoint rules ($\bm{Z}=\bm{A}\bm{B} \implies \bar{\bm{A}}=\bar{\bm{Z}}\bm{B}^T, \bar{\bm{B}}=\bm{A}^T\bar{\bm{Z}}$) makes complex gradients effortless.
+            </ul>
+          </section>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/math/math.js"></script>
+    <script src="plugin/chalkboard/plugin.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/fullscreen/fullscreen.js"></script>
+    <script src="plugin/menu/menu.js"></script>
+
+    <script>
+      Reveal.initialize({
+          hash: true,
+          margin: 0.01,
+          minScale: 0.01,
+          maxScale: 1.65,
+
+          menu: {
+              themes: false,
+              openSlideNumber: true,
+              openButton: false,
+          },
+
+          chalkboard: {
+              boardmarkerWidth: 1,
+              chalkWidth: 2,
+              chalkEffect: 1,
+              toggleNotesButton: false,
+              toggleChalkboardButton: false,
+              slideWidth: Reveal.width,
+              slideHeight: Reveal.height,
+              readOnly: false,
+              theme: "blackboard",
+              eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
+          },
+
+          math: {
+              mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+              config: 'TeX-AMS_SVG-full',
+              TeX: {
+                  Macros: {
+                      RR: '\\mathbb{R}',
+                      PP: '\\mathbb{P}',
+                      EE: '\\mathbb{E}',
+                      NN: '\\mathbb{N}',
+                      vth: '\\vec{\\theta}',
+                      loss: '{\\cal l}',
+                      hclass: '{\\cal H}',
+                      CD: '{\\cal D}',
+                      def: '\\stackrel{\\text{def}}{=}',
+                      pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
+                      vec: ['\\boldsymbol{\\mathbf #1}', 1],
+                      set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
+                      bm: ['\\boldsymbol{\\mathbf #1}', 1],
+                      argmin: ['\\operatorname\{arg\\,min\\,\}'],
+                      argmax: ['\\operatorname\{arg\\,max\\,\}'],
+                      prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+                  },
+                  loader: {load: ['[tex]/color', '[tex]/cancel']},
+                  extensions: ["color.js", "cancel.js"],
+                  tex: {packages: {'[+]': ['color', 'cancel']}},
+                  svg: {
+                      fontCache: 'global'
+                  }
               }
-              else {
-                  $('div.reveal').append(header);
-              }
-            </script>
+          },
+
+          plugins: [ RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+      });
+
+      Reveal.configure({ fragments: true });
+      Reveal.configure({ slideNumber: true });
+      Reveal.configure({ slideNumber: 'c / t' });
+      Reveal.addEventListener( 'darkside', function() {
+          document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
+      }, false );
+      Reveal.addEventListener( 'brightside', function() {
+          document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
+      }, false );
+    </script>
+
+    <style type="text/css">
+      /* 1. Style header/footer <div> so they are positioned as desired. */
+      #header-left {
+          position: absolute;
+          top: 0%;
+          left: 0%;
+      }
+      #header-right {
+          position: absolute;
+          top: 0%;
+          right: 0%;
+      }
+      #footer-left {
+          position: absolute;
+          bottom: 0%;
+          left: 0%;
+      }
+    </style>
+
+    <!-- // 2. Create hidden header/footer -->
+    <div id="hidden" style="display:none;">
+      <div id="header">
+        <div id="header-left"><h4>CS8850</h4></div>
+        <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+        <div id="footer-left">
+          <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+               src="figures/valentino.png" alt="robot learning">
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+      var header = $('#header').html();
+      if ( window.location.search.match( /print-pdf/gi ) ) {
+          Reveal.addEventListener( 'ready', function( event ) {
+              $('.slide-background').append(header);
+          });
+      }
+      else {
+          $('div.reveal').append(header);
+      }
+    </script>
+
+    <!-- Interactive Demonstrations for Lecture 18 -->
+    <script src="js/ad_demos.js"></script>
 
   </body>
 </html>
