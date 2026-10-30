@@ -541,82 +541,120 @@ for epoch in range(number_of_epochs):
             </blockquote>
           </section>
 
-          <!-- 3.2 The Fluctuations (with Animated Dual-Panel SVG) -->
+          <!-- 3.2 The Fluctuations (with Shifting Objective J(theta, Data) & Animated Dual-Panel SVG) -->
           <section>
             <h3>The Fluctuations of Stochastic Updates</h3>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 18.5px; padding: 4px 10px; margin: 0 0 6px 0; text-align: center;">
+              $\displaystyle \textbf{Objective }\text{J}(\vth, \text{Data})\textbf{:}\;\; \underbrace{\text{J}(\vth, \CD)}_{\text{Full Batch (1 fixed surface)}} \neq \underbrace{\text{J}(\vth, {\cal B}_t)}_{\text{Mini-Batch }t\text{ (new surface every step!)}} \neq \underbrace{\text{J}\big(\vth, \{\vec{x}_i, y_i\}\big)}_{\text{Single Sample }i\text{ surface}}$
+            </blockquote>
             <row style="align-items: center; gap: 14px;">
               <col50 style="width: 48%;">
-                <ul style="font-size: 23.5px; line-height: 1.36; margin: 0;">
-                  <li class="fragment roll-in"> <b>Batch GD:</b> Follows a smooth, deterministic path straight into the nearest basin — getting <b>trapped in sharp local minima</b>.
-                  <li class="fragment roll-in" style="margin-top: 10px;"> <b>SGD's Thermal Noise:</b> Random per-sample kicks $-\eta\nabla\loss_i$ jump over narrow barriers into <b>wider, flatter basins</b> that generalize better!
-                  <li class="fragment roll-in" style="margin-top: 10px;"> <b>The Catch:</b> Near $\vth^*$, constant-$\eta$ SGD never halts — it orbits inside an $O(\sqrt{\eta\sigma^2})$ <b>noise ball</b>.
+                <ul style="font-size: 20px; line-height: 1.28; margin: 0; padding-left: 22px;">
+                  <li class="fragment roll-in" data-fragment-index="1"> <b>Shifting Surface $\text{J}(\vth, {\cal B}_t)$:</b> Swapping data ${\cal B}_t$ <b>warps the objective itself</b>! SGD never steps uphill — it rolls <em>downhill</em> on $\text{J}(\vth, {\cal B}_t)$ as fragile sharp traps of $\text{J}(\vth, \CD)$ tilt open and vanish.
+                  <li class="fragment roll-in" data-fragment-index="2" style="margin-top: 6px;"> <b>Why This Is Liberating:</b> Why polish a single sample or batch ${\cal B}_t$ (or even $\CD$) to perfection when <b>none of them is the true test risk</b>? One cheap, coarse step per batch is all a proxy surface deserves!
+                  <li class="fragment roll-in" data-fragment-index="3" style="margin-top: 6px;"> <b>The Catch (Moving Target $\vth^*_{{\cal B}_t}$):</b> Inside a wide flat basin, each batch has its own shifted minimum $\vth^*_{{\cal B}_t} \ne \vth^*_{\CD}$, keeping constant-$\eta$ SGD orbiting in an $O(\sqrt{\eta\sigma^2})$ <b>noise ball</b>.
                 </ul>
               </col50>
               <col50 style="width: 50%;">
-                <svg viewBox="0 0 475 335" style="width: 100%; height: auto; display: block;">
-                  <!-- PANEL 1: 1D Non-Convex Escape from Sharp Local Minimum to Flat Global Basin -->
-                  <text x="237" y="20" fill="#073642" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">1. Non-Convex Escape: Sharp Local Trap vs. Flat Basin</text>
-                  <!-- Shaded area under landscape -->
-                  <path d="M 24,38 C 52,38 66,130 96,130 C 122,130 132,68 154,68 C 184,68 215,144 312,144 C 395,144 428,64 452,38 L 452,155 L 24,155 Z" fill="rgba(238,232,213,0.65)"/>
-                  <!-- Landscape curve J(theta) -->
-                  <path d="M 24,38 C 52,38 66,130 96,130 C 122,130 132,68 154,68 C 184,68 215,144 312,144 C 395,144 428,64 452,38" fill="none" stroke="#586e75" stroke-width="2.6"/>
+                <svg viewBox="0 0 475 316" style="width: 100%; height: auto; display: block;">
+                  <!-- PANEL 1: Shifting Mini-Batch Surfaces J(theta, B_t) vs. Fixed Batch Surface J(theta, D) -->
+                  <text x="237" y="15" fill="#073642" font-size="12.5" font-weight="bold" text-anchor="middle" font-family="sans-serif">1. Shifting Surface J(θ, Bₜ) Warps Every Step (Sharp Traps Vanish!)</text>
+
+                  <!-- Shaded area under full-batch landscape J(theta, D) -->
+                  <path d="M 24,32 C 52,32 66,120 96,120 C 122,120 132,62 154,62 C 184,62 215,134 312,134 C 395,134 428,58 452,32 L 452,144 L 24,144 Z" fill="rgba(238,232,213,0.55)"/>
+
+                  <!-- Faint ghost sample/batch surfaces J(theta, B_1), J(theta, B_2) showing the family of objectives -->
+                  <path d="M 24,40 C 62,70 112,94 168,110 C 222,127 258,138 292,138 C 378,138 422,66 452,34" fill="none" stroke="#cb4b16" stroke-width="1.3" stroke-dasharray="3,3" stroke-opacity="0.4"/>
+                  <path d="M 24,28 C 55,42 74,108 104,108 C 132,108 146,80 172,80 C 208,80 248,130 334,130 C 404,130 432,56 452,30" fill="none" stroke="#cb4b16" stroke-width="1.3" stroke-dasharray="3,3" stroke-opacity="0.4"/>
+
+                  <!-- Fixed Full-Batch Curve J(theta, D) (Blue-Slate Solid) -->
+                  <path d="M 24,32 C 52,32 66,120 96,120 C 122,120 132,62 154,62 C 184,62 215,134 312,134 C 395,134 428,58 452,32" fill="none" stroke="#268bd2" stroke-width="2.3"/>
+
+                  <!-- Active Morphing Mini-Batch Curve J(theta, B_t) (Red-Orange Dashed/Solid) -->
+                  <path fill="none" stroke="#dc322f" stroke-width="2.5" stroke-dasharray="6,3">
+                    <animate attributeName="d" dur="5s" repeatCount="indefinite"
+                      keyTimes="0;0.22;0.45;0.7;0.88;1"
+                      values="
+                        M 24,32 C 52,32 66,120 96,120 C 122,120 132,62 154,62 C 184,62 215,134 312,134 C 395,134 428,58 452,32;
+                        M 24,40 C 62,70 112,94 168,110 C 222,127 258,138 292,138 C 378,138 422,66 452,34;
+                        M 24,40 C 62,70 112,94 168,110 C 222,127 258,138 292,138 C 378,138 422,66 452,34;
+                        M 24,28 C 55,42 74,108 104,108 C 132,108 146,80 172,80 C 208,80 248,130 334,130 C 404,130 432,56 452,30;
+                        M 24,36 C 58,54 88,100 136,100 C 166,100 195,136 288,136 C 375,136 422,62 452,33;
+                        M 24,32 C 52,32 66,120 96,120 C 122,120 132,62 154,62 C 184,62 215,134 312,134 C 395,134 428,58 452,32" />
+                  </path>
 
                   <!-- Labels for Sharp Trap and Wide Flat Basin -->
-                  <text x="96" y="148" fill="#268bd2" font-size="11.5" font-weight="bold" text-anchor="middle" font-family="sans-serif">Sharp Local Trap (Batch Stuck)</text>
-                  <text x="318" y="158" fill="#859900" font-size="11.5" font-weight="bold" text-anchor="middle" font-family="sans-serif">Wide Flat Basin θ* (Better Generalization)</text>
-                  <!-- Barrier arrow annotation -->
-                  <path d="M 104,116 Q 130,45 178,86" fill="none" stroke="#dc322f" stroke-width="1.8" stroke-dasharray="4,3"/>
-                  <text x="155" y="54" fill="#dc322f" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Noise kick −η∇ℓᵢ jumps barrier!</text>
+                  <text x="96" y="138" fill="#268bd2" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Sharp Trap on Fixed J(θ, D)</text>
+                  <text x="315" y="148" fill="#859900" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Wide Flat Basin: Moving Minima θ*(Bₜ)</text>
+                  <text x="172" y="48" fill="#dc322f" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Trap vanishes on J(θ, Bₜ) → rolls downhill!</text>
 
-                  <!-- Animated Batch GD Ball (Blue): slides smoothly into sharp trap and stays stuck -->
-                  <circle r="6" fill="#268bd2" stroke="#fdf6e3" stroke-width="1.5">
-                    <animateMotion dur="5s" repeatCount="indefinite"
-                      keyPoints="0;0.35;0.55;1" keyTimes="0;0.25;0.45;1" calcMode="linear"
-                      path="M 38,52 C 58,78 74,130 96,130 L 96,130"/>
+                  <!-- Animated Moving Batch Minimum Marker theta*(B_t) in Wide Basin -->
+                  <circle cy="134" r="4" fill="none" stroke="#dc322f" stroke-width="1.8">
+                    <animate attributeName="cx" dur="5s" repeatCount="indefinite"
+                      keyTimes="0;0.22;0.45;0.7;0.88;1"
+                      values="312;292;292;334;288;312"/>
                   </circle>
 
-                  <!-- Animated SGD Ball (Red): bounces out of sharp trap over barrier into flat basin and jitters -->
-                  <circle r="6.5" fill="#dc322f" stroke="#fdf6e3" stroke-width="1.5">
+                  <!-- Animated Batch GD Ball (Blue): slides smoothly into sharp trap of J(theta, D) and stays stuck -->
+                  <circle r="5.8" fill="#268bd2" stroke="#fdf6e3" stroke-width="1.4">
                     <animateMotion dur="5s" repeatCount="indefinite"
-                      path="M 38,52 L 72,108 L 96,128 L 116,96 L 102,118 L 138,76 L 154,66 L 195,108 L 245,134 L 302,143 L 332,141 L 292,142 L 322,143 L 308,144"/>
+                      keyPoints="0;0.35;0.55;1" keyTimes="0;0.22;0.42;1" calcMode="linear"
+                      path="M 38,46 C 58,72 74,120 96,120 L 96,120"/>
+                  </circle>
+
+                  <!-- Animated SGD Ball (Red): rolls downhill as J(theta, B_t) tilts open, then chases moving theta*(B_t) -->
+                  <circle r="6.2" fill="#dc322f" stroke="#fdf6e3" stroke-width="1.4">
+                    <animateMotion dur="5s" repeatCount="indefinite"
+                      path="M 38,46 L 72,98 L 96,118 L 132,98 L 168,110 L 222,127 L 292,138 L 334,130 L 288,136 L 312,134"/>
                   </circle>
 
                   <!-- Divider line -->
-                  <line x1="16" y1="168" x2="459" y2="168" stroke="#93a1a1" stroke-width="1" stroke-dasharray="4,4"/>
+                  <line x1="16" y1="158" x2="459" y2="158" stroke="#93a1a1" stroke-width="1" stroke-dasharray="4,4"/>
 
-                  <!-- PANEL 2: 2D Contour Basin: Smooth Batch GD vs. Fluctuating SGD + Noise Ball -->
-                  <text x="237" y="186" fill="#073642" font-size="13" font-weight="bold" text-anchor="middle" font-family="sans-serif">2. 2D Contour Basin: Smooth Batch GD vs. Fluctuating SGD</text>
+                  <!-- PANEL 2: 2D Contour Basin: Fixed J(theta, D) vs. Shifting Batch Bowl J(theta, B_t) -->
+                  <text x="237" y="175" fill="#073642" font-size="12.5" font-weight="bold" text-anchor="middle" font-family="sans-serif">2. 2D Contours: Fixed J(θ, D) vs. Shifting Batch Bowl J(θ, Bₜ)</text>
 
-                  <!-- Concentric Contour Arcs around Optimum (356, 256) strictly within viewBox -->
-                  <path d="M 455,204 A 295,62 0 0,0 62,256 A 295,62 0 0,0 455,308" fill="none" stroke="#eee8d5" stroke-width="2"/>
-                  <path d="M 455,216 A 220,46 0 0,0 136,256 A 220,46 0 0,0 455,296" fill="none" stroke="#eee8d5" stroke-width="2"/>
-                  <ellipse cx="356" cy="256" rx="105" ry="32" fill="none" stroke="#93a1a1" stroke-width="1.2" stroke-opacity="0.45"/>
-                  <ellipse cx="356" cy="256" rx="62" ry="19" fill="none" stroke="#93a1a1" stroke-width="1.2" stroke-opacity="0.55"/>
+                  <!-- Static Full-Batch Contours J(theta, D) around Optimum (356, 248) -->
+                  <path d="M 455,196 A 295,62 0 0,0 62,248 A 295,62 0 0,0 455,300" fill="none" stroke="#eee8d5" stroke-width="2"/>
+                  <path d="M 455,208 A 220,46 0 0,0 136,248 A 220,46 0 0,0 455,288" fill="none" stroke="#eee8d5" stroke-width="2"/>
+                  <ellipse cx="356" cy="248" rx="105" ry="31" fill="none" stroke="#93a1a1" stroke-width="1.2" stroke-opacity="0.45"/>
+                  <ellipse cx="356" cy="248" rx="62" ry="18" fill="none" stroke="#93a1a1" stroke-width="1.2" stroke-opacity="0.55"/>
 
-                  <!-- Stationary Noise Ball around theta* -->
-                  <circle cx="356" cy="256" r="28" fill="rgba(220,50,47,0.09)" stroke="#dc322f" stroke-width="1.6" stroke-dasharray="4,3"/>
-                  <circle cx="356" cy="256" r="4.5" fill="#002b36"/>
-                  <text x="390" y="260" fill="#002b36" font-size="13" font-weight="bold" font-family="sans-serif">θ*</text>
-                  <text x="356" y="300" fill="#dc322f" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Noise Ball O(√ησ²)</text>
+                  <!-- Animated Shifting Mini-Batch Bowl J(theta, B_t) & Moving Target theta*(B_t) -->
+                  <g>
+                    <animateTransform attributeName="transform" type="translate" dur="5s" repeatCount="indefinite"
+                      keyTimes="0;0.18;0.36;0.54;0.72;0.88;1"
+                      values="330,220; 366,270; 342,222; 372,258; 336,264; 348,228; 344,250"/>
+                    <ellipse cx="0" cy="0" rx="46" ry="15" fill="rgba(203,75,22,0.06)" stroke="#cb4b16" stroke-width="1.4" stroke-dasharray="4,2"/>
+                    <circle cx="0" cy="0" r="3.5" fill="#cb4b16"/>
+                    <line x1="3" y1="-3" x2="26" y2="-18" stroke="#cb4b16" stroke-width="1.2"/>
+                    <text x="29" y="-16" fill="#cb4b16" font-size="11" font-weight="bold" font-family="sans-serif">θ*(Bₜ)</text>
+                  </g>
+
+                  <!-- Stationary Noise Ball around theta*(D) -->
+                  <circle cx="356" cy="248" r="27" fill="rgba(220,50,47,0.08)" stroke="#dc322f" stroke-width="1.5" stroke-dasharray="4,3"/>
+                  <circle cx="356" cy="248" r="4.5" fill="#002b36"/>
+                  <text x="388" y="252" fill="#002b36" font-size="12" font-weight="bold" font-family="sans-serif">θ*(D)</text>
+                  <text x="356" y="290" fill="#dc322f" font-size="11" font-weight="bold" text-anchor="middle" font-family="sans-serif">Noise Ball O(√ησ²)</text>
 
                   <!-- Start Point theta_0 -->
-                  <circle cx="62" cy="292" r="5.5" fill="#073642"/>
-                  <text x="38" y="297" fill="#073642" font-size="13" font-weight="bold" font-family="sans-serif">θ₀</text>
+                  <circle cx="62" cy="284" r="5.5" fill="#073642"/>
+                  <text x="38" y="289" fill="#073642" font-size="12.5" font-weight="bold" font-family="sans-serif">θ₀</text>
 
                   <!-- Smooth Batch GD Path (Blue) -->
-                  <path id="batch-svg-path" d="M 62,292 Q 185,264 356,256" fill="none" stroke="#268bd2" stroke-width="3"/>
-                  <text x="175" y="294" fill="#268bd2" font-size="12" font-weight="bold" font-family="sans-serif">Batch GD (exact −η∇J)</text>
+                  <path d="M 62,284 Q 185,256 356,248" fill="none" stroke="#268bd2" stroke-width="2.8"/>
+                  <text x="165" y="286" fill="#268bd2" font-size="11.5" font-weight="bold" font-family="sans-serif">Batch GD: fixed J(θ, D)</text>
 
-                  <!-- Fluctuating SGD Path (Red zig-zag into noise ball) -->
-                  <path id="sgd-svg-path" d="M 62,292 L 96,226 L 142,276 L 188,214 L 236,268 L 284,218 L 328,266 L 352,232 L 376,262 L 338,272 L 364,236 L 344,258" fill="none" stroke="#dc322f" stroke-width="2.2" stroke-dasharray="5,3"/>
-                  <text x="148" y="207" fill="#dc322f" font-size="12" font-weight="bold" font-family="sans-serif">Stochastic GD (noisy −η∇ℓᵢ)</text>
+                  <!-- Fluctuating SGD Path (Red zig-zag chasing shifting theta*(B_t)) -->
+                  <path d="M 62,284 L 96,220 L 142,268 L 188,208 L 236,260 L 284,212 L 328,258 L 352,224 L 376,254 L 338,264 L 364,230 L 344,250" fill="none" stroke="#dc322f" stroke-width="2.1" stroke-dasharray="5,3"/>
+                  <text x="128" y="199" fill="#dc322f" font-size="11.5" font-weight="bold" font-family="sans-serif">SGD: chases shifting θ*(Bₜ)</text>
 
                   <!-- Animated Dots on 2D Paths -->
-                  <circle r="5.5" fill="#268bd2" stroke="#fdf6e3" stroke-width="1.4">
-                    <animateMotion dur="5s" repeatCount="indefinite" path="M 62,292 Q 185,264 356,256 L 356,256"/>
+                  <circle r="5.2" fill="#268bd2" stroke="#fdf6e3" stroke-width="1.3">
+                    <animateMotion dur="5s" repeatCount="indefinite" path="M 62,284 Q 185,256 356,248 L 356,248"/>
                   </circle>
-                  <circle r="5.5" fill="#dc322f" stroke="#fdf6e3" stroke-width="1.4">
-                    <animateMotion dur="5s" repeatCount="indefinite" path="M 62,292 L 96,226 L 142,276 L 188,214 L 236,268 L 284,218 L 328,266 L 352,232 L 376,262 L 338,272 L 364,236 L 344,258"/>
+                  <circle r="5.2" fill="#dc322f" stroke="#fdf6e3" stroke-width="1.3">
+                    <animateMotion dur="5s" repeatCount="indefinite" path="M 62,284 L 96,220 L 142,268 L 188,208 L 236,260 L 284,212 L 328,258 L 352,224 L 376,254 L 338,264 L 364,230 L 344,250"/>
                   </circle>
                 </svg>
               </col50>
@@ -682,7 +720,7 @@ for epoch in range(number_of_epochs):
                       <input type="checkbox" id="var-chk-anneal"> <span>Anneal ηₜ = η₀ / (1 + 0.04t)</span>
                     </label>
                     <label style="display: inline-flex; align-items: center; gap: 5px; cursor: pointer; margin-left: 6px; font-weight: bold; color: #6c71c4; font-size: 13px; white-space: nowrap;">
-                      <input type="checkbox" id="var-chk-fan" checked> <span>Show Sample Gradient Fan ∇ℓᵢ</span>
+                      <input type="checkbox" id="var-chk-fan" checked> <span>Show Shifting J(θ, Bₜ) &amp; Fan ∇ℓᵢ</span>
                     </label>
                   </div>
                   <div style="font-size: 12.5px; color: #586e75; white-space: nowrap;">
@@ -709,10 +747,10 @@ for epoch in range(number_of_epochs):
             </div>
             <aside class="notes">
               What to demonstrate in class:
-              1. Look at the purple fan of vectors at the current SGD position: those are individual sample gradients grad l_i(theta). Their average is the true gradient grad J(theta).
-              2. Click "Auto-Run" with Constant eta: notice how SGD (red) and Mini-Batch (green) reach the vicinity of the minimum after far fewer gradient evaluations (top-right plot) than Batch GD (blue), which spends 64 evaluations per single step!
-              3. Once near the minimum, watch SGD (red) bounce inside the dashed "Noise Ball" because individual gradients don't vanish at theta*.
-              4. Check "Anneal eta_t = eta_0 / (1 + 0.04t)": watch the noise ball shrink and SGD converge cleanly onto the exact minimum!
+              1. Click "1 Step" repeatedly and watch the green dashed mini-batch bowl J(theta, B_t) and its minimum theta*(B_t), plus the red single-sample minimum theta*(x_i): every batch defines a DIFFERENT objective surface! Each step is a clean downhill step toward that batch's own minimum.
+              2. Point out why this is liberating: since neither theta*(x_i) nor theta*(B_t) equals the true target, polishing a single sample/batch to convergence is pointless — take one cheap step and move on!
+              3. Click "Auto-Run" with Constant eta: notice how SGD (red) and Mini-Batch (green) reach the vicinity of the minimum after far fewer gradient evaluations (top-right plot) than Batch GD (blue), then orbit inside the dashed Noise Ball.
+              4. Check "Anneal eta_t = eta_0 / (1 + 0.04t)": watch the noise ball shrink and SGD converge cleanly!
             </aside>
           </section>
         </section>
@@ -1425,7 +1463,7 @@ for epoch in range(number_of_epochs):
           hash: true,
           margin: 0.01,
           minScale: 0.01,
-          maxScale: 1.65,
+          maxScale: 4.0,
           viewDistance: 100,
           mobileViewDistance: 100,
           preloadIframes: true,

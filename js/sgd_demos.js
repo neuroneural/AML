@@ -262,6 +262,8 @@
     let pathBatch = [];
     let pathMB = [];
     let pathSGD = [];
+    let activeMBIndices = [0, 1, 2, 3, 4, 5, 6, 7];
+    let activeSGDIdx = 0;
     let stepCount = 0;
     let autoTimer = null;
 
@@ -315,6 +317,12 @@
       stopAuto();
       rng = pseudoRandom(98765);
       stepCount = 0;
+      const B = parseInt(sliderB.value, 10) || 8;
+      activeMBIndices = [];
+      for (let k = 0; k < B; k++) {
+        activeMBIndices.push((k * 5 + 3) % N);
+      }
+      activeSGDIdx = 11;
       const j0 = evalJ(startPos);
       pathBatch = [{ x: startPos.x, y: startPos.y, loss: j0, evals: 0 }];
       pathMB = [{ x: startPos.x, y: startPos.y, loss: j0, evals: 0 }];
@@ -346,12 +354,14 @@
       nextB.evals = prevB.evals + N;
       pathBatch.push(nextB);
 
-      // 2. Mini-Batch GD (averages B random sample gradients)
+      // 2. Mini-Batch GD (averages B random sample gradients -> optimizes J(theta, B_t))
       const prevMB = pathMB[pathMB.length - 1];
       let sumMBx = 0;
       let sumMBy = 0;
+      activeMBIndices = [];
       for (let k = 0; k < B; k++) {
         const idx = Math.floor(rng() * N);
+        activeMBIndices.push(idx);
         const gi = sampleGrad(prevMB, idx, sigmaG);
         sumMBx += gi.gx;
         sumMBy += gi.gy;
@@ -364,9 +374,10 @@
       nextMB.evals = prevMB.evals + B;
       pathMB.push(nextMB);
 
-      // 3. Stochastic GD (uses 1 random sample gradient)
+      // 3. Stochastic GD (uses 1 random sample gradient -> optimizes J(theta, {x_i, y_i}))
       const prevS = pathSGD[pathSGD.length - 1];
       const idxS = Math.floor(rng() * N);
+      activeSGDIdx = idxS;
       const gS = sampleGrad(prevS, idxS, sigmaG);
       const nextS = {
         x: prevS.x - etaT * gS.gx,
@@ -494,16 +505,76 @@
       ctx.stroke();
       ctx.restore();
 
-      // Optimum star at (0,0)
+      // Optimum star at (0,0) for full dataset J(theta, D)
       ctx.fillStyle = SOL.base03;
       ctx.beginPath();
       ctx.arc(plotL.cx, plotL.cy, 4.5, 0, 2 * Math.PI);
       ctx.fill();
-      ctx.font = 'bold 12px sans-serif';
-      ctx.fillText('θ* (Minimum)', plotL.cx + 7, plotL.cy - 6);
+      ctx.font = 'bold 11.5px sans-serif';
+      ctx.fillText('θ*(D)', plotL.cx + 7, plotL.cy - 6);
 
-      // Optional: Draw fan of individual sample negative gradients -eta * grad l_i(theta) at current SGD point
+      // Optional: Draw live shifting Mini-Batch surface J(theta, B_t), Single-Sample minimum theta*(x_i), and Gradient Fan
       if (showFan) {
+        // 1. Compute active Mini-Batch minimum theta*(B_t) = (-sigmaG * mean_dx / lam1, -sigmaG * mean_dy / lam2)
+        let mbSumX = 0;
+        let mbSumY = 0;
+        const countB = Math.max(1, B);
+        for (let k = 0; k < countB; k++) {
+          const idx = activeMBIndices[k % activeMBIndices.length] || ((k * 5 + 3) % N);
+          const off = sampleOffsets[idx % N];
+          mbSumX += off.gx;
+          mbSumY += off.gy;
+        }
+        const mbStarX = -(sigmaG * (mbSumX / countB)) / lam1;
+        const mbStarY = -(sigmaG * (mbSumY / countB)) / lam2;
+        const pMBStar = dataToPx(mbStarX, mbStarY);
+
+        // Draw shifted Mini-Batch contour ellipses J(theta, B_t) centered at theta*(B_t)
+        ctx.save();
+        ctx.setLineDash([5, 3]);
+        ctx.strokeStyle = 'rgba(133, 153, 0, 0.55)';
+        ctx.lineWidth = 1.4;
+        [0.45, 1.8].forEach((c) => {
+          const rx = Math.sqrt((2 * c) / lam1) * plotL.pxPerUnit;
+          const ry = Math.sqrt((2 * c) / lam2) * plotL.pxPerUnit;
+          ctx.beginPath();
+          ctx.ellipse(pMBStar.x, pMBStar.y, rx, ry, 0, 0, 2 * Math.PI);
+          ctx.stroke();
+        });
+        ctx.setLineDash([]);
+        ctx.fillStyle = SOL.green;
+        ctx.beginPath();
+        ctx.arc(pMBStar.x, pMBStar.y, 4, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.font = 'bold 11px sans-serif';
+        ctx.fillText('θ*(Bₜ)', pMBStar.x + 6, pMBStar.y + 4);
+        ctx.restore();
+
+        // 2. Compute active Single-Sample minimum theta*(x_i)
+        const offS = sampleOffsets[activeSGDIdx % N];
+        const sgdStarX = -(sigmaG * offS.gx) / lam1;
+        const sgdStarY = -(sigmaG * offS.gy) / lam2;
+        const pSGDStar = dataToPx(sgdStarX, sgdStarY);
+
+        ctx.save();
+        ctx.setLineDash([2, 3]);
+        ctx.strokeStyle = 'rgba(203, 75, 22, 0.55)';
+        ctx.lineWidth = 1.3;
+        const rxS = Math.sqrt((2 * 0.45) / lam1) * plotL.pxPerUnit;
+        const ryS = Math.sqrt((2 * 0.45) / lam2) * plotL.pxPerUnit;
+        ctx.beginPath();
+        ctx.ellipse(pSGDStar.x, pSGDStar.y, rxS, ryS, 0, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = SOL.orange;
+        ctx.beginPath();
+        ctx.arc(pSGDStar.x, pSGDStar.y, 4, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.font = 'bold 11px sans-serif';
+        ctx.fillText('θ*(xᵢ)', pSGDStar.x + 6, pSGDStar.y - 5);
+        ctx.restore();
+
+        // 3. Fan of individual sample negative gradients -eta * grad l_i(theta) at current SGD point
         const pCenter = dataToPx(curS.x, curS.y);
         const scaleVec = 0.22;
         for (let i = 0; i < 18; i++) {
