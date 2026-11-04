@@ -583,7 +583,7 @@
     let x2 = 5.0;
     let dx1 = 1.0;
     let dx2 = 0.0;
-    let curStep = 7; // 0..7 (default shows complete trace like forwardAD_example.svg)
+    let curStep = 0; // 0..7 (starts in reset position ready to step through)
     let autoTimer = null;
 
     const btnReset = document.getElementById('fwd-btn-reset');
