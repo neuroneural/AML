@@ -248,6 +248,20 @@
               <li class="fragment roll-in"> <b>1. Precision Trap:</b> Even at the optimal step $h^* \approx \sqrt{\varepsilon_{\text{mach}}} \approx 10^{-8}$, half of the 16 float64 digits are lost!
               <li class="fragment roll-in"> <b>2. Complexity Wall:</b> For $f: \RR^n \to \RR$, perturbing each coordinate $x_i + h$ takes <b>$n + 1$ function evaluations</b> ($10^9$ forward passes for a 1B-parameter model!).
             </ul>
+            <aside class="notes">
+              1. WHERE CANCELLATION ERROR COMES FROM:
+                 - In IEEE-754 float64, every function evaluation commits a relative roundoff error bounded by machine epsilon (\varepsilon_{mach} \approx 2.22 \times 10^{-16}):
+                   fl(f(x+h)) = f(x+h) + e_2 and fl(f(x)) = f(x) + e_1, where |e_i| \le \varepsilon_{mach} |f(x)|.
+                 - When h is tiny (e.g., h = 10^{-12}), f(x+h) and f(x) agree in their first 12 leading digits. Subtracting them cancels out those 12 true signal digits, leaving only the last 4 digits plus the worst-case roundoff difference e_2 - e_1 = \pm 2 \varepsilon_{mach} |f(x)|.
+                 - Dividing that numerator by a tiny h amplifies the roundoff noise by 1/h, giving \pm 2 \varepsilon_{mach} |f(x)| / h (and if h < \varepsilon_{mach}, fl(x+h) = x so the derivative collapses to 0!).
+              2. WHY fl(...) IS ONLY AROUND f(x+h) AND f(x), NOT SUBTRACTION OR DIVISION:
+                 - Subtraction: By Sterbenz's Lemma, when two floats f(x+h) and f(x) are within a factor of 2 (always true for small h), the floating-point subtraction operation itself is 100% exact (zero new rounding error)! Catastrophic cancellation is not an error created by the minus operator; it is the subtraction canceling the signal and exposing the pre-existing rounding errors already inside fl(f(x+h)) and fl(f(x)).
+                 - Division by h: Choosing h = 2^{-k} (a binary power of 2) only shifts the exponent and is 100% exact. Even for general h, division adds a relative error of O(\varepsilon_{mach} |f'(x)|) \approx 10^{-16}, which does NOT divide by h and is 10^8 times smaller than the O(\varepsilon_{mach}/h) cancellation term.
+              3. WHY THE PRECISION TRAP HAPPENS:
+                 - Total error is E(h) \approx (|f''(x)|/2) h + 2 |f(x)| \varepsilon_{mach} / h.
+                 - Minimizing E(h) over h (setting dE/dh = 0, i.e., balancing truncation error O(h) against cancellation error O(\varepsilon_{mach}/h)) yields h^* \propto \sqrt{\varepsilon_{mach}} \approx 10^{-8}.
+                 - Plugging h^* \approx 10^{-8} back into E(h^*) gives total error O(\sqrt{\varepsilon_{mach}}) \approx 10^{-8}: you inevitably lose half of your 16 significant digits (and in float32/bfloat16 on GPUs, you are left with only 1.5 to 3.5 accurate digits!).
+            </aside>
           </section>
 
           <!-- Interactive Demo 1: Numerical Differentiation vs. Exact AD -->
