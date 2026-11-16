@@ -4,15 +4,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+    <link href="css/fontawesome-free-6.2.1-web/css/all.css" rel="stylesheet">
 
     <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
     <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
     <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
 
-    <title>Advanced Machine Learning</title>
+    <title>Advanced Machine Learning: Lecture 21 — Convolutional Neural Networks</title>
+    <link rel="icon" href="data:,">
 
     <meta name="description" content="CS8850 GSU class">
     <meta name="author" content="Sergey M Plis">
@@ -20,15 +19,38 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-
-
     <link rel="stylesheet" href="dist/reset.css">
     <link rel="stylesheet" href="dist/reveal.css">
-    <!-- Code syntax highlighting -->
     <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
-    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <style>
+      .reveal .slides .slide-footer {
+        bottom: 10px !important;
+        left: 92px !important;
+        max-width: 1050px;
+        line-height: 1.25;
+        z-index: 5;
+      }
+      #header-left, #header-right, #footer-left {
+        pointer-events: none;
+      }
+      .cnn-badge-row {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 8px;
+      }
+      .cnn-card {
+        background: #eee8d5;
+        border: 1px solid #93a1a1;
+        border-radius: 6px;
+        padding: 10px 14px;
+        font-size: 20px;
+        line-height: 1.32;
+        text-align: left;
+      }
+    </style>
     <!-- Printing and PDF exports -->
     <script>
       var link = document.createElement( 'link' );
@@ -42,20 +64,20 @@
 
   <body>
     <div class="reveal">
-      <!-- In between the <div="reveal"> and the <div class="slides">-->
-          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
-          <!-- In between the <div="reveal"> and the <div class="slides">-->
-              <!-- Any section element inside of this container is displayed as a slide -->
-              <div class="slides">
+      <div class="slides">
 
-	        <section>
-	          <section>
-	            <p>
-	              <h2>Advanced Machine Learning</h2>
-                      <h3>24: Convolutional Neural Networks</h3>
-	            <p>
-	          </section>
-	                    <!-- Schedule Slide (Fall 2026 synced) -->
+        <!-- ========================================================================= -->
+        <!-- SECTION 1: TITLE, SCHEDULE, OUTLINE & BRIDGE                              -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <p>
+              <h2>Advanced Machine Learning</h2>
+              <h3>21: Convolutional Neural Networks</h3>
+            <p>
+          </section>
+
+          <!-- Schedule Slide (Fall 2026 synced, Nov 16 marker on Row 25) -->
           <section>
             <h3>Schedule (you are here <i class='fa fa-map-marker' style='color: #FA6900;'></i>)</h3>
             <row>
@@ -117,991 +139,1890 @@
           </section>
 
           <section>
-	            <h3>Outline for the lecture</h3>
-                    <ul>
-                      <li class="fragment roll-in"> History of CNNs
-                      <li class="fragment roll-in"> Bulding Blocks
-                      <li class="fragment roll-in"> Skip Connections
-                      <li class="fragment roll-in"> Fully Convolutional Neural Nets
-                      <li class="fragment roll-in"> Semantic Segmentation with Twists
-                      <li class="fragment roll-in"> (even more) Advanced Uses of CNN
-
-	            </ul>
-                  </section>
-                </section>
-
-                <!-- --------------------------------------------------------------------------->
-	        <section>
-                  <section>
-                    <h2>Convolutions what?</h2>
-                  </section>
-                  <section data-background="figures/convolution.gif" data-background-size="contain">
-                  </section>
-                  <section data-background="figures/convolution_2.gif" data-background-size="contain" data-background-repeat="repeat">
-                  </section>
-                  <section data-background="figures/convolution_3.gif" data-background-size="contain" data-background-repeat="repeat">
-                  </section>                  
-                  <section data-background="figures/convolution_4.gif" data-background-size="contain" data-background-repeat="repeat">
-                  </section>
-                  <section data-background="figures/convolution_matching.gif" data-background-size="contain" data-background-repeat="repeat">
-                  </section>                                    
-                </section>
-                
-
-                <!-- --------------------------------------------------------------------------->
-	        <section>
-                  <section>
-                    <h2>History of CNNs</h2>
-                  </section>
-
-                  <section>
-                    <h2>Cat's brain 1962 (Hubel and Wiesel)</h2>
-                    <img width="70%"
-                         src="figures/cats_brain.png" alt="cat's brain">
-                    <div class="slide-footer">
-                      <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1359523/pdf/jphysiol01247-0121.pdf">Receptive fields, binocular interaction and functional architecture in the cat's visual cortex</a>
-                    </div>
-                  </section>
-
-                  <section>
-                    <div id="header-right" style="margin-right: -100px;">
-                    <img width="130"
-                         src="figures/fukushima.jpg" alt="fukushima">
-                    </div>
-                    <h2>Fukushima's Neurocognitron 1979</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="900"
-                         src="figures/neurocognitron_.png" alt="neurocognitron">
-                    <div class="slide-footer">
-                      <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1359523/pdf/jphysiol01247-0121.pdf">Neocognitron - A Self-organizing Neural Network Model for a Mechanism of Pattern Recognition Unaffected by Shift in Position</a>
-                    </div>
-                  </section>
-
-                  <section>
-                    <div id="header-right"  style="margin-right: -100px;">
-                    <img width="130"
-                         src="figures/waibel.jpg" alt="waibel">
-                    </div>
-                    <h2>Time Delay Neural Network 1989</h2>
-                    <img style="margin-top: -20px;" width="40%"
-                         src="figures/tdnn_.png" alt="tdnn">
-                    <div class="slide-footer">
-                      <a href="https://www.cs.toronto.edu/~fritz/absps/waibelTDNN.pdf">Phoneme Recognition Using Time Delay Neural Networks</a>
-                    </div>
-                    <aside class="notes">
-                      Note 1D channels!
-                    </aside>
-                  </section>
-
-                  <section>
-                    <div id="header-right">
-                    <img width="130"
-                         src="figures/lecun.png" alt="lecun">
-                    </div>
-                    <h2>CNN 1989</h2>
-                    <img style="margin-top: -50px;" width="73%"
-                         src="figures/cnn.png" alt="cnn">
-                    <div class="slide-footer">
-                      <a href="http://yann.lecun.org/exdb/publis/pdf/lecun-89e.pdf">Backpropagation Applied to Handwritten Zip Code Recognition</a>
-                    </div>
-                    <aside class="notes">
-                      Note undersampling to reduce layers!
-                    </aside>
-                  </section>
-
-                  <section>
-                    <div id="header-right">
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="130"
-                           src="figures/lecun.png" alt="lecun">
-                    </div>
-                    <h2>CNN 1998</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                         src="figures/lenet.png" alt="lenet">
-                    <div class="slide-footer">
-                      <a href="http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf">Gradient-Based Learning applied to Document Recognition</a>
-                    </div>
-                    <aside class="notes">
-                      Note subsampling! No pooling yet!
-                    </aside>
-                  </section>
-
-                  <section>
-                    <div id="header-right">
-                      <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="130"
-                           src="figures/dancirican.jpg" alt="cirican">
-                    </div>
-                    <h2>CNN+GPU+MaxPooling 2011</h2>
-                    <img style="margin-top: -40px;" width="70%"
-                         src="figures/gpunet.png" alt="gpunet">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/pdf/1102.0183.pdf">High Performance Neural Network for Visual Object Classification</a>
-                    </div>
-                    <aside class="notes">
-                      Everything is here. Max Pooling, GPU (60x speedup compared to CPU), lots of data etc.<br>
-                      Chinese handwriting recognition 2011 winner.<br>
-                      Traffic sign recognition winner 2011 <br>
-                      Neuronal Membrane segmentation 2012 <br>
-                    </aside>
-                  </section>
-
-                  <section>
-                    <div id="header-right">
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); " width="130"
-                         src="figures/alex.png" alt="Alex">
-                    </div>
-                    <h2>AlexNet 2012</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                         src="figures/alexnet.png" alt="alexnet">
-                    <div class="slide-footer">
-                      <a href="https://www.cs.toronto.edu/~fritz/absps/imagenet.pdf">ImageNet Classification with Deep ConvolutionalNeural Networks</a>
-                    </div>
-                  <aside class="notes">
-                  </aside>
-                  </section>
-
-
-                </section>
-                <!-- --------------------------------------------------------------------------->
-	        <section>
-                  <section>
-                    <h2>CNN: bulding blocks</h2>
-                    <div class="slide-footer">
-                      <a href="http://deeplearning.net/software/theano_versions/dev/tutorial/conv_arithmetic.html">some images are from Theano documentation</a>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h2>Convolving a kernel with an image</h2>
-                    <row>
-                      <col50>
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                             src="figures/CNN_convo1.gif" alt="convolution">
-                        \[
-                        \left(
-                        \begin{array}{ccc}
-                        0 & 1 & 2 \\
-                        2 & 2 & 0 \\
-                        0 & 1 & 2 \\
-                        \end{array}
-                        \right)
-                        \]
-                      </col50>
-                      <col50>
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                             src="figures/CNN_convo2.gif" alt="convolution 2">
-                      </col50>
-                    </row>
-                  </section>
-
-                  <section>
-                    <h2>Convolving a kernel with an image</h2>
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                             src="figures/CNN_flat_conv.svg" alt="convolution">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/pdf/1603.07285.pdf">A guide to convolution arithmetic for deep learning</a>
-                    </div>
-                  </section>
-
-
-                  <section>
-                    <h2>Padding and symmetries</h2>
-                    <row>
-                      <col50>
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                             src="figures/CNN_same_pad.gif" alt="same pad">
-                      </col50>
-                      <col50>
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                             src="figures/CNN_full_pad.gif" alt="full pad">
-                      </col50>
-                    </row>
-                  </section>
-
-                  <section>
-                    <h2>Padding and symmetries</h2>
-                        <img style="margin-top: -35px;" width="85%"
-                             src="figures/CNN_padded.svg" alt="convolution">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/pdf/1603.07285.pdf">A guide to convolution arithmetic for deep learning</a>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h2>How do the channels look?</h2>
-                      <div style="position:relative; width:800px; height:800px; margin:0 auto;">
-                        <img class="fragment current-visible" data-transition="slide fade-out" data-fragment-index="0" width="600"  src="figures/CNN_original.png" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
-                        <img class="fragment current-visible" data-transition="slide fade-out" data-fragment-index="1" width="600"  src="figures/CNN_layer1.png" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
-                        <img class="fragment current-visible" data-transition="slide fade-out" data-fragment-index="2" width="600" src="figures/CNN_layer2.png" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
-                        <img class="fragment current-visible" data-transition="slide fade-out" data-fragment-index="3" width="600" src="figures/CNN_layer3.png" style="position:absolute;top:0;left:0;border:0; box-shadow: 0px 0px 0px rgba(255, 255, 255, 255);" />
-                      </div>
-                  </section>
-
-                  <section>
-                    <h2>Pooling: maxpooling</h2>
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                             src="figures/CNN_maxpooling.gif" alt="max pooling">
-                  </section>
-
-                  <section>
-                    <h2>Pooling: maxpooling</h2>
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                             src="figures/CNN_flat_maxpooling.svg" alt="max pooling">
-                  </section>
-
-                  <section>
-                    <h2>Pooling: average</h2>
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                             src="figures/CNN_avpooling.svg" alt="average pooling">
-                  </section>
-
-                  <section>
-                    <h2>How do we produce a class prediction?</h2>
-                  </section>
-
-                  <section>
-                    <h2>One-convolution</h2>
-                    <row>
-                      <col50>
-                      </col50>
-                      <col50>
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                             src="figures/CNN_one_conv.gif" alt="one_conv">
-                      </col50>
-                    </row>
-                  </section>
-
-                  <section>
-                    <div id="header-right">
-                    <img width="300"
-                         src="figures/CNN_upconvolution.gif" alt="gif upconv">
-                    </div>
-                    <h2>Upconvolution</h2>
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                             src="figures/CNN_upconvolution.png" alt="upconv">
-                    <div class="slide-footer">
-                      <a href="https://datascience.stackexchange.com/a/20176">Image from a comment on stackexchange</a>
-                    </div>
-
-
-                  </section>
-
-                  <section>
-                    <h2>Dilated convolution</h2>
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="60%"
-                             src="figures/CNN_dilation.gif" alt="dilated">
-                  </section>
-
-                  <section data-background-iframe="https://www.youtube.com/embed/HnWIHWFbuUQ?autoplay=1&controls=0&rel=0&modestbranding=1&showinfo=0">
-                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Play with a simulator</h2>
-                    <h3 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1"><a href="https://www.youtube.com/watch?v=HnWIHWFbuUQ&featu" target="_blank">Video</a></h3>
-                    <h3 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1"><a href="https://poloclub.github.io/cnn-explainer/" target="_blank">Demo</a></h3>
-                    <h3 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1"><a href="https://github.com/poloclub/cnn-explainer" target="_blank">GitHub</a></h3>
-
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/abs/2004.15004v1">CNN Explainer: Learning Convolutional Neural Networks with Interactive Visualization</a>
-                    </div>                    
-                  </section>
-                  
-                  <section>
-                    <h2>Basic building blocks</h2>
-                    <ol>
-                      <li> Convolution with a filter
-                      <li> Zero Padding
-                      <li> Channels and channel-kernel relationship
-                      <li> Pooling (max and average)
-                      <li> Moving from convolution layers to predictions
-                      <li> One convolution
-                      <li> Upconvolution
-                      <li> Dilated convolution
-                    </ol>
-                  </section>
-
-                </section>
-
-                <!-- --------------------------------------------------------------------------->
-	        <section>
-                  <section>
-                    <h2>Skip connections</h2>
-                    <aside class="notes">
-                      Thanks to the reverse mode accumulation of Bert Speelpenning, (pause) after the forward pass backpropagation works backward along the paths in the computation graph. Normally, each edge denotes a computation, such as linear transformation followed by a slight nonlinearity. However, there is an advantage in excluding computation on some edges simply using an identity transform instead. A trick, that although, as everything under the sun, been known for a while, recently rediscovered to be effective in training very deep deep-learning models.<br>In this section I will walk you through the rediscovery and along the way introduce another transformative concept of gates.
-                    </aside>
-                  </section>
-
-                  <section>
-                    <h2>Dark knowledge</h2>
-                    <row>
-                      <col50>
-                      </col50>
-                      <col50>
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                             src="figures/shadow-of-the-vampire.jpg" alt="vampire">
-                      </col50>
-                    </row>
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/abs/1312.6184">Do Deep Nets Really Need to be Deep?</a><br>
-                      <a href="https://arxiv.org/abs/1503.02531">Distilling the Knowledge in a Neural Network</a>
-                      <a href="https://arxiv.org/abs/1412.6550">FitNets: Hints for Thin Deep Nets</a>
-                    </div>
-                    <aside class="notes">
-                      It has been conjectured quite early that deeper models should be more powerful than shallow, but we were unable to train them effectively no matter how hard we've tried. Various pre-training approaches, when parameters of each layer are initialized in a smart way, were helping only to a point. The difficulties were discouraging and we did not know how to move forward with thin and deep networks.<br>
-                      Until in 2013 Rich Caruana observed the following effect: (Explain the mimic nets for teacher and student training) <br>
-                      Geoff Hinton - called the grandfather of deep learning by some - came up with explanation, which he termed: dark knowledge (explain hard labels and soft labels) <br>
-                      and the team of Yoshia Bengio has used this observation for training deep and thin networks they called fitnets<br>
-                      yet, to some, this two stage teacher+student process seemed a bit cumbersome.
-                    </aside>
-                  </section>
-
-                  <section>
-                    <h3>Highway networks (May 2015 on arxiv)</h2>
-                    <ul  style="list-style-type: none; font-size: 32px;">
-                      <li class="fragment roll-in">
-                        $$
-                        \vec{y} = H(\vec{x}, \bm{W}_H)
-                        $$
-                      <li class="fragment roll-in">
-                        $$
-                        \vec{y} = H(\vec{x}, \bm{W}_H) \odot T(\vec{x}, \bm{W}_T) + \vec{x} \odot C(\vec{x}, \bm{W}_C)
-                        $$
-                      <li class="fragment roll-in">
-                        $$
-                        \vec{y} = H(\vec{x}, \bm{W}_H) \odot T(\vec{x}, \bm{W}_T) + \vec{x} \odot (1 - T(\vec{x}, \bm{W}_T))
-                        $$
-                      <li class="fragment roll-in">
-                        $$
-                        \vec{y} =
-                        \left\{
-                        \begin{array}{ll}
-                        \vec{x} & \mbox{if }\;\;T(\vec{x}, \bm{W}_T)=0,\\
-                        H(\vec{x}, \bm{W}_H) & \mbox{if }\;\;T(\vec{x}, \bm{W}_T)=1
-                        \end{array}
-                        \right.
-                        $$
-                      <li class="fragment roll-in"> What if untrained gate is always open and does not let gradients flow?
-                      <li class="fragment roll-in"> <b>Initialize gate biases to large negative values!</b>
-                    </ul>
-                    <div class="slide-footer" style="text-align: left;">
-                      <a href="https://arxiv.org/abs/1505.00387">Highway Networks</a><br>
-                      <a href="https://arxiv.org/abs/1507.06228">Training Very Deep Networks</a>
-                    </div>
-
-                    <aside class="notes">
-                      In 2015 Rupesh Srivastawa, Klaus Greff and Yurgen Schmidhuber made the following, a bit elaborate, observation. If we embellish the regular layer in a feed forward neural network with a transfer and carry gates, we will enable gradients flow along the entire depth of a deep network.<br>
-                      Let's see how they have done it.
-                    </aside>
-                  </section>
-
-                  <section data-fullscreen>
-                    <alert>Train models with 100 of layers instead of just 10 before</alert>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1500"
-                         src="figures/CNN_HW_performance.png" alt="HWN">
-                    <aside class="notes">
-                      The networks that they have trained using traditional layers and highway layers were of depth 10, 20, 50, and a 100. Plain networks would train increasingly poorly with depth, while highway networks retained ability to train. Importantly the results were comparable with the ones of fitnets (trained by mimicing a teacher).
-                    </aside>
-                  </section>
-
-                  <section>
-                    <h2>Residual Networks (block)</h2>
-                    <row>
-                      <col50>
-                      </col50>
-                      <col50>
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1500"
-                             src="figures/CNN_resnets_block.svg" alt="resnet block">
-                      </col50>
-                    </row>
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/pdf/1512.03385.pdf">Deep Residual Learning for Image Recognition</a>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h2>Residual Networks (full)</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1500"
-                         src="figures/CNN_resnets_whole.svg" alt="resnet whole">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/pdf/1512.03385.pdf">Deep Residual Learning for Image Recognition</a>
-                    </div>
-
-                  </section>
-
-                  <section>
-                    <h2>Residual Networks (performance)</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1500"
-                         src="figures/CNN_resnets_perf.svg" alt="resnet perf">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/pdf/1512.03385.pdf">Deep Residual Learning for Image Recognition</a>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h2>Error surface effect of skip connection</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                         src="figures/skip_smooth.png" alt="landscape">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/pdf/1512.03385.pdf">Deep Residual Learning for Image Recognition</a><br>
-                      <a href="https://arxiv.org/pdf/1505.00387.pdf">Highway Networks</a><br>
-                      <a href="https://papers.nips.cc/paper/7875-visualizing-the-loss-landscape-of-neural-nets.pdf">Visualizing the Loss Landscape of Neural Nets</a>
-                    </div>
-                  <aside class="notes">
-                  </aside>
-                  </section>
-
-                  <section>
-                    <h2>Dense Networks (architecture)</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="80%"
-                         src="figures/CNN_densenet.svg" alt="dense diagram">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/abs/1608.06993">Densely Connected Convolutional Networks</a>
-                    </div>
-                  <aside class="notes">
-                  </aside>
-                  </section>
-
-
-                  <section>
-                    <h2>Dense Networks (effect)</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                         src="figures/densenet.png" alt="dense">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/abs/1608.06993">Densely Connected Convolutional Networks</a>
-                    </div>
-                  <aside class="notes">
-                  </aside>
-                  </section>
-
-                  <section>
-                    <h2>Take Away Concepts</h2>
-                    <ol>
-                      <li> Skip connections
-                      <li> Gates
-                    </ol>
-                  </section>
-
-                </section>
-
-                <!-- --------------------------------------------------------------------------->
-	        <section>
-                  <section>
-                    <h2>Fully convolutional networks</h2>
-                  </section>
-
-                  <section data-background-iframe="https://www.youtube.com/embed/xr_2dwZDH6U?autoplay=1&controls=0&rel=0&modestbranding=1&showinfo=0">
-                    <h2 style="color:#839496;">The task of Semantic segmentation</h2>
-                  </section>
-
-                  <section data-fullscreen>
-                    <h2>Semantic segmentation task</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                         src="figures/CNN_semantic_bikes.png" alt="fikes">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/abs/1411.4038">Fully Convolutional Networks for Semantic Segmentation</a><br>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h3>Replacing feed forward with convolutional</h3>
-                    <ul  style="list-style-type: none; margin: 0px 0;">
-                      <li class="fragment roll-in">
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
-                             src="figures/CNN_semantic_cc_1.png" alt="cc 1">
-                      <li class="fragment roll-in">
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
-                             src="figures/CNN_semantic_cc_2.png" alt="cc 1">
-                      <li class="fragment roll-in">
-                        <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="800"
-                             src="figures/CNN_semantic_cc_3.png" alt="cc 1">
-                    </ul>
-                  </section>
-
-                  <section data-fullscreen>
-                    <h2>Fully Convolutional Model (2014)</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="1000"
-                         src="figures/CNN_semantic_ff.png" alt="final model">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/abs/1411.4038" target="_blank">Fully Convolutional Networks for Semantic Segmentation</a><br>
-                    </div>
-                  </section>
-
-                  <section data-fullscreen>
-                    <h2>Examples</h2>
-                    <img width="50%"
-                         src="figures/CNN_semantic_examples.png" alt="final model">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/abs/1411.4038" target="_blank">Fully Convolutional Networks for Semantic Segmentation</a><br>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h2>Take Away Point</h2>
-                    <ol>
-                      <li> When target and input have the same dimension it may be better to use convolution everywhere.
-                    </ol>
-                  </section>
-
-                </section>
-
-                <!-- --------------------------------------------------------------------------->
-		<section>
-		  <section>
-		    <h2>Semantic segmentation with twists</h2>
-		  </section>
-
-		  <section>
-		    <h2>deep learning standard: U-net</h2>
-                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
-                                                rgba(150, 150, 255, 0.8);" width="250"
-                         src="figures/unet_arc.png" alt="david">
-		    <p>
-
-		      <div class='slide-footer'>
-			Ronneberger et al. U-net: Convolutional networks
-			for biomedical image segmentation. MICCAI 2015<br>
-			Çiçek et al. 3D U-Net: learning dense volumetric
-			segmentation from sparse annotation. MICCAI 2016
-		      </div>
-		  </section>
-
-		  <section>
-		    <h2>deep learning standard: U-net</h2>
-                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
-                                                rgba(150, 150, 255, 0.8);" width="250"
-                         src="figures/unet_table.png" alt="david">
-		    <p>
-		      <div class='slide-footer'>
-			Ronneberger et al. U-net: Convolutional networks for
-			biomedical image segmentation. MICCAI 2015<br>
-			Çiçek et al. 3D U-Net: learning dense volumetric
-			segmentation from sparse annotation. MICCAI 2016
-		      </div>
-		  </section>
-
-
-		  <section>
-		    <h2>comparison on the brain segmentation task</h2>
-                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
-                                                rgba(150, 150, 255, 0.8);" width="250"
-                         src="figures/tasks.png" alt="david">
-		  </section>
-
-		  <section>
-		    <h2>state of the art: freesurfer</h2>
-                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
-                                                rgba(150, 150, 255, 0.8);" width="250"
-                         src="figures/CNN_freesurfer.png" alt="david">
-		    <br>
-		    <div class='slide-footer'>
-		      Dale et al. Cortical surface-based analysis. I. Segmentation and
-		      surface reconstruction. Neuroimage 1999
-		    </div>
-		  </section>
-
-		  <section>
-		    <h2>Meshnet</h2>
-		    <img src="figures/dilation.png" style="border:0; box-shadow: 0px
-							   0px 0px rgba(150, 150, 255, 0.8);float: left;"
-			 alt="Websocket" width="40%">
-		    <img src="figures/mn1.png" style="border:0; box-shadow: 0px
-						      0px 0px rgba(150, 150, 255, 0.8);float: right;"
-			 alt="Websocket" width="35%"
-			 >
-
-		    <div class="ulist">
-		      <ul style="width: 60%; float: left;">
-			<li>Gray and White matter</li>
-			<li>FreeSurfer for ground truth</li>
-			<li>T1 MRIs from HCP</li>
-			<li>GitHub <br>
-			  <small>
-			    <a href="https://github.com/Entodi/MeshNet">
-			      https://github.com/Entodi/MeshNet</a>
-			  </small>
-			</li>
-		      </ul>
-		    </div>
-
-		    <br>
-		    <div class="slide-footer">
-		      Fedorov et al. End-to-end learning of brain tissue segmentation
-		      from imperfect labeling. IJCNN 2017
-		    </div>
-		  </section>
-
-
-		  <section>
-		    <h2>Meshnet</h2>
-
-		    <img src="figures/mntable.png" style="border:0; box-shadow: 0px
-							  0px 0px rgba(150, 150, 255, 0.8);float: right;"
-			 alt="Websocket" width="60%"
-			 >
-
-		    <div class="ulist">
-		      <ul style="width: 35%; float: left;">
-			<li>72516 vs. 23523355</li>
-			<li>600kb vs. 2Gb</li>
-		      </ul>
-		    </div>
-		    <p>
-		      <br>
-		      <div class="slide-footer">
-			Fedorov et al. End-to-end learning of brain tissue segmentation
-			from imperfect labeling. IJCNN 2017
-		      </div>
-		  </section>
-
-		  <section>
-		    <h2>Meshnet</h2>
-		    <img src="figures/mnpipeline.png" style="border:0; box-shadow: 0px
-							     0px 0px rgba(150, 150, 255, 0.8);"
-			 alt="Websocket" class="stretch"
-			 >
-		    <br>
-		    <div class="slide-footer">
-		      Fedorov et al. End-to-end learning of brain tissue segmentation
-		      from imperfect labeling. IJCNN 2017
-		    </div>
-		  </section>
-
-		  <section>
-		    <h2>Meshnet</h2>
-		    <img src="figures/mnexample.png" style="border:0; box-shadow: 0px
-							    0px 0px rgba(150, 150, 255, 0.8);"
-			 alt="Websocket" class="stretch"
-			 >
-		    <br>
-		    <div class="slide-footer">
-		      Fedorov et al. End-to-end learning of brain tissue segmentation
-		      from imperfect labeling. IJCNN 2017
-		    </div>
-		  </section>
-
-		  <section>
-                    <h3>(often) better than the teacher</h3>
-                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
-                                                rgba(150, 150, 255, 0.8);" width="700"
-                         src="figures/MN_examples.png" alt="loop">
-                  </section>
-
-                  <section>
-                    <h3>multimodal is straightforward</h3>
-                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
-                                                rgba(150, 150, 255, 0.8);" width="700"
-                         src="figures/MeshNet_multi.png" alt="loop">
-                  </section>
-
-		  <section>
-                    <h3>better than the human (sometimes)</h3>
-                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
-                                                rgba(150, 150, 255, 0.8);" width="700"
-                         src="figures/mnhuman.png" alt="loop">
-                  </section>
-
-		  <section>
-                    <h3>better than U-net</h3>
-                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
-                                                rgba(150, 150, 255, 0.8);"
-                         src="figures/mnvsunet.png" alt="loop">
-                  </section>
-
-
-		  <section data-background-video="figures/combined.mp4" data-background-size="contain" data-background-video-loop=true>
-                  </section>
-                </section>
-
-                <!-- --------------------------------------------------------------------------->
-	        <section>
-                  <section>
-                    <h2>(even more) "Advanced" uses of CNN</h2>
-                  </section>
-
-                  <section>
-                    <h2>Masked Convolutions</h2>
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/abs/1601.06759">
-                        Pixel Recurrent Neural Networks
-                      </a><br>
-                      <a href="https://arxiv.org/abs/1606.05328">
-                        Conditional Image Generation with PixelCNN Decoders
-                      </a>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h2>PixelCNNs</h2>
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/abs/1601.06759">
-                        Pixel Recurrent Neural Networks
-                      </a><br>
-                      <a href="https://arxiv.org/abs/1606.05328">
-                        Conditional Image Generation with PixelCNN Decoders
-                      </a>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h2>Wavenet: $\ge$16kHz audio</h2>
-                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
-                                                rgba(150, 150, 255, 0.8);"
-                         src="figures/CNN_audio_zoom.gif" alt="loop">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/abs/1609.03499">
-                        WaveNet: A Generative Model for Raw Audio
-                      </a>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h2>Wavenet: sample by sample</h2>
-                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
-                                                rgba(150, 150, 255, 0.8);"
-                         src="figures/CNN_wavenet.gif" alt="loop">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/abs/1609.03499">
-                        WaveNet: A Generative Model for Raw Audio
-                      </a>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h2>Wavenet: conditioned on text</h2>
-                    <row>
-                      <col50>
-                    <table style="font-size:28px">
-                      <tr>
-                        <th>Model</th>
-                        <th>"The blue lagoon..."</th>
-                      </tr>
-                      <tr>
-                        <td>Parametric</td>
-                        <td><audio controls="" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/parametric-1.wav"></audio></td>
-                      </tr>
-                      <tr>
-                        <td>Concatenative</td>
-                        <td>
-                          <audio controls="" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/concatenative-1.wav"></audio>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Wavenet</td>
-                        <td>
-                          <audio controls="" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/wavenet-1.wav"></audio>
-                        </td>
-                      </tr>
-                    </table>
-                      </col50>
-                      <col50>
-                    <table style="font-size:28px">
-                      <tr>
-                        <th>Model</th>
-                        <th>"English poetry and ..."</th>
-                      </tr>
-                      <tr>
-                        <td>Parametric</td>
-                        <td><audio controls="" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/parametric-2.wav"></audio></td>
-                      </tr>
-                      <tr>
-                        <td>Concatenative</td>
-                        <td>
-                          <audio controls="" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/concatenative-2.wav"></audio>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Wavenet</td>
-                        <td>
-                          <audio controls="" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/wavenet-2.wav"></audio>
-                        </td>
-                      </tr>
-                    </table>
-                      </col50>
-                    </row>
-                    <audio controls="" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/Speaker%201/speaker-2.wav"></audio>
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/abs/1609.03499">
-                        WaveNet: A Generative Model for Raw Audio
-                      </a>
-                    </div>
-                  </section>
-
-                  <section data-fullscreen>
-                    <h2>Deformable Convolutions</h2>
-                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
-                                                rgba(150, 150, 255, 0.8);"
-                         src="figures/CNN_deformable.svg" alt="defrmable">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/abs/1703.06211">
-                        Deformable Convolutions
-                      </a>
-                    </div>
-                  </section>
-
-                  <section data-fullscreen>
-                    <h2>Deformable Convolutions</h2>
-                    <img class="stretch" style="border:0; box-shadow: 0px 0px 0px
-                                                rgba(150, 150, 255, 0.8);"
-                         src="figures/CNN_deformable_conv_demo1.png" alt="defrmable">
-                    <div class="slide-footer">
-                      <a href="https://arxiv.org/abs/1703.06211">
-                        Deformable Convolutions
-                      </a>
-                    </div>
-                  </section>
-                  
-                  <section>
-                    <h2>Take Away Points</h2>
-                    <ol>
-                      <li> Masked convolution
-                      <li> Pixel based generation
-                      <li> Deformable convolution (can be rotation invariant)
-                    </ol>
-                  </section>
-                
-
-                </section>
-
+            <h3>Outline for the lecture</h3>
+            <ul>
+              <li class="fragment roll-in"> Why Convolutions? Inductive Biases &amp; Equivariance
+              <li class="fragment roll-in"> History of CNNs (1962–2012)
+              <li class="fragment roll-in"> Building Blocks &amp; Convolution Arithmetic
+              <li class="fragment roll-in"> Skip Connections, Gates &amp; Loss Landscapes
+              <li class="fragment roll-in"> Fully Convolutional Networks, U-Net &amp; 3D MeshNet
+              <li class="fragment roll-in"> Generative, Geometric &amp; Modern ConvNets (2016–2026)
+            </ul>
+          </section>
+
+          <!-- Connecting the Dots Bridge Slide -->
+          <section id="bridge-slide">
+            <h3 style="font-size: 44px; margin-bottom: 8px;">Connecting the Dots: Why Structured Architectures?</h3>
+            <div id="bridge-container" style="position: relative; width: 960px; height: 500px; margin: 10px auto 0 auto; display: flex; justify-content: space-between; align-items: stretch;">
+
+              <div style="width: 485px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2;">
+                <div id="bridge-card-0" class="fragment" data-fragment-index="0" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #268bd2; border-radius: 6px; padding: 6px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #268bd2; font-size: 15.5px;">1. Curse of Dimensionality &amp; Dense Parameter Wall</div>
+                  <div style="color: #586e75; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    A $256 \times 256 \times 3$ image has $d = 196{,}608$ inputs — one dense layer of $10^3$ units needs $197\text{M}$ weights and breaks if objects shift!
+                  </div>
+                </div>
+
+                <div id="bridge-card-1" class="fragment" data-fragment-index="1" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #2aa198; border-radius: 6px; padding: 6px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #2aa198; font-size: 15.5px;">2. Localized Kernels &amp; Inner-Product Templates</div>
+                  <div style="color: #586e75; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    Sliding a small learnable filter over space evaluates local template similarity everywhere with $O(k^2)$ shared weights.
+                  </div>
+                </div>
+
+                <div id="bridge-card-2" class="fragment" data-fragment-index="2" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #859900; border-radius: 6px; padding: 6px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #859900; font-size: 15.5px;">3. Reverse-Mode AD &amp; Stochastic Optimization</div>
+                  <div style="color: #586e75; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    Shared weights fan out across pixels, so Speelpenning's AD sums spatial gradients — trained cleanly via SGD, AdamW, and skip highways.
+                  </div>
+                </div>
+
+                <div id="bridge-card-3" class="fragment" data-fragment-index="3" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #b58900; border-radius: 6px; padding: 6px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #b58900; font-size: 15.5px;">4. Deep Model Generalization &amp; Calibration</div>
+                  <div style="color: #586e75; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    Last lecture we compared LeNet-5 vs. ResNet-110 calibration; today we open the hood on how deep ConvNets work.
+                  </div>
+                </div>
+
+                <div id="bridge-card-4" class="fragment" data-fragment-index="4" style="background: rgba(253, 246, 227, 0.98); border-left: 5px solid #cb4b16; border-radius: 6px; padding: 7px 12px; box-shadow: 0 3px 8px rgba(203,75,22,0.18); text-align: left;">
+                  <div style="font-weight: bold; color: #cb4b16; font-size: 15.5px;">5. Today: Convolutional Neural Networks</div>
+                  <div style="color: #073642; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    Locality, Toeplitz weight sharing, <b>translation equivariance</b>, residual highways, dense segmentation &amp; modern ConvNeXt!
+                  </div>
+                </div>
               </div>
 
+              <svg id="bridge-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;" viewBox="0 0 960 500">
+                <defs>
+                  <marker id="arr-blue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#268bd2" />
+                  </marker>
+                  <marker id="arr-cyan" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#2aa198" />
+                  </marker>
+                  <marker id="arr-green" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#859900" />
+                  </marker>
+                  <marker id="arr-yellow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#b58900" />
+                  </marker>
+                  <marker id="arr-orange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#cb4b16" />
+                  </marker>
+                </defs>
+                <g class="fragment" data-fragment-index="0">
+                  <path id="conn-0-4" fill="none" stroke="#268bd2" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-blue)" />
+                  <path id="conn-0-7" fill="none" stroke="#268bd2" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-blue)" />
+                </g>
+                <g class="fragment" data-fragment-index="1">
+                  <path id="conn-1-12" fill="none" stroke="#2aa198" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-cyan)" />
+                  <path id="conn-1-13" fill="none" stroke="#2aa198" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-cyan)" />
+                </g>
+                <g class="fragment" data-fragment-index="2">
+                  <path id="conn-2-21" fill="none" stroke="#859900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-green)" />
+                  <path id="conn-2-22" fill="none" stroke="#859900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-green)" />
+                </g>
+                <g class="fragment" data-fragment-index="3">
+                  <path id="conn-3-24" fill="none" stroke="#b58900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-yellow)" />
+                </g>
+                <g class="fragment" data-fragment-index="4">
+                  <path id="conn-4-25" fill="none" stroke="#cb4b16" stroke-width="3.5" marker-end="url(#arr-orange)" />
+                </g>
+              </svg>
+
+              <div style="width: 430px; margin-left: 20px; z-index: 2;">
+                <table style="font-size: 12.2px; line-height: 1.22; width: 100%; border-collapse: collapse;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid #586e75;">
+                      <th style="padding: 3px 6px; width: 28px;">#</th>
+                      <th style="padding: 3px 6px; width: 82px;">date</th>
+                      <th style="padding: 3px 6px;">topic</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr id="bridge-row-4" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">4</td><td style="padding: 2.8px 6px;">02-Sep-2026</td><td style="padding: 2.8px 6px;">Linear learning models</td></tr>
+                    <tr id="bridge-row-7" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">7</td><td style="padding: 2.8px 6px;">14-Sep-2026</td><td style="padding: 2.8px 6px;">Curse of Dimensionality</td></tr>
+                    <tr style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">9–11</td><td style="padding: 2.8px 6px;">Sep 2026</td><td style="padding: 2.8px 6px;">MLE, MAP &amp; Logistic Regression</td></tr>
+                    <tr id="bridge-row-12" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">12</td><td style="padding: 2.8px 6px;">30-Sep-2026</td><td style="padding: 2.8px 6px;">Kernel Density Estimation</td></tr>
+                    <tr id="bridge-row-13" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">13</td><td style="padding: 2.8px 6px;">05-Oct-2026</td><td style="padding: 2.8px 6px;">Support Vector Machines</td></tr>
+                    <tr style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">14–20</td><td style="padding: 2.8px 6px;">Oct 2026</td><td style="padding: 2.8px 6px;">Matrix Fact., K-Means &amp; EM</td></tr>
+                    <tr id="bridge-row-21" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">21</td><td style="padding: 2.8px 6px;">02-Nov-2026</td><td style="padding: 2.8px 6px;">Stochastic Gradient Descent</td></tr>
+                    <tr id="bridge-row-22" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">22</td><td style="padding: 2.8px 6px;">04-Nov-2026</td><td style="padding: 2.8px 6px;">Automatic Differentiation</td></tr>
+                    <tr style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">23</td><td style="padding: 2.8px 6px;">09-Nov-2026</td><td style="padding: 2.8px 6px;">Nonlinear embedding approaches</td></tr>
+                    <tr id="bridge-row-24" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">24</td><td style="padding: 2.8px 6px;">11-Nov-2026</td><td style="padding: 2.8px 6px;">Model comparison &amp; calibration</td></tr>
+                    <tr id="bridge-row-25" style="background-color: #FBEEC2; border: 2px solid #cb4b16; font-weight: bold;"><td style="padding: 4px 6px; color: #cb4b16;">25<i class='fa fa-map-marker' style='color: #FA6900;'></i></td><td style="padding: 4px 6px; color: #cb4b16;">16-Nov-2026</td><td style="padding: 4px 6px; color: #cb4b16;">Convolutional Neural Networks</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
+            <aside class="notes">
+              Tie CNNs directly into the arc of CS8850: from high-dimensional images (Curse of Dimensionality) and inner-product template matching (Kernels/SVMs) to shared-weight Reverse-Mode AD, SGD, and deep ResNet calibration from Lecture 20.
+            </aside>
+          </section>
+        </section>
 
-            <script src="dist/reveal.js"></script>
+        <!-- ========================================================================= -->
+        <!-- SECTION 2: WHY CONVOLUTIONS? INDUCTIVE BIASES & EQUIVARIANCE              -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h2>Why Convolutions?</h2>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 30px; text-align: center;">
+              Replacing brute-force dense connectivity with <b>locality</b>, <b>weight sharing</b>, and <b>shift equivariance</b>.
+            </blockquote>
+          </section>
 
-            <link rel="stylesheet" href="plugin/highlight/monokai.css">
-            <script src="plugin/highlight/highlight.js"></script>
-            <script src="plugin/math/math.js"></script>
-            <script src="plugin/chalkboard/plugin.js"></script>
-            <script src="plugin/notes/notes.js"></script>
-            <script src="plugin/zoom/zoom.js"></script>
-            <script src="plugin/fullscreen/fullscreen.js"></script>
-            <script src="plugin/menu/menu.js"></script>
-            <script src="plugin/verticator/verticator.js"></script>
-            <link rel="stylesheet" href="plugin/verticator/verticator.css">
-            <script>
-              // Full list of configuration options available at:
-              // https://github.com/hakimel/reveal.js#configuration
+          <section>
+            <h3>Why Dense Layers Fail on Visual Signals</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 24px; padding: 6px 14px;">
+              Suppose we feed a $256 \times 256$ RGB image ($\vec{x} \in \RR^{196{,}608}$) into a single dense hidden layer of $1{,}000$ units:
+            </blockquote>
+            <row style="align-items: center; margin-top: 8px;">
+              <col50>
+                <ul style="font-size: 25px; line-height: 1.45; margin-left: 24px;">
+                  <li class="fragment roll-in"> <b>Parameter Explosion:</b> $196{,}608 \times 1{,}000 \approx \mathbf{1.97 \times 10^8}$ weights in <em>layer 1 alone</em>!
+                  <li class="fragment roll-in"> <b>Zero Shift Generalization:</b> Moving a cat 3 pixels right routes through completely different weights.
+                  <li class="fragment roll-in"> <b>Spatial Locality Ignored:</b> Neighboring pixels and opposite corners are treated identically.
+                </ul>
+              </col50>
+              <col50>
+                <svg viewBox="0 0 540 285" width="520" style="display: block; margin: 0 auto;">
+                  <rect x="8" y="8" width="250" height="268" rx="8" fill="#eee8d5" stroke="#93a1a1" stroke-width="1.5"/>
+                  <text x="133" y="32" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#dc322f">Dense MLP (O(N²) params)</text>
+                  <text x="133" y="52" text-anchor="middle" font-family="sans-serif" font-size="12.5" fill="#586e75">Every output sees every pixel uniquely</text>
+                  <!-- Dense bipartite spaghetti -->
+                  <g stroke="#dc322f" stroke-width="1.1" opacity="0.48">
+                    <line x1="65" y1="82" x2="205" y2="88"/><line x1="65" y1="82" x2="205" y2="128"/>
+                    <line x1="65" y1="82" x2="205" y2="168"/><line x1="65" y1="82" x2="205" y2="208"/>
+                    <line x1="65" y1="118" x2="205" y2="88"/><line x1="65" y1="118" x2="205" y2="128"/>
+                    <line x1="65" y1="118" x2="205" y2="168"/><line x1="65" y1="118" x2="205" y2="208"/>
+                    <line x1="65" y1="154" x2="205" y2="88"/><line x1="65" y1="154" x2="205" y2="128"/>
+                    <line x1="65" y1="154" x2="205" y2="168"/><line x1="65" y1="154" x2="205" y2="208"/>
+                    <line x1="65" y1="190" x2="205" y2="88"/><line x1="65" y1="190" x2="205" y2="128"/>
+                    <line x1="65" y1="190" x2="205" y2="168"/><line x1="65" y1="190" x2="205" y2="208"/>
+                    <line x1="65" y1="226" x2="205" y2="88"/><line x1="65" y1="226" x2="205" y2="128"/>
+                    <line x1="65" y1="226" x2="205" y2="168"/><line x1="65" y1="226" x2="205" y2="208"/>
+                  </g>
+                  <g fill="#586e75">
+                    <circle cx="65" cy="82" r="9"/><circle cx="65" cy="118" r="9"/><circle cx="65" cy="154" r="9"/><circle cx="65" cy="190" r="9"/><circle cx="65" cy="226" r="9"/>
+                  </g>
+                  <g fill="#dc322f">
+                    <circle cx="205" cy="88" r="10"/><circle cx="205" cy="128" r="10"/><circle cx="205" cy="168" r="10"/><circle cx="205" cy="208" r="10"/>
+                  </g>
+                  <text x="133" y="260" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#073642">20 distinct weights here</text>
 
-              Reveal.initialize({
-                  // history: true,
-                  width: 960,
-                  height: 700,
-                  center: true,
-                  hash: true,
-                  controls: false,
-                  keyboard: true,
-                  margin: 0.05,
-                  overview: true,
-                  transition: 'slide', // Transition style: none/fade/slide/convex/concave/zoom
-                  transitionSpeed: 'slow', // Transition speed: default/fast/slow
-                  menu: {
-                      themes: false,
-                      openSlideNumber: true,
-                      openButton: false,
-                  },
+                  <rect x="280" y="8" width="252" height="268" rx="8" fill="#fdf6e3" stroke="#859900" stroke-width="2"/>
+                  <text x="406" y="32" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#859900">Conv Layer (O(k²) params)</text>
+                  <text x="406" y="52" text-anchor="middle" font-family="sans-serif" font-size="12.5" fill="#586e75">Local window + shared color weights</text>
+                  <!-- Local shared weights -->
+                  <g stroke-width="2.4">
+                    <line x1="335" y1="82" x2="475" y2="108" stroke="#268bd2"/><line x1="335" y1="118" x2="475" y2="108" stroke="#cb4b16"/><line x1="335" y1="154" x2="475" y2="108" stroke="#859900"/>
+                    <line x1="335" y1="118" x2="475" y2="150" stroke="#268bd2"/><line x1="335" y1="154" x2="475" y2="150" stroke="#cb4b16"/><line x1="335" y1="190" x2="475" y2="150" stroke="#859900"/>
+                    <line x1="335" y1="154" x2="475" y2="192" stroke="#268bd2"/><line x1="335" y1="190" x2="475" y2="192" stroke="#cb4b16"/><line x1="335" y1="226" x2="475" y2="192" stroke="#859900"/>
+                  </g>
+                  <g fill="#586e75">
+                    <circle cx="335" cy="82" r="9"/><circle cx="335" cy="118" r="9"/><circle cx="335" cy="154" r="9"/><circle cx="335" cy="190" r="9"/><circle cx="335" cy="226" r="9"/>
+                  </g>
+                  <g fill="#859900">
+                    <circle cx="475" cy="108" r="10"/><circle cx="475" cy="150" r="10"/><circle cx="475" cy="192" r="10"/>
+                  </g>
+                  <text x="406" y="260" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#073642">Only 3 shared weights (w₋₁, w₀, w₊₁)!</text>
+                </svg>
+              </col50>
+            </row>
+            <alert class="fragment roll-in" style="display: block; margin-top: 8px; font-size: 26px;">
+              Convolutions encode two structural priors: <b>spatial locality</b> and <b>stationarity (shared detectors)</b>.
+            </alert>
+          </section>
 
-                  chalkboard: {
-                      boardmarkerWidth: 1,
-                      chalkWidth: 2,
-                      chalkEffect: 1,
-                      toggleNotesButton: false,
-                      toggleChalkboardButton: false,
-                      slideWidth: Reveal.width,
-                      slideHeight: Reveal.height,
-                      // src: "chalkboards/chalkboard_em2.json",
-                      readOnly: false,
-                      theme: "blackboard",
-                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
-                  },
+          <section>
+            <h3>From Dense Matrix to Toeplitz Weight Sharing</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 23px; padding: 6px 14px;">
+              A 1D convolution $\vec{y} = \bm{K}\vec{x}$ is simply a linear map $\vec{y} = \bm{W}\vec{x}$ with <b>two constraints on $\bm{W}$</b>:
+            </blockquote>
+            <svg viewBox="0 0 1100 315" width="1060" style="display: block; margin: 10px auto;">
+              <defs>
+                <marker id="tz-arr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M 0 1 L 10 5 L 0 9 z" fill="#586e75"/>
+                </marker>
+              </defs>
+              <!-- Box 1: Dense W -->
+              <rect x="10" y="12" width="315" height="285" rx="8" fill="#eee8d5" stroke="#93a1a1" stroke-width="1.5"/>
+              <text x="167" y="38" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="bold" fill="#dc322f">1. Dense Matrix W (N×N)</text>
+              <g font-family="monospace" font-size="15" text-anchor="middle" fill="#073642">
+                <rect x="42" y="56" width="250" height="196" rx="4" fill="#fdf6e3" stroke="#93a1a1"/>
+                <text x="167" y="88">w₁₁  w₁₂  w₁₃  w₁₄  w₁₅</text>
+                <text x="167" y="124">w₂₁  w₂₂  w₂₃  w₂₄  w₂₅</text>
+                <text x="167" y="160">w₃₁  w₃₂  w₃₃  w₃₄  w₃₅</text>
+                <text x="167" y="196">w₄₁  w₄₂  w₄₃  w₄₄  w₄₅</text>
+                <text x="167" y="232">w₅₁  w₅₂  w₅₃  w₅₄  w₅₅</text>
+              </g>
+              <text x="167" y="278" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#586e75">25 independent parameters</text>
 
-                  math: {
-                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
-                      config: 'TeX-AMS_SVG-full',
-                      // pass other options into `MathJax.Hub.Config()`
-                      TeX: {
-                          Macros: {
-        	              RR: '\\mathbb{R}',
-        	              PP: '\\mathbb{P}',
-        	              EE: '\\mathbb{E}',
-        	              NN: '\\mathbb{N}',
-        	              vth: '\\vec{\\theta}',
-                              loss: '{\\cal l}',
-                              hclass: '{\\cal H}',
-                              CD: '{\\cal D}',
-                              def: '\\stackrel{\\text{def}}{=}',
-                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
-                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
-        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
-                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
-                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
-                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
-                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
-                          },
-                          loader: {load: ['[tex]/color']},
-                          extensions: ["color.js"],
-                          tex: {packages: {'[+]': ['color']}},
-                          svg: {
-                              fontCache: 'global'
-                          }
-                      }
-                  },
+              <line x1="333" y1="154" x2="383" y2="154" stroke="#586e75" stroke-width="3" marker-end="url(#tz-arr)"/>
+              <text x="358" y="142" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#586e75">Locality</text>
 
-                  plugins: [ Verticator, RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+              <!-- Box 2: Sparse Local Banded -->
+              <rect x="392" y="12" width="315" height="285" rx="8" fill="#eee8d5" stroke="#268bd2" stroke-width="1.5"/>
+              <text x="549" y="38" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="bold" fill="#268bd2">2. Locally Connected (k=3)</text>
+              <g font-family="monospace" font-size="15" text-anchor="middle">
+                <rect x="424" y="56" width="250" height="196" rx="4" fill="#fdf6e3" stroke="#93a1a1"/>
+                <text x="549" y="88" fill="#073642">w₁₁  w₁₂   <tspan fill="#93a1a1">0    0    0</tspan></text>
+                <text x="549" y="124" fill="#073642">w₂₁  w₂₂  w₂₃   <tspan fill="#93a1a1">0    0</tspan></text>
+                <text x="549" y="160" fill="#073642"><tspan fill="#93a1a1">0</tspan>   w₃₂  w₃₃  w₃₄   <tspan fill="#93a1a1">0</tspan></text>
+                <text x="549" y="196" fill="#073642"><tspan fill="#93a1a1">0    0</tspan>   w₄₃  w₄₄  w₄₅</text>
+                <text x="549" y="232" fill="#073642"><tspan fill="#93a1a1">0    0    0</tspan>   w₅₄  w₅₅</text>
+              </g>
+              <text x="549" y="278" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#268bd2">Zeros outside kernel width</text>
 
-              });
+              <line x1="715" y1="154" x2="765" y2="154" stroke="#586e75" stroke-width="3" marker-end="url(#tz-arr)"/>
+              <text x="740" y="142" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#586e75">Sharing</text>
 
-              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
-              Reveal.configure({ slideNumber: true });
-              //Reveal.configure({ history: true });
-              Reveal.configure({ slideNumber: 'c / t' });
-              Reveal.addEventListener( 'darkside', function() {
-                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
-              }, false );
-              Reveal.addEventListener( 'brightside', function() {
-                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
-              }, false );
+              <!-- Box 3: Toeplitz Matrix -->
+              <rect x="774" y="12" width="316" height="285" rx="8" fill="#fdf6e3" stroke="#859900" stroke-width="2.5"/>
+              <text x="932" y="38" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="bold" fill="#859900">3. Toeplitz Conv Matrix</text>
+              <g font-family="monospace" font-size="15.5" font-weight="bold" text-anchor="middle">
+                <rect x="806" y="56" width="252" height="196" rx="4" fill="#eee8d5" stroke="#859900"/>
+                <text x="932" y="88"><tspan fill="#cb4b16">b</tspan>    <tspan fill="#859900">c</tspan>    <tspan fill="#93a1a1">0    0    0</tspan></text>
+                <text x="932" y="124"><tspan fill="#268bd2">a</tspan>    <tspan fill="#cb4b16">b</tspan>    <tspan fill="#859900">c</tspan>    <tspan fill="#93a1a1">0    0</tspan></text>
+                <text x="932" y="160"><tspan fill="#93a1a1">0</tspan>    <tspan fill="#268bd2">a</tspan>    <tspan fill="#cb4b16">b</tspan>    <tspan fill="#859900">c</tspan>    <tspan fill="#93a1a1">0</tspan></text>
+                <text x="932" y="196"><tspan fill="#93a1a1">0    0</tspan>    <tspan fill="#268bd2">a</tspan>    <tspan fill="#cb4b16">b</tspan>    <tspan fill="#859900">c</tspan></text>
+                <text x="932" y="232"><tspan fill="#93a1a1">0    0    0</tspan>    <tspan fill="#268bd2">a</tspan>    <tspan fill="#cb4b16">b</tspan></text>
+              </g>
+              <text x="932" y="278" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#859900">Only 3 shared params (a, b, c)!</text>
+            </svg>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 22px; text-align: center; padding: 8px 14px;">
+              <b>Reverse-Mode AD Link (Lecture 18):</b> Because $(a,b,c)$ fan out across rows in $\bm{W}\vec{x}$, backprop sums gradients over space: $\displaystyle \frac{\partial {\cal L}}{\partial w_u} = \sum_i \frac{\partial {\cal L}}{\partial y_i} x_{i+u}$ and $\displaystyle \frac{\partial {\cal L}}{\partial \vec{x}} = \bm{W}^\top \frac{\partial {\cal L}}{\partial \vec{y}}$!
+            </blockquote>
+          </section>
 
-            </script>
+          <section>
+            <h3>Discrete Convolution vs. Cross-Correlation</h3>
+            <row style="align-items: center; gap: 16px;">
+              <col45 style="width: 45%;">
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 20px; padding: 5px 10px; margin: 4px 0 6px 0;">
+                  1. Convolution ($*$): flips kernel $180^\circ$
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 20px; padding: 6px 10px; text-align: center; margin: 0 0 10px 0;">
+                  $(I * K)[i,j] = \sum_{u,v} I[i - u,\, j - v]\, K[u, v]$
+                </blockquote>
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 20px; padding: 5px 10px; margin: 0 0 6px 0;">
+                  2. Cross-Correlation ($\star$): DL <code>Conv</code> default
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 20px; padding: 6px 10px; text-align: center; margin: 0 0 12px 0;">
+                  $(I \star K)[i,j] = \sum_{u,v} I[i + u,\, j + v]\, K[u, v]$
+                </blockquote>
+                <div class="cnn-card" style="font-size: 18.5px; line-height: 1.35; border-left: 4px solid #859900; padding: 8px 12px;">
+                  <b>Why DL skips the flip:</b> Since $\bm{K}$ is <em>learned</em>, $\bm{K}$ vs. $\bm{K}_{\text{flip}}$ span the exact same hypothesis space — and the flipped kernel $*$ reappears automatically in $\bm{W}^\top$ during backprop!
+                </div>
+              </col45>
+              <col55 style="width: 55%;">
+                <div data-prevent-swipe style="position: relative; z-index: 25; display: flex; flex-direction: column; align-items: center; width: 100%; user-select: none;">
+                  <canvas id="cnn-xcorr-anim-canvas" width="620" height="400" style="display: block; width: 100%; height: auto; border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; background: #fdf6e3; box-sizing: border-box; cursor: pointer;"></canvas>
+                  <div data-prevent-swipe style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-top: none; border-radius: 0 0 8px 8px; padding: 5px 10px; box-sizing: border-box; font-size: 12.5px; color: #586e75; gap: 6px; white-space: nowrap;">
+                    <button id="cnn-xc-play" style="cursor: pointer; padding: 2px 9px; border: none; border-radius: 4px; background: #cb4b16; color: #fdf6e3; font-weight: bold; font-size: 12px;">Pause</button>
+                    <label style="display: inline-flex; align-items: center; gap: 4px;">
+                      <b>n:</b>
+                      <input type="range" id="cnn-xc-pos" min="0" max="14" step="1" value="3" style="width: 115px; cursor: pointer;">
+                      <span id="cnn-xc-pos-val" style="font-family: monospace; color: #cb4b16; min-width: 18px;">3</span>
+                    </label>
+                    <label><b>Kernel:</b>
+                      <select id="cnn-xc-ker" style="padding: 2px 4px; border: 1px solid #268bd2; border-radius: 4px; background: #fff; font-size: 11.5px;">
+                        <option value="ramp" selected>Ramp [0.2, 0.5, 1.0]</option>
+                        <option value="edge">Edge [-1, 0, +1]</option>
+                      </select>
+                    </label>
+                  </div>
+                </div>
+              </col55>
+            </row>
+            <aside class="notes">
+              Watch both landmarks sweep across n=0..14: at the unit impulse (n=3), Convolution (*) outputs the upright kernel K while Cross-Correlation (⋆) flips it; over the asymmetric ramp (n=9..11), Cross-Correlation aligns template to signal and produces the matched-filter peak! Drag slider n or click anywhere on the signal to inspect a single step.
+            </aside>
+          </section>
 
-            <style type="text/css">
-              /* 1. Style header/footer <div> so they are positioned as desired. */
-              #header-left {
-                  position: absolute;
-                  top: 0%;
-                  left: 0%;
-              }
-              #header-right {
-                  position: absolute;
-                  top: 0%;
-                  right: 0%;
-              }
-              #footer-left {
-                  position: absolute;
-                  bottom: 0%;
-                  left: 0%;
-              }
-            </style>
+          <section>
+            <h3>Translation Equivariance vs. Invariance</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 23px; padding: 6px 14px;">
+              Let $T_{\Delta}$ shift an image by $\Delta = (\Delta_x, \Delta_y)$: $[T_{\Delta}\bm{X}]_{i,j} = X_{i-\Delta_x,\, j-\Delta_y}$.
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 23px; padding: 8px 14px; text-align: center;">
+              $\displaystyle \big((T_{\Delta}\bm{X}) \star \bm{K}\big)[i,j] = \sum_{u,v} X_{i - \Delta_x + u,\, j - \Delta_y + v}\, K_{u,v} = \big[T_{\Delta}(\bm{X} \star \bm{K})\big]_{i,j}$
+            </blockquote>
+            <svg viewBox="0 0 1060 225" width="1020" style="display: block; margin: 6px auto;">
+              <rect x="12" y="8" width="500" height="208" rx="8" fill="#fdf6e3" stroke="#268bd2" stroke-width="2"/>
+              <text x="262" y="32" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#268bd2">Translation Equivariance: T(X ⋆ K) = (TX) ⋆ K</text>
+              <rect x="34" y="50" width="90" height="90" rx="4" fill="#eee8d5" stroke="#586e75"/>
+              <circle cx="62" cy="78" r="14" fill="#268bd2"/>
+              <text x="79" y="158" text-anchor="middle" font-family="sans-serif" font-size="12.5" fill="#073642">Input X</text>
+              <line x1="132" y1="95" x2="184" y2="95" stroke="#586e75" stroke-width="2.5" marker-end="url(#tz-arr)"/>
+              <text x="158" y="85" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#cb4b16">Shift T</text>
+              <rect x="192" y="50" width="90" height="90" rx="4" fill="#eee8d5" stroke="#586e75"/>
+              <circle cx="250" cy="112" r="14" fill="#268bd2"/>
+              <text x="237" y="158" text-anchor="middle" font-family="sans-serif" font-size="12.5" fill="#073642">Shifted T(X)</text>
+              <line x1="290" y1="95" x2="348" y2="95" stroke="#586e75" stroke-width="2.5" marker-end="url(#tz-arr)"/>
+              <text x="319" y="85" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#859900">⋆ K</text>
+              <rect x="356" y="50" width="90" height="90" rx="4" fill="#eee8d5" stroke="#859900" stroke-width="2"/>
+              <circle cx="414" cy="112" r="14" fill="#cb4b16"/>
+              <text x="401" y="158" text-anchor="middle" font-family="sans-serif" font-size="12.5" fill="#073642">Shifted Feature Map</text>
+              <text x="262" y="196" text-anchor="middle" font-family="sans-serif" font-size="13.5" font-weight="bold" fill="#073642">Essential for segmentation &amp; object detection!</text>
 
-            <!-- // 2. Create hidden header/footer -->
-            <div id="hidden" style="display:none;">
-              <div id="header">
-                <div id="header-left"><h4>CS8850</h4></div>
-                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
-                <div id="footer-left">
-                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
-                       src="figures/valentino.png" alt="robot learning">
+              <rect x="548" y="8" width="500" height="208" rx="8" fill="#eee8d5" stroke="#859900" stroke-width="2"/>
+              <text x="798" y="32" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#859900">Approximate Invariance: f(TX) ≈ f(X)</text>
+              <rect x="576" y="50" width="90" height="90" rx="4" fill="#fdf6e3" stroke="#586e75"/>
+              <circle cx="604" cy="78" r="14" fill="#cb4b16"/>
+              <rect x="688" y="50" width="90" height="90" rx="4" fill="#fdf6e3" stroke="#586e75"/>
+              <circle cx="746" cy="112" r="14" fill="#cb4b16"/>
+              <line x1="786" y1="95" x2="844" y2="95" stroke="#586e75" stroke-width="2.5" marker-end="url(#tz-arr)"/>
+              <text x="815" y="84" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#859900">Pool / GAP</text>
+              <rect x="854" y="58" width="160" height="74" rx="6" fill="#fdf6e3" stroke="#859900" stroke-width="2"/>
+              <text x="934" y="92" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#073642">Same Class:</text>
+              <text x="934" y="116" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#cb4b16">"Cat" (p = 0.96)</text>
+              <text x="798" y="196" text-anchor="middle" font-family="sans-serif" font-size="13.5" font-weight="bold" fill="#073642">Pooling &amp; Global Avg Pooling discard position for classification.</text>
+            </svg>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 3: HISTORY OF CNNs (1962 - 2012)                                  -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h2>History of CNNs</h2>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 28px; text-align: center;">
+              From cat visual cortex (1962) to Neocognitron (1980), LeNet (1998), and ImageNet GPUs (2012).
+            </blockquote>
+          </section>
+
+          <section>
+            <h3>Cat Visual Cortex: Hubel &amp; Wiesel (1962)</h3>
+            <img style="max-height: 490px; width: auto; margin: 6px auto;" src="figures/cats_brain.png" alt="cat's brain">
+            <div class="slide-footer">
+              <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1359523/pdf/jphysiol01247-0121.pdf" target="_blank">Hubel &amp; Wiesel (1962): Receptive fields, binocular interaction and functional architecture in the cat's visual cortex</a>
+            </div>
+            <aside class="notes">
+              Simple cells act as localized oriented edge detectors; complex cells aggregate simple-cell responses across small spatial neighborhoods for local shift tolerance.
+            </aside>
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -40px;">
+              <img width="115" src="figures/fukushima.jpg" alt="fukushima">
+            </div>
+            <h3>Fukushima's Neocognitron (1979 / 1980)</h3>
+            <img style="max-height: 460px; width: auto; margin: 6px auto;" src="figures/neurocognitron_.png" alt="neocognitron">
+            <div class="slide-footer">
+              <a href="https://doi.org/10.1007/BF00344251" target="_blank">Fukushima (1980): Neocognitron — A Self-organizing Neural Network Model for Pattern Recognition Unaffected by Shift in Position</a>
+            </div>
+            <aside class="notes">
+              Introduced alternating S-cells (simple feature extractors) and C-cells (complex spatial pooling). Trained via self-organization rather than end-to-end backpropagation.
+            </aside>
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -40px;">
+              <img width="115" src="figures/waibel.jpg" alt="waibel">
+            </div>
+            <h3>Time Delay Neural Network: Waibel et al. (1989)</h3>
+            <img style="max-height: 490px; width: auto; margin: 4px auto;" src="figures/tdnn_.png" alt="tdnn">
+            <div class="slide-footer">
+              <a href="https://www.cs.toronto.edu/~fritz/absps/waibelTDNN.pdf" target="_blank">Waibel et al. (1989): Phoneme Recognition Using Time-Delay Neural Networks</a>
+            </div>
+            <aside class="notes">
+              Note 1D convolutions across time with frequency channels — shared weight matrices trained with backpropagation!
+            </aside>
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -20px;">
+              <img width="115" src="figures/lecun.png" alt="lecun">
+            </div>
+            <h3>Backprop-Trained CNN: LeCun et al. (1989)</h3>
+            <img style="max-height: 480px; width: auto; margin: 4px auto;" src="figures/cnn.png" alt="cnn 1989">
+            <div class="slide-footer">
+              <a href="http://yann.lecun.org/exdb/publis/pdf/lecun-89e.pdf" target="_blank">LeCun et al. (1989): Backpropagation Applied to Handwritten Zip Code Recognition</a>
+            </div>
+            <aside class="notes">
+              First end-to-end gradient-trained 2D convolutional network! Note strided subsampling (step=2) to halve spatial resolution across layers.
+            </aside>
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -20px;">
+              <img width="115" src="figures/lecun.png" alt="lecun">
+            </div>
+            <h3>LeNet-5 for Document Recognition (1998)</h3>
+            <img style="max-height: 430px; width: auto; margin: 14px auto;" src="figures/lenet.png" alt="lenet">
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 22px; text-align: center; padding: 6px 14px;">
+              Alternating <b>Conv $\to$ Subsample</b> hierarchy, deployed to read millions of handwritten checks in production.
+            </blockquote>
+            <div class="slide-footer">
+              <a href="http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf" target="_blank">LeCun et al. (1998): Gradient-Based Learning Applied to Document Recognition</a>
+            </div>
+            <aside class="notes">
+              Note average subsampling with learned scale+bias (no MaxPooling yet) and 5x5 convolutions.
+            </aside>
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -20px;">
+              <img width="115" src="figures/dancirican.jpg" alt="ciresan">
+            </div>
+            <h3>GPU CNNs + MaxPooling: Cireşan et al. (2011)</h3>
+            <img style="max-height: 470px; width: auto; margin: 6px auto;" src="figures/gpunet.png" alt="gpunet">
+            <div class="slide-footer">
+              <a href="https://arxiv.org/pdf/1102.0183.pdf" target="_blank">Cireşan et al. (2011): High-Performance Neural Networks for Visual Object Classification</a>
+            </div>
+            <aside class="notes">
+              Everything clicks here: Max Pooling, fast CUDA GPU kernels (60x speedup vs CPU), and large datasets — winning Chinese handwriting, Traffic Sign recognition (2011), and Neuronal Membrane segmentation (2012).
+            </aside>
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -20px;">
+              <img width="115" src="figures/alex.png" alt="Alex Krizhevsky">
+            </div>
+            <h3>AlexNet &amp; the ImageNet Breakthrough (2012)</h3>
+            <img style="max-height: 365px; width: auto; margin: 10px auto;" src="figures/alexnet.png" alt="alexnet">
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 22px; text-align: center; padding: 8px 14px;">
+              <b>Ingredients:</b> ReLU activations, dual GPUs, overlapping MaxPool, data augmentation &amp; Dropout — slashing ImageNet Top-5 error from $26.2\%$ to $15.3\%$.
+            </blockquote>
+            <div class="slide-footer">
+              <a href="https://papers.nips.cc/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html" target="_blank">Krizhevsky, Sutskever &amp; Hinton (NeurIPS 2012): ImageNet Classification with Deep Convolutional Neural Networks</a>
+            </div>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 4: CNN BUILDING BLOCKS & CONVOLUTION ARITHMETIC                   -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h2>CNN Building Blocks</h2>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1603.07285" target="_blank">Dumoulin &amp; Visin (2016): A guide to convolution arithmetic for deep learning</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Convolving a 2D Kernel Across an Image</h3>
+            <row style="align-items: center;">
+              <col50 style="text-align: center;">
+                <img style="max-height: 250px; width: auto; margin: 4px auto;" src="figures/CNN_convo1.gif" alt="convolution 1">
+                <div style="font-size: 24px; margin-top: 6px;">
+                  $$
+                  \bm{K} = \left(
+                  \begin{array}{ccc}
+                  0 & 1 & 2 \\
+                  2 & 2 & 0 \\
+                  0 & 1 & 2
+                  \end{array}
+                  \right)
+                  $$
+                </div>
+              </col50>
+              <col50 style="text-align: center;">
+                <img style="max-height: 270px; width: auto; margin: 4px auto;" src="figures/CNN_convo2.gif" alt="convolution 2">
+                <img style="max-height: 210px; width: auto; margin: 6px auto;" src="figures/CNN_flat_conv.svg" alt="flat convolution">
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1603.07285" target="_blank">Dumoulin &amp; Visin (2016): A guide to convolution arithmetic for deep learning</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Zero Padding, Stride &amp; Output Geometry</h3>
+            <row style="align-items: center;">
+              <col50 style="text-align: center;">
+                <img style="max-height: 295px; width: auto; margin: 4px auto;" src="figures/CNN_same_pad.gif" alt="same pad">
+                <div style="font-size: 20px; color: #586e75;"><b>Same Padding:</b> $p = \lfloor k/2 \rfloor$ preserves $H \times W$</div>
+              </col50>
+              <col50 style="text-align: center;">
+                <img style="max-height: 295px; width: auto; margin: 4px auto;" src="figures/CNN_full_pad.gif" alt="full pad">
+                <div style="font-size: 20px; color: #586e75;"><b>Full Padding:</b> $p = k - 1$ expands output size</div>
+              </col50>
+            </row>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 22px; padding: 6px 14px; margin-top: 10px;">
+              Unified 2D Output Shape Formula (kernel $k$, padding $p$, stride $s$, dilation $d$):
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 25px; text-align: center; padding: 6px 14px;">
+              $H_{\text{out}} = \left\lfloor \frac{H_{\text{in}} + 2p - d(k - 1) - 1}{s} \right\rfloor + 1$
+            </blockquote>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1603.07285" target="_blank">Dumoulin &amp; Visin (2016): A guide to convolution arithmetic for deep learning</a>
+            </div>
+          </section>
+
+          <!-- Interactive Demo 1: Convolution Arithmetic & Shift Equivariance -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 2px 0 6px 0; font-size: 38px; line-height: 1.1;">Convolution Arithmetic &amp; Shift Equivariance</h3>
+            <div data-prevent-swipe style="position: relative; z-index: 25; display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 auto; user-select: none;">
+
+              <div id="cnn-conv-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 5px 14px; box-sizing: border-box; font-size: 13.5px; color: #073642; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                Click output cells or kernel weights, vary p/s/d, and drag Δx/Δy to test translation equivariance.
+              </div>
+
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="cnn-conv-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: #fdf6e3; box-sizing: border-box; cursor: pointer;"></canvas>
+              </div>
+
+              <div data-prevent-swipe style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 13px; color: #586e75; gap: 5px; white-space: nowrap;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 8px;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <label><b>Input:</b>
+                      <select id="cnn-conv-img" style="padding: 2px 5px; border: 1px solid #268bd2; border-radius: 4px; background: #fff; font-size: 12px;">
+                        <option value="shapes" selected>Geometric Block</option>
+                        <option value="mri">Axial Brain Slice</option>
+                        <option value="digit">Handwritten Digit</option>
+                        <option value="impulse">Unit Impulse δ</option>
+                      </select>
+                    </label>
+                    <label><b>Kernel:</b>
+                      <select id="cnn-conv-ker" style="padding: 2px 5px; border: 1px solid #268bd2; border-radius: 4px; background: #fff; font-size: 12px;">
+                        <option value="sobel_x" selected>Sobel ∂x</option>
+                        <option value="sobel_y">Sobel ∂y</option>
+                        <option value="laplacian">Laplacian</option>
+                        <option value="blur">Gaussian Blur</option>
+                        <option value="sharpen">Sharpen</option>
+                        <option value="gabor">45° Edge</option>
+                      </select>
+                    </label>
+                    <label><b>Pad p:</b>
+                      <select id="cnn-conv-pad" style="padding: 2px 5px; border: 1px solid #586e75; border-radius: 4px; background: #fff; font-size: 12px;">
+                        <option value="0">0 (Valid)</option>
+                        <option value="1" selected>1 (Same)</option>
+                        <option value="2">2 (Full)</option>
+                      </select>
+                    </label>
+                    <label><b>Stride s:</b>
+                      <select id="cnn-conv-stride" style="padding: 2px 5px; border: 1px solid #586e75; border-radius: 4px; background: #fff; font-size: 12px;">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                      </select>
+                    </label>
+                    <label><b>Dil d:</b>
+                      <select id="cnn-conv-dil" style="padding: 2px 5px; border: 1px solid #586e75; border-radius: 4px; background: #fff; font-size: 12px;">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                      </select>
+                    </label>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 10px; font-family: monospace; font-size: 12px;">
+                    <span>Shape: <b id="cnn-conv-shape-val" style="color: #268bd2;">9×9 → 9×9</b></span>
+                    <span>Params: <b id="cnn-conv-params-val" style="color: #859900;">10 vs 6,561</b></span>
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 8px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <label style="display: inline-flex; align-items: center; gap: 5px;">
+                      <b>Shift Δx:</b>
+                      <input type="range" id="cnn-conv-dx" min="-3" max="3" step="1" value="0" style="width: 110px; cursor: pointer;">
+                      <span id="cnn-conv-dx-val" style="font-family: monospace; color: #cb4b16; min-width: 24px;">+0</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; gap: 5px;">
+                      <b>Shift Δy:</b>
+                      <input type="range" id="cnn-conv-dy" min="-3" max="3" step="1" value="0" style="width: 110px; cursor: pointer;">
+                      <span id="cnn-conv-dy-val" style="font-family: monospace; color: #cb4b16; min-width: 24px;">+0</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; gap: 4px; cursor: pointer;">
+                      <input type="checkbox" id="cnn-conv-relu">
+                      <b>ReLU</b>
+                    </label>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <button id="cnn-conv-mode" style="cursor: pointer; padding: 3px 9px; border: none; border-radius: 4px; background: #268bd2; color: #fdf6e3; font-weight: bold; font-size: 12px;">Mode: Cross-Corr</button>
+                    <button id="cnn-conv-step" style="cursor: pointer; padding: 3px 9px; border: none; border-radius: 4px; background: #859900; color: #fdf6e3; font-weight: bold; font-size: 12px;">Step Window</button>
+                    <button id="cnn-conv-reset" style="cursor: pointer; padding: 3px 9px; border: none; border-radius: 4px; background: #93a1a1; color: #fdf6e3; font-weight: bold; font-size: 12px;">Reset</button>
+                  </div>
                 </div>
               </div>
             </div>
+            <aside class="notes">
+              1. Pick Unit Impulse δ and click Mode: Cross-Corr vs Convolution (*) to show why impulse response flips the asymmetric kernel.<br>
+              2. Switch back to Geometric Block + Sobel ∂x, then drag Shift Δx and Δy sliders: students immediately see the vertical-edge feature map shift rigidly with the input (translation equivariance).<br>
+              3. Vary Pad p (0 vs 1 vs 2) and Stride s=2 while watching H_out update live and comparing 10 shared params vs thousands of dense weights.
+            </aside>
+          </section>
 
+          <section>
+            <h3>Multi-Channel Tensors &amp; Volumetric Convolution</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 22px; padding: 6px 14px;">
+              Mapping $\bm{X} \in \RR^{C_{\text{in}} \times H \times W} \to \bm{Y} \in \RR^{C_{\text{out}} \times H' \times W'}$ uses a <b>4D filter tensor</b> $\boldsymbol{\mathcal{W}} \in \RR^{C_{\text{out}} \times C_{\text{in}} \times k \times k}$:
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 6px 12px;">
+              $\displaystyle Y_{m, i, j} = b_m + \sum_{c=1}^{C_{\text{in}}} \sum_{u,v} X_{c,\, i+u,\, j+v}\, \mathcal{W}_{m, c, u, v} \qquad \text{Parameters} = C_{\text{out}}\,(C_{\text{in}}\, k^2 + 1)$
+            </blockquote>
+            <row style="align-items: center; margin-top: 8px;">
+              <col50 style="text-align: center;">
+                <img style="max-height: 220px; width: 92%; margin: 4px auto;" src="figures/volumetric_convolution.svg" alt="3D kernel across channels">
+                <div style="font-size: 19px; color: #586e75;">Each filter spans <b>all</b> $C_{\text{in}}$ input channels (or 3D depth)</div>
+              </col50>
+              <col50 style="text-align: center;">
+                <img style="max-height: 220px; width: 95%; margin: 4px auto;" src="figures/volumetric_convolution_layer.svg" alt="Stack of C_out filters">
+                <div style="font-size: 19px; color: #586e75;">$C_{\text{out}}$ distinct filters produce $C_{\text{out}}$ feature maps</div>
+              </col50>
+            </row>
+          </section>
 
-            <script type="text/javascript">
-              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
-              var header = $('#header').html();
-              if ( window.location.search.match( /print-pdf/gi ) ) {
-                  Reveal.addEventListener( 'ready', function( event ) {
-                      $('.slide-background').append(header);
-                  });
-              }
-              else {
-                  $('div.reveal').append(header);
-              }
-            </script>
+          <section>
+            <h3>Spatial Pooling: Max vs. Average</h3>
+            <row style="align-items: center;">
+              <col50 style="text-align: center;">
+                <img style="max-height: 205px; width: auto; margin: 4px auto;" src="figures/CNN_maxpooling.gif" alt="max pooling anim">
+                <img style="max-height: 185px; width: auto; margin: 4px auto;" src="figures/CNN_flat_maxpooling.svg" alt="max pooling flat">
+                <div style="font-size: 20px; color: #073642;"><b>MaxPool:</b> keeps strongest feature activation in window</div>
+              </col50>
+              <col50 style="text-align: center;">
+                <img style="max-height: 245px; width: auto; margin: 16px auto;" src="figures/CNN_avpooling.svg" alt="average pooling">
+                <div style="font-size: 20px; color: #073642;"><b>AvgPool:</b> smooth spatial summary (or <b>Global Avg Pool</b> at top)</div>
+              </col50>
+            </row>
+            <blockquote style="background-color: #eee8d5; width: auto; box-sizing: border-box; font-size: 20px; text-align: center; padding: 6px 14px; margin: 8px 30px 0 95px;">
+              Downsampling shrinks memory and grows receptive fields — at the cost of fine spatial localization!
+            </blockquote>
+          </section>
 
+          <section>
+            <h3>What Do Learned Channels Detect?</h3>
+            <row style="gap: 12px; align-items: flex-start; margin-top: 8px;">
+              <col25 class="fragment roll-in" data-fragment-index="0" style="width: 24%; text-align: center;">
+                <img style="max-height: 300px; width: 100%; object-fit: contain; margin: 0 auto;" src="figures/CNN_original.png" alt="Original input">
+                <div style="font-size: 18px; font-weight: bold; color: #073642; margin-top: 6px;">Input Image<br><span style="font-weight: normal; font-size: 16px; color: #586e75;">Raw RGB pixels</span></div>
+              </col25>
+              <col25 class="fragment roll-in" data-fragment-index="1" style="width: 24%; text-align: center;">
+                <img style="max-height: 300px; width: 100%; object-fit: contain; margin: 0 auto;" src="figures/CNN_layer1.png" alt="Layer 1 filters">
+                <div style="font-size: 18px; font-weight: bold; color: #268bd2; margin-top: 6px;">Layer 1 (Conv + Pool)<br><span style="font-weight: normal; font-size: 16px; color: #586e75;">Edges &amp; color blobs</span></div>
+              </col25>
+              <col25 class="fragment roll-in" data-fragment-index="2" style="width: 24%; text-align: center;">
+                <img style="max-height: 300px; width: 100%; object-fit: contain; margin: 0 auto;" src="figures/CNN_layer2.png" alt="Layer 2 features">
+                <div style="font-size: 18px; font-weight: bold; color: #859900; margin-top: 6px;">Layer 2 (Pooled Grid)<br><span style="font-weight: normal; font-size: 16px; color: #586e75;">Corners &amp; textures</span></div>
+              </col25>
+              <col25 class="fragment roll-in" data-fragment-index="3" style="width: 24%; text-align: center;">
+                <img style="max-height: 300px; width: 100%; object-fit: contain; margin: 0 auto;" src="figures/CNN_layer3.png" alt="Layer 3 features">
+                <div style="font-size: 18px; font-weight: bold; color: #cb4b16; margin-top: 6px;">Layer 3 (Deep Pooled)<br><span style="font-weight: normal; font-size: 16px; color: #586e75;">Object parts &amp; wholes</span></div>
+              </col25>
+            </row>
+            <blockquote style="background-color: #eee8d5; width: auto; box-sizing: border-box; font-size: 20px; text-align: center; padding: 6px 14px; margin: 14px 30px 0 95px;">
+              Alternating convolutions and pooling build a hierarchy from pixels → edges → textures → semantic object parts!
+            </blockquote>
+          </section>
+
+          <!-- FILLED SLIDE: Producing Class Predictions -->
+          <section>
+            <h3>From Feature Maps to Class Predictions</h3>
+            <row style="align-items: center;">
+              <col50>
+                <div class="cnn-card" style="border-left: 5px solid #dc322f; margin-bottom: 14px;">
+                  <div style="font-weight: bold; color: #dc322f; font-size: 21px;">1. Flatten + Dense MLP Head (AlexNet / VGG)</div>
+                  <div style="font-size: 19px; color: #073642; margin-top: 4px; line-height: 1.35;">
+                    $7 \times 7 \times 512 \to 4096 \to 1000$ classes.<br>
+                    Uses <b>102.7M parameters</b> ($74\%$ of VGG-16!) and locks network to a fixed input resolution.
+                  </div>
+                </div>
+                <div class="cnn-card" style="border-left: 5px solid #859900;">
+                  <div style="font-weight: bold; color: #859900; font-size: 21px;">2. Global Average Pooling + Linear Head (ResNet)</div>
+                  <div style="font-size: 19px; color: #073642; margin-top: 4px; line-height: 1.35;">
+                    $\displaystyle \bar{z}_c = \frac{1}{HW}\sum_{i=1}^H \sum_{j=1}^W F_{c, i, j}$, then $\text{softmax}(\bm{W}\bar{\vec{z}} + \vec{b})$.<br>
+                    <b>0 pooling parameters</b>, natural regularizer, works on arbitrary $H \times W$!
+                  </div>
+                </div>
+              </col50>
+              <col50>
+                <svg viewBox="0 0 520 380" width="500" style="display: block; margin: 0 auto;">
+                  <rect x="8" y="8" width="504" height="172" rx="8" fill="#eee8d5" stroke="#dc322f" stroke-width="1.5"/>
+                  <text x="260" y="30" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#dc322f">VGG-16 Style: Flatten → Dense 4096 → 1000</text>
+                  <rect x="26" y="54" width="68" height="68" rx="4" fill="#268bd2" opacity="0.28" stroke="#268bd2" stroke-width="2"/>
+                  <text x="60" y="92" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#073642">7×7×512</text>
+                  <line x1="100" y1="88" x2="150" y2="88" stroke="#586e75" stroke-width="2" marker-end="url(#tz-arr)"/>
+                  <rect x="158" y="44" width="32" height="96" rx="4" fill="#dc322f" opacity="0.22" stroke="#dc322f" stroke-width="2"/>
+                  <text x="174" y="156" text-anchor="middle" font-family="monospace" font-size="11.5" fill="#073642">25,088</text>
+                  <line x1="196" y1="88" x2="256" y2="88" stroke="#dc322f" stroke-width="2" marker-end="url(#tz-arr)"/>
+                  <rect x="264" y="48" width="32" height="88" rx="4" fill="#dc322f" opacity="0.32" stroke="#dc322f" stroke-width="2"/>
+                  <text x="280" y="156" text-anchor="middle" font-family="monospace" font-size="11.5" fill="#073642">4,096</text>
+                  <line x1="302" y1="88" x2="362" y2="88" stroke="#586e75" stroke-width="2" marker-end="url(#tz-arr)"/>
+                  <rect x="370" y="64" width="122" height="48" rx="6" fill="#fdf6e3" stroke="#dc322f" stroke-width="1.5"/>
+                  <text x="431" y="93" text-anchor="middle" font-family="sans-serif" font-size="13.5" font-weight="bold" fill="#dc322f">102.7M weights!</text>
+
+                  <rect x="8" y="196" width="504" height="176" rx="8" fill="#fdf6e3" stroke="#859900" stroke-width="2"/>
+                  <text x="260" y="220" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#859900">Modern Style: Global Avg Pool → Linear 1000</text>
+                  <rect x="26" y="242" width="68" height="68" rx="4" fill="#268bd2" opacity="0.28" stroke="#268bd2" stroke-width="2"/>
+                  <text x="60" y="280" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#073642">H×W×512</text>
+                  <line x1="100" y1="276" x2="174" y2="276" stroke="#859900" stroke-width="2.5" marker-end="url(#tz-arr)"/>
+                  <text x="137" y="266" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#859900">GAP</text>
+                  <rect x="182" y="246" width="32" height="62" rx="4" fill="#859900" opacity="0.32" stroke="#859900" stroke-width="2"/>
+                  <text x="198" y="328" text-anchor="middle" font-family="monospace" font-size="12" fill="#073642">1×1×512</text>
+                  <line x1="220" y1="276" x2="310" y2="276" stroke="#859900" stroke-width="2.5" marker-end="url(#tz-arr)"/>
+                  <text x="265" y="266" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#073642">W ∈ ℝ¹⁰⁰⁰ˣ⁵¹²</text>
+                  <rect x="318" y="252" width="174" height="48" rx="6" fill="#eee8d5" stroke="#859900" stroke-width="1.5"/>
+                  <text x="405" y="281" text-anchor="middle" font-family="sans-serif" font-size="13.5" font-weight="bold" fill="#859900">0.5M weights (200× less!)</text>
+                </svg>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1312.4400" target="_blank">Lin, Chen &amp; Yan (2013): Network In Network (Global Average Pooling)</a>
+            </div>
+          </section>
+
+          <!-- FILLED SLIDE: 1x1 Convolution -->
+          <section>
+            <h3>1×1 Convolution: Per-Pixel Channel MLP</h3>
+            <row style="align-items: center;">
+              <col50>
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 20px; padding: 6px 12px; margin-bottom: 8px;">
+                  At each pixel $(i,j)$, apply a shared linear map across channels:
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 8px 12px; margin-bottom: 8px;">
+                  $\vec{y}_{i,j} = \bm{W}\vec{x}_{i,j} + \vec{b}, \qquad \bm{W} \in \RR^{C_{\text{out}} \times C_{\text{in}}}$
+                </blockquote>
+                <row style="align-items: center; gap: 10px; margin-top: 4px;">
+                  <col40 style="text-align: center;">
+                    <img style="max-height: 205px; width: auto; margin: 0 auto;" src="figures/volumetric_1convolution.svg" alt="1x1 volumetric convolution">
+                  </col40>
+                  <col60>
+                    <div class="cnn-card" style="font-size: 19px; border-left: 4px solid #268bd2;">
+                      <b>Channel Mixing &amp; Bottlenecks:</b><br>
+                      Shrink $256 \to 64$ before $3\times 3$ convs ($\sim 9\times$ fewer FLOPs) and combine cross-channel features cheaply.
+                    </div>
+                  </col60>
+                </row>
+              </col50>
+              <col50 style="text-align: center;">
+                <img style="max-height: 430px; width: auto; margin: 4px auto;" src="figures/CNN_one_conv.gif" alt="one convolution">
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1312.4400" target="_blank">Lin, Chen &amp; Yan (2013): Network In Network</a>
+            </div>
+          </section>
+
+          <section>
+            <div id="header-right" style="margin-right: -20px;">
+              <img width="240" src="figures/CNN_upconvolution.gif" alt="gif upconv">
+            </div>
+            <h3>Transposed Convolution (Upconvolution)</h3>
+            <row style="align-items: center;">
+              <col50 style="text-align: center;">
+                <img style="max-height: 360px; width: auto; margin: 4px auto;" src="figures/CNN_upconvolution.png" alt="upconv">
+              </col50>
+              <col50>
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 21px; padding: 6px 12px;">
+                  Forward strided conv multiplies by sparse Toeplitz $\bm{W}$:
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 8px 12px;">
+                  Upconv multiplies by $\bm{W}^\top$ (exact backward operator!)<br>
+                  $H_{\text{out}} = (H_{\text{in}} - 1)s - 2p + k$
+                </blockquote>
+                <ul style="font-size: 21px; margin-top: 10px; line-height: 1.35;">
+                  <li class="fragment roll-in"> Not mathematical deconvolution ($\bm{W}^{-1}$), just learnable spatial upsampling!
+                  <li class="fragment roll-in"> <b>Checkerboard trap:</b> if $k$ is not divisible by $s$, uneven overlaps create artifacts (fix: resize + conv).
+                </ul>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://distill.pub/2016/deconv-checkerboard/" target="_blank">Odena, Dumoulin &amp; Olah (Distill 2016): Deconvolution and Checkerboard Artifacts</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Dilated Convolution: Exponential Context</h3>
+            <row style="align-items: center;">
+              <col50 style="text-align: center;">
+                <img style="max-height: 410px; width: auto; margin: 4px auto;" src="figures/CNN_dilation.gif" alt="dilated convolution">
+              </col50>
+              <col50>
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 21px; padding: 6px 12px;">
+                  Insert $d-1$ zeros between kernel taps — keeping <b>only $k^2$ weights</b>!
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 8px 12px;">
+                  $R_{\ell} = R_{\ell-1} + (k_{\ell} - 1)\, d_{\ell} \prod_{m < \ell} s_m$
+                </blockquote>
+                <ul style="font-size: 21px; margin-top: 10px; line-height: 1.38;">
+                  <li class="fragment roll-in"> $d = 1, 2, 4, 8 \implies$ RF grows exponentially ($3 \to 7 \to 15 \to 31$).
+                  <li class="fragment roll-in"> Preserves <b>full $100\%$ spatial resolution</b> without pooling or skip-buffer RAM!
+                </ul>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1511.07122" target="_blank">Yu &amp; Koltun (ICLR 2016): Multi-Scale Context Aggregation by Dilated Convolutions</a>
+            </div>
+          </section>
+
+          <!-- Interactive Demo 2: Receptive Field Growth -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 2px 0 6px 0; font-size: 38px; line-height: 1.1;">Receptive Field Growth: Pooling vs. Dilation</h3>
+            <div data-prevent-swipe style="position: relative; z-index: 25; display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 auto; user-select: none;">
+
+              <div id="cnn-rf-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 5px 14px; box-sizing: border-box; font-size: 13.5px; color: #073642; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                Compare plain 3×3 stacks, strided pooling encoders, and exponential dilation (d = 1, 2, 4, 8). Click the output grid to move the neuron!
+              </div>
+
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="cnn-rf-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: #fdf6e3; box-sizing: border-box; cursor: crosshair;"></canvas>
+              </div>
+
+              <div data-prevent-swipe style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 7px 14px; box-sizing: border-box; font-size: 13px; color: #586e75; gap: 10px; white-space: nowrap;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <label><b>Architecture:</b>
+                    <select id="cnn-rf-arch" style="padding: 2px 6px; border: 1px solid #268bd2; border-radius: 4px; background: #fff; font-size: 12px;">
+                      <option value="plain">Plain 3×3 Stack (d=1,1,1,1, s=1)</option>
+                      <option value="pooled">Pooled Encoder (s=2 downsampling)</option>
+                      <option value="dilated" selected>Dilated Stack (d=1,2,4,8, MeshNet)</option>
+                    </select>
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 5px;">
+                    <b>Depth L:</b>
+                    <input type="range" id="cnn-rf-depth" min="1" max="4" step="1" value="4" style="width: 100px; cursor: pointer;">
+                    <span id="cnn-rf-depth-val" style="font-family: monospace; color: #cb4b16; min-width: 16px;">4</span>
+                  </label>
+                  <button id="cnn-rf-view" style="cursor: pointer; padding: 3px 9px; border: none; border-radius: 4px; background: #268bd2; color: #fdf6e3; font-weight: bold; font-size: 12px;">View: Box + Effective RF</button>
+                  <button id="cnn-rf-center" style="cursor: pointer; padding: 3px 9px; border: none; border-radius: 4px; background: #93a1a1; color: #fdf6e3; font-weight: bold; font-size: 12px;">Center Neuron</button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; font-family: monospace; font-size: 12px;">
+                  <span>RF: <b id="cnn-rf-size-val" style="color: #cb4b16;">31×31</b></span>
+                  <span>Out: <b id="cnn-rf-out-val" style="color: #859900;">32×32</b></span>
+                  <span>3D Cost: <b id="cnn-rf-mem-val" style="color: #268bd2;">72.5K (~600)</b></span>
+                </div>
+              </div>
+            </div>
+            <aside class="notes">
+              1. Toggle between Plain 3×3 (RF crawls linearly 3→5→7→9) and Dilated Stack (d=1,2,4,8 jumps to 31×31 while keeping full 32×32 spatial resolution).<br>
+              2. Switch to Pooled Encoder: RF also reaches 31×31, but output shrinks from 32×32 down to 4×4 — explaining why U-Net needs an entire decoder + high-RAM skip buffers.<br>
+              3. Point out the Gaussian intensity falloff inside the dashed blue box: the Effective Receptive Field (Luo et al. 2016) decays from the center because far more paths traverse central pixels.
+            </aside>
+          </section>
+
+          <!-- Interactive Website Background: CNN Explainer -->
+          <section data-vertical-align-top data-background-iframe="https://poloclub.github.io/cnn-explainer/" data-background-interactive>
+            <div style="background: rgba(253, 246, 227, 0.90); border: 1px solid #93a1a1; border-radius: 8px; padding: 4px 16px; display: inline-block; margin-top: -6px;">
+              <h3 style="margin: 0; font-size: 30px; color: #073642;">Live CNN Layer-by-Layer Simulator</h3>
+            </div>
+            <div class="slide-footer" style="background: rgba(253, 246, 227, 0.90); padding: 4px 12px; border-radius: 6px; border: 1px solid #93a1a1;">
+              <a href="https://poloclub.github.io/cnn-explainer/" target="_blank">CNN Explainer</a> ·
+              <a href="https://www.youtube.com/watch?v=HnWIHWFbuUQ" target="_blank">Video</a> ·
+              <a href="https://github.com/poloclub/cnn-explainer" target="_blank">GitHub</a> ·
+              <a href="https://arxiv.org/abs/2004.15004" target="_blank">Wang et al. (2020)</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Summary: Eight Core CNN Primitives</h3>
+            <row style="gap: 18px;">
+              <col50>
+                <div class="cnn-card" style="margin-bottom: 10px;">
+                  <b>1. Shared Kernel Conv:</b> Toeplitz weight sharing ($\sim k^2$ params) + translation equivariance.
+                </div>
+                <div class="cnn-card" style="margin-bottom: 10px;">
+                  <b>2. Padding ($p$) &amp; Stride ($s$):</b> Valid/Same/Full border control &amp; downsampling geometry.
+                </div>
+                <div class="cnn-card" style="margin-bottom: 10px;">
+                  <b>3. Multi-Channel 4D Tensors:</b> Every output filter mixes all $C_{\text{in}}$ input channels.
+                </div>
+                <div class="cnn-card">
+                  <b>4. Pooling &amp; GAP:</b> Spatial downsampling &amp; parameter-free class-head aggregation.
+                </div>
+              </col50>
+              <col50>
+                <div class="cnn-card" style="margin-bottom: 10px;">
+                  <b>5. $1 \times 1$ Convolution:</b> Per-pixel channel MLP for bottleneck compute savings.
+                </div>
+                <div class="cnn-card" style="margin-bottom: 10px;">
+                  <b>6. Transposed Conv ($\bm{W}^\top$):</b> Learnable spatial upsampling (watch checkerboard artifacts).
+                </div>
+                <div class="cnn-card" style="margin-bottom: 10px;">
+                  <b>7. Dilated Conv ($d$):</b> Exponential receptive field at full spatial resolution.
+                </div>
+                <div class="cnn-card">
+                  <b>8. End-to-End Composition:</b> Hierarchies from Gabor edges $\to$ parts $\to$ semantics.
+                </div>
+              </col50>
+            </row>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 5: SKIP CONNECTIONS, GATES & LOSS LANDSCAPES                      -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h2>Skip Connections</h2>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 28px; text-align: center;">
+              How identity shortcuts unlock 100+ layer networks via Reverse-Mode AD.
+            </blockquote>
+            <aside class="notes">
+              Thanks to Speelpenning's reverse-mode accumulation (Lecture 18), backpropagation walks backward along every path in the computation graph. Adding an un-attenuated identity edge turns out to be transformative for training very deep models.
+            </aside>
+          </section>
+
+          <!-- FILLED SLIDE: Depth Paradox & Dark Knowledge -->
+          <section>
+            <h3>The Depth Paradox &amp; Dark Knowledge</h3>
+            <row style="align-items: center;">
+              <col60>
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 21px; padding: 6px 12px;">
+                  Why couldn't we train deep plain nets before 2015?
+                </blockquote>
+                <ul style="font-size: 22px; line-height: 1.4; margin-top: 8px;">
+                  <li class="fragment roll-in"> <b>Degradation Paradox:</b> Deeper plain nets had <em>higher training error</em> — an optimization barrier, not overfitting!
+                  <li class="fragment roll-in"> <b>Mimic Nets &amp; Dark Knowledge (2014–15):</b> Train a thin student on a shallow teacher's softened probabilities (same Temperature $T$ from Lecture 20!):
+                    $$q_i = \frac{\exp(z_i / T)}{\sum_j \exp(z_j / T)}$$
+                  <li class="fragment roll-in"> <b>FitNets (2015):</b> Intermediate feature hints let deep thin nets train — but still needed two-stage teacher distillation!
+                </ul>
+              </col60>
+              <col40 style="text-align: center;">
+                <img style="max-height: 410px; width: auto; margin: 4px auto;" src="figures/shadow-of-the-vampire.jpg" alt="Dark knowledge shadow of the vampire">
+              </col40>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1312.6184" target="_blank">Ba &amp; Caruana (2014): Do Deep Nets Really Need to be Deep?</a> ·
+              <a href="https://arxiv.org/abs/1503.02531" target="_blank">Hinton et al. (2015): Distilling the Knowledge</a> ·
+              <a href="https://arxiv.org/abs/1412.6550" target="_blank">Romero et al. (2015): FitNets</a>
+            </div>
+            <aside class="notes">
+              Rich Caruana (2013/14) noticed shallow mimic nets could match deep ensembles; Geoff Hinton named the rich inter-class probability ratios in soft logits "dark knowledge". FitNets used intermediate hints, yet multi-stage distillation remained cumbersome.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Highway Networks: Learned Carry Gates (May 2015)</h3>
+            <ul style="list-style-type: none; font-size: 26px; width: 100%; line-height: 1.35;">
+              <li class="fragment roll-in">
+                $$\vec{y} = H(\vec{x}, \bm{W}_H) \odot T(\vec{x}, \bm{W}_T) + \vec{x} \odot C(\vec{x}, \bm{W}_C)$$
+              </li>
+              <li class="fragment roll-in">
+                Tie carry gate $C = 1 - T$ with sigmoid transform gate $T(\vec{x}, \bm{W}_T) = \sigma(\bm{W}_T \vec{x} + \vec{b}_T)$:
+                $$\vec{y} = H(\vec{x}, \bm{W}_H) \odot T(\vec{x}, \bm{W}_T) + \vec{x} \odot \big(1 - T(\vec{x}, \bm{W}_T)\big)$$
+              </li>
+              <li class="fragment roll-in">
+                $$\vec{y} = \begin{cases} \vec{x} & \text{if } T(\vec{x}, \bm{W}_T) = 0 \quad (\text{pure identity skip!}) \\ H(\vec{x}, \bm{W}_H) & \text{if } T(\vec{x}, \bm{W}_T) = 1 \quad (\text{nonlinear transform}) \end{cases}$$
+              </li>
+              <li class="fragment roll-in" style="text-align: center; margin-top: 8px;">
+                <alert>Key Initialization Trick: set gate bias $\vec{b}_T \ll 0$ so $T \approx 0$ at step 0 and gradients flow freely!</alert>
+              </li>
+            </ul>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1505.00387" target="_blank">Srivastava, Greff &amp; Schmidhuber (May 2015): Highway Networks</a> ·
+              <a href="https://arxiv.org/abs/1507.06228" target="_blank">Training Very Deep Networks (NeurIPS 2015)</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Training 100 Layers with Highway Gates</h3>
+            <alert style="display: block; font-size: 28px; margin-bottom: 10px;">
+              Train models with 100+ layers directly end-to-end instead of collapsing past 10–20!
+            </alert>
+            <img style="max-height: 410px; width: 96%; margin: 6px auto;" src="figures/CNN_HW_performance.png" alt="Highway networks depth scaling">
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1507.06228" target="_blank">Srivastava, Greff &amp; Schmidhuber (2015): Training Very Deep Networks</a>
+            </div>
+            <aside class="notes">
+              Compare depth 10, 20, 50, and 100: plain nets degrade sharply with depth, while highway nets retain optimization all the way to 100 layers and match FitNets in a single end-to-end run.
+            </aside>
+          </section>
+
+          <!-- FILLED SLIDE: Residual Networks Block + Gradient Highway -->
+          <section>
+            <h3>Residual Networks: The Identity Highway (Dec 2015)</h3>
+            <row style="align-items: center;">
+              <col55 style="width: 56%;">
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 20px; padding: 6px 12px; margin: 6px 0;">
+                  Drop the learned gate completely ($C \equiv 1, T \equiv 1$): learn residual $\mathcal{F}(\vec{x}) = \mathcal{H}(\vec{x}) - \vec{x}$!
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 20px; text-align: center; padding: 7px 10px; margin: 8px 0;">
+                  $\vec{x}_{\ell+1} = \vec{x}_\ell + \mathcal{F}(\vec{x}_\ell, \bm{W}_\ell) \implies \vec{x}_L = \vec{x}_\ell + \sum_{k=\ell}^{L-1} \mathcal{F}(\vec{x}_k, \bm{W}_k)$
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 19px; text-align: center; padding: 7px 10px; margin: 8px 0;">
+                  $\displaystyle \frac{\partial {\cal L}}{\partial \vec{x}_\ell} = \frac{\partial {\cal L}}{\partial \vec{x}_L}\!\left(\underbrace{\bm{I}}_{\text{Direct AD Highway!}} + \;\frac{\partial}{\partial \vec{x}_\ell}\sum_{k=\ell}^{L-1}\mathcal{F}(\vec{x}_k, \bm{W}_k)\right)$
+                </blockquote>
+                <div class="cnn-card" style="font-size: 19px; border-left: 4px solid #859900; margin-top: 8px; padding: 7px 12px;">
+                  Zero extra gate parameters; paired with <b>BatchNorm</b> for stable activations across 152+ layers.
+                </div>
+              </col55>
+              <col45 style="width: 44%; text-align: center;">
+                <img style="max-height: 385px; width: 92%; margin: 4px auto;" src="figures/CNN_resnets_block.svg" alt="resnet block">
+              </col45>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1512.03385" target="_blank">He et al. (Dec 2015 / CVPR 2016): Deep Residual Learning for Image Recognition</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>ResNet Architecture &amp; Overcoming Degradation</h3>
+            <row style="align-items: center;">
+              <col55 style="width: 54%; text-align: center;">
+                <img style="max-height: 440px; width: 96%; margin: 4px auto;" src="figures/CNN_resnets_whole.svg" alt="resnet whole">
+              </col55>
+              <col45 style="width: 46%; text-align: center;">
+                <img style="max-height: 360px; width: 98%; margin: 4px auto;" src="figures/CNN_resnets_perf.svg" alt="resnet perf">
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 19px; padding: 6px 10px;">
+                  56-layer Plain Net fails on <em>training</em> error; 56-layer ResNet beats 20-layer easily!
+                </blockquote>
+              </col45>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1512.03385" target="_blank">He et al. (2015): Deep Residual Learning for Image Recognition</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>How Skip Connections Smooth the Loss Landscape</h3>
+            <img style="max-height: 420px; width: auto; margin: 10px auto;" src="figures/skip_smooth.png" alt="loss landscape">
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 6px 14px;">
+              Filter-normalized 2D slices of ResNet-56 (Li et al., 2018): skip connections turn a chaotic terrain into a smooth, well-conditioned basin.
+            </blockquote>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1712.09913" target="_blank">Li et al. (NeurIPS 2018): Visualizing the Loss Landscape of Neural Nets</a>
+            </div>
+          </section>
+
+          <!-- Interactive Demo 3: Deep Gradient Flow -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 2px 0 6px 0; font-size: 38px; line-height: 1.1;">Deep Gradient Flow: Plain vs. Highway vs. ResNet</h3>
+            <div data-prevent-swipe style="position: relative; z-index: 25; display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 auto; user-select: none;">
+
+              <div id="cnn-skip-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 5px 14px; box-sizing: border-box; font-size: 13.5px; color: #073642; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                Sweep network depth L, Highway gate bias b_T, and weight scale σ_w to watch Reverse-Mode AD gradient norms across 100 layers.
+              </div>
+
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="cnn-skip-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: #fdf6e3; box-sizing: border-box;"></canvas>
+              </div>
+
+              <div data-prevent-swipe style="width: 100%; display: flex; flex-direction: column; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 13px; color: #586e75; gap: 5px; white-space: nowrap;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px;">
+                  <div style="display: flex; align-items: center; gap: 14px;">
+                    <label style="display: inline-flex; align-items: center; gap: 5px;">
+                      <b>Depth L:</b>
+                      <input type="range" id="cnn-skip-depth" min="8" max="100" step="2" value="56" style="width: 130px; cursor: pointer;">
+                      <span id="cnn-skip-depth-val" style="font-family: monospace; color: #073642; min-width: 28px;">56</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; gap: 5px;">
+                      <b>Gate Bias b_T:</b>
+                      <input type="range" id="cnn-skip-bias" min="-4.0" max="3.0" step="0.25" value="-2.50" style="width: 140px; cursor: pointer;">
+                      <span id="cnn-skip-bias-val" style="font-family: monospace; color: #268bd2; min-width: 44px;">-2.50</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; gap: 5px;">
+                      <b>Weight Scale σ_w:</b>
+                      <input type="range" id="cnn-skip-wscale" min="0.60" max="1.30" step="0.05" value="0.85" style="width: 120px; cursor: pointer;">
+                      <span id="cnn-skip-wscale-val" style="font-family: monospace; color: #cb4b16; min-width: 36px;">0.85</span>
+                    </label>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <button id="cnn-skip-badgate" style="cursor: pointer; padding: 3px 8px; border: none; border-radius: 4px; background: #dc322f; color: #fdf6e3; font-weight: bold; font-size: 12px;">Closed Gate (+2)</button>
+                    <button id="cnn-skip-goodgate" style="cursor: pointer; padding: 3px 8px; border: none; border-radius: 4px; background: #268bd2; color: #fdf6e3; font-weight: bold; font-size: 12px;">Open Skip (-3)</button>
+                    <button id="cnn-skip-reset" style="cursor: pointer; padding: 3px 8px; border: none; border-radius: 4px; background: #93a1a1; color: #fdf6e3; font-weight: bold; font-size: 12px;">Reset</button>
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: flex-start; align-items: center; gap: 24px; font-family: monospace; font-size: 12px;">
+                  <span>Layer-1 Grad — Plain: <b id="cnn-skip-plain-grad" style="color: #dc322f;">10^-7.0</b></span>
+                  <span>Highway: <b id="cnn-skip-hw-grad" style="color: #268bd2;">10^-0.5</b></span>
+                  <span>ResNet: <b id="cnn-skip-res-grad" style="color: #859900;">10^0.3</b></span>
+                </div>
+              </div>
+            </div>
+            <aside class="notes">
+              1. At L=56, σ_w=0.85: Plain Net layer-1 gradients plummet below 10^-6, making early edge detectors untrainable.<br>
+              2. Click "Closed Gate (+2)" to show what happens if Highway gate bias isn't initialized negative — Highway collapses right onto the red Plain Net curve!<br>
+              3. Click "Open Skip (-3)" and note how ResNet achieves the same stability with zero gate weights via +I in the reverse-mode AD Jacobian, while smoothing the 2D loss surface on the right.
+            </aside>
+          </section>
+
+          <section>
+            <h3>DenseNet: How Channel Concatenation Stays Small</h3>
+            <row style="align-items: center; gap: 16px;">
+              <col50 style="width: 50%; text-align: center;">
+                <img style="max-height: 335px; width: 96%; margin: 4px auto;" src="figures/CNN_densenet.svg" alt="densenet architecture">
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 19px; text-align: center; padding: 6px 10px; margin-top: 6px;">
+                  ResNet <b>adds</b>: $\vec{x}_\ell = \vec{x}_{\ell-1} + \mathcal{F}_\ell(\vec{x}_{\ell-1})$<br>
+                  DenseNet <b>concatenates</b>: $\vec{x}_\ell = \mathcal{H}_\ell\!\big([\vec{x}_0, \vec{x}_1, \dots, \vec{x}_{\ell-1}]\big)$
+                </blockquote>
+              </col50>
+              <col50 style="width: 50%;">
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 19px; padding: 6px 12px; margin-bottom: 10px;">
+                  Channel count grows linearly ($C_\ell = C_0 + \ell g$), so raw weights would grow as $O(L^2 g^2)$ — <b>3 tricks tame it:</b>
+                </blockquote>
+                <div class="cnn-card" style="font-size: 18.5px; border-left: 4px solid #268bd2; margin-bottom: 8px;">
+                  <b>1. Tiny Growth Rate ($g = 12\text{–}32$):</b> Each layer only emits $g$ <em>new</em> channels instead of wide $256\text{–}512$ maps!
+                </div>
+                <div class="cnn-card" style="font-size: 18.5px; border-left: 4px solid #859900; margin-bottom: 8px;">
+                  <b>2. $1\times 1$ Bottleneck (DenseNet-B):</b> Compresses all $C_\ell$ concatenated channels down to $4g$ <em>before</em> each $3\times 3$ conv ($4g \to g$).
+                </div>
+                <div class="cnn-card" style="font-size: 18.5px; border-left: 4px solid #cb4b16;">
+                  <b>3. Transition Layers (DenseNet-C):</b> Between blocks, $1\times 1$ conv ($\theta = 0.5$) + AvgPool halves channels ($C \to 0.5C$).
+                </div>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1608.06993" target="_blank">Huang et al. (CVPR 2017): Densely Connected Convolutional Networks</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>DenseNet Effect: Loss Landscape &amp; Efficiency</h3>
+            <img style="max-height: 365px; width: auto; margin: 8px auto;" src="figures/densenet.png" alt="DenseNet vs no-skip loss landscape">
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 8px 14px; margin-top: 8px;">
+              Dense connections keep the loss surface smooth and convex-like (Li et al., 2018) while reusing all prior feature maps — cutting parameters by <b>$\sim 3\times$</b> at equal accuracy!
+            </blockquote>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1608.06993" target="_blank">Huang et al. (CVPR 2017): DenseNet</a> ·
+              <a href="https://arxiv.org/abs/1712.09913" target="_blank">Li et al. (NeurIPS 2018): Loss Landscape Visualization</a>
+            </div>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 6: FULLY CONVOLUTIONAL NETWORKS & SEGMENTATION TWISTS             -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h2>Fully Convolutional Networks</h2>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 28px; text-align: center;">
+              Predicting dense $H \times W$ pixel labels directly with convolutions.
+            </blockquote>
+          </section>
+
+          <section>
+            <h3>Semantic Segmentation: Dense Per-Pixel Prediction</h3>
+            <img style="max-height: 360px; width: auto; margin: 8px auto;" src="figures/CNN_semantic_bikes.png" alt="Semantic segmentation task">
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 22px; text-align: center; padding: 8px 14px;">
+              Map $\bm{X} \in \RR^{C \times H \times W} \to \hat{\bm{Y}} \in \Delta_K^{H \times W}$: classify <em>every pixel</em> simultaneously via per-pixel cross-entropy or Dice loss.
+            </blockquote>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1411.4038" target="_blank">Long, Shelhamer &amp; Darrell (CVPR 2015): Fully Convolutional Networks for Semantic Segmentation</a> ·
+              <a href="https://www.youtube.com/watch?v=xr_2dwZDH6U" target="_blank">Demo Video</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Replacing Dense Layers with Convolutions</h3>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+              <img class="fragment roll-in" style="max-height: 155px; width: auto; margin: 0 auto;" src="figures/CNN_semantic_cc_1.png" alt="cc 1">
+              <img class="fragment roll-in" style="max-height: 165px; width: auto; margin: 0 auto;" src="figures/CNN_semantic_cc_2.png" alt="cc 2">
+              <img class="fragment roll-in" style="max-height: 155px; width: auto; margin: 0 auto;" src="figures/CNN_semantic_cc_3.png" alt="cc 3">
+            </div>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1411.4038" target="_blank">Long, Shelhamer &amp; Darrell (CVPR 2015): Convolutionalization turns fixed classification nets into spatial heatmaps</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Fully Convolutional Network &amp; Multi-Scale Skip Fusion</h3>
+            <row style="align-items: center;">
+              <col55 style="width: 55%; text-align: center;">
+                <img style="max-height: 410px; width: 96%; margin: 4px auto;" src="figures/CNN_semantic_ff.png" alt="FCN skip fusion">
+              </col55>
+              <col45 style="width: 45%; text-align: center;">
+                <img style="max-height: 410px; width: 90%; margin: 4px auto;" src="figures/CNN_semantic_examples.png" alt="FCN examples">
+              </col45>
+            </row>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 6px 12px; margin-top: 6px;">
+              <b>Takeaway:</b> When input and target share spatial geometry, keep everything convolutional and fuse coarse semantic + fine boundary layers!
+            </blockquote>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1411.4038" target="_blank">Long, Shelhamer &amp; Darrell (CVPR 2015)</a>
+            </div>
+          </section>
+
+          <section>
+            <h2>Segmentation with Twists</h2>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 28px; text-align: center;">
+              U-Net, the 3D memory wall, and pure dilated MeshNet in the browser.
+            </blockquote>
+          </section>
+
+          <section>
+            <div id="header-left" style="margin-top: 80px; margin-left: 35px;">
+              <img style="width: 115px; margin: 0;" src="figures/Olaf_Ronneberger_Portrait.jpg" alt="Olaf Ronneberger">
+              <div style="font-size: 15px; font-weight: bold; color: #586e75;">Olaf Ronneberger</div>
+            </div>
+            <h3>Encoder–Decoder Standard: U-Net &amp; 3D V-Net (2015)</h3>
+            <img style="max-height: 450px; width: auto; margin: 6px auto;" src="figures/V-Net.png" alt="U-Net / V-Net architecture">
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1505.04597" target="_blank">Ronneberger et al. (MICCAI 2015): U-Net</a> ·
+              <a href="https://arxiv.org/abs/1606.06650" target="_blank">Çiçek et al. (MICCAI 2016): 3D U-Net</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>The 3D U-Net Parameter &amp; Memory Wall</h3>
+            <row style="align-items: center;">
+              <col50 style="text-align: center;">
+                <img style="max-height: 410px; width: 92%; margin: 4px auto;" src="figures/unet_arc.png" alt="3D U-Net diagram">
+              </col50>
+              <col50 style="text-align: center;">
+                <img style="max-height: 360px; width: 96%; margin: 4px auto;" src="figures/unet_table.png" alt="U-Net parameters">
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 19px; padding: 6px 10px; margin-top: 6px;">
+                  <b>23.5M parameters</b> + $O(N^3)$ skip tensors force 80 GB GPUs or subcube patching!
+                </blockquote>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1606.06650" target="_blank">Çiçek et al. (MICCAI 2016): 3D U-Net</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>3D Brain Segmentation &amp; FreeSurfer Benchmark</h3>
+            <row style="align-items: center;">
+              <col50 style="text-align: center;">
+                <img style="max-height: 390px; width: 96%; margin: 4px auto;" src="figures/tasks.png" alt="Brain segmentation tasks">
+              </col50>
+              <col50 style="text-align: center;">
+                <img style="max-height: 350px; width: 96%; margin: 4px auto;" src="figures/CNN_freesurfer.png" alt="FreeSurfer segmentation">
+                <div style="font-size: 19px; color: #586e75;">FreeSurfer: gold-standard atlas pipeline (hours per CPU scan)</div>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://doi.org/10.1006/nimg.1998.0395" target="_blank">Dale et al. (NeuroImage 1999): Cortical Surface-Based Analysis / FreeSurfer</a>
+            </div>
+          </section>
+
+          <section>
+            <div id="header-left" style="margin-top: 70px; margin-left: 25px; z-index: 15;">
+              <img style="width: 110px; margin: 0;" src="figures/AlexFedorov.jpg" alt="Alex Fedorov">
+              <div style="font-size: 14px; font-weight: bold; color: #586e75;">Alex Fedorov</div>
+            </div>
+            <h3>MeshNet: Pure Dilated 3D Segmentation</h3>
+            <row style="align-items: center;">
+              <col40 style="text-align: center;">
+                <img style="max-height: 455px; width: auto; margin: 4px auto;" src="figures/meshnet_arch.png" alt="MeshNet dilated architecture">
+              </col40>
+              <col60>
+                <img style="max-height: 270px; width: 96%; margin: 4px auto;" src="figures/mntable.png" alt="MeshNet parameter comparison">
+                <ul style="font-size: 22px; line-height: 1.4; margin-top: 8px;">
+                  <li> <b>72,516 vs. 23,523,355</b> parameters (&gt;320× fewer than 3D U-Net)!
+                  <li> <b>~600 KB vs. ~2 GB</b> model footprint — zero pooling, zero skip buffers.
+                  <li> Trained directly on T1 MRI volumes with FreeSurfer labels.
+                </ul>
+              </col60>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1612.00940" target="_blank">Fedorov et al. (IJCNN 2017): End-to-End Learning of Brain Tissue Segmentation from Imperfect Labeling</a> ·
+              <a href="https://github.com/Entodi/MeshNet" target="_blank">GitHub</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>MeshNet: Subvolume Training &amp; Full-Brain Inference</h3>
+            <row style="align-items: center;">
+              <col55 style="width: 58%; text-align: center;">
+                <img style="max-height: 420px; width: 98%; margin: 4px auto;" src="figures/mnpipeline.png" alt="MeshNet pipeline">
+              </col55>
+              <col45 style="width: 42%; text-align: center;">
+                <img style="max-height: 420px; width: auto; margin: 4px auto;" src="figures/mnexample.png" alt="MeshNet example output">
+              </col45>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1612.00940" target="_blank">Fedorov et al. (IJCNN 2017): Full-volume 256³ inference via pure dilated 3D convolutions</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>MeshNet: Outperforming Teacher, U-Net &amp; Multimodal</h3>
+            <row style="align-items: center; gap: 10px;">
+              <col30 style="width: 33%; text-align: center;">
+                <img style="max-height: 280px; width: 98%; margin: 4px auto;" src="figures/MN_examples.png" alt="Better than teacher">
+                <div style="font-size: 18px; color: #073642;"><b>Denoises teacher errors</b></div>
+              </col30>
+              <col30 style="width: 33%; text-align: center;">
+                <img style="max-height: 280px; width: 98%; margin: 4px auto;" src="figures/MeshNet_multi.png" alt="Multimodal input channels">
+                <div style="font-size: 18px; color: #073642;"><b>Multimodal MRI channels</b></div>
+              </col30>
+              <col30 style="width: 33%; text-align: center;">
+                <img style="max-height: 280px; width: 98%; margin: 4px auto;" src="figures/mnvsunet.png" alt="MeshNet vs U-Net">
+                <div style="font-size: 18px; color: #073642;"><b>Higher Dice at 1/300th size</b></div>
+              </col30>
+            </row>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 20px; text-align: center; padding: 6px 12px; margin-top: 10px;">
+              Multi-subject empirical regularization lets a compact 3D FCN even beat noisy training masks!
+            </blockquote>
+          </section>
+
+          <section data-background-video="figures/combined.mp4" data-background-size="contain" data-background-video-loop="true">
+            <div style="background: rgba(253, 246, 227, 0.88); border: 1px solid #93a1a1; border-radius: 6px; padding: 4px 14px; display: inline-block; position: fixed; top: 12px; left: 50%; transform: translateX(-50%); white-space: nowrap;">
+              <span style="font-size: 21px; font-weight: bold; color: #073642;">T1 MRI vs. FreeSurfer vs. MeshNet — 3D Segmentation Comparison (2017)</span>
+            </div>
+          </section>
+
+          <!-- Interactive Brainchop Slide -->
+          <section data-vertical-align-top data-background-iframe="https://neuroneural.net/brainchop-test/" data-background-interactive>
+            <div style="background: rgba(253, 246, 227, 0.90); border: 1px solid #93a1a1; border-radius: 8px; padding: 4px 16px; display: inline-block; margin-top: -6px;">
+              <h3 style="margin: 0; font-size: 30px; color: #073642;">Zero-Footprint 3D Brain Segmentation in Browser</h3>
+            </div>
+            <div class="slide-footer" style="background: rgba(253, 246, 227, 0.90); padding: 4px 12px; border-radius: 6px; border: 1px solid #93a1a1;">
+              <a href="https://neuroneural.net/brainchop-test/" target="_blank">neuroneural.net/brainchop-test</a> ·
+              <a href="https://brainchop.org" target="_blank">brainchop.org</a> ·
+              <a href="https://github.com/neuroneural/brainchop" target="_blank">GitHub</a> ·
+              <a href="https://doi.org/10.21105/joss.05098" target="_blank">Masoud et al. (JOSS 2023)</a>
+            </div>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 7: GENERATIVE, GEOMETRIC & MODERN CONVNETS (2016 - 2026)          -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h2>Advanced &amp; Modern CNNs</h2>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 28px; text-align: center;">
+              Causal autoregressive masks, deformable sampling, depthwise separability &amp; modern frontier roles.
+            </blockquote>
+          </section>
+
+          <!-- FILLED SLIDE: Masked Convolutions -->
+          <section>
+            <h3>Autoregressive Factoring &amp; Masked Convolutions</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 22px; padding: 6px 14px;">
+              Turn image generation into exact chain-rule density estimation in raster-scan order:
+              $\quad \displaystyle p(\bm{x}) = \prod_{i=1}^{H \cdot W} p(x_i \mid x_1, \dots, x_{i-1})$
+            </blockquote>
+            <row style="align-items: center; margin-top: 8px;">
+              <col50>
+                <svg viewBox="0 0 540 315" width="520" style="display: block; margin: 0 auto;">
+                  <rect x="8" y="8" width="248" height="298" rx="8" fill="#eee8d5" stroke="#93a1a1" stroke-width="1.5"/>
+                  <text x="132" y="32" text-anchor="middle" font-family="sans-serif" font-size="15.5" font-weight="bold" fill="#073642">5×5 Raster Patch at xᵢ</text>
+                  <!-- 5x5 raster grid -->
+                  <g stroke="#586e75" stroke-width="1">
+                    <!-- Rows 0, 1: all past -->
+                    <rect x="37" y="52" width="38" height="38" fill="#b8d8be"/><rect x="75" y="52" width="38" height="38" fill="#b8d8be"/><rect x="113" y="52" width="38" height="38" fill="#b8d8be"/><rect x="151" y="52" width="38" height="38" fill="#b8d8be"/><rect x="189" y="52" width="38" height="38" fill="#b8d8be"/>
+                    <rect x="37" y="90" width="38" height="38" fill="#b8d8be"/><rect x="75" y="90" width="38" height="38" fill="#b8d8be"/><rect x="113" y="90" width="38" height="38" fill="#b8d8be"/><rect x="151" y="90" width="38" height="38" fill="#b8d8be"/><rect x="189" y="90" width="38" height="38" fill="#b8d8be"/>
+                    <!-- Row 2: 2 past, center x_i, 2 future -->
+                    <rect x="37" y="128" width="38" height="38" fill="#b8d8be"/><rect x="75" y="128" width="38" height="38" fill="#b8d8be"/>
+                    <rect x="113" y="128" width="38" height="38" fill="#cb4b16"/>
+                    <rect x="151" y="128" width="38" height="38" fill="#e5dfca"/><rect x="189" y="128" width="38" height="38" fill="#e5dfca"/>
+                    <!-- Rows 3,4: all future -->
+                    <rect x="37" y="166" width="38" height="38" fill="#e5dfca"/><rect x="75" y="166" width="38" height="38" fill="#e5dfca"/><rect x="113" y="166" width="38" height="38" fill="#e5dfca"/><rect x="151" y="166" width="38" height="38" fill="#e5dfca"/><rect x="189" y="166" width="38" height="38" fill="#e5dfca"/>
+                    <rect x="37" y="204" width="38" height="38" fill="#e5dfca"/><rect x="75" y="204" width="38" height="38" fill="#e5dfca"/><rect x="113" y="204" width="38" height="38" fill="#e5dfca"/><rect x="151" y="204" width="38" height="38" fill="#e5dfca"/><rect x="189" y="204" width="38" height="38" fill="#e5dfca"/>
+                  </g>
+                  <text x="132" y="152" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#fdf6e3">xᵢ</text>
+                  <text x="132" y="268" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#859900" font-weight="bold">Green = allowed past (pre-xᵢ)</text>
+                  <text x="132" y="288" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#586e75">Gray = future (masked to 0)</text>
+
+                  <!-- Mask A and Mask B -->
+                  <rect x="272" y="8" width="260" height="142" rx="8" fill="#fdf6e3" stroke="#268bd2" stroke-width="1.8"/>
+                  <text x="402" y="30" text-anchor="middle" font-family="sans-serif" font-size="14.5" font-weight="bold" fill="#268bd2">Mask A (Layer 1: center = 0)</text>
+                  <g font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle">
+                    <text x="402" y="64" fill="#859900">1   1   1</text>
+                    <text x="402" y="96"><tspan fill="#859900">1   </tspan><tspan fill="#dc322f">0</tspan><tspan fill="#93a1a1">   0</tspan></text>
+                    <text x="402" y="128" fill="#93a1a1">0   0   0</text>
+                  </g>
+
+                  <rect x="272" y="164" width="260" height="142" rx="8" fill="#fdf6e3" stroke="#859900" stroke-width="1.8"/>
+                  <text x="402" y="186" text-anchor="middle" font-family="sans-serif" font-size="14.5" font-weight="bold" fill="#859900">Mask B (Layers ≥ 2: center = 1)</text>
+                  <g font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle">
+                    <text x="402" y="220" fill="#859900">1   1   1</text>
+                    <text x="402" y="252"><tspan fill="#859900">1   </tspan><tspan fill="#268bd2">1</tspan><tspan fill="#93a1a1">   0</tspan></text>
+                    <text x="402" y="284" fill="#93a1a1">0   0   0</text>
+                  </g>
+                </svg>
+              </col50>
+              <col50>
+                <ul style="font-size: 22px; line-height: 1.45;">
+                  <li class="fragment roll-in"> <b>Multiply kernel weights by binary mask $\bm{M}$:</b> $\bm{W}_{\text{causal}} = \bm{W} \odot \bm{M}$ strictly zeroes connections from future pixels.
+                  <li class="fragment roll-in"> <b>Why Mask A vs. Mask B?</b> Layer 1 must block center pixel $x_i$ itself so the model cannot predict $x_i = x_i$ trivially; deeper layers can read center features via Mask B!
+                  <li class="fragment roll-in"> <b>RGB channels:</b> Mask B also masks $R \to G \to B$ sequentially at the same pixel.
+                </ul>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1601.06759" target="_blank">van den Oord et al. (ICML 2016): Pixel Recurrent Neural Networks</a>
+            </div>
+          </section>
+
+          <!-- FILLED SLIDE: PixelCNN -->
+          <section>
+            <h3>PixelCNN: Parallel Training &amp; Blind-Spot Fix</h3>
+            <row style="align-items: center;">
+              <col50>
+                <div class="cnn-card" style="border-left: 5px solid #268bd2; margin-bottom: 12px;">
+                  <div style="font-weight: bold; color: #268bd2; font-size: 20px;">Training ($O(1)$ Passes) vs. Sampling ($O(HW)$ Passes)</div>
+                  <div style="font-size: 19px; color: #073642; margin-top: 4px; line-height: 1.35;">
+                    <b>Training:</b> Because ground truth $\bm{x}$ is known, one masked conv pass evaluates all $H \cdot W$ conditionals in parallel!<br>
+                    <b>Sampling:</b> Must generate one pixel at a time left-to-right, top-to-bottom.
+                  </div>
+                </div>
+                <div class="cnn-card" style="border-left: 5px solid #cb4b16;">
+                  <div style="font-weight: bold; color: #cb4b16; font-size: 20px;">The Blind-Spot Bug &amp; Gated V+H Fix</div>
+                  <div style="font-size: 19px; color: #073642; margin-top: 4px; line-height: 1.35;">
+                    Stacking $3\times 3$ Mask B kernels leaves an upper-right triangular <b>blind spot</b> of past pixels unreachable by $x_i$.<br>
+                    <b>Gated PixelCNN</b> pairs a <b>Vertical Stack</b> (rows above) with a <b>Horizontal Stack</b> (current row left).
+                  </div>
+                </div>
+              </col50>
+              <col50>
+                <svg viewBox="0 0 540 365" width="520" style="display: block; margin: 0 auto;">
+                  <rect x="8" y="8" width="250" height="348" rx="8" fill="#eee8d5" stroke="#dc322f" stroke-width="1.5"/>
+                  <text x="133" y="32" text-anchor="middle" font-family="sans-serif" font-size="14.5" font-weight="bold" fill="#dc322f">Naive 3×3 Stack: Blind Spot!</text>
+                  <!-- 7x7 grid showing blind spot in upper-right -->
+                  <g stroke="#586e75" stroke-width="1">
+                    <!-- row 0 -->
+                    <rect x="28" y="48" width="30" height="30" fill="#b8d8be"/><rect x="58" y="48" width="30" height="30" fill="#b8d8be"/><rect x="88" y="48" width="30" height="30" fill="#b8d8be"/><rect x="118" y="48" width="30" height="30" fill="#b8d8be"/><rect x="148" y="48" width="30" height="30" fill="#b8d8be"/><rect x="178" y="48" width="30" height="30" fill="#f5d487"/><rect x="208" y="48" width="30" height="30" fill="#f5d487"/>
+                    <!-- row 1 -->
+                    <rect x="28" y="78" width="30" height="30" fill="#b8d8be"/><rect x="58" y="78" width="30" height="30" fill="#b8d8be"/><rect x="88" y="78" width="30" height="30" fill="#b8d8be"/><rect x="118" y="78" width="30" height="30" fill="#b8d8be"/><rect x="148" y="78" width="30" height="30" fill="#f5d487"/><rect x="178" y="78" width="30" height="30" fill="#f5d487"/><rect x="208" y="78" width="30" height="30" fill="#f5d487"/>
+                    <!-- row 2 -->
+                    <rect x="28" y="108" width="30" height="30" fill="#b8d8be"/><rect x="58" y="108" width="30" height="30" fill="#b8d8be"/><rect x="88" y="108" width="30" height="30" fill="#b8d8be"/><rect x="118" y="108" width="30" height="30" fill="#b8d8be"/><rect x="148" y="108" width="30" height="30" fill="#f5d487"/><rect x="178" y="108" width="30" height="30" fill="#f5d487"/><rect x="208" y="108" width="30" height="30" fill="#f5d487"/>
+                    <!-- row 3: target -->
+                    <rect x="28" y="138" width="30" height="30" fill="#b8d8be"/><rect x="58" y="138" width="30" height="30" fill="#b8d8be"/><rect x="88" y="138" width="30" height="30" fill="#b8d8be"/><rect x="118" y="138" width="30" height="30" fill="#cb4b16"/><rect x="148" y="138" width="30" height="30" fill="#e5dfca"/><rect x="178" y="138" width="30" height="30" fill="#e5dfca"/><rect x="208" y="138" width="30" height="30" fill="#e5dfca"/>
+                    <!-- rows 4..6: future -->
+                    <rect x="28" y="168" width="210" height="90" fill="#e5dfca"/>
+                  </g>
+                  <text x="133" y="158" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#fdf6e3">xᵢ</text>
+                  <text x="193" y="98" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#cb4b16">Blind Spot (?)</text>
+                  <text x="133" y="294" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#586e75">Upper-right past is never seen!</text>
+
+                  <rect x="282" y="8" width="250" height="348" rx="8" fill="#fdf6e3" stroke="#859900" stroke-width="2"/>
+                  <text x="407" y="32" text-anchor="middle" font-family="sans-serif" font-size="14.5" font-weight="bold" fill="#859900">Gated V + H Stack: Fixed!</text>
+                  <g stroke="#586e75" stroke-width="1">
+                    <rect x="302" y="48" width="210" height="90" fill="#b8d8be"/>
+                    <rect x="302" y="138" width="90" height="30" fill="#b8d8be"/>
+                    <rect x="392" y="138" width="30" height="30" fill="#cb4b16"/>
+                    <rect x="422" y="138" width="90" height="30" fill="#e5dfca"/>
+                    <rect x="302" y="168" width="210" height="90" fill="#e5dfca"/>
+                  </g>
+                  <text x="407" y="98" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#073642">Vertical Stack (All Upper Rows)</text>
+                  <text x="347" y="158" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#073642">Horiz</text>
+                  <text x="407" y="158" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#fdf6e3">xᵢ</text>
+                  <text x="407" y="294" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#859900">100% of past context captured!</text>
+                  <text x="407" y="322" text-anchor="middle" font-family="monospace" font-size="12" fill="#268bd2">tanh(W_f*x) ⊙ σ(W_g*x)</text>
+                </svg>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1606.05328" target="_blank">van den Oord et al. (NeurIPS 2016): Conditional Image Generation with PixelCNN Decoders</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>WaveNet: Causal Dilated Audio at ≥ 16 kHz</h3>
+            <row style="align-items: center;">
+              <col50 style="text-align: center;">
+                <img style="max-height: 290px; width: 96%; margin: 4px auto;" src="figures/CNN_audio_zoom.gif" alt="16 kHz audio">
+                <div style="font-size: 19px; color: #586e75;">16,000 raw waveform samples per second</div>
+              </col50>
+              <col50 style="text-align: center;">
+                <img style="max-height: 290px; width: 96%; margin: 4px auto;" src="figures/CNN_wavenet.gif" alt="WaveNet causal dilated stack">
+                <div style="font-size: 19px; color: #586e75;">1D <b>causal dilated</b> convolutions ($d = 1, 2, 4, 8 \dots$)</div>
+              </col50>
+            </row>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 6px 14px; margin-top: 8px;">
+              $p(\bm{x}) = \prod_{t=1}^T p(x_t \mid x_1, \dots, x_{t-1})$ over thousands of audio steps via exponentially dilated 1D stacks!
+            </blockquote>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1609.03499" target="_blank">van den Oord et al. (2016): WaveNet — A Generative Model for Raw Audio</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>WaveNet: Conditioned Text-to-Speech Comparison</h3>
+            <row style="gap: 14px;">
+              <col50>
+                <table style="font-size: 20px; width: 100%;">
+                  <tr>
+                    <th>Model</th>
+                    <th>"The blue lagoon..."</th>
+                  </tr>
+                  <tr>
+                    <td>Parametric</td>
+                    <td><audio controls style="width: 245px; height: 38px;" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/parametric-1.wav"></audio></td>
+                  </tr>
+                  <tr>
+                    <td>Concatenative</td>
+                    <td><audio controls style="width: 245px; height: 38px;" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/concatenative-1.wav"></audio></td>
+                  </tr>
+                  <tr>
+                    <td><b>WaveNet</b></td>
+                    <td><audio controls style="width: 245px; height: 38px;" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/wavenet-1.wav"></audio></td>
+                  </tr>
+                </table>
+              </col50>
+              <col50>
+                <table style="font-size: 20px; width: 100%;">
+                  <tr>
+                    <th>Model</th>
+                    <th>"English poetry and..."</th>
+                  </tr>
+                  <tr>
+                    <td>Parametric</td>
+                    <td><audio controls style="width: 245px; height: 38px;" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/parametric-2.wav"></audio></td>
+                  </tr>
+                  <tr>
+                    <td>Concatenative</td>
+                    <td><audio controls style="width: 245px; height: 38px;" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/concatenative-2.wav"></audio></td>
+                  </tr>
+                  <tr>
+                    <td><b>WaveNet</b></td>
+                    <td><audio controls style="width: 245px; height: 38px;" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/US%20English/wavenet-2.wav"></audio></td>
+                  </tr>
+                </table>
+              </col50>
+            </row>
+            <div style="margin-top: 18px; text-align: center;">
+              <div style="font-size: 20px; color: #586e75; margin-bottom: 4px;">Unconditioned WaveNet babbling (pure raw waveform model):</div>
+              <audio controls style="width: 340px; height: 40px;" src="https://storage.googleapis.com/deepmind-media/research/WaveNet/Speaker%201/speaker-2.wav"></audio>
+            </div>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1609.03499" target="_blank">van den Oord et al. (2016): WaveNet — A Generative Model for Raw Audio</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Deformable Convolutions: Learned Sampling Offsets</h3>
+            <row style="align-items: center;">
+              <col50 style="text-align: center;">
+                <img style="max-height: 350px; width: auto; margin: 4px auto;" src="figures/CNN_deformable.svg" alt="deformable convolution diagram">
+              </col50>
+              <col50>
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 20px; padding: 6px 12px;">
+                  Augment fixed grid offsets $\vec{p}_n$ with learned fractional shifts $\Delta\vec{p}_n$:
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 8px 10px;">
+                  $y(\vec{p}_0) = \sum_{\vec{p}_n \in \mathcal{R}} w(\vec{p}_n)\, x(\vec{p}_0 + \vec{p}_n + \Delta\vec{p}_n)$
+                </blockquote>
+                <ul style="font-size: 20px; margin-top: 8px; line-height: 1.38;">
+                  <li class="fragment roll-in"> A tiny conv branch predicts $2k^2$ offsets $(\Delta x_n, \Delta y_n)$ from the feature map.
+                  <li class="fragment roll-in"> <b>Bilinear interpolation</b> evaluates $x$ at fractional coordinates — making $\nabla_{\Delta\vec{p}_n}$ smooth for AD!
+                </ul>
+              </col50>
+            </row>
+            <img style="max-height: 135px; width: auto; margin: 6px auto;" src="figures/CNN_deformable_conv_demo1.png" alt="deformable sampling demo">
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1703.06211" target="_blank">Dai et al. (ICCV 2017): Deformable Convolutional Networks</a>
+            </div>
+          </section>
+
+          <!-- Interactive Demo 4: Causal Masked & Deformable Receptive Fields -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 2px 0 6px 0; font-size: 38px; line-height: 1.1;">Causal Masked &amp; Deformable Receptive Fields</h3>
+            <div data-prevent-swipe style="position: relative; z-index: 25; display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 auto; user-select: none;">
+
+              <div id="cnn-adv-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 5px 14px; box-sizing: border-box; font-size: 13.5px; color: #073642; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                Explore PixelCNN causal Mask A/B &amp; blind-spot elimination, or switch to Deformable Conv to rotate/scale the receptive field!
+              </div>
+
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="cnn-advanced-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: #fdf6e3; box-sizing: border-box; cursor: pointer;"></canvas>
+              </div>
+
+              <div data-prevent-swipe style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 12px; box-sizing: border-box; font-size: 12.5px; color: #586e75; gap: 8px; white-space: nowrap;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <label><b>Mode:</b>
+                    <select id="cnn-adv-mode" style="padding: 2px 5px; border: 1px solid #268bd2; border-radius: 4px; background: #fff; font-size: 12px;">
+                      <option value="pixelcnn" selected>PixelCNN Causal Mask</option>
+                      <option value="deformable">Deformable Conv Offsets</option>
+                    </select>
+                  </label>
+                  <label><b>Stack:</b>
+                    <select id="cnn-adv-stack" style="padding: 2px 5px; border: 1px solid #586e75; border-radius: 4px; background: #fff; font-size: 12px;">
+                      <option value="standard" selected>Standard 3×3 (Blind Spot)</option>
+                      <option value="vh">Gated V+H Stack (Fixed)</option>
+                    </select>
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 4px;">
+                    <b>Layers L:</b>
+                    <input type="range" id="cnn-adv-layers" min="1" max="4" step="1" value="3" style="width: 75px; cursor: pointer;">
+                    <span id="cnn-adv-layers-val" style="font-family: monospace; color: #268bd2; min-width: 14px;">3</span>
+                  </label>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <label style="display: inline-flex; align-items: center; gap: 4px;">
+                    <b>Angle θ:</b>
+                    <input type="range" id="cnn-adv-angle" min="-60" max="60" step="5" value="35" style="width: 85px; cursor: pointer;">
+                    <span id="cnn-adv-angle-val" style="font-family: monospace; color: #cb4b16; min-width: 34px;">+35°</span>
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 4px;">
+                    <b>Scale s:</b>
+                    <input type="range" id="cnn-adv-scale" min="0.60" max="1.60" step="0.05" value="1.25" style="width: 85px; cursor: pointer;">
+                    <span id="cnn-adv-scale-val" style="font-family: monospace; color: #859900; min-width: 34px;">1.25</span>
+                  </label>
+                  <button id="cnn-adv-step" style="cursor: pointer; padding: 3px 8px; border: none; border-radius: 4px; background: #268bd2; color: #fdf6e3; font-weight: bold; font-size: 12px;">Step Pixel xᵢ</button>
+                  <button id="cnn-adv-reset" style="cursor: pointer; padding: 3px 8px; border: none; border-radius: 4px; background: #93a1a1; color: #fdf6e3; font-weight: bold; font-size: 12px;">Reset</button>
+                </div>
+              </div>
+            </div>
+            <aside class="notes">
+              1. Start in PixelCNN Causal Mask mode: click any cell to inspect past vs future, point out the amber "?" blind spot in the upper-right, then switch Stack to "Gated V+H Stack (Fixed)" to watch the blind spot disappear!<br>
+              2. Drag Angle θ or Scale s (or switch Mode to Deformable Conv Offsets) to show adaptive sampling offsets Δp_n aligning to rotated/scaled geometry and the live 2×2 bilinear interpolation weights that enable backpropagation.
+            </aside>
+          </section>
+
+          <!-- NEW MODERN SLIDE 1: Depthwise Separable Convolutions & ConvNeXt -->
+          <section>
+            <h3>Modernizing ConvNets: Separable Convolutions &amp; ConvNeXt</h3>
+            <row style="align-items: center; gap: 16px;">
+              <col50 style="width: 50%;">
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 19px; padding: 6px 12px; margin-bottom: 8px;">
+                  Factorize spatial filtering from channel mixing (MobileNet / Xception):
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 18px; text-align: center; padding: 8px 10px; margin-bottom: 8px;">
+                  $\displaystyle \frac{\text{DW}\,(k^2 C_{\text{in}}) + \text{PW}\,(C_{\text{in}} C_{\text{out}})}{\text{Std}\,(k^2 C_{\text{in}} C_{\text{out}})} = \frac{1}{C_{\text{out}}} + \frac{1}{k^2} \approx \mathbf{\frac{1}{9}}$
+                </blockquote>
+                <ul style="font-size: 20px; margin-top: 8px; line-height: 1.38;">
+                  <li class="fragment roll-in"> <b>ConvNeXt (Liu et al., CVPR 2022):</b> modernize ResNet with ViT tricks — $7\times 7$ depthwise conv, $4\times$ inverted bottleneck, GELU &amp; LayerNorm.
+                  <li class="fragment roll-in"> Pure ConvNets match or beat Swin Transformers while keeping <b>translation equivariance</b>!
+                </ul>
+              </col50>
+              <col50 style="width: 50%;">
+                <svg viewBox="0 0 560 330" width="540" style="display: block; margin: 0 auto;">
+                  <rect x="8" y="8" width="544" height="314" rx="8" fill="#fdf6e3" stroke="#93a1a1" stroke-width="1.5"/>
+                  <text x="280" y="34" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#073642">ConvNeXt Block vs. Standard Conv</text>
+                  <!-- Depthwise box -->
+                  <rect x="26" y="54" width="228" height="90" rx="6" fill="#eee8d5" stroke="#268bd2" stroke-width="2"/>
+                  <text x="140" y="80" text-anchor="middle" font-family="sans-serif" font-size="14.5" font-weight="bold" fill="#268bd2">1. 7×7 Depthwise Conv</text>
+                  <text x="140" y="104" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#073642">Wide spatial context</text>
+                  <text x="140" y="126" text-anchor="middle" font-family="monospace" font-size="12" fill="#586e75">1 filter per channel (groups=C)</text>
+
+                  <line x1="258" y1="99" x2="296" y2="99" stroke="#586e75" stroke-width="2.5" marker-end="url(#tz-arr)"/>
+
+                  <!-- Pointwise MLP box -->
+                  <rect x="304" y="54" width="230" height="90" rx="6" fill="#eee8d5" stroke="#859900" stroke-width="2"/>
+                  <text x="419" y="80" text-anchor="middle" font-family="sans-serif" font-size="14.5" font-weight="bold" fill="#859900">2. 1×1 Inverted MLP</text>
+                  <text x="419" y="104" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#073642">C → 4C → GELU → C</text>
+                  <text x="419" y="126" text-anchor="middle" font-family="monospace" font-size="12" fill="#586e75">LayerNorm (replaces BatchNorm)</text>
+
+                  <!-- Residual arc -->
+                  <path d="M 22 178 L 538 178" stroke="#cb4b16" stroke-width="2.5" stroke-dasharray="6,4"/>
+                  <text x="280" y="200" text-anchor="middle" font-family="sans-serif" font-size="13.5" font-weight="bold" fill="#cb4b16">+ Identity Skip Connection (ResNet Highway)</text>
+
+                  <!-- Comparison bar -->
+                  <rect x="26" y="220" width="508" height="82" rx="6" fill="#eee8d5" stroke="#93a1a1"/>
+                  <text x="280" y="246" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#073642">ImageNet-1K Top-1 Accuracy @ ~4.5G FLOPs</text>
+                  <text x="280" y="276" text-anchor="middle" font-family="monospace" font-size="13" fill="#586e75">ResNet-50: 76.5%  |  Swin-T ViT: 81.3%  |  <tspan fill="#859900" font-weight="bold">ConvNeXt-T: 82.1%</tspan></text>
+                </svg>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/2201.03545" target="_blank">Liu et al. (CVPR 2022): A ConvNet for the 2020s (ConvNeXt)</a>
+            </div>
+          </section>
+
+          <!-- NEW MODERN SLIDE 2: Convolutions Across Frontier AI (2020-2026) -->
+          <section>
+            <h3>Convolutions Across Frontier AI (2020–2026)</h3>
+            <row style="gap: 16px; align-items: stretch; margin-top: 10px;">
+              <col30 style="width: 32%;">
+                <div class="cnn-card" style="height: 280px; border-top: 5px solid #268bd2;">
+                  <div style="font-weight: bold; color: #268bd2; font-size: 21px; margin-bottom: 10px;">1. Diffusion U-Nets</div>
+                  <div style="font-size: 19px; color: #073642; line-height: 1.4;">
+                    Time- &amp; text-conditioned residual <b>U-Nets</b> with spatial self-attention denoise latent grids in DDPM and Latent Diffusion Models.<br><br>
+                    <span style="color: #586e75; font-size: 16.5px;">Ho et al. (2020); Rombach et al. (CVPR 2022)</span>
+                  </div>
+                </div>
+              </col30>
+              <col30 style="width: 32%;">
+                <div class="cnn-card" style="height: 280px; border-top: 5px solid #859900;">
+                  <div style="font-weight: bold; color: #859900; font-size: 21px; margin-bottom: 10px;">2. 3D Medical Imaging</div>
+                  <div style="font-size: 19px; color: #073642; line-height: 1.4;">
+                    On $256^3$ ($16.7\text{M}$ voxel) MRIs, quadratic attention is prohibitive — self-configuring <b>nnU-Net</b>, <b>SynthSeg</b> &amp; dilated <b>MeshNet / Brainchop</b> lead.<br><br>
+                    <span style="color: #586e75; font-size: 16.5px;">Isensee et al. (Nat. Methods 2021); Billot et al. (2023)</span>
+                  </div>
+                </div>
+              </col30>
+              <col30 style="width: 32%;">
+                <div class="cnn-card" style="height: 280px; border-top: 5px solid #cb4b16;">
+                  <div style="font-weight: bold; color: #cb4b16; font-size: 21px; margin-bottom: 10px;">3. Sequence &amp; SSM Hybrids</div>
+                  <div style="font-size: 19px; color: #073642; line-height: 1.4;">
+                    Short <b>1D causal depthwise convolutions</b> sit inside modern State-Space Models (<b>Mamba</b>) &amp; neural audio codecs.<br><br>
+                    <span style="color: #586e75; font-size: 16.5px;">Next lecture: <b>Word Embedding</b> &amp; sequence representations!</span>
+                  </div>
+                </div>
+              </col30>
+            </row>
+            <alert style="display: block; font-size: 23px; margin: 16px 40px 0 90px;">
+              Whenever data lives on regular 1D, 2D, or 3D grids, local equivariant convolutions remain indispensable.
+            </alert>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 8: TAKE HOME POINTS                                               -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h3>Take Home Points</h3>
+            <ul style="font-size: 23.5px; line-height: 1.42; max-width: 1020px; margin: 12px auto; text-align: left;">
+              <li class="fragment" data-fragment-index="0">
+                <b>Inductive Biases Beat Brute Force:</b> Spatial locality + Toeplitz weight sharing cut dense $O(H^2 W^2)$ parameters to $O(k^2)$ and guarantee <b>translation equivariance</b> $T_{\Delta}(\bm{X} \star \bm{K}) = (T_{\Delta}\bm{X}) \star \bm{K}$.
+              </li>
+              <li class="fragment" data-fragment-index="1" style="margin-top: 8px;">
+                <b>Convolution Geometry &amp; Receptive Fields:</b> Output dimension obeys $\lfloor (H_{\text{in}} + 2p - d(k-1) - 1)/s \rfloor + 1$; pooling sacrifices spatial resolution, whereas <b>dilated convolutions</b> grow context exponentially ($2^\ell$) at full resolution.
+              </li>
+              <li class="fragment" data-fragment-index="2" style="margin-top: 8px;">
+                <b>Skip Connections Tame Reverse-Mode AD:</b> Highway gates ($b_T \ll 0$) and ResNet identity shortcuts ($\vec{x} + \mathcal{F}(\vec{x})$) inject $+\bm{I}$ into the backward Jacobian, smoothing loss landscapes across $100+$ layers.
+              </li>
+              <li class="fragment" data-fragment-index="3" style="margin-top: 8px;">
+                <b>Dense Prediction Without Dense Layers:</b> $1\times 1$, transposed ($\bm{W}^\top$), and dilated convolutions enable resolution-agnostic <b>FCNs</b>, encoder–decoder <b>U-Nets</b>, and $320\times$ leaner <b>3D MeshNets</b> (<code>Brainchop</code>).
+              </li>
+              <li class="fragment" data-fragment-index="4" style="margin-top: 8px;">
+                <b>Modern Versatility:</b> Causal masks (<b>PixelCNN / WaveNet</b>), learned fractional offsets (<b>Deformable Conv</b>), and depthwise-separable blocks (<b>ConvNeXt</b>, Diffusion U-Nets, SSMs) keep convolutions central to AI.
+              </li>
+            </ul>
+          </section>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/verticator/verticator.js"></script>
+    <link rel="stylesheet" href="plugin/verticator/verticator.css">
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/math/math.js"></script>
+    <script src="plugin/chalkboard/plugin.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/fullscreen/fullscreen.js"></script>
+    <script src="plugin/menu/menu.js"></script>
+
+    <script>
+      Reveal.initialize({
+        hash: true,
+        width: 1200,
+        height: 700,
+        margin: 0.05,
+        minScale: 0.01,
+        maxScale: 4.0,
+        center: true,
+        controls: false,
+        keyboard: true,
+        overview: true,
+        transition: 'slide',
+        transitionSpeed: 'slow',
+
+        menu: {
+          themes: false,
+          openSlideNumber: true,
+          openButton: false,
+        },
+
+        chalkboard: {
+          boardmarkerWidth: 1,
+          chalkWidth: 2,
+          chalkEffect: 1,
+          toggleNotesButton: false,
+          toggleChalkboardButton: false,
+          slideWidth: Reveal.width,
+          slideHeight: Reveal.height,
+          readOnly: false,
+          theme: "blackboard",
+          eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30 },
+        },
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+          config: 'TeX-AMS_SVG-full',
+          TeX: {
+            Macros: {
+              RR: '\\mathbb{R}',
+              PP: '\\mathbb{P}',
+              EE: '\\mathbb{E}',
+              NN: '\\mathbb{N}',
+              vth: '\\vec{\\theta}',
+              loss: '{\\cal l}',
+              hclass: '{\\cal H}',
+              CD: '{\\cal D}',
+              def: '\\stackrel{\\text{def}}{=}',
+              pag: ['\\text{pa}_{{\\cal G}^{#1}}(#2)', 2],
+              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+              set: ['\\left\\{#1 \\; : \\; #2\\right\\}', 2],
+              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+              argmin: ['\\operatorname*{arg\\,min\\,}'],
+              argmax: ['\\operatorname*{arg\\,max\\,}'],
+              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+              fragment: ["\\class{fragment}{\\cssId{fragment-index-#1}{#2}}", 2]
+            },
+            loader: { load: ['[tex]/color', '[tex]/cancel'] },
+            extensions: ["color.js", "cancel.js"],
+            tex: { packages: { '[+]': ['color', 'cancel'] } },
+            svg: {
+              fontCache: 'global'
+            }
+          },
+          AssistiveMML: { disabled: true }
+        },
+
+        plugins: [ Verticator, RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+      });
+
+      function syncMathFragments() {
+        if (!window.MathJax || !MathJax.Hub) {
+          setTimeout(syncMathFragments, 100);
+          return;
+        }
+        const applyFragmentIndices = function() {
+          document.querySelectorAll('.MJX_Assistive_MathML .fragment').forEach(function(el) {
+            el.classList.remove('fragment');
+          });
+          document.querySelectorAll('[id^="fragment-index-"]').forEach(function(el) {
+            const m = el.id.match(/^fragment-index-(\d+)$/);
+            if (m) {
+              el.setAttribute('data-fragment-index', m[1]);
+            }
+          });
+          if (window.Reveal && Reveal.isReady && Reveal.isReady()) {
+            Reveal.sync();
+          }
+        };
+        MathJax.Hub.Queue(applyFragmentIndices);
+        Reveal.on('slidechanged', function() {
+          MathJax.Hub.Queue(applyFragmentIndices);
+        });
+      }
+      syncMathFragments();
+
+      Reveal.configure({ fragments: true });
+      Reveal.configure({ slideNumber: true });
+      Reveal.configure({ slideNumber: 'c / t' });
+      Reveal.addEventListener('darkside', function() {
+        document.getElementById('theme').setAttribute('href', 'dist/theme/aml_dark.css');
+      }, false);
+      Reveal.addEventListener('brightside', function() {
+        document.getElementById('theme').setAttribute('href', 'dist/theme/aml.css');
+      }, false);
+    </script>
+
+    <style type="text/css">
+      #header-left {
+        position: absolute;
+        top: 0%;
+        left: 0%;
+      }
+      #header-right {
+        position: absolute;
+        top: 0%;
+        right: 0%;
+      }
+      #footer-left {
+        position: absolute;
+        bottom: 0%;
+        left: 0%;
+      }
+    </style>
+
+    <div id="hidden" style="display:none;">
+      <div id="header">
+        <div id="header-left"><h4>CS8850</h4></div>
+        <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+        <div id="footer-left">
+          <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+               src="figures/valentino.png" alt="robot learning">
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var header = $('#header').html();
+      if (window.location.search.match(/print-pdf/gi)) {
+        Reveal.addEventListener('ready', function() {
+          $('.slide-background').append(header);
+        });
+      } else {
+        $('div.reveal').append(header);
+      }
+    </script>
+
+    <!-- Interactive Demonstrations for Lecture 21 -->
+    <script src="js/cnn_demos.js"></script>
   </body>
 </html>
