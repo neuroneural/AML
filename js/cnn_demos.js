@@ -2042,6 +2042,7 @@
       ctx.fillRect(0, 0, width, height);
 
       const { K, conv, xcorr } = computeTraces();
+      const kRev = K.slice().reverse();
       const nCur = Math.max(0, Math.min(N - 1, state.pos));
       if (valPos) valPos.textContent = String(nCur);
       if (sliderPos && parseInt(sliderPos.value, 10) !== nCur) sliderPos.value = String(nCur);
@@ -2050,57 +2051,139 @@
         btnPlay.style.background = state.playing ? SOL.orange : SOL.green;
       }
 
-      const padL = 42;
-      const padR = 18;
+      const fmtSigned = (v) => (v > 0 ? '+' + v.toFixed(1) : v.toFixed(1));
+      const padL = 34;
+      const padR = 14;
       const plotW = width - padL - padR;
       const stepX = plotW / N;
       const xCenter = (n) => padL + (n + 0.5) * stepX;
 
+      let convBadge = '';
+      let xcorrBadge = '';
+      if (nCur >= 2 && nCur <= 4) {
+        convBadge = 'Impulse Response = K (upright)';
+        xcorrBadge = 'Impulse Response = K_flip';
+      } else if (nCur >= 9 && nCur <= 11) {
+        convBadge = state.kerKey === 'ramp' ? 'Flipped kernel misaligns (0.65)' : 'Derivative sign inverted';
+        xcorrBadge = state.kerKey === 'ramp' ? 'Matched filter peaks (1.29)!' : 'Matched template orientation!';
+      }
+
       const bands = [
-        { y: 10, h: 118, title: '1. Input Signal I[n]  (Impulse at n=3,  Ramp at n=9..11)', color: SOL.base02, bg: SOL.base2 },
-        { y: 138, h: 120, title: `2. Convolution (I * K)[${nCur}] = ${conv[nCur].toFixed(2)}  [Flipped: ${K.slice().reverse().map((v) => v.toFixed(1)).join(', ')}]`, color: SOL.violet, bg: '#f3efe0' },
-        { y: 268, h: 122, title: `3. Cross-Corr (I ★ K)[${nCur}] = ${xcorr[nCur].toFixed(2)}  [Unflipped: ${K.map((v) => v.toFixed(1)).join(', ')}]`, color: SOL.green, bg: '#f3efe0' }
+        { y: 6,   h: 84, title: '1. Input Signal I[m]  (Impulse at m=3,  Ramp at m=9..11)', color: SOL.base02, bg: SOL.base2, border: SOL.base1, rightLabel: '' },
+        { y: 94,  h: 90, title: `2. Flipped Kernel K[n-m] (*):  [${kRev.map(fmtSigned).join(', ')}]`, color: SOL.violet, bg: '#f4f1fa', border: SOL.violet, rightLabel: '180° flipped (u = +1, 0, -1)' },
+        { y: 188, h: 88, title: `3. Convolution Output (I * K)[${nCur}] = ${conv[nCur].toFixed(2)}`, color: SOL.violet, bg: '#f7f4e9', border: SOL.base1, rightLabel: convBadge },
+        { y: 280, h: 90, title: `4. Unflipped Kernel K[m-n] (★):  [${K.map(fmtSigned).join(', ')}]`, color: SOL.green, bg: '#f1f6ec', border: SOL.green, rightLabel: 'DL template (u = -1, 0, +1)' },
+        { y: 374, h: 88, title: `5. Cross-Corr Output (I ★ K)[${nCur}] = ${xcorr[nCur].toFixed(2)}`, color: SOL.green, bg: '#f7f4e9', border: SOL.base1, rightLabel: xcorrBadge }
       ];
 
       bands.forEach((b) => {
-        drawRoundRect(ctx, 10, b.y, width - 20, b.h, 6, b.bg, SOL.base1, 1);
-        ctx.fillStyle = b.color;
-        ctx.font = 'bold 11.5px sans-serif';
-        ctx.fillText(b.title, 18, b.y + 17);
+        drawRoundRect(ctx, 8, b.y, width - 16, b.h, 6, b.bg, b.border, 1);
       });
 
-      // Right-aligned dynamic insight badges on the header line of Bands 1 & 2 (never collide with stems!)
-      ctx.font = 'bold 11px sans-serif';
-      ctx.textAlign = 'right';
-      if (nCur >= 2 && nCur <= 4) {
-        ctx.fillStyle = SOL.violet;
-        ctx.fillText('Impulse Response = K (upright)', width - 18, bands[1].y + 17);
-        ctx.fillStyle = SOL.green;
-        ctx.fillText('Impulse Response = K_flip', width - 18, bands[2].y + 17);
-      } else if (nCur >= 9 && nCur <= 11) {
-        ctx.fillStyle = SOL.violet;
-        ctx.fillText(state.kerKey === 'ramp' ? 'Flipped kernel misaligns (0.65)' : 'Derivative sign inverted', width - 18, bands[1].y + 17);
-        ctx.fillStyle = SOL.green;
-        ctx.fillText(state.kerKey === 'ramp' ? 'Matched filter peaks (1.29)!' : 'Matched template orientation!', width - 18, bands[2].y + 17);
+      // Subtle column alignment guides across every band's plot region (below headers)
+      ctx.save();
+      ctx.strokeStyle = 'rgba(147, 161, 161, 0.22)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 3]);
+      for (let n = 0; n < N; n++) {
+        const cx = xCenter(n);
+        bands.forEach((b) => {
+          ctx.beginPath();
+          ctx.moveTo(cx, b.y + 22);
+          ctx.lineTo(cx, b.y + b.h - 4);
+          ctx.stroke();
+        });
+      }
+      ctx.restore();
+
+      // Highlight 14px translucent vertical pillars inside Input Band 0 and Kernel Bands 1 & 3 where active kernel overlaps non-zero input
+      const winStart = Math.max(0, nCur - 1);
+      const winEnd = Math.min(N - 1, nCur + 1);
+      const winLeft = padL + Math.max(0, nCur - 1) * stepX;
+      const winRight = padL + Math.min(N, nCur + 2) * stepX;
+
+      ctx.save();
+      ctx.fillStyle = 'rgba(203, 75, 22, 0.09)';
+      for (let m = winStart; m <= winEnd; m++) {
+        if (SIGNAL[m] > 0) {
+          const cx = xCenter(m);
+          ctx.fillRect(cx - 7, 24, 14, 61);
+          ctx.fillRect(cx - 7, 94 + 19, 14, 68);
+          ctx.fillRect(cx - 7, 280 + 19, 14, 68);
+        }
+      }
+      ctx.restore();
+
+      // Draw all band headers on top of background/guides
+      bands.forEach((b, idx) => {
+        ctx.fillStyle = b.color;
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(b.title, 16, b.y + 14);
+        if (b.rightLabel) {
+          ctx.font = (idx === 1 || idx === 3) ? 'bold 10px sans-serif' : 'bold 10.5px sans-serif';
+          ctx.textAlign = 'right';
+          ctx.fillText(b.rightLabel, width - 16, b.y + 14);
+        }
+      });
+      ctx.textAlign = 'left';
+
+      // --- Band 0: Input Signal I[m] + Active 3-Tap Window ---
+      ctx.fillStyle = 'rgba(203, 75, 22, 0.11)';
+      ctx.fillRect(winLeft, 24, winRight - winLeft, 61);
+      ctx.strokeStyle = SOL.orange;
+      ctx.lineWidth = 1.4;
+      ctx.strokeRect(winLeft, 24, winRight - winLeft, 61);
+
+      const inZeroY = 79;
+      ctx.strokeStyle = SOL.base1;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(padL - 4, inZeroY);
+      ctx.lineTo(padL + plotW, inZeroY);
+      ctx.stroke();
+
+      for (let m = 0; m < N; m++) {
+        const cx = xCenter(m);
+        const v = SIGNAL[m];
+        const py = inZeroY - v * 35;
+        const isCenter = m === nCur;
+
+        ctx.strokeStyle = isCenter ? SOL.orange : SOL.blue;
+        ctx.lineWidth = isCenter ? 2.8 : 2.2;
+        ctx.beginPath();
+        ctx.moveTo(cx, inZeroY);
+        ctx.lineTo(cx, py);
+        ctx.stroke();
+
+        ctx.fillStyle = isCenter ? SOL.orange : SOL.blue;
+        ctx.beginPath();
+        ctx.arc(cx, py, isCenter ? 4.4 : 3.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (Math.abs(v) > 0.05) {
+          ctx.fillStyle = isCenter ? SOL.orange : SOL.blue;
+          ctx.font = 'bold 9.5px monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(v.toFixed(1), cx, py - 6);
+        }
       }
       ctx.textAlign = 'left';
 
-      // Highlight sliding 3-tap window across Track 0
-      const winLeft = padL + Math.max(0, nCur - 1) * stepX;
-      const winRight = padL + Math.min(N, nCur + 2) * stepX;
-      ctx.fillStyle = 'rgba(203, 75, 22, 0.12)';
-      ctx.fillRect(winLeft, bands[0].y + 24, winRight - winLeft, bands[0].h - 32);
-      ctx.strokeStyle = SOL.orange;
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(winLeft, bands[0].y + 24, winRight - winLeft, bands[0].h - 32);
+      // --- Shared Helper for Sliding 3-Tap Kernel Tracks (Band 1 & Band 3) ---
+      function drawKernelTrack(band, taps, cardBg, lineAlphaColor) {
+        const zeroY = band.y + 53;
+        const amp = 13;
 
-      // Helper to draw a 1D stem chart cleanly
-      function drawStemTrack(band, values, minV, maxV, activeColor, highlightLimit, isInputTrack) {
-        const basePlotY = band.y + (isInputTrack ? 42 : 34);
-        const plotH = band.h - (isInputTrack ? 58 : 50);
-        const zeroY = basePlotY + plotH * (maxV / (maxV - minV));
+        ctx.save();
+        ctx.fillStyle = cardBg;
+        ctx.fillRect(winLeft, band.y + 19, winRight - winLeft, 68);
+        ctx.strokeStyle = band.color;
+        ctx.lineWidth = 1.3;
+        ctx.setLineDash([4, 3]);
+        ctx.strokeRect(winLeft, band.y + 19, winRight - winLeft, 68);
+        ctx.restore();
 
-        // Zero axis
         ctx.strokeStyle = SOL.base1;
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -2108,60 +2191,135 @@
         ctx.lineTo(padL + plotW, zeroY);
         ctx.stroke();
 
-        for (let n = 0; n < N; n++) {
+        const activePts = [];
+        for (let m = 0; m < N; m++) {
+          const cx = xCenter(m);
+          const tapIdx = m - (nCur - 1);
+          if (tapIdx < 0 || tapIdx > 2) {
+            ctx.fillStyle = SOL.base1;
+            ctx.beginPath();
+            ctx.arc(cx, zeroY, 1.8, 0, Math.PI * 2);
+            ctx.fill();
+            continue;
+          }
+          const kv = taps[tapIdx];
+          const py = zeroY - kv * amp;
+          activePts.push({ m, cx, py, kv });
+        }
+
+        // Dashed envelope polyline connecting active kernel tap tips
+        if (activePts.length > 1) {
+          ctx.save();
+          ctx.strokeStyle = lineAlphaColor;
+          ctx.lineWidth = 1.5;
+          ctx.setLineDash([3, 3]);
+          ctx.beginPath();
+          activePts.forEach((p, idx) => {
+            if (idx === 0) ctx.moveTo(p.cx, p.py);
+            else ctx.lineTo(p.cx, p.py);
+          });
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        activePts.forEach((p) => {
+          ctx.strokeStyle = band.color;
+          ctx.lineWidth = 3.0;
+          ctx.beginPath();
+          ctx.moveTo(p.cx, zeroY);
+          ctx.lineTo(p.cx, p.py);
+          ctx.stroke();
+
+          ctx.fillStyle = band.color;
+          ctx.beginPath();
+          ctx.arc(p.cx, p.py, 3.8, 0, Math.PI * 2);
+          ctx.fill();
+
+          const hasRing = SIGNAL[p.m] > 0;
+          if (hasRing) {
+            ctx.strokeStyle = SOL.orange;
+            ctx.lineWidth = 1.7;
+            ctx.beginPath();
+            ctx.arc(p.cx, p.py, 6.0, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+
+          ctx.fillStyle = band.color;
+          ctx.font = 'bold 9.5px monospace';
+          ctx.textAlign = 'center';
+          const lblY = p.kv >= 0 ? p.py - (hasRing ? 9 : 7) : p.py + (hasRing ? 15.5 : 13.5);
+          ctx.fillText(p.kv.toFixed(1), p.cx, lblY);
+        });
+        ctx.textAlign = 'left';
+      }
+
+      // --- Shared Helper for Output Stem Tracks (Band 2 & Band 4) ---
+      function drawOutputTrack(band, values, zeroY, scaleY, activeColor) {
+        ctx.strokeStyle = SOL.base1;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padL - 4, zeroY);
+        ctx.lineTo(padL + plotW, zeroY);
+        ctx.stroke();
+
+        for (let n = 0; n <= nCur; n++) {
           const cx = xCenter(n);
           const v = values[n];
-          const py = basePlotY + plotH * ((maxV - v) / (maxV - minV));
-          const drawn = highlightLimit === null || n <= highlightLimit;
+          const py = zeroY - v * scaleY;
+          const isCur = n === nCur;
 
-          // Index tick on bottom of band
-          ctx.fillStyle = n === nCur ? SOL.orange : SOL.base01;
-          ctx.font = n === nCur ? 'bold 10.5px monospace' : '10px monospace';
-          ctx.textAlign = 'center';
-          ctx.fillText(String(n), cx, band.y + band.h - 5);
-
-          if (!drawn) continue;
-
-          ctx.strokeStyle = n === nCur ? SOL.orange : activeColor;
-          ctx.lineWidth = n === nCur ? 3.2 : 2.2;
+          ctx.strokeStyle = isCur ? SOL.orange : activeColor;
+          ctx.lineWidth = isCur ? 3.2 : 2.2;
           ctx.beginPath();
           ctx.moveTo(cx, zeroY);
           ctx.lineTo(cx, py);
           ctx.stroke();
 
-          ctx.fillStyle = n === nCur ? SOL.orange : activeColor;
+          ctx.fillStyle = isCur ? SOL.orange : activeColor;
           ctx.beginPath();
-          ctx.arc(cx, py, n === nCur ? 4.8 : 3.5, 0, Math.PI * 2);
+          ctx.arc(cx, py, isCur ? 4.8 : 3.5, 0, Math.PI * 2);
           ctx.fill();
 
-          // Numeric labels only where clean: for input, show compact values below dot or offset;
-          // for output tracks, show active nCur or key peaks cleanly
-          if (Math.abs(v) > 0.05 && (isInputTrack || n === nCur || Math.abs(v) > 0.9)) {
-            ctx.fillStyle = n === nCur ? SOL.orange : activeColor;
+          if (Math.abs(v) > 0.05 && (isCur || Math.abs(v) > 0.9)) {
+            ctx.fillStyle = isCur ? SOL.orange : activeColor;
             ctx.font = 'bold 9.5px monospace';
-            const lblY = v >= 0 ? Math.max(band.y + (isInputTrack ? 38 : 30), py - 6) : Math.min(band.y + band.h - 17, py + 13);
-            ctx.fillText(v.toFixed(1), cx, lblY);
+            ctx.textAlign = 'center';
+            const lblY = v >= 0 ? py - 6 : py + 13;
+            const txt = (isCur && Math.abs(v * 10 - Math.round(v * 10)) > 0.01) ? v.toFixed(2) : v.toFixed(1);
+            ctx.fillText(txt, cx, lblY);
           }
         }
         ctx.textAlign = 'left';
       }
 
-      drawStemTrack(bands[0], SIGNAL, -0.15, 1.25, SOL.blue, null, true);
+      drawKernelTrack(bands[1], kRev, 'rgba(108, 113, 196, 0.13)', 'rgba(108, 113, 196, 0.45)');
+      const isEdge = state.kerKey === 'edge';
+      const outScaleY = isEdge ? 17 : 34;
+      drawOutputTrack(bands[2], conv, isEdge ? 242 : 266, outScaleY, SOL.violet);
+      drawKernelTrack(bands[3], K, 'rgba(133, 153, 0, 0.14)', 'rgba(133, 153, 0, 0.45)');
+      drawOutputTrack(bands[4], xcorr, isEdge ? 428 : 452, outScaleY, SOL.green);
 
-      // Put flipped vs unflipped sliding tap weights cleanly in the top-right badge of Track 0
-      const kRev = K.slice().reverse();
-      ctx.font = 'bold 10.5px monospace';
-      ctx.textAlign = 'right';
-      ctx.fillStyle = SOL.violet;
-      ctx.fillText(`*:[${kRev.map((v) => v.toFixed(1)).join(',')}]`, width - 126, bands[0].y + 17);
-      ctx.fillStyle = SOL.green;
-      ctx.fillText(`★:[${K.map((v) => v.toFixed(1)).join(',')}]`, width - 18, bands[0].y + 17);
+      // --- Shared Bottom Index Strip (m,n = 0..14) ---
+      ctx.fillStyle = SOL.base01;
+      ctx.font = 'bold 10px monospace';
       ctx.textAlign = 'left';
-
-      const minOut = state.kerKey === 'edge' ? -1.4 : -0.2;
-      const maxOut = 1.5;
-      drawStemTrack(bands[1], conv, minOut, maxOut, SOL.violet, nCur, false);
-      drawStemTrack(bands[2], xcorr, minOut, maxOut, SOL.green, nCur, false);
+      ctx.fillText('m,n:', 10, 477);
+      for (let n = 0; n < N; n++) {
+        const cx = xCenter(n);
+        if (n === nCur) {
+          drawRoundRect(ctx, cx - 10, 465, 20, 15, 4, SOL.orange, null, 0);
+          ctx.fillStyle = SOL.base3;
+          ctx.font = 'bold 10.5px monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(String(n), cx, 476.5);
+        } else {
+          ctx.fillStyle = SOL.base01;
+          ctx.font = '10px monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(String(n), cx, 477);
+        }
+      }
+      ctx.textAlign = 'left';
     }
 
     function startTimer() {
@@ -2195,8 +2353,9 @@
     stopSwipePropagation(canvas);
     canvas.addEventListener('click', (e) => {
       const pt = canvasPoint(canvas, e.clientX, e.clientY);
-      const padL = 46;
-      const plotW = canvas._logicalW - padL - 16;
+      const padL = 34;
+      const padR = 14;
+      const plotW = (canvas._logicalW || 630) - padL - padR;
       const nClicked = Math.floor(((pt.x - padL) / plotW) * N);
       if (nClicked >= 0 && nClicked < N) {
         state.playing = false;
