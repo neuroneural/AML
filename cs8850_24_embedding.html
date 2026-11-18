@@ -4,15 +4,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> -->
+    <link href="css/fontawesome-free-6.2.1-web/css/all.css" rel="stylesheet">
 
     <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
     <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
     <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
 
-    <title>Advanced Machine Learning</title>
+    <title>Advanced Machine Learning: Lecture 22 — Word Embedding</title>
+    <link rel="icon" href="data:,">
 
     <meta name="description" content="CS8850 GSU class">
     <meta name="author" content="Sergey M Plis">
@@ -20,15 +19,46 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-
-
     <link rel="stylesheet" href="dist/reset.css">
     <link rel="stylesheet" href="dist/reveal.css">
-    <!-- Code syntax highlighting -->
     <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
-    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+    <style>
+      .reveal .slides .slide-footer {
+        bottom: 10px !important;
+        left: 92px !important;
+        max-width: 1050px;
+        line-height: 1.25;
+        z-index: 5;
+      }
+      #header-left, #header-right, #footer-left {
+        pointer-events: none;
+      }
+      .emb-badge-row {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 8px;
+      }
+      .emb-card {
+        background: #eee8d5;
+        border-radius: 6px;
+        padding: 10px 14px;
+        font-size: 20px;
+        line-height: 1.32;
+        text-align: left;
+        box-sizing: border-box;
+      }
+      .emb-pill {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 0.88em;
+        font-weight: bold;
+      }
+    </style>
     <!-- Printing and PDF exports -->
     <script>
       var link = document.createElement( 'link' );
@@ -42,22 +72,23 @@
 
   <body>
     <div class="reveal">
-      <!-- In between the <div="reveal"> and the <div class="slides">-->
-          <!-- <header style="position: absolute; top: 10px; left: 100px; z-index: 500; font-size:100px;background-color: rgba(0,0,0,0); text-align: center !important"></header>  -->
-          <!-- In between the <div="reveal"> and the <div class="slides">-->
-              <!-- Any section element inside of this container is displayed as a slide -->
-              <div class="slides">
-	        <section>
+      <div class="slides">
 
-	          <section data-background="figures/w2v_arrival.png" data-background-size="contain" data-background-repeat="repeat">
-	            <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Advanced Machine Learning</h2>
-                    <h3 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">25: word embedding</h3>
-                    <div class="slide-footer">
-                      <a href="https://community.wolfram.com/groups/-/m/t/1034626?sortMsg=Votes">background source</a> based on the movie Arrival together with other illustrations to this lecture
-                    </div>
-	          </section>
+        <!-- ========================================================================= -->
+        <!-- SECTION 1: TITLE, SCHEDULE, OUTLINE & BRIDGE                              -->
+        <!-- ========================================================================= -->
+        <section>
+          <section data-background="figures/w2v_arrival.png" data-background-size="contain" data-background-repeat="repeat">
+            <div style="background: rgba(253, 246, 227, 0.90); border-radius: 12px; padding: 22px 34px; display: inline-block; box-shadow: 0 6px 24px rgba(0,43,54,0.18);">
+              <h2 style="color: #073642; margin: 0 0 8px 0;">Advanced Machine Learning</h2>
+              <h3 style="color: #cb4b16; margin: 0;">22: Word Embedding</h3>
+            </div>
+            <div class="slide-footer" style="left: 165px !important; background: rgba(253, 246, 227, 0.90); padding: 4px 12px; border-radius: 6px;">
+              <a href="https://community.wolfram.com/groups/-/m/t/1034626?sortMsg=Votes" target="_blank">Background logograms</a> inspired by the film <em>Arrival</em> (2016)
+            </div>
+          </section>
 
-	                    <!-- Schedule Slide (Fall 2026 synced) -->
+          <!-- Schedule Slide (Fall 2026 synced, Nov 18 marker on Row 26) -->
           <section>
             <h3>Schedule (you are here <i class='fa fa-map-marker' style='color: #FA6900;'></i>)</h3>
             <row>
@@ -118,638 +149,1759 @@
             </row>
           </section>
 
-          <section data-background="figures/w2v_arrival.png" data-background-size="contain" data-background-repeat="repeat">
-	            <h2 shadows>Outline of this lecture</h2>
-                    <ul style="text-shadow: 6px 6px 10px #002b36; color: #eee8d5">
-                      <li class="fragment roll-in"> Introduction
-                      <li class="fragment roll-in"> Bag of Words
-                      <li class="fragment roll-in"> Singular Value Decomposition
-                      <li class="fragment roll-in"> Word2vec
-	            </ul>
-                  </section>
+          <section>
+            <h3>Outline for the lecture</h3>
+            <ul>
+              <li class="fragment roll-in"> From Symbols to Distributional Meaning
+              <li class="fragment roll-in"> Sparse Text Representations: BoW, TF-IDF &amp; $n$-Grams
+              <li class="fragment roll-in"> Semantic Matrices: Co-Occurrence, PPMI, SVD &amp; GloVe
+              <li class="fragment roll-in"> Step-by-Step Word2Vec: CBOW, Skip-Gram &amp; Negative Sampling
+              <li class="fragment roll-in"> Geometry of Meaning: Analogies, Semantic Drift &amp; Creativity
+              <li class="fragment roll-in"> Subwords (BPE), Contextual LLMs &amp; Frontier AI (2016–2026)
+            </ul>
+          </section>
 
-                </section>
+          <!-- Connecting the Dots Bridge Slide -->
+          <section id="bridge-slide">
+            <h3 style="font-size: 44px; margin-bottom: 8px;">Connecting the Dots: Symbols to Semantic Vectors</h3>
+            <div id="bridge-container" style="position: relative; width: 960px; height: 500px; margin: 10px auto 0 auto; display: flex; justify-content: space-between; align-items: stretch;">
 
-                <!-- --------------------------------------------------------------------------->
-	        <section>
-                  <section data-background="figures/w2v_chernoff_faces.svg" data-background-size="cover">
-                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Why represent data as vectors?</h2>
-                    <aside class="notes">
-                      Sometimes data is collected from a number of individual sensors. Putting this sensors together per measurement or sample a list, an array, or vector is a natural way to represent this sample.<br>
-                      For example, height, weight, skin tone, eye color, hear color and many more, may be measurements about a person. We represent each as a dimension and can "walk" across the space of humans traveling along each of these dimensions independently. From a collection of samples represented as vectors we can learn how these dimensions interact.<br>
-                      We can also apply transformations, which eventually may enable us to build predictive models on the human space or we can use existing powerful ML models.
-                    </aside>
-                  </section>
+              <div style="width: 485px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2;">
+                <div id="bridge-card-0" class="fragment" data-fragment-index="0" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #268bd2; border-radius: 6px; padding: 6px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #268bd2; font-size: 15.5px;">1. Curse of Dimensionality &amp; Orthogonal One-Hots</div>
+                  <div style="color: #586e75; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    One-hot vectors in $\RR^{|V|}$ ($|V| \sim 10^5$) have $\vec{w}_i^\top \vec{w}_j = 0$, and in $d > 20$ cosine normalization rescues similarity!
+                  </div>
+                </div>
 
-                  <section data-background="figures/w2v_chernoff_faces.svg" data-background-size="cover">
-                    <div id="header-right" style="margin-top: -200px;">
-                        <img src="figures/HermanChernoff.jpg" alt="Herman Chernoff" width="100px">
-                    </div>
-                    <h3>Vector components may have semantic meanings!</h3>
-                    <div class="slide-footer">
-                      <a href="https://www.wikiwand.com/en/Chernoff_face">Chernoff faces</a>
-                    </div>
-                    <aside class="notes">
-                      We can go in reverse too. If we have vector data we can assign dimensions to parameters of a cartoon face and do it in a way that faces are semantically meaningful to us. <br>
-                      Chernoff faces (of Herman Chernoff) are a way to semantically represent multivariate data. Imagine an operator controlling a state of a nuclear reactor, but instead of observing tens of parameters she just looks at a cartoon face and if the face grows unhappy investigates further into what's going on. Humans process faces in about 100ms. Would it not be nice to assess the status of a complex process as fast?<br>
-                      But what if we want to vectorize words by meaning into some form of a semantic space?
-                    </aside>
-                  </section>
+                <div id="bridge-card-1" class="fragment" data-fragment-index="1" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #2aa198; border-radius: 6px; padding: 6px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #2aa198; font-size: 15.5px;">2. MLE Counts, Laplace Smoothing &amp; Logistic Regression</div>
+                  <div style="color: #586e75; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    MLE + Add-1 smoothing power PMI, while binary logistic regression $\sigma(\vec{v}_t^\top \vec{u}_c)$ turns softmax into Negative Sampling!
+                  </div>
+                </div>
 
-                  <section>
-                    <div id="header-right" style="margin-right: -100px;">
-                      <a href="https://www.ling.upenn.edu/~wlabov/" target="_blank"><img src="figures/WilliamLabov.jpg" alt="William Labov" width="150px"></a>
-                    </div>
-                    <h2>What does a word mean?</h2>
-                    <h4>let's ask humans</h4>
-                    <row>
-                      <col50>
-                        <ul>
-                          <li class="fragment roll-in">
-                            William Labov. 1973
-                          <li class="fragment roll-in">
-                            Employ human subjects and ask them to label objects on the right as either a bowl or a cup.
-                          <li class="fragment roll-in">
-                            Construct a definition based on their responses.
-                        </ul>
-                      </col50>
-                      <col50>
-                      <img src="figures/Labovs_cups.png" alt="William Labov" style="margin-top: -10px;" width="75%">
-                      </col50>
-                    </row>
-                    <div class="slide-footer">
-                      Labov, W., 1973. The boundaries of words and their meanings. New ways of analyzing variation in English.
-                      <a href="https://web.stanford.edu/~jurafsky/slp3/slides/vector1.pdf">based on Daniel Jurafsky's slides</a>
-                    </div>
-                  </section>
+                <div id="bridge-card-2" class="fragment" data-fragment-index="2" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #859900; border-radius: 6px; padding: 6px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #859900; font-size: 15.5px;">3. PCA, Matrix Factorization &amp; Low-Rank Subspaces</div>
+                  <div style="color: #586e75; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    Linear autoencoders and truncated SVD ($\bm{M} \approx \bm{U}_k \bm{\Sigma}_k \bm{V}_k^\top$) extract dense semantic coordinates from co-occurrences.
+                  </div>
+                </div>
 
-                  <section data-background="figures/Labov_category_end.png" data-background-size="contain">
-                    <div class="slide-footer">
-                      <a href="https://www.amazon.com/New-ways-analyzing-variation-English/dp/0878402055" target="_blank">Labov, W., 1973. The boundaries of words and their meanings. New ways of analyzing variation in English.</a>
-                    </div>
-                  </section>
+                <div id="bridge-card-3" class="fragment" data-fragment-index="3" style="background: rgba(253, 246, 227, 0.96); border-left: 5px solid #b58900; border-radius: 6px; padding: 6px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); text-align: left;">
+                  <div style="font-weight: bold; color: #b58900; font-size: 15.5px;">4. SGD &amp; Sparse Reverse-Mode AD Updates</div>
+                  <div style="color: #586e75; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    One-hot lookup $\bm{W}_e^\top \vec{w}_t$ takes $O(1)$, and SGNS backprop updates only $K+1$ vectors instead of millions!
+                  </div>
+                </div>
 
-                  <section data-background="figures/Labov_context_sensitivity.png" data-background-size="contain">
-                    <div class="slide-footer">
-                      Labov, W., 1973. The boundaries of words and their meanings. New ways of analyzing variation in English.
-                    </div>
-                  </section>
-
-                  <section>
-                    <h2>A definition of "cup" emerges:</h2>
-                    <img src="figures/Labovs_cup.svg" alt="Cup definition" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%">
-                    <div class="slide-footer">
-                      Labov, W., 1973. The boundaries of words and their meanings. New ways of analyzing variation in English.
-                    </div>
-                  </section>
-
-                  <section>
-                    <h2>Ludwig Wittgenstein (1889-1951)</h2>
-                    <row>
-                      <col50>
-                        <ul style="font-size: 32px;">
-                          <li class="fragment roll-in">
-                            Philosopher of Language
-                          <li class="fragment roll-in">
-                            In his late years, a proponent of studying “ordinary language”
-                          <li class="fragment roll-in">
-                            In his view if we misuse words, when they have lost their meaning, it could create an inconsistency.
-                            <blockquote shade>
-                              A man loses his dog, so he puts an ad in the paper. And the ad says, ‘Here, boy!’
-                            </blockquote>
-                        </ul>
-                      </col50>
-                      <col50>
-                      <img src="figures/Ludwig_Wittgenstein.png" alt="Ludwig Wittgenstein" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="80%">
-                      </col50>
-                    </row>
-                  </section>
-
-                  <section data-fullscreen>
-                    <h2>What is a game?</h2>
-                    <h4 style="margin-top: -35px;">Wittgenstein "Philosophical Investigations" (1945)</h4>
-                      <blockquote shade style="margin-top: -20px; text-align: left; font-size: 18px;" width="100%">
-                        66. Consider for example the proceedings that we call "games". I mean <mark>board-games, card-games, ball-games, Olympic games, and so on. What is common to them all? -- Don't say: "There must be something common, or they would not be called 'games' "-but look and see whether there is anything common to all.</mark> -- For if you look at them you will not see something that is common to all, but similarities, relationships, and a whole series of them at that. To repeat: don't think, but look! -- <mark>Look for example at board-games</mark>, with their multifarious relationships. <mark>Now pass to card-games;</mark> here you find many correspondences with the first group, but many common features drop out, and others appear. When we <mark>pass next to ball-games, much that is common is retained, but much is lost.</mark> -- Are they all 'amusing'? Compare chess with noughts and crosses. Or is there always winning and losing, or competition between players? Think of patience. In ball games there is winning and losing; but when a child throws his ball at the wall and catches it again, this feature has disappeared. Look at the parts played by skill and luck; and at the difference between skill in chess and skill in tennis. Think now of games like ring-a-ring-a-roses; here is the element of amusement, but how many other characteristic features have disappeared! And <mark>we can go through the many, many other groups of games in the same way; can see how similarities crop up and disappear.</mark>
-                        <br>
-                        And the result of this examination is: we see a complicated network of similarities overlapping and criss-crossing: sometimes overall similarities.
-                        <br>
-                        67. I can think of <mark>no better expression to characterize these similarities than "family resemblances";</mark> for the various resemblances between members of a family: build, features, colour of eyes, gait, temperament, etc. etc. overlap and criss-cross in the same way.-And I shall say: 'games' form a family.
-                        <br>
-                        And for instance the kinds of number form a family in the same way. Why do we call something a "number"? Well, perhaps because it has a-direct-relationship with several things that have hitherto been called number; and this can be said to give it an indirect relationship to other things we call the same name. And we extend our concept of number as in spinning a thread we twist fibre on fibre. And the strength of the thread does not reside in the fact that some on e fibre runs through its whole length, but in the overlapping of many fibres.
-                        <br>
-                        <mark>But if someone wished to say: "There is something common to all these constructions-namely the disjunction of all their common properties"  --I should reply: Now you are only playing with words.</mark> One might as well say: "Something runs through the whole thread- namely the continuous overlapping of those fibres".
-                      </blockquote>
-                    <div class="slide-footer">
-                      <a href="http://users.rcn.com/rathbone/lw65-69c.htm">source</a>
-                    </div>
-                  </section>
-
-                  <section data-fullscreen>
-                    <h3>How about a radically different approach?</h3>
-                    <blockquote shade width="100%" class="fragment" data-fragment-index="0">
-                      "The meaning of a word is its use in the language."<br>
-                        Ludwig Wittgenstein
-                    </blockquote>
-                  </section>
-
-                  <section data-fullscreen>
-                    <h2>Words are defined by their environments</h2>
-                    <h3>the words around them</h3>
-                    <blockquote style="background-color: #eee8d5;" width="100%" class="fragment" data-fragment-index="1">
-                      "If A and B have almost identical environments we say that they are synonyms."
-                      <br>
-                      Zellig Harris (1954)
-                    </blockquote>
-                  </section>
-
-                  <section>
-                    <h2>What does 'ong choi' mean?</h2>
-                    <div  class="fragment" data-fragment-index="0">
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width=100%">
-                      Suppose you see these sentences:
-                    </blockquote>
-                    <ul>
-                      <li> Ong choi is delicious <b>sautéed with garlic</b>.
-                      <li> Ong choi is superb <b>over rice</b>.
-                      <li> Ong choi <b>leaves</b> with salty sauces
-                    </ul>
-                    </div>
-                    <div  class="fragment" data-fragment-index="1">
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width=100%">
-                      And you've also seen these:
-                    </blockquote>
-                    <ul>
-                      <li> ...spinach <b>sautéed with garlic over rice</b>
-                      <li> Chard stems and <b>leaves</b> are <b>delicious</b>
-                      <li> Collard greens and other <b>salty</b> leafy greens
-                    </ul>
-                    </div>
-                    <div  class="fragment" data-fragment-index="2">
-                    <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 38px; width=100%">
-                    Conclusion:
-                    </blockquote>
-                    Ong choi is a leafy green like spinach, chard, or collard greens
-                    </div>
-                  </section>
-
-                  <section data-background="figures/ongchoy.png" data-background-size="cover">
-                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Ong choi: Ipomoea aquatica "Water Spinach"</h2>
-                  </section>
-
-                  <section data-background="figures/wordspace.png" data-background-size="cover">
-                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Let's consider methods that embed words in a vector space</h2>
-                  </section>
-
-                </section>
-
-                <!-- --------------------------------------------------------------------------->
-	        <section>
-                  <section data-background="figures/w2v_nlp_wordle.png" data-background-size="cover">
-                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Bag of Words</h2>
-                    check this for ideas and inspirations
-                    https://towardsdatascience.com/art-of-vector-representation-of-words-5e85c59fee5
-                  </section>
-
-                  <section>
-                    <h2>One hot encoding</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="900"
-                         src="figures/w2v_onehot.png" alt="One hot encoding">
-                  </section>
-
-                  <section>
-                    <h2>Simple counts</h2>
-                  </section>
-
-                  <section>
-                    <h2>tfidf</h2>
-                    <ul  style="list-style-type: none; font-size: 28px;">
-                      <li class="fragment roll-in">
-                        $$
-                        w_{i,j} = tf_{i,j}
-                        $$
-                        $tf_{i,j}$ - term frequency: number of occurrences of word $i$ in $j$
-                      <li class="fragment roll-in">
-                        \begin{align}
-                        idf & = - \log{\prob{P}{w_i|D}}\\
-                        & = \log{\frac{1}{\prob{P}{w_i|D}}}\\
-                        & =  \log{\left(\frac{N}{df_i}\right)}
-                        \end{align}
-                        $df_i$ - number of documents containing $i$
-                        $N$ - total number of documents
-                      <li class="fragment roll-in">
-                        $$
-                        w_{i,j} = tf_{i,j} \times \log{\left(\frac{N}{df_i}\right)}
-                        $$
-                    </ul>
-                  </section>
-
-                  <section>
-                    <h2>n-grams</h2>
-                    <iframe name="ngram_chart" src="https://books.google.com/ngrams/interactive_chart?content=convolutional+neural+network%2Crecurrent+neural+network%2Cmultilayer+perceptron%2Csupport+vector+machine&year_start=1950&year_end=2010&corpus=15&smoothing=3&share=&direct_url=t1%3B%2Cconvolutional%20neural%20network%3B%2Cc0%3B.t1%3B%2Crecurrent%20neural%20network%3B%2Cc0%3B.t1%3B%2Cmultilayer%20perceptron%3B%2Cc0%3B.t1%3B%2Csupport%20vector%20machine%3B%2Cc0" width=1200 height=400 marginwidth=0 marginheight=0 hspace=0 vspace=0 frameborder=0 scrolling=no></iframe>
-                    <div class="slide-footer">
-                      <a href="https://books.google.com/ngrams">Google's n-gram viewer</a>
-                    </div>
-
-                  </section>
-
-                  <section data-background="figures/w2v_arrival_ft.png" data-background-size="contain">
-                    <h2>Take Away Bits</h2>
-                    <ol>
-                      <li class="fragment roll-in"> To use ML models need to vectorize categorical variables
-                      <li class="fragment roll-in"> One-hot encoding (aka 1-in-K) is a good start
-                      <li class="fragment roll-in"> To encode a collection use counts or tf-idf
-                      <li class="fragment roll-in"> To enrich representation use n-grams (beware of the exponent)
-                    </ol>
-                  </section>
-                </section>
-
-
-
-                <!-- --------------------------------------------------------------------------->
-	        <section>
-                  <section data-background="figures/svd_diagram.png" data-background-size="contain">
-                    <h2  style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Matrix Factorization Method</h2>
-                  </section>
-
-                  <section>
-                    <h2>CO-occurence tables</h2>
-                    <alert class="fragment roll-in" data-fragment-index="0">Frequent (stop) words dominate the table</alert>
-                  </section>
-
-                  <section>
-                    <h2>Fill the table with tfidf instead</h2>
-                    <ul  style="list-style-type: none; font-size: 28px; ">
-                      <li >
-                        $$
-                        w_{i,j} = tf_{i,j}
-                        $$
-                        $tf_{i,j}$ - term frequency: number of occurrences of word $i$ in $j$
-                      <li >
-                        \begin{align}
-                        idf & = - \log{\prob{P}{w_i|D}}\\
-                        & = \log{\frac{1}{\prob{P}{w_i|D}}}\\
-                        & =  \log{\left(\frac{N}{df_i}\right)}
-                        \end{align}
-                        $df_i$ - number of documents containing $i$
-                        $N$ - total number of documents
-                      <li >
-                        $$
-                        w_{i,j} = tf_{i,j} \times \log{\left(\frac{N}{df_i}\right)}
-                        $$
-                    </ul>
-                  </section>
-
-                  <section>
-                    <h2>or use PMI</h2>
-                    <row>
-                      <col60>
-                        <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 36px; width=100%">
-                          Pointwise Mutual Information (PMI)
-                        </blockquote>
-                        <blockquote style="background-color: #eee8d5; font-size: 26px;" width="100%" class="fragment" data-fragment-index="0">
-                          Do words x and y co-occur more than if they were independent?
-                          $$
-                          \prob{PMI}{w, c} = \log{\frac{\prob{p}{c,w}}{\prob{p}{w}\prob{p}{c}}}
-                          $$
-                        </blockquote>
-                      </col60>
-                      <col40>
-                        <ul  style="list-style-type: none; font-size: 24px">
-                          <li class="fragment roll-in" data-fragment-index="0">
-                            $$
-                            \prob{PMI}{w, c} = \log{\frac{\prob{p}{c|w}}{\prob{p}{c}}}
-                            $$
-                          <li class="fragment roll-in" data-fragment-index="1">
-                            $$
-                            \prob{p}{c} = \frac{\prob{count}{c}}{N}
-                            $$
-                          <li class="fragment roll-in" data-fragment-index="2">
-                            $$
-                            \prob{p}{c|w} = \frac{\prob{p}{c,w}}{\prob{p}{w}}
-                            $$
-                          <li class="fragment roll-in" data-fragment-index="3">
-                            $$
-                            \prob{p}{c,w} = \frac{\prob{count}{c,w}}{N}
-                            $$
-                          <li class="fragment roll-in" data-fragment-index="4">
-                            $$
-                            \prob{p}{w} = \frac{\prob{count}{w}}{N}
-                            $$
-                          <li class="fragment roll-in" data-fragment-index="5">
-                            $$
-                            \log{\frac{\prob{count}{c,w}\times N}{\prob{count}{c}\times \prob{count}{w}}}
-                            $$
-                        </ul>
-                      </col40>
-                    </row>
-                  </section>
-
-                  <section>
-                    <h3>Positive Pointwise Mutual Information</h3>
-                    <row>
-                      <col50>
-                        <ul  style="list-style-type: none; font-size: 22pt">
-                          <li class="fragment roll-in" data-fragment-index="0">
-                            PMI ranges from $-\infty$ to $+\infty$
-                          <li class="fragment roll-in" data-fragment-index="1">
-                            But the negative values are problematic
-                            <ul  style="list-style-type: disk; font-size: 22pt">
-                              <li class="fragment roll-in" data-fragment-index="2"> Things are co-occurring <b>less</b> than we expect by chance
-                              <li class="fragment roll-in" data-fragment-index="3"> Unreliable without enormous corpora
-                                <ul  style="list-style-type: disk; font-size: 22pt">
-                                  <li class="fragment roll-in" data-fragment-index="4"> Imagine $w_1$ and $w_2$ whose probability is each $10^{-6}$
-                                  <li class="fragment roll-in" data-fragment-index="5"> Hard to be sure $\prob{p}{w_1,w_2}$ is significantly different than $10^{-12}$
-                                </ul>
-                              <li class="fragment roll-in" data-fragment-index="6">
-                                It’s not clear people are good at "unrelatedness"
-                            </ul>
-                          <li class="fragment roll-in" data-fragment-index="7">
-                            <blockquote style="background-color: #93a1a1; color: #fdf6e3; font-size: 22px; width=100%">
-                              Let's try a hack: replace negative PMI values by 0
-                            </blockquote>
-                        </ul>
-                      </col50>
-                      <col50>
-                        <div class="fragment roll-in" data-fragment-index="8" style="font-size: 24px">
-                          $$
-                          \prob{PPMI}{w, c} = \begin{cases}
-                          \prob{PMI}{w, c} & \prob{PMI}{w, c} \gt 0 \\
-                          0 & \mbox{otherwise}
-                          \end{cases}
-                          $$
-                        </div>
-                        <alert class="fragment roll-in" data-fragment-index="9">Frequent (stop) words are normalized away in PPMI table</alert>
-                            <ul  style="list-style-type: disk; font-size: 22pt">
-                              <li class="fragment roll-in" data-fragment-index="9">
-                                PMI is biased toward infrequent events
-                                <ul  style="list-style-type: disk; font-size: 22pt">
-                                  <li class="fragment roll-in" data-fragment-index="10">
-                                    Very rare words have very high PMI values
-                                </ul>
-                              <li class="fragment roll-in" data-fragment-index="11">
-                                Two solutions:
-                                <ul  style="list-style-type: disk; font-size: 22pt">
-                                  <li class="fragment roll-in" data-fragment-index="12">
-                                    Give rare words slightly higher probabilities
-                                  <li class="fragment roll-in" data-fragment-index="13">
-                                    Use add-one smoothing (which has a similar effect)
-                                </ul>
-                            </ul>
-                      </col50>
-                    </row>
-                  </section>
-
-                  <section>
-                    <h2>Probability Ratios</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="900"
-                         src="figures/glove_ratio_table.svg" alt="One hot encoding">
-                  </section>
-
-                  <section data-fullscreen>
-                    <h2>Latent Semantic Analysis</h2>
-                    <video controls autoplay>
-                      <source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/7/70/Topic_model_scheme.webm/Topic_model_scheme.webm.480p.vp9.webm#t=00:00:01,00:00:17.600" width="900">
-                    </video>
-                  </section>
-
-                  <section>
-                    <h3>Matrix factorization for dense word vectors</h3>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
-                         src="figures/matrix_factorization.svg" alt="Matrix factorization">
-                  </section>
-
-                  <section>
-                    <h3>SVD for dense word vectors</h3>
-                    <img style="margin-bottom: -50px; margin-top: -40px;" width="100%"
-                         src="figures/svd_diagram.png" alt="Matrix factorization SVD">
-                    <br>
-                    <img width="80%"
-                         src="figures/matrix_factorization_svd.svg" alt="Matrix factorization SVD">
-                  </section>
-
-                  <section data-background="figures/w2v_arrival_ft.png" data-background-size="contain">
-                    <h2>Take Away bits</h2>
-                    <ol>
-                      <li> Word similarity as co-occurrence within same context.
-                      <li> Different way to estimate it but all can be put in a matrix.
-                      <li> The matrix can be low rank factored and dense word representations emerge.
-                      <li> Inner product of word vectors encodes co-occurrence or probability.
-                    </ol>
-                  </section>
-                </section>
-
-                <!-- --------------------------------------------------------------------------->
-	        <section>
-                  <section data-background="figures/w2v_arrival_gif.gif" data-background-size="cover">
-                    <h2 style="text-shadow: 4px 4px 4px #002b36; color: #93a1a1">Word2vec</h2>
-                  </section>
-
-                  <section>
-                    <div id="header-right" style="margin-right: -100px">
-                      <a href="https://www.ling.upenn.edu/~wlabov/" target="_blank"><img src="figures/TomasMikolov.png" alt="William Labov" style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1); margin-bottom: -5%" width="160px" ></a><br>
-                      <small>Tomas Mikolov</small>
-                    </div>
-                    <h2>dense embedding with word2vec</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
-                         src="figures/cbow_sg.png" alt="CBOW SG">
-                    <div class="slide-footer">
-                      <a href="https://code.google.com/archive/p/word2vec/">source code</a>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h2>w2v: semantic algebra</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
-                         src="figures/w2v_algebra.png" alt="w2v algebra">
-                  </section>
-
-                  <section data-fullscreen>
-                    <h2>w2v: relation</h2>
-                    <img style="margin-top: -40px;" width="60%"
-                         src="figures/w2v_relation.png" alt="w2v relation">
-                  </section>
-
-                  <section  data-fullscreen>
-                    <h2>w2v: degree</h2>
-                    <img style="margin-top: -40px;" width="60%"
-                         src="figures/w2v_degree.png" alt="w2v degree">
-                  </section>
-
-                  <section>
-                    <h2>w2v: semantic drift</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
-                         src="figures/w2v_diachronic.png" alt="w2v semantic drift">
-                  </section>
-
-                  <section>
-                    <h2>w2v: semantic drift</h2>
-                    <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="100%"
-                         src="figures/w2v_evolution.png" alt="w2v semantic drift">
-                  </section>
-
-                  <section>
-                    https://www.datcreativity.com/
-                  </section>
-                  <section data-background="figures/w2v_arrival_ft.png" data-background-size="contain">
-                    <h2>Take Away bits</h2>
-                    <ol>
-                      <li> Simple and efficient dense word embedding
-                      <li> Use SGNS unless you know what you're doing
-                        <ol>
-                          But mind this recent result on CBOW: <a href=https://arxiv.org/abs/2012.15332 target="blank_">kōan: A Corrected CBOW Implementation</a>
-                        </ol>
-                      <li> W2v give semantically rich space (even algebra works)
-                      <li> If you're encoding words as BOW in your project you're missing out!
-                    </ol>
-                  </section>
-                </section>
-
-
+                <div id="bridge-card-4" class="fragment" data-fragment-index="4" style="background: rgba(253, 246, 227, 0.98); border-left: 5px solid #cb4b16; border-radius: 6px; padding: 7px 12px; box-shadow: 0 3px 8px rgba(203,75,22,0.18); text-align: left;">
+                  <div style="font-weight: bold; color: #cb4b16; font-size: 15.5px;">5. Today: Word Embedding &amp; Modern Token Spaces</div>
+                  <div style="color: #073642; font-size: 13px; margin-top: 2px; line-height: 1.28;">
+                    Sliding 1D context windows link PPMI/SVD, Word2Vec, analogies, BPE subwords, contextual attention &amp; LLM retrieval!
+                  </div>
+                </div>
               </div>
 
+              <svg id="bridge-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;" viewBox="0 0 960 500">
+                <defs>
+                  <marker id="arr-blue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#268bd2" />
+                  </marker>
+                  <marker id="arr-cyan" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#2aa198" />
+                  </marker>
+                  <marker id="arr-green" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#859900" />
+                  </marker>
+                  <marker id="arr-yellow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 9 5 L 0 9 z" fill="#b58900" />
+                  </marker>
+                  <marker id="arr-orange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#cb4b16" />
+                  </marker>
+                </defs>
+                <g class="fragment" data-fragment-index="0">
+                  <path id="conn-0-4" fill="none" stroke="#268bd2" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-blue)" />
+                  <path id="conn-0-7" fill="none" stroke="#268bd2" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-blue)" />
+                </g>
+                <g class="fragment" data-fragment-index="1">
+                  <path id="conn-1-9" fill="none" stroke="#2aa198" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-cyan)" />
+                  <path id="conn-1-11" fill="none" stroke="#2aa198" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-cyan)" />
+                </g>
+                <g class="fragment" data-fragment-index="2">
+                  <path id="conn-2-6" fill="none" stroke="#859900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-green)" />
+                  <path id="conn-2-14" fill="none" stroke="#859900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-green)" />
+                  <path id="conn-2-23" fill="none" stroke="#859900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-green)" />
+                </g>
+                <g class="fragment" data-fragment-index="3">
+                  <path id="conn-3-21" fill="none" stroke="#b58900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-yellow)" />
+                  <path id="conn-3-22" fill="none" stroke="#b58900" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-yellow)" />
+                </g>
+                <g class="fragment" data-fragment-index="4">
+                  <path id="conn-4-25" fill="none" stroke="#cb4b16" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-orange)" />
+                  <path id="conn-4-26" fill="none" stroke="#cb4b16" stroke-width="3.5" marker-end="url(#arr-orange)" />
+                </g>
+              </svg>
+
+              <div style="width: 430px; margin-left: 20px; z-index: 2;">
+                <table style="font-size: 12.2px; line-height: 1.22; width: 100%; border-collapse: collapse;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid #586e75;">
+                      <th style="padding: 3px 6px; width: 34px;">#</th>
+                      <th style="padding: 3px 6px; width: 82px;">date</th>
+                      <th style="padding: 3px 6px;">topic</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr id="bridge-row-4" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">4</td><td style="padding: 2.8px 6px;">02-Sep-2026</td><td style="padding: 2.8px 6px;">Linear learning models</td></tr>
+                    <tr id="bridge-row-6" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">6</td><td style="padding: 2.8px 6px;">09-Sep-2026</td><td style="padding: 2.8px 6px;">Principal Component Analysis</td></tr>
+                    <tr id="bridge-row-7" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">7</td><td style="padding: 2.8px 6px;">14-Sep-2026</td><td style="padding: 2.8px 6px;">Curse of Dimensionality</td></tr>
+                    <tr id="bridge-row-9" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">9–10</td><td style="padding: 2.8px 6px;">Sep 2026</td><td style="padding: 2.8px 6px;">MLE, MAP &amp; Naive Bayes</td></tr>
+                    <tr id="bridge-row-11" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">11</td><td style="padding: 2.8px 6px;">28-Sep-2026</td><td style="padding: 2.8px 6px;">Logistic Regression</td></tr>
+                    <tr id="bridge-row-14" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">14</td><td style="padding: 2.8px 6px;">07-Oct-2026</td><td style="padding: 2.8px 6px;">Matrix Factorization</td></tr>
+                    <tr id="bridge-row-21" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">21</td><td style="padding: 2.8px 6px;">02-Nov-2026</td><td style="padding: 2.8px 6px;">Stochastic Gradient Descent</td></tr>
+                    <tr id="bridge-row-22" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">22</td><td style="padding: 2.8px 6px;">04-Nov-2026</td><td style="padding: 2.8px 6px;">Automatic Differentiation</td></tr>
+                    <tr id="bridge-row-23" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">23</td><td style="padding: 2.8px 6px;">09-Nov-2026</td><td style="padding: 2.8px 6px;">Nonlinear embedding approaches</td></tr>
+                    <tr id="bridge-row-25" style="background-color: #E0E4CC;"><td style="padding: 2.8px 6px;">25</td><td style="padding: 2.8px 6px;">16-Nov-2026</td><td style="padding: 2.8px 6px;">Convolutional Neural Networks</td></tr>
+                    <tr id="bridge-row-26" style="background-color: #FBEEC2; border: 2px solid #cb4b16; font-weight: bold;"><td style="padding: 4px 6px; color: #cb4b16;">26<i class='fa fa-map-marker' style='color: #FA6900;'></i></td><td style="padding: 4px 6px; color: #cb4b16;">18-Nov-2026</td><td style="padding: 4px 6px; color: #cb4b16;">Word Embedding</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
+            <aside class="notes">
+              Tie Word Embedding directly into CS8850's complete arc: orthogonal one-hots (Curse of Dimensionality), MLE &amp; Laplace smoothing (NB), logistic regression (SGNS), low-rank SVD (PCA/MF), sparse SGD/AD updates, and sliding 1D context windows from CNNs.
+            </aside>
+          </section>
+        </section>
 
-            <script src="dist/reveal.js"></script>
+        <!-- ========================================================================= -->
+        <!-- SECTION 2: WHAT IS MEANING? DISTRIBUTED HYPOTHESIS                        -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h2>What Is Meaning?</h2>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 28px; text-align: center;">
+              Before we embed words as vectors, how do humans and linguists define what a word means?
+            </blockquote>
+          </section>
 
-            <link rel="stylesheet" href="plugin/highlight/monokai.css">
-            <script src="plugin/highlight/highlight.js"></script>
-            <script src="plugin/math/math.js"></script>
-            <script src="plugin/chalkboard/plugin.js"></script>
-            <script src="plugin/notes/notes.js"></script>
-            <script src="plugin/zoom/zoom.js"></script>
-            <script src="plugin/fullscreen/fullscreen.js"></script>
-            <script src="plugin/menu/menu.js"></script>
-            <script src="plugin/verticator/verticator.js"></script>
-            <link rel="stylesheet" href="plugin/verticator/verticator.css">
-            <script>
-              // Full list of configuration options available at:
-              // https://github.com/hakimel/reveal.js#configuration
+          <section data-background="figures/w2v_chernoff_faces.svg" data-background-size="cover">
+            <div id="header-right" style="top: -115px; right: 12px; background: rgba(253, 246, 227, 0.90); padding: 5px 8px; border-radius: 6px; text-align: center;">
+              <img src="figures/HermanChernoff.jpg" alt="Herman Chernoff" width="84" style="border-radius: 4px; margin: 0;">
+              <div style="font-size: 12px; color: #586e75; font-weight: bold;">Herman Chernoff</div>
+            </div>
+            <div style="display: inline-block; background: rgba(253, 246, 227, 0.90); padding: 4px 20px; border-radius: 8px; margin-bottom: 12px;">
+              <h3 style="margin: 0;">Vectors Whose Coordinates Carry Meaning</h3>
+            </div>
+            <div style="max-width: 880px; margin: 0 auto; background: rgba(253, 246, 227, 0.90); border-radius: 10px; padding: 18px 32px; text-align: left;">
+              <ul style="font-size: 24px; line-height: 1.45; margin-left: 22px;">
+                <li class="fragment roll-in"> Sensor readings naturally stack into feature vectors $\vec{x} \in \RR^d$ (height, weight, blood pressure).
+                <li class="fragment roll-in"> <b>Chernoff Faces (1973):</b> map multivariate vectors <em>back</em> into cartoon facial parameters so humans spot anomalies in $\sim 100\text{ ms}$!
+                <li class="fragment roll-in"> <b>Today's question:</b> can we map discrete <em>words</em> into continuous coordinates where geometry encodes meaning?
+              </ul>
+            </div>
+            <div class="slide-footer" style="left: 165px !important; background: rgba(253, 246, 227, 0.90); padding: 3px 10px; border-radius: 5px;">
+              <a href="https://doi.org/10.1080/01621459.1973.10482434" target="_blank">Chernoff (JASA 1973): The Use of Faces to Represent Points in k-Dimensional Space Graphically</a>
+            </div>
+            <aside class="notes">
+              Imagine an operator monitoring a nuclear reactor: instead of staring at dozens of raw dials, Chernoff maps those vector dimensions to eyes, brows, and smile — humans read facial expression in ~100ms. Now flip the arrow: how do we map words into a semantic vector space?
+            </aside>
+          </section>
 
-              Reveal.initialize({
-                  // history: true,
-                  width: 960,
-                  height: 700,
-                  center: true,
-                  hash: true,
-                  controls: false,
-                  keyboard: true,
-                  margin: 0.05,
-                  overview: true,
-                  transition: 'slide', // Transition style: none/fade/slide/convex/concave/zoom
-                  transitionSpeed: 'slow', // Transition speed: default/fast/slow
-                  menu: {
-                      themes: false,
-                      openSlideNumber: true,
-                      openButton: false,
-                  },
+          <section>
+            <div id="header-right" style="top: -45px; right: 10px; text-align: center;">
+              <img src="figures/WilliamLabov.jpg" alt="William Labov" width="88" style="border-radius: 4px; margin: 0;">
+              <div style="font-size: 12px; color: #586e75; font-weight: bold;">William Labov</div>
+            </div>
+            <h3>What Does a Word Mean? Asking Humans</h3>
+            <row style="align-items: center;">
+              <col50>
+                <ul style="font-size: 25px; line-height: 1.48; margin-left: 22px;">
+                  <li class="fragment roll-in"> <b>William Labov (1973):</b> Can we write an exact, logical rule defining everyday words like <em>"cup"</em> vs. <em>"bowl"</em>?
+                  <li class="fragment roll-in"> Asked human subjects to label each vessel on the right as either a <b>cup</b> or a <b>bowl</b>.
+                  <li class="fragment roll-in"> Then attempted to formalize a strict mathematical definition from their responses.
+                </ul>
+              </col50>
+              <col50 style="text-align: center;">
+                <img src="figures/Labovs_cups.png" alt="Labov cup stimuli" style="max-height: 445px; width: auto; margin: 0 auto;">
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://www.amazon.com/New-ways-analyzing-variation-English/dp/0878402055" target="_blank">Labov (1973): The boundaries of words and their meanings</a> ·
+              <a href="https://web.stanford.edu/~jurafsky/slp3/slides/vector1.pdf" target="_blank">Adapted from Jurafsky slides</a>
+            </div>
+          </section>
 
-                  chalkboard: {
-                      boardmarkerWidth: 1,
-                      chalkWidth: 2,
-                      chalkEffect: 1,
-                      toggleNotesButton: false,
-                      toggleChalkboardButton: false,
-                      slideWidth: Reveal.width,
-                      slideHeight: Reveal.height,
-                      // src: "chalkboards/chalkboard_em2.json",
-                      readOnly: false,
-                      theme: "blackboard",
-                      eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30},
-                  },
+          <section>
+            <h3>Category Boundaries Are Fuzzy &amp; Context-Sensitive</h3>
+            <row style="align-items: center; gap: 16px; margin-top: 6px;">
+              <col50 class="fragment roll-in" data-fragment-index="0" style="text-align: center;">
+                <img src="figures/Labov_category_end.png" alt="Where does cup end" style="max-height: 325px; width: 98%; object-fit: contain; margin: 0 auto;">
+                <div style="font-size: 19px; color: #073642; margin-top: 6px;"><b>Without context:</b> gradual crossover as diameter widens</div>
+              </col50>
+              <col50 class="fragment roll-in" data-fragment-index="1" style="text-align: center;">
+                <img src="figures/Labov_context_sensitivity.png" alt="Food context shift" style="max-height: 325px; width: 98%; object-fit: contain; margin: 0 auto;">
+                <div style="font-size: 19px; color: #cb4b16; margin-top: 6px;"><b>With food context:</b> mashed potatoes shift the boundary!</div>
+              </col50>
+            </row>
+            <blockquote class="fragment roll-in" data-fragment-index="2" style="background-color: #eee8d5; width: auto; box-sizing: border-box; font-size: 20.5px; text-align: center; padding: 6px 14px; margin: 10px 30px 0 95px;">
+              Even a simple physical vessel has <b>probabilistic, graded</b> boundaries that shift immediately with surrounding context!
+            </blockquote>
+            <div class="slide-footer">
+              <a href="https://www.amazon.com/New-ways-analyzing-variation-English/dp/0878402055" target="_blank">Labov (1973): The boundaries of words and their meanings</a>
+            </div>
+          </section>
 
-                  math: {
-                      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
-                      config: 'TeX-AMS_SVG-full',
-                      // pass other options into `MathJax.Hub.Config()`
-                      TeX: {
-                          Macros: {
-        	              RR: '\\mathbb{R}',
-        	              PP: '\\mathbb{P}',
-        	              EE: '\\mathbb{E}',
-        	              NN: '\\mathbb{N}',
-        	              vth: '\\vec{\\theta}',
-                              loss: '{\\cal l}',
-                              hclass: '{\\cal H}',
-                              CD: '{\\cal D}',
-                              def: '\\stackrel{\\text{def}}{=}',
-                              pag: ['\\text{pa}_{{\cal G}^{#1}}(#2)}', 2],
-                              vec: ['\\boldsymbol{\\mathbf #1}', 1],
-        	              set: [ '\\left\\{#1 \\; : \\; #2\\right\\}', 2 ],
-                              bm: ['\\boldsymbol{\\mathbf #1}', 1],
-                              argmin: ['\\operatorname\{arg\\,min\\,\}'],
-                              argmax: ['\\operatorname\{arg\\,max\\,\}'],
-                              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
-                          },
-                          loader: {load: ['[tex]/color']},
-                          extensions: ["color.js"],
-                          tex: {packages: {'[+]': ['color']}},
-                          svg: {
-                              fontCache: 'global'
-                          }
-                      }
-                  },
+          <section>
+            <h3>When Normative Rules Lose Human Meaning</h3>
+            <img src="figures/Labovs_cup.svg" alt="Cup formal definition" style="max-height: 390px; width: 96%; margin: 6px auto;">
+            <alert class="fragment roll-in" style="display: block; font-size: 24px; margin: 8px 30px 0 95px;">
+              Trying to prescribe an exact technical formula for "cup" explodes in rules — and loses our human sense of meaning!
+            </alert>
+            <div class="slide-footer">
+              Labov (1973): Formal definition constructed from human labeling experiments
+            </div>
+          </section>
 
-                  plugins: [ Verticator, RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+          <section>
+            <h3>Wittgenstein: Family Resemblances Beyond Rigid Rules</h3>
+            <row style="align-items: flex-start; gap: 18px; margin-top: 4px;">
+              <col35 style="width: 33%; text-align: center;">
+                <img src="figures/Ludwig_Wittgenstein.png" alt="Ludwig Wittgenstein" style="max-height: 250px; width: auto; margin: 0 auto;">
+                <div style="font-size: 15px; color: #586e75; font-weight: bold; margin-top: 4px;">Ludwig Wittgenstein (1889–1951)</div>
+                <blockquote shade class="fragment roll-in" data-fragment-index="0" style="font-size: 17px; line-height: 1.32; text-align: left; padding: 8px 12px; margin-top: 10px; width: 100%; box-sizing: border-box;">
+                  Misusing context breaks meaning:<br>
+                  <em>&ldquo;A man loses his dog, so he puts an ad in the paper. And the ad says, &lsquo;Here, boy!&rsquo;&rdquo;</em>
+                </blockquote>
+              </col35>
+              <col65 style="width: 67%;">
+                <div class="r-stack" style="width: 100%;">
+                  <blockquote shade class="fragment fade-in-then-out" data-fragment-index="1" style="font-size: 13.2px; line-height: 1.30; text-align: left; padding: 10px 14px; background: #eee8d5; border-radius: 6px; width: 100%; box-sizing: border-box; margin: 0;">
+                    66. Consider for example the proceedings that we call "games". I mean <mark>board-games, card-games, ball-games, Olympic games, and so on. What is common to them all? -- Don't say: "There must be something common, or they would not be called 'games'" -- but look and see whether there is anything common to all.</mark> -- For if you look at them you will not see something that is common to all, but similarities, relationships, and a whole series of them at that. To repeat: don't think, but look! -- <mark>Look for example at board-games</mark>, with their multifarious relationships. <mark>Now pass to card-games;</mark> here you find many correspondences with the first group, but many common features drop out, and others appear. When we <mark>pass next to ball-games, much that is common is retained, but much is lost.</mark> -- Are they all 'amusing'? Compare chess with noughts and crosses. Or is there always winning and losing, or competition between players? Think of patience. In ball games there is winning and losing; but when a child throws his ball at the wall and catches it again, this feature has disappeared. Look at the parts played by skill and luck; and at the difference between skill in chess and skill in tennis. Think now of games like ring-a-ring-a-roses; here is the element of amusement, but how many other characteristic features have disappeared! And <mark>we can go through the many, many other groups of games in the same way; can see how similarities crop up and disappear.</mark><br>
+                    And the result of this examination is: we see a complicated network of similarities overlapping and criss-crossing: sometimes overall similarities.<br>
+                    67. I can think of <mark>no better expression to characterize these similarities than "family resemblances";</mark> for the various resemblances between members of a family: build, features, colour of eyes, gait, temperament, etc. etc. overlap and criss-cross in the same way. -- And I shall say: 'games' form a family.<br>
+                    And for instance the kinds of number form a family in the same way. Why do we call something a "number"? Well, perhaps because it has a direct relationship with several things that have hitherto been called number; and this can be said to give it an indirect relationship to other things we call the same name. And we extend our concept of number as in spinning a thread we twist fibre on fibre. And the strength of the thread does not reside in the fact that some one fibre runs through its whole length, but in the overlapping of many fibres.<br>
+                    <mark>But if someone wished to say: "There is something common to all these constructions -- namely the disjunction of all their common properties" -- I should reply: Now you are only playing with words.</mark> One might as well say: "Something runs through the whole thread -- namely the continuous overlapping of those fibres".
+                  </blockquote>
+                  <div class="fragment" data-fragment-index="2" style="background: #fdf6e3; width: 100%; padding: 4px 0;">
+                    <svg viewBox="0 0 580 280" width="600" style="display: block; margin: 0 auto;">
+                      <text x="290" y="30" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#073642">Philosophical Investigations §§66–67: What Is a "Game"?</text>
+                      <g font-family="sans-serif" font-size="13.5" font-weight="bold" text-anchor="middle">
+                        <rect x="195" y="48" width="82" height="30" rx="4" fill="#268bd2" opacity="0.18"/>
+                        <text x="236" y="68" fill="#268bd2">Chess</text>
+                        <rect x="287" y="48" width="82" height="30" rx="4" fill="#2aa198" opacity="0.18"/>
+                        <text x="328" y="68" fill="#2aa198">Poker</text>
+                        <rect x="379" y="48" width="82" height="30" rx="4" fill="#859900" opacity="0.18"/>
+                        <text x="420" y="68" fill="#859900">Tennis</text>
+                        <rect x="471" y="48" width="84" height="30" rx="4" fill="#cb4b16" opacity="0.18"/>
+                        <text x="513" y="68" fill="#cb4b16">Solitaire</text>
+                      </g>
+                      <g font-family="sans-serif" font-size="13.5" fill="#073642">
+                        <text x="24" y="106" font-weight="bold">Win / Lose</text>
+                        <text x="24" y="144" font-weight="bold">Competition</text>
+                        <text x="24" y="182" font-weight="bold">Pure Skill</text>
+                        <text x="24" y="220" font-weight="bold">Element of Luck</text>
+                        <text x="24" y="258" font-weight="bold">Amusement</text>
+                      </g>
+                      <rect x="198" y="88" width="354" height="24" rx="5" fill="#268bd2" opacity="0.22"/>
+                      <text x="375" y="105" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#073642">✓  ✓  ✓  ✓   (Wait — what about tossing a ball at a wall?)</text>
+                      <rect x="198" y="126" width="260" height="24" rx="5" fill="#2aa198" opacity="0.25"/>
+                      <text x="328" y="143" text-anchor="middle" font-family="sans-serif" font-size="12.5" font-weight="bold" fill="#073642">✓  ✓  ✓</text>
+                      <text x="513" y="143" text-anchor="middle" font-family="sans-serif" font-size="12.5" fill="#dc322f" font-weight="bold">✗</text>
+                      <rect x="198" y="164" width="80" height="24" rx="5" fill="#859900" opacity="0.25"/>
+                      <text x="238" y="181" text-anchor="middle" font-family="sans-serif" font-size="12.5" font-weight="bold" fill="#073642">✓</text>
+                      <rect x="382" y="164" width="76" height="24" rx="5" fill="#859900" opacity="0.25"/>
+                      <text x="420" y="181" text-anchor="middle" font-family="sans-serif" font-size="12.5" font-weight="bold" fill="#073642">✓</text>
+                      <text x="328" y="181" text-anchor="middle" font-family="sans-serif" font-size="12.5" fill="#dc322f" font-weight="bold">✗</text>
+                      <rect x="290" y="202" width="76" height="24" rx="5" fill="#b58900" opacity="0.25"/>
+                      <text x="328" y="219" text-anchor="middle" font-family="sans-serif" font-size="12.5" font-weight="bold" fill="#073642">✓</text>
+                      <rect x="474" y="202" width="78" height="24" rx="5" fill="#b58900" opacity="0.25"/>
+                      <text x="513" y="219" text-anchor="middle" font-family="sans-serif" font-size="12.5" font-weight="bold" fill="#073642">✓</text>
+                      <rect x="198" y="240" width="354" height="24" rx="5" fill="#cb4b16" opacity="0.20"/>
+                      <text x="375" y="257" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#073642">Overlapping fibers — no single property runs the whole thread!</text>
+                    </svg>
+                    <alert style="display: block; font-size: 19.5px; text-align: center; margin-top: 8px;">
+                      Wittgenstein: no single shared essence &mdash; only overlapping <em>&ldquo;family resemblances&rdquo;</em>!
+                    </alert>
+                  </div>
+                </div>
+              </col65>
+            </row>
+            <div class="slide-footer">
+              <a href="http://users.rcn.com/rathbone/lw65-69c.htm" target="_blank">Wittgenstein (1953): Philosophical Investigations §§66–67</a>
+            </div>
+            <aside class="notes">
+              First introduce Ludwig Wittgenstein (philosopher of ordinary language); then reveal his dog-ad joke; next show his verbatim Philosophical Investigations §§66–67 passage on games while reading through it; finally click to replace the quote with the family-resemblances fiber table and Wittgenstein's own takeaway.
+            </aside>
+          </section>
 
-              });
+          <section>
+            <h3>The Distributional Hypothesis: Meaning Is Use</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 22px; padding: 6px 14px; margin-bottom: 10px;">
+              Shift from <b>normative</b> (prescriptive rules) to <b>observational</b> (empirical corpus usage):
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 23px; text-align: left; padding: 10px 18px; margin-bottom: 10px;" class="fragment roll-in">
+              &ldquo;The meaning of a word is its use in the language.&rdquo; &mdash; <b>Ludwig Wittgenstein</b> (1953)
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 23px; text-align: left; padding: 10px 18px; margin-bottom: 10px;" class="fragment roll-in">
+              &ldquo;If $A$ and $B$ have almost identical environments we say that they are synonyms.&rdquo; &mdash; <b>Zellig Harris</b> (1954)
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 23px; text-align: left; padding: 10px 18px;" class="fragment roll-in">
+              &ldquo;You shall know a word by the company it keeps.&rdquo; &mdash; <b>J. R. Firth</b> (1957)
+            </blockquote>
+          </section>
 
-              Reveal.configure({ fragments: true }); // set false when developing to see everything at once
-              Reveal.configure({ slideNumber: true });
-              //Reveal.configure({ history: true });
-              Reveal.configure({ slideNumber: 'c / t' });
-              Reveal.addEventListener( 'darkside', function() {
-                  document.getElementById('theme').setAttribute('href','dist/theme/aml_dark.css');
-              }, false );
-              Reveal.addEventListener( 'brightside', function() {
-                  document.getElementById('theme').setAttribute('href','dist/theme/aml.css');
-              }, false );
+          <section>
+            <h3>Distributional Inference: What Is &ldquo;Ong Choi&rdquo;?</h3>
+            <row style="align-items: center; gap: 18px;">
+              <col55 style="width: 57%;">
+                <div class="fragment" data-fragment-index="0" style="margin-bottom: 10px;">
+                  <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 20px; padding: 5px 12px; margin: 0 0 6px 0;">
+                    Suppose you see these sentences:
+                  </blockquote>
+                  <ul style="font-size: 20px; line-height: 1.38; margin-left: 24px;">
+                    <li> <em>Ong choi</em> is delicious <b>saut&eacute;ed with garlic</b>.
+                    <li> <em>Ong choi</em> is superb <b>over rice</b>.
+                    <li> <em>Ong choi</em> <b>leaves</b> with <b>salty</b> sauces.
+                  </ul>
+                </div>
+                <div class="fragment" data-fragment-index="1">
+                  <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 20px; padding: 5px 12px; margin: 0 0 6px 0;">
+                    And you have already seen these:
+                  </blockquote>
+                  <ul style="font-size: 20px; line-height: 1.38; margin-left: 24px;">
+                    <li> &hellip;<b>spinach</b> <b>saut&eacute;ed with garlic over rice</b>.
+                    <li> <b>Chard</b> stems and <b>leaves</b> are <b>delicious</b>.
+                    <li> <b>Collard greens</b> and other <b>salty</b> leafy greens.
+                  </ul>
+                </div>
+              </col55>
+              <col45 style="width: 43%; text-align: center;">
+                <div class="fragment" data-fragment-index="2">
+                  <img src="figures/ongchoy.png" alt="Ong choi water spinach" style="max-height: 255px; width: auto; border-radius: 8px; margin: 0 auto 8px auto;">
+                  <div class="emb-card" style="border-left: 5px solid #859900; font-size: 19px;">
+                    <b>Conclusion:</b> <em>Ong choi</em> (water spinach) is a leafy green — so its vector should sit right next to <em>spinach</em>, <em>chard</em>, and <em>collard greens</em>!
+                  </div>
+                </div>
+              </col45>
+            </row>
+            <div class="slide-footer">
+              Adapted from <a href="https://web.stanford.edu/~jurafsky/slp3/6.pdf" target="_blank">Jurafsky &amp; Martin (Speech and Language Processing, Ch. 6)</a>
+            </div>
+            <aside class="notes">
+              Pronunciation tip: "sautéed" = со-ТЭ́ЙД [soh-TAYD / saw-TAYD], stress on the second syllable (-ТЭ́ЙД). Ong choi = water spinach (Ipomoea aquatica).
+            </aside>
+          </section>
+        </section>
 
-            </script>
+        <!-- ========================================================================= -->
+        <!-- SECTION 3: SPARSE REPRESENTATIONS — ONE-HOT, BOW, TF-IDF & N-GRAMS        -->
+        <!-- ========================================================================= -->
+        <section>
+          <section data-background="figures/w2v_nlp_wordle.png" data-background-size="cover">
+            <div style="background: rgba(253, 246, 227, 0.90); border-radius: 10px; padding: 18px 30px; display: inline-block; box-shadow: 0 6px 24px rgba(0,43,54,0.22);">
+              <h2 style="color: #073642; margin: 0 0 8px 0;">Bag of Words</h2>
+              <div style="font-size: 24px; color: #586e75;">Sparse discrete encodings of words and documents</div>
+            </div>
+          </section>
 
-            <style type="text/css">
-              /* 1. Style header/footer <div> so they are positioned as desired. */
-              #header-left {
-                  position: absolute;
-                  top: 0%;
-                  left: 0%;
-              }
-              #header-right {
-                  position: absolute;
-                  top: 0%;
-                  right: 0%;
-              }
-              #footer-left {
-                  position: absolute;
-                  bottom: 0%;
-                  left: 0%;
-              }
-            </style>
+          <section>
+            <h3>One-Hot Encoding &amp; The Orthogonality Trap</h3>
+            <svg viewBox="0 0 1080 265" width="1040" style="display: block; margin: 6px auto;">
+              <text x="540" y="34" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#073642">Vocabulary V = [ apricot,  cat,  jam,  kitten,  ...,  truck ]   (|V| ≈ 100,000)</text>
+              <!-- Word vectors -->
+              <g font-family="monospace" font-size="16">
+                <text x="48" y="84" font-weight="bold" fill="#cb4b16">cat    =</text>
+                <rect x="160" y="62" width="56" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="188" y="84" text-anchor="middle">0</text>
+                <rect x="216" y="62" width="56" height="32" fill="#cb4b16" stroke="#93a1a1"/><text x="244" y="84" text-anchor="middle" fill="#fdf6e3" font-weight="bold">1</text>
+                <rect x="272" y="62" width="56" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="300" y="84" text-anchor="middle">0</text>
+                <rect x="328" y="62" width="56" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="356" y="84" text-anchor="middle">0</text>
+                <rect x="384" y="62" width="76" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="422" y="84" text-anchor="middle">...</text>
+                <rect x="460" y="62" width="56" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="488" y="84" text-anchor="middle">0</text>
 
-            <!-- // 2. Create hidden header/footer -->
-            <div id="hidden" style="display:none;">
-              <div id="header">
-                <div id="header-left"><h4>CS8850</h4></div>
-                <div id="header-right"><h4>Advanced Machine Learning</h4></div>
-                <div id="footer-left">
-                  <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
-                       src="figures/valentino.png" alt="robot learning">
+                <text x="48" y="138" font-weight="bold" fill="#268bd2">kitten =</text>
+                <rect x="160" y="116" width="56" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="188" y="138" text-anchor="middle">0</text>
+                <rect x="216" y="116" width="56" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="244" y="138" text-anchor="middle">0</text>
+                <rect x="272" y="116" width="56" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="300" y="138" text-anchor="middle">0</text>
+                <rect x="328" y="116" width="56" height="32" fill="#268bd2" stroke="#93a1a1"/><text x="356" y="138" text-anchor="middle" fill="#fdf6e3" font-weight="bold">1</text>
+                <rect x="384" y="116" width="76" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="422" y="138" text-anchor="middle">...</text>
+                <rect x="460" y="116" width="56" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="488" y="138" text-anchor="middle">0</text>
+
+                <text x="48" y="192" font-weight="bold" fill="#859900">truck  =</text>
+                <rect x="160" y="170" width="56" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="188" y="192" text-anchor="middle">0</text>
+                <rect x="216" y="170" width="56" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="244" y="192" text-anchor="middle">0</text>
+                <rect x="272" y="170" width="56" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="300" y="192" text-anchor="middle">0</text>
+                <rect x="328" y="170" width="56" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="356" y="192" text-anchor="middle">0</text>
+                <rect x="384" y="170" width="76" height="32" fill="#eee8d5" stroke="#93a1a1"/><text x="422" y="192" text-anchor="middle">...</text>
+                <rect x="460" y="170" width="56" height="32" fill="#859900" stroke="#93a1a1"/><text x="488" y="192" text-anchor="middle" fill="#fdf6e3" font-weight="bold">1</text>
+              </g>
+              <!-- Right side: Orthogonal axes geometry (borderless) -->
+              <line x1="542" y1="54" x2="542" y2="224" stroke="#93a1a1" stroke-width="1.2" stroke-dasharray="4,4"/>
+              <g stroke-width="3">
+                <line x1="650" y1="204" x2="650" y2="86" stroke="#cb4b16"/>
+                <line x1="650" y1="204" x2="788" y2="204" stroke="#268bd2"/>
+                <line x1="650" y1="204" x2="594" y2="230" stroke="#859900"/>
+              </g>
+              <text x="658" y="92" font-family="monospace" font-size="14" font-weight="bold" fill="#cb4b16">w_cat</text>
+              <text x="752" y="194" font-family="monospace" font-size="14" font-weight="bold" fill="#268bd2">w_kitten</text>
+              <text x="568" y="220" font-family="monospace" font-size="14" font-weight="bold" fill="#859900">w_truck</text>
+              <text x="915" y="106" text-anchor="middle" font-family="sans-serif" font-size="15.5" font-weight="bold" fill="#dc322f">Every word pair is</text>
+              <text x="915" y="130" text-anchor="middle" font-family="sans-serif" font-size="15.5" font-weight="bold" fill="#dc322f">strictly orthogonal!</text>
+              <text x="915" y="164" text-anchor="middle" font-family="monospace" font-size="14.5" fill="#073642">cat · kitten = 0</text>
+              <text x="915" y="188" text-anchor="middle" font-family="monospace" font-size="14.5" fill="#073642">cat · truck  = 0</text>
+              <text x="915" y="216" text-anchor="middle" font-family="monospace" font-size="13.5" fill="#586e75">All distances = √2</text>
+            </svg>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 8px 14px; margin-top: 8px;">
+              $\vec{w}_i \in \{0,1\}^{|V|}$ gives $O(|V|)$ sparse vectors where $\vec{w}_i^\top \vec{w}_j = \delta_{ij}$ and $\|\vec{w}_{\text{cat}} - \vec{w}_{\text{kitten}}\|_2 = \|\vec{w}_{\text{cat}} - \vec{w}_{\text{truck}}\|_2 = \sqrt{2}$!
+            </blockquote>
+          </section>
+
+          <section>
+            <h3>Bag of Words: Document Count Vectors</h3>
+            <row style="align-items: center; gap: 16px;">
+              <col50>
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 20px; padding: 6px 12px;">
+                  Represent document $d$ as the sum of its one-hot word tokens:
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 8px 10px;">
+                  $\displaystyle \vec{c}_d = \sum_{t \in d} \vec{w}_t \in \NN^{|V|}, \qquad \cos(\vec{c}_a, \vec{c}_b) = \frac{\vec{c}_a^\top \vec{c}_b}{\|\vec{c}_a\|_2 \|\vec{c}_b\|_2}$
+                </blockquote>
+                <ul style="font-size: 21px; line-height: 1.42; margin-top: 10px;">
+                  <li class="fragment roll-in"> <b>Order Blindness:</b> <em>"dog bites man"</em> and <em>"man bites dog"</em> yield identical count vectors!
+                  <li class="fragment roll-in"> <b>Zipfian Stop-Word Dominance:</b> <code>the</code>, <code>of</code>, <code>and</code> flood inner products without signaling topic.
+                </ul>
+              </col50>
+              <col50>
+                <svg viewBox="0 0 540 315" width="520" style="display: block; margin: 0 auto;">
+                  <text x="270" y="34" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#073642">Term–Document Count Matrix X ∈ ℕ^(|V|×D)</text>
+                  <g font-family="monospace" font-size="14" text-anchor="middle">
+                    <rect x="26" y="52" width="488" height="32" fill="#93a1a1"/>
+                    <text x="108" y="73" fill="#fdf6e3" font-weight="bold">word \ doc</text>
+                    <text x="235" y="73" fill="#fdf6e3" font-weight="bold">d₁ (Recipe)</text>
+                    <text x="350" y="73" fill="#fdf6e3" font-weight="bold">d₂ (Recipe)</text>
+                    <text x="462" y="73" fill="#fdf6e3" font-weight="bold">d₃ (ML)</text>
+                    <!-- rows -->
+                    <rect x="26" y="84" width="488" height="36" fill="#fbeec2" stroke="#93a1a1"/>
+                    <text x="108" y="107" font-weight="bold" fill="#dc322f">the</text>
+                    <text x="235" y="107" font-weight="bold" fill="#dc322f">42</text>
+                    <text x="350" y="107" font-weight="bold" fill="#dc322f">39</text>
+                    <text x="462" y="107" font-weight="bold" fill="#dc322f">51</text>
+
+                    <rect x="26" y="120" width="488" height="36" fill="#eee8d5" stroke="#93a1a1"/>
+                    <text x="108" y="143" font-weight="bold" fill="#859900">garlic</text>
+                    <text x="235" y="143" font-weight="bold" fill="#073642">4</text>
+                    <text x="350" y="143" font-weight="bold" fill="#073642">3</text>
+                    <text x="462" y="143" fill="#93a1a1">0</text>
+
+                    <rect x="26" y="156" width="488" height="36" fill="#fdf6e3" stroke="#93a1a1"/>
+                    <text x="108" y="179" font-weight="bold" fill="#859900">spinach</text>
+                    <text x="235" y="179" font-weight="bold" fill="#073642">3</text>
+                    <text x="350" y="179" font-weight="bold" fill="#073642">2</text>
+                    <text x="462" y="179" fill="#93a1a1">0</text>
+
+                    <rect x="26" y="192" width="488" height="36" fill="#eee8d5" stroke="#93a1a1"/>
+                    <text x="108" y="215" font-weight="bold" fill="#268bd2">gradient</text>
+                    <text x="235" y="215" fill="#93a1a1">0</text>
+                    <text x="350" y="215" fill="#93a1a1">0</text>
+                    <text x="462" y="215" font-weight="bold" fill="#073642">6</text>
+                  </g>
+                  <text x="270" y="260" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#dc322f">Raw dot product c₁·c₃ is dominated by "the" (42 × 51 = 2,142)!</text>
+                  <text x="270" y="284" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#586e75">How do we downweight words that appear everywhere?</text>
+                </svg>
+              </col50>
+            </row>
+          </section>
+
+          <section>
+            <h3>TF-IDF: Downweighting Ubiquitous Words</h3>
+            <ul style="list-style-type: none; font-size: 25px; line-height: 1.42; width: 100%;">
+              <li class="fragment roll-in">
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; text-align: center; padding: 8px 14px; margin: 4px 0 8px 0;">
+                  $w_{i,j} = \text{tf}_{i,j}$ &mdash; <b>Term Frequency:</b> occurrences of word $i$ in document $j$
+                </blockquote>
+              </li>
+              <li class="fragment roll-in">
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; text-align: center; padding: 8px 14px; margin: 4px 0 8px 0;">
+                  $\displaystyle \text{idf}_i = -\log \prob{P}{w_i \mid D} = \log \frac{1}{\prob{P}{w_i \mid D}} = \log\!\left(\frac{N}{\text{df}_i}\right)$
+                  <div style="font-size: 19px; color: #586e75; margin-top: 2px;">$\text{df}_i =$ documents containing word $i$, $\quad N =$ total documents</div>
+                </blockquote>
+              </li>
+              <li class="fragment roll-in">
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; text-align: center; padding: 8px 14px; margin: 4px 0 8px 0;">
+                  $\displaystyle w_{i,j} = \text{tf}_{i,j} \times \log\!\left(\frac{N}{\text{df}_i}\right)$
+                </blockquote>
+              </li>
+            </ul>
+            <alert class="fragment roll-in" style="display: block; font-size: 22px; margin: 6px 30px 0 95px;">
+              A word in every document ($\text{df}_i = N$) gets $\log(N/N) = 0$ — automatically suppressing stop words and domain boilerplate!
+            </alert>
+          </section>
+
+          <section>
+            <h3>Capturing Local Order with $n$-Grams</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 21px; padding: 6px 14px;">
+              Replace single-word tokens with sliding windows of $n$ consecutive tokens: $P(w_t \mid w_{t-n+1}, \dots, w_{t-1})$
+            </blockquote>
+            <svg viewBox="0 0 1080 250" width="1040" style="display: block; margin: 8px auto;">
+              <text x="540" y="34" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#073642">Input Phrase:  "not good at all"  vs.  "good at not all"</text>
+              <!-- 1-gram -->
+              <rect x="24" y="54" width="320" height="170" rx="6" fill="#eee8d5"/>
+              <rect x="24" y="54" width="320" height="5" rx="2" fill="#dc322f"/>
+              <text x="184" y="80" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#dc322f">1-grams (Unigrams): |V| dims</text>
+              <text x="184" y="114" text-anchor="middle" font-family="monospace" font-size="13.5" fill="#073642">{"not", "good", "at", "all"}</text>
+              <text x="184" y="148" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#586e75">Exact tie! Loses negation scope</text>
+              <text x="184" y="198" text-anchor="middle" font-family="monospace" font-size="13.5" font-weight="bold" fill="#859900">Vocab: O(|V|) ≈ 10⁵</text>
+              <!-- 2-gram -->
+              <rect x="374" y="54" width="332" height="170" rx="6" fill="#eee8d5"/>
+              <rect x="374" y="54" width="332" height="5" rx="2" fill="#268bd2"/>
+              <text x="540" y="80" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#268bd2">2-grams (Bigrams): |V|² dims</text>
+              <text x="540" y="114" text-anchor="middle" font-family="monospace" font-size="13.5" fill="#073642">{"not good", "good at", "at all"}</text>
+              <text x="540" y="148" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#586e75">Distinguishes "not good" from "good"</text>
+              <text x="540" y="198" text-anchor="middle" font-family="monospace" font-size="13.5" font-weight="bold" fill="#b58900">Vocab: O(|V|²) ≈ 10¹⁰</text>
+              <!-- 3-gram -->
+              <rect x="736" y="54" width="320" height="170" rx="6" fill="#eee8d5"/>
+              <rect x="736" y="54" width="320" height="5" rx="2" fill="#cb4b16"/>
+              <text x="896" y="80" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#cb4b16">n-grams: |V|ⁿ Curse!</text>
+              <text x="896" y="114" text-anchor="middle" font-family="monospace" font-size="13" fill="#073642">{"not good at", "good at all"}</text>
+              <text x="896" y="148" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#586e75">Most phrases appear 0 times (sparse)</text>
+              <text x="896" y="198" text-anchor="middle" font-family="monospace" font-size="13.5" font-weight="bold" fill="#dc322f">3-gram: |V|³ ≈ 10¹⁵!</text>
+            </svg>
+            <alert class="fragment roll-in" style="display: block; font-size: 22px; margin: 6px 30px 0 95px;">
+              Beware of the exponent $|V|^n$: longer $n$-grams hit the Curse of Dimensionality immediately!
+            </alert>
+            <div class="slide-footer">
+              Explore corpus frequencies interactively at <a href="https://books.google.com/ngrams" target="_blank">Google Books Ngram Viewer</a>
+            </div>
+          </section>
+
+          <section data-background="figures/w2v_arrival_ft.png" data-background-size="contain">
+            <div style="background: rgba(253, 246, 227, 0.92); border-radius: 10px; padding: 18px 28px; box-shadow: 0 6px 20px rgba(0,43,54,0.16);">
+              <h3>Sparse Vectorization: Strengths &amp; Limits</h3>
+              <ol style="font-size: 24px; line-height: 1.5; text-align: left; margin-left: 28px;">
+                <li class="fragment roll-in"> ML models require numeric vectors; <b>one-hot encoding</b> (<code>1-in-|V|</code>) is the discrete starting point.
+                <li class="fragment roll-in"> <b>Bag-of-Words</b> counts and <b>TF-IDF</b> encode documents while downweighting stop words.
+                <li class="fragment roll-in"> <b>$n$-grams</b> recover short-range order, at an exponential $O(|V|^n)$ sparsity cost.
+                <li class="fragment roll-in"> Still missing: <b>semantic similarity</b> between individual words (<code>cat</code> vs. <code>kitten</code>)!
+              </ol>
+            </div>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 4: SEMANTIC MATRICES — CO-OCCURRENCE, PPMI, SVD & GLOVE           -->
+        <!-- ========================================================================= -->
+        <section>
+          <section data-background="figures/svd_diagram.png" data-background-size="contain">
+            <div style="background: rgba(253, 246, 227, 0.92); border-radius: 10px; padding: 18px 30px; display: inline-block; box-shadow: 0 6px 24px rgba(0,43,54,0.18);">
+              <h2 style="color: #073642; margin: 0 0 6px 0;">Semantic Matrix Factorization</h2>
+              <div style="font-size: 23px; color: #586e75;">Turning distributional co-occurrence tables into dense vectors</div>
+            </div>
+          </section>
+
+          <section>
+            <h3>Constructing the Co-Occurrence Matrix</h3>
+            <row style="align-items: center; gap: 16px;">
+              <col50>
+                <div class="emb-card" style="border-left: 5px solid #268bd2; margin-bottom: 10px;">
+                  <div style="font-weight: bold; color: #268bd2;">1. Word $\times$ Document ($\bm{X} \in \RR^{|V| \times K}$)</div>
+                  <div style="font-size: 18.5px; color: #073642; margin-top: 3px;">
+                    Asymmetric table counting how often word $i$ occurs inside document $j$ (captures broad <b>document topics</b>).
+                  </div>
+                </div>
+                <div class="emb-card" style="border-left: 5px solid #859900; margin-bottom: 10px;">
+                  <div style="font-weight: bold; color: #859900;">2. Word $\times$ Word ($\bm{C} \in \RR^{|V| \times |V|}$)</div>
+                  <div style="font-size: 18.5px; color: #073642; margin-top: 3px;">
+                    Slide a floating window of width $w \in \{4, 5, 6\}$ across text: $C_{ij}$ counts times words $i$ and $j$ appear in the same context!
+                  </div>
+                </div>
+                <alert style="display: block; font-size: 20px;">
+                  <b>Two traps:</b> stop words (<code>the</code>, <code>and</code>) AND frequent <b>domain boilerplate</b> (unknown in advance!) dominate raw counts!
+                </alert>
+              </col50>
+              <col50>
+                <svg viewBox="0 0 540 315" width="520" style="display: block; margin: 0 auto;">
+                  <text x="270" y="34" text-anchor="middle" font-family="sans-serif" font-size="15.5" font-weight="bold" fill="#073642">Symmetric Word × Word Counts C (Window w = ±2)</text>
+                  <g font-family="monospace" font-size="13.5" text-anchor="middle">
+                    <rect x="20" y="48" width="500" height="30" fill="#93a1a1"/>
+                    <text x="80" y="68" fill="#fdf6e3" font-weight="bold">w \ c</text>
+                    <text x="172" y="68" fill="#fdf6e3" font-weight="bold">the</text>
+                    <text x="260" y="68" fill="#fdf6e3" font-weight="bold">garlic</text>
+                    <text x="352" y="68" fill="#fdf6e3" font-weight="bold">spinach</text>
+                    <text x="452" y="68" fill="#fdf6e3" font-weight="bold">queen</text>
+
+                    <rect x="20" y="78" width="500" height="36" fill="#fbeec2" stroke="#93a1a1"/>
+                    <text x="80" y="101" font-weight="bold" fill="#dc322f">the</text>
+                    <text x="172" y="101" font-weight="bold" fill="#dc322f">190</text>
+                    <text x="260" y="101" font-weight="bold" fill="#dc322f">310</text>
+                    <text x="352" y="101" font-weight="bold" fill="#dc322f">295</text>
+                    <text x="452" y="101" font-weight="bold" fill="#dc322f">440</text>
+
+                    <rect x="20" y="114" width="500" height="36" fill="#eee8d5" stroke="#93a1a1"/>
+                    <text x="80" y="137" font-weight="bold" fill="#859900">garlic</text>
+                    <text x="172" y="137" font-weight="bold" fill="#dc322f">310</text>
+                    <text x="260" y="137" fill="#586e75">2</text>
+                    <text x="352" y="137" font-weight="bold" fill="#859900">48</text>
+                    <text x="452" y="137" fill="#93a1a1">0</text>
+
+                    <rect x="20" y="150" width="500" height="36" fill="#fdf6e3" stroke="#93a1a1"/>
+                    <text x="80" y="173" font-weight="bold" fill="#859900">spinach</text>
+                    <text x="172" y="173" font-weight="bold" fill="#dc322f">295</text>
+                    <text x="260" y="173" font-weight="bold" fill="#859900">48</text>
+                    <text x="352" y="173" fill="#586e75">0</text>
+                    <text x="452" y="173" fill="#93a1a1">0</text>
+
+                    <rect x="20" y="186" width="500" height="36" fill="#eee8d5" stroke="#93a1a1"/>
+                    <text x="80" y="209" font-weight="bold" fill="#268bd2">queen</text>
+                    <text x="172" y="209" font-weight="bold" fill="#dc322f">440</text>
+                    <text x="260" y="209" fill="#93a1a1">0</text>
+                    <text x="352" y="209" fill="#93a1a1">0</text>
+                    <text x="452" y="209" fill="#586e75">4</text>
+                  </g>
+                  <text x="270" y="254" text-anchor="middle" font-family="sans-serif" font-size="13.5" font-weight="bold" fill="#073642">Option A: Normalize context columns with TF-IDF</text>
+                  <text x="270" y="280" text-anchor="middle" font-family="sans-serif" font-size="13.5" font-weight="bold" fill="#268bd2">Option B (Cleaner): Compare against independence via PMI!</text>
+                </svg>
+              </col50>
+            </row>
+          </section>
+
+          <section>
+            <h3>Pointwise Mutual Information (PMI)</h3>
+            <row style="align-items: center; gap: 16px;">
+              <col55 style="width: 56%;">
+                <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 25px; padding: 8px 14px; margin-bottom: 10px;">
+                  Do focus word $w$ and context word $c$ co-occur <b>more than if independent</b>?
+                </blockquote>
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 23px; text-align: center; padding: 10px 14px;" class="fragment" data-fragment-index="0">
+                  $$\prob{PMI}{w, c} = \log_2 \frac{\prob{p}{c, w}}{\underbrace{\prob{p}{w}\,\prob{p}{c}}_{\text{independence baseline}}}$$
+                </blockquote>
+                <div class="emb-card fragment" data-fragment-index="5" style="border-left: 5px solid #859900; margin-top: 10px; font-size: 19px;">
+                  <b>Zero Test:</b> When $w$ and $c$ are statistically independent ($\prob{p}{c,w} = \prob{p}{w}\prob{p}{c}$), the ratio is $1$ so $\prob{PMI}{w,c} = \log_2(1) = 0$!
+                </div>
+              </col55>
+              <col45 style="width: 44%;">
+                <ul style="list-style-type: none; font-size: 21px; line-height: 1.35;">
+                  <li class="fragment roll-in" data-fragment-index="1">
+                    $\displaystyle \prob{PMI}{w, c} = \log_2 \frac{\prob{p}{c \mid w}}{\prob{p}{c}}$
+                  <li class="fragment roll-in" data-fragment-index="2">
+                    MLE plug-ins (Lectures 9–10): $\;\prob{p}{c} = \frac{\prob{count}{c}}{N}$
+                  <li class="fragment roll-in" data-fragment-index="3">
+                    $\displaystyle \prob{p}{c, w} = \frac{\prob{count}{c, w}}{N}, \qquad \prob{p}{w} = \frac{\prob{count}{w}}{N}$
+                  <li class="fragment roll-in" data-fragment-index="4">
+                    <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; text-align: center; font-size: 21px; padding: 8px 10px; margin-top: 6px;">
+                      $\displaystyle \prob{PMI}{w, c} = \log_2 \frac{\prob{count}{c, w} \times N}{\prob{count}{c} \times \prob{count}{w}}$
+                    </blockquote>
+                  </li>
+                </ul>
+              </col45>
+            </row>
+            <aside class="notes">
+              Remember MLE from Lecture 9 coin tosses and Lecture 10 Naive Bayes spam filters: we plug empirical counts divided by total corpus pairs N directly into the PMI ratio.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Positive PMI (PPMI) &amp; Rare-Word Bias</h3>
+            <row style="align-items: stretch; gap: 18px;">
+              <col50>
+                <div class="emb-card" style="height: 100%; border-top: 5px solid #268bd2;">
+                  <div style="font-weight: bold; color: #268bd2; font-size: 20px; margin-bottom: 6px;">Why Negative PMI Fails ($-\infty \text{ to } 0$)</div>
+                  <ul style="font-size: 19.5px; line-height: 1.38; margin-left: 20px;">
+                    <li class="fragment roll-in" data-fragment-index="0"> $\text{PMI} < 0$ means words co-occur <em>less</em> than chance — unreliable without astronomical corpora!
+                    <li class="fragment roll-in" data-fragment-index="1"> If $p(w_1)=10^{-6}$ and $p(w_2)=10^{-6}$, telling if $p(w_1,w_2)$ differs from $10^{-12}$ is hopeless.
+                    <li class="fragment roll-in" data-fragment-index="2"> Plus humans aren't good at quantifying degrees of "unrelatedness".
+                  </ul>
+                  <blockquote class="fragment roll-in" data-fragment-index="3" style="background-color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 20px; text-align: center; padding: 6px 10px; margin-top: 8px;">
+                    $\prob{PPMI}{w, c} = \max\!\big(\prob{PMI}{w, c},\; 0\big)$
+                  </blockquote>
+                </div>
+              </col50>
+              <col50>
+                <div class="emb-card" style="height: 100%; border-top: 5px solid #cb4b16;">
+                  <div style="font-weight: bold; color: #cb4b16; font-size: 20px; margin-bottom: 6px;">No Free Lunch: Rare-Word Amplification</div>
+                  <alert class="fragment roll-in" data-fragment-index="4" style="display: block; font-size: 19px; margin-bottom: 8px;">
+                    Stop words are normalized away in PPMI — but rare events explode!
+                  </alert>
+                  <ul style="font-size: 19.5px; line-height: 1.38; margin-left: 20px;">
+                    <li class="fragment roll-in" data-fragment-index="5"> A word appearing once alongside one neighbor gets a huge $\frac{N}{\text{count}(c)\,\text{count}(w)}$ spike.
+                    <li class="fragment roll-in" data-fragment-index="6"> <b>Fix 1 (Context Smoothing):</b> raise rare context probs via $P_\alpha(c) = \frac{\text{count}(c)^\alpha}{\sum_{c'}\text{count}(c')^\alpha}$ ($\alpha = 0.75$).
+                    <li class="fragment roll-in" data-fragment-index="7"> <b>Fix 2 (Add-1 / Laplace Smoothing):</b> add $+1$ to cell counts (Lecture 10!).
+                  </ul>
+                </div>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://aclanthology.org/Q15-1016/" target="_blank">Levy, Goldberg &amp; Dagan (TACL 2015): Improving Distributional Similarity with Lessons Learned from Word Embeddings</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Probability Ratios Encode Semantic Axes</h3>
+            <img src="figures/glove_ratio_table.svg" alt="GloVe ice vs steam probability ratio table" style="width: 98%; max-height: 280px; margin: 10px auto;">
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 8px 14px; margin-top: 10px;" class="fragment roll-in">
+              Individual conditionals $P(k \mid \text{ice}) \sim 10^{-4}$ look tiny — yet the <b>ratio</b> $\frac{P(k \mid \text{ice})}{P(k \mid \text{steam})}$ cancels shared noise (<code>water</code> $\approx 1.36$, <code>fashion</code> $\approx 0.96$) while recovering the physics of <b>solid</b> ($8.9$) vs. <b>gas</b> ($0.085$)!
+            </blockquote>
+            <div class="slide-footer">
+              <a href="https://nlp.stanford.edu/pubs/glove.pdf" target="_blank">Pennington, Socher &amp; Manning (EMNLP 2014): GloVe — Global Vectors for Word Representation</a>
+            </div>
+            <aside class="notes">
+              Point out the three states of matter (solid, liquid, gas — skipping plasma and dry-ice CO2!): pure co-occurrence probabilities know physics simply from how people write!
+            </aside>
+          </section>
+
+          <section>
+            <h3>GloVe: Global Vectors from Log-Ratios (2014)</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 21px; padding: 6px 14px;">
+              Require vector <b>differences</b> $\vec{w}_i - \vec{w}_j$ to encode probability <b>ratios</b> $P_{ik} / P_{jk}$:
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 8px 14px; margin-top: 8px;" class="fragment roll-in">
+              $F\!\big((\vec{w}_i - \vec{w}_j)^\top \tilde{\bm{w}}_k\big) = \frac{P_{ik}}{P_{jk}} \;\xrightarrow{F = \exp,\; X_{ik}=X_{ki}}\; \vec{w}_i^\top \tilde{\bm{w}}_k + b_i + \tilde{b}_k = \log X_{ik}$
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 8px 14px; margin-top: 8px;" class="fragment roll-in">
+              $\displaystyle {\cal J}_{\text{GloVe}} = \sum_{i,j=1}^{|V|} f(X_{ij})\Big(\underbrace{\vec{w}_i^\top \tilde{\bm{w}}_j + b_i + \tilde{b}_j}_{\text{bilateral linear fit}} - \log X_{ij}\Big)^2, \qquad f(x) = \min\!\left(1, \left(\frac{x}{x_{\max}}\right)^{3/4}\right)$
+            </blockquote>
+            <alert class="fragment roll-in" style="display: block; font-size: 21px; margin: 8px 30px 0 95px;">
+              Trains only on <b>non-zero</b> co-occurrence pairs $(i,j)$ while downweighting stop-word saturation via $f(X_{ij})$!
+            </alert>
+            <div class="slide-footer">
+              <a href="https://nlp.stanford.edu/pubs/glove.pdf" target="_blank">Pennington, Socher &amp; Manning (EMNLP 2014): GloVe</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Latent Semantic Analysis &amp; Low-Rank Structure</h3>
+            <row style="align-items: center; gap: 16px;">
+              <col50>
+                <svg viewBox="0 0 540 330" width="520" style="display: block; margin: 0 auto;">
+                  <text x="270" y="32" text-anchor="middle" font-family="sans-serif" font-size="15.5" font-weight="bold" fill="#073642">Block-Diagonal Topics Emerge Without Labels (LSA)</text>
+                  <!-- Permuted matrix grid -->
+                  <rect x="148" y="50" width="350" height="225" fill="#eee8d5" stroke="#586e75" stroke-width="1.5"/>
+                  <!-- Topic 1 block -->
+                  <rect x="150" y="52" width="114" height="72" fill="#268bd2" opacity="0.28" stroke="#268bd2" stroke-width="2"/>
+                  <g fill="#268bd2">
+                    <circle cx="172" cy="70" r="5"/><circle cx="198" cy="72" r="6"/><circle cx="238" cy="68" r="4"/>
+                    <circle cx="182" cy="96" r="5"/><circle cx="216" cy="92" r="6"/><circle cx="246" cy="108" r="5"/>
+                  </g>
+                  <!-- Topic 2 block -->
+                  <rect x="266" y="126" width="114" height="72" fill="#859900" opacity="0.28" stroke="#859900" stroke-width="2"/>
+                  <g fill="#859900">
+                    <circle cx="288" cy="144" r="5"/><circle cx="322" cy="148" r="6"/><circle cx="356" cy="140" r="5"/>
+                    <circle cx="298" cy="176" r="6"/><circle cx="338" cy="178" r="5"/><circle cx="364" cy="166" r="4"/>
+                  </g>
+                  <!-- Topic 3 block -->
+                  <rect x="382" y="200" width="114" height="73" fill="#cb4b16" opacity="0.28" stroke="#cb4b16" stroke-width="2"/>
+                  <g fill="#cb4b16">
+                    <circle cx="404" cy="218" r="6"/><circle cx="442" cy="222" r="5"/><circle cx="472" cy="214" r="5"/>
+                    <circle cx="416" cy="252" r="5"/><circle cx="456" cy="248" r="6"/><circle cx="478" cy="256" r="4"/>
+                  </g>
+                  <!-- Row labels -->
+                  <g font-family="sans-serif" font-size="12.5" text-anchor="end" font-weight="bold">
+                    <text x="140" y="76" fill="#268bd2">immigration, amnesty</text>
+                    <text x="140" y="96" fill="#268bd2">aliens, border</text>
+                    <text x="140" y="152" fill="#859900">air, pollution</text>
+                    <text x="140" y="172" fill="#859900">environmental, power</text>
+                    <text x="140" y="226" fill="#cb4b16">space, launch</text>
+                    <text x="140" y="246" fill="#cb4b16">orbit, boosters</text>
+                  </g>
+                  <text x="323" y="298" text-anchor="middle" font-family="sans-serif" font-size="13.5" font-weight="bold" fill="#586e75">Permuted Documents → Latent Concept Blocks</text>
+                </svg>
+              </col50>
+              <col50 style="text-align: center;">
+                <img src="figures/matrix_factorization.svg" alt="Low-rank matrix factorization" style="max-height: 235px; width: 96%; margin: 4px auto;">
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 19.5px; text-align: left; padding: 8px 12px; margin-top: 8px;">
+                  Assuming $|V| \times |V|$ counts live near a $k$-dimensional manifold ($k \approx 100 \ll 10^5$), low-rank factorization yields <b>dense</b> vectors where $\vec{v}_i^\top \vec{v}_j \approx M_{ij}$.
+                </blockquote>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://doi.org/10.1002/(SICI)1097-4571(199009)41:6%3C391::AID-ASI1%3E3.0.CO;2-9" target="_blank">Deerwester et al. (1990): Indexing by Latent Semantic Analysis</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Truncated SVD &amp; Cosine Similarity</h3>
+            <img src="figures/matrix_factorization_svd.svg" alt="Truncated SVD" style="max-height: 205px; width: 88%; margin: 4px auto;">
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 20px; text-align: center; padding: 6px 12px; margin-top: 4px;">
+              $\bm{M} \approx \bm{U}_k \bm{\Sigma}_k \bm{V}_k^\top \implies \bm{W}_{\text{words}} = \bm{U}_k \bm{\Sigma}_k \in \RR^{|V| \times k}$ (dropping small singular values turns sparse counts dense!)
+            </blockquote>
+            <row style="gap: 14px; margin-top: 8px;">
+              <col50>
+                <div class="emb-card" style="border-left: 5px solid #268bd2; font-size: 18.5px;">
+                  <b>Curse of Dimensionality (Lecture 7):</b> in $d > 20$, raw vector lengths distort distances — normalize onto the unit sphere and use <b>cosine similarity</b> $\cos(\vec{v}_i, \vec{v}_j)$!
+                </div>
+              </col50>
+              <col50>
+                <div class="emb-card" style="border-left: 5px solid #dc322f; font-size: 18.5px;">
+                  <b>Scaling Wall:</b> Exact SVD on a $|V| \times |V|$ table ($|V| \sim 10^5$) costs $O(|V|^3)$ (or $O(|V|^2 k)$ truncated) and must recompute on new corpora!
+                </div>
+              </col50>
+            </row>
+          </section>
+
+          <!-- Interactive Demo 1: Co-Occurrence, PPMI & Truncated SVD Explorer -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 2px 0 6px 0; font-size: 38px; line-height: 1.1;">Co-Occurrence, PPMI &amp; Truncated SVD Explorer</h3>
+            <div data-prevent-swipe style="position: relative; z-index: 25; display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 auto; user-select: none;">
+
+              <div id="emb-svd-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 5px 14px; box-sizing: border-box; font-size: 13.5px; color: #073642; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                Switch weighting from Raw Counts → TF-IDF → PMI → PPMI → Smoothed PPMI and click any word to inspect its 2D SVD coordinates &amp; nearest neighbors.
+              </div>
+
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="emb-ppmi-svd-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: #fdf6e3; box-sizing: border-box; cursor: pointer;"></canvas>
+              </div>
+
+              <div data-prevent-swipe style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 13px; color: #586e75; gap: 10px; white-space: nowrap;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <label><b>Matrix Mode:</b>
+                    <select id="emb-svd-mode" style="padding: 2px 6px; border: 1px solid #268bd2; border-radius: 4px; background: #fff; font-size: 12px;">
+                      <option value="raw">Raw Co-Occurrence Counts</option>
+                      <option value="tfidf">TF-IDF Weighted Matrix</option>
+                      <option value="pmi">PMI (Unclipped)</option>
+                      <option value="ppmi" selected>PPMI (Positive PMI)</option>
+                      <option value="sppmi">Smoothed PPMI (Add-1 / α=0.75)</option>
+                    </select>
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 5px;">
+                    <b>Window w:</b>
+                    <input type="range" id="emb-svd-win" min="1" max="4" step="1" value="2" style="width: 90px; cursor: pointer;">
+                    <span id="emb-svd-win-val" style="font-family: monospace; color: #cb4b16; min-width: 24px;">±2</span>
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 4px; cursor: pointer;">
+                    <input type="checkbox" id="emb-svd-norm" checked>
+                    <b>Unit Cosine Normalize</b>
+                  </label>
+                  <button id="emb-svd-reset" style="cursor: pointer; padding: 3px 9px; border: none; border-radius: 4px; background: #93a1a1; color: #fdf6e3; font-weight: bold; font-size: 12px;">Reset</button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; font-family: monospace; font-size: 12px;">
+                  <span>Focus: <b id="emb-svd-focus-val" style="color: #cb4b16;">spinach</b></span>
+                  <span>Top Neighbors: <b id="emb-svd-nbr-val" style="color: #859900;">chard, garlic, rice</b></span>
                 </div>
               </div>
             </div>
+            <aside class="notes">
+              1. Start on "Raw Co-Occurrence Counts" and uncheck "Unit Cosine Normalize": point out how stop words ("the", "is") dominate the matrix in bright orange and pull clusters toward them.<br>
+              2. Switch Matrix Mode to "PPMI": "the" and "is" collapse to 0 and clean semantic clusters (leafy greens from Ong Choi, royalty, ML compute) separate cleanly.<br>
+              3. Toggle "Unit Cosine Normalize" (Curse of Dimensionality callback) and click words like "spinach", "king", or "gpu" to inspect exact 1:1 geometric neighborhoods.
+            </aside>
+          </section>
+        </section>
 
+        <!-- ========================================================================= -->
+        <!-- SECTION 5: WORD2VEC STEP-BY-STEP — CBOW, SKIP-GRAM & SGNS                 -->
+        <!-- ========================================================================= -->
+        <section>
+          <section data-background="figures/w2v_arrival_gif.gif" data-background-size="cover">
+            <div style="background: rgba(253, 246, 227, 0.90); border-radius: 10px; padding: 18px 30px; display: inline-block; box-shadow: 0 6px 24px rgba(0,43,54,0.22);">
+              <h2 style="color: #073642; margin: 0 0 6px 0;">Word2Vec</h2>
+              <div style="font-size: 23px; color: #586e75;">Predictive dense embeddings in streaming $O((K+1)d)$ time</div>
+            </div>
+          </section>
 
-            <script type="text/javascript">
-              // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
-              var header = $('#header').html();
-              if ( window.location.search.match( /print-pdf/gi ) ) {
-                  Reveal.addEventListener( 'ready', function( event ) {
-                      $('.slide-background').append(header);
-                  });
-              }
-              else {
-                  $('div.reveal').append(header);
-              }
-            </script>
+          <section>
+            <div id="header-right" style="top: -72px; right: 10px; text-align: center;">
+              <a href="https://arxiv.org/abs/1301.3781" target="_blank"><img src="figures/TomasMikolov.png" alt="Tomas Mikolov" style="width: 82px; border-radius: 4px; margin: 0;"></a>
+              <div style="font-size: 12px; color: #586e75; font-weight: bold;">Tomas Mikolov</div>
+            </div>
+            <h3 style="font-size: 47px;">Word2Vec: A Context-Predicting Linear Autoencoder</h3>
+            <svg viewBox="0 0 1080 300" width="1040" style="display: block; margin: 6px auto;">
+              <defs>
+                <marker id="w2v-arr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1 L 10 5 L 0 9 z" fill="#586e75"/>
+                </marker>
+              </defs>
+              <!-- Box 1: Linear Autoencoder / PCA (borderless panel) -->
+              <rect x="10" y="12" width="320" height="276" rx="8" fill="#eee8d5"/>
+              <text x="170" y="38" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#586e75">1. Linear Autoencoder (PCA)</text>
+              <rect x="44" y="66" width="46" height="150" rx="4" fill="#fdf6e3" stroke="#586e75" stroke-width="1.5"/>
+              <text x="67" y="145" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#073642">wₜ</text>
+              <text x="67" y="236" text-anchor="middle" font-family="monospace" font-size="12" fill="#586e75">ℝ^|V|</text>
+              <line x1="94" y1="141" x2="138" y2="141" stroke="#586e75" stroke-width="2.2" marker-end="url(#w2v-arr)"/>
+              <text x="116" y="130" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#268bd2">Wₑᵀ</text>
+              <rect x="144" y="104" width="48" height="74" rx="4" fill="#268bd2" opacity="0.22" stroke="#268bd2" stroke-width="2"/>
+              <text x="168" y="146" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#268bd2">vₜ</text>
+              <text x="168" y="198" text-anchor="middle" font-family="monospace" font-size="12" fill="#268bd2">ℝ^d</text>
+              <line x1="196" y1="141" x2="240" y2="141" stroke="#586e75" stroke-width="2.2" marker-end="url(#w2v-arr)"/>
+              <text x="218" y="130" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#859900">W_dᵀ</text>
+              <rect x="246" y="66" width="46" height="150" rx="4" fill="#fdf6e3" stroke="#586e75" stroke-width="1.5"/>
+              <text x="269" y="145" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#073642">wₜ</text>
+              <text x="170" y="268" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#dc322f" font-weight="bold">Reconstructing wₜ ignores context!</text>
 
+              <!-- Box 2: CBOW (borderless panel) -->
+              <rect x="356" y="12" width="352" height="276" rx="8" fill="#eee8d5"/>
+              <text x="532" y="38" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#268bd2">2. CBOW (Context → Target)</text>
+              <g font-family="monospace" font-size="13" font-weight="bold" fill="#073642">
+                <rect x="378" y="58" width="66" height="32" rx="4" fill="#fdf6e3" stroke="#268bd2"/><text x="411" y="79" text-anchor="middle">w(t-2)</text>
+                <rect x="378" y="98" width="66" height="32" rx="4" fill="#fdf6e3" stroke="#268bd2"/><text x="411" y="119" text-anchor="middle">w(t-1)</text>
+                <rect x="378" y="152" width="66" height="32" rx="4" fill="#fdf6e3" stroke="#268bd2"/><text x="411" y="173" text-anchor="middle">w(t+1)</text>
+                <rect x="378" y="192" width="66" height="32" rx="4" fill="#fdf6e3" stroke="#268bd2"/><text x="411" y="213" text-anchor="middle">w(t+2)</text>
+              </g>
+              <g stroke="#268bd2" stroke-width="2" marker-end="url(#w2v-arr)">
+                <line x1="448" y1="74" x2="500" y2="132"/><line x1="448" y1="114" x2="500" y2="138"/>
+                <line x1="448" y1="168" x2="500" y2="144"/><line x1="448" y1="208" x2="500" y2="150"/>
+              </g>
+              <rect x="506" y="106" width="52" height="72" rx="5" fill="#268bd2" opacity="0.22" stroke="#268bd2" stroke-width="2"/>
+              <text x="532" y="147" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#268bd2">v_ctx</text>
+              <line x1="562" y1="142" x2="612" y2="142" stroke="#cb4b16" stroke-width="2.5" marker-end="url(#w2v-arr)"/>
+              <rect x="618" y="116" width="68" height="52" rx="5" fill="#fbeec2" stroke="#cb4b16" stroke-width="2"/>
+              <text x="652" y="147" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#cb4b16">w(t)</text>
+              <text x="532" y="268" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#268bd2" font-weight="bold">Linear sum of context rows → softmax</text>
+
+              <!-- Box 3: Skip-Gram (borderless panel) -->
+              <rect x="734" y="12" width="336" height="276" rx="8" fill="#eee8d5"/>
+              <text x="902" y="38" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#859900">3. Skip-Gram (Target → Context)</text>
+              <rect x="752" y="116" width="64" height="52" rx="5" fill="#fbeec2" stroke="#cb4b16" stroke-width="2"/>
+              <text x="784" y="147" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#cb4b16">w(t)</text>
+              <line x1="820" y1="142" x2="862" y2="142" stroke="#859900" stroke-width="2.5" marker-end="url(#w2v-arr)"/>
+              <rect x="868" y="106" width="52" height="72" rx="5" fill="#859900" opacity="0.22" stroke="#859900" stroke-width="2"/>
+              <text x="894" y="147" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#859900">vₜ</text>
+              <g stroke="#859900" stroke-width="2" marker-end="url(#w2v-arr)">
+                <line x1="924" y1="132" x2="974" y2="74"/><line x1="924" y1="138" x2="974" y2="114"/>
+                <line x1="924" y1="144" x2="974" y2="168"/><line x1="924" y1="150" x2="974" y2="208"/>
+              </g>
+              <g font-family="monospace" font-size="13" font-weight="bold" fill="#073642">
+                <rect x="980" y="58" width="66" height="32" rx="4" fill="#eee8d5" stroke="#859900"/><text x="1013" y="79" text-anchor="middle">w(t-2)</text>
+                <rect x="980" y="98" width="66" height="32" rx="4" fill="#eee8d5" stroke="#859900"/><text x="1013" y="119" text-anchor="middle">w(t-1)</text>
+                <rect x="980" y="152" width="66" height="32" rx="4" fill="#eee8d5" stroke="#859900"/><text x="1013" y="173" text-anchor="middle">w(t+1)</text>
+                <rect x="980" y="192" width="66" height="32" rx="4" fill="#eee8d5" stroke="#859900"/><text x="1013" y="213" text-anchor="middle">w(t+2)</text>
+              </g>
+              <text x="902" y="268" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#859900" font-weight="bold">No hidden nonlinearity — pure linear bottleneck!</text>
+            </svg>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 20px; text-align: center; padding: 6px 14px; margin-top: 6px;">
+              Remember PCA &amp; linear autoencoders (Lectures 6 &amp; 14): drop the nonlinearity and train $\bm{W}_e \in \RR^{|V| \times d}, \bm{W}_d \in \RR^{d \times |V|}$ to predict <b>neighboring words</b> instead of self-identity!
+            </blockquote>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1301.3781" target="_blank">Mikolov et al. (ICLR 2013): Efficient Estimation of Word Representations in Vector Space</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Step 1: Sparse Encoder Lookup vs. Dense Decoder</h3>
+            <svg viewBox="0 0 1080 285" width="1040" style="display: block; margin: 4px auto;">
+              <line x1="540" y1="16" x2="540" y2="268" stroke="#93a1a1" stroke-width="1.2" stroke-dasharray="5,4"/>
+              <text x="269" y="34" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#268bd2">Encoder: Wₑᵀ wᵢ  =  O(1) Column Lookup!</text>
+              <!-- W_e^T matrix (d x |V|) -->
+              <rect x="34" y="54" width="248" height="92" rx="4" fill="#eee8d5" stroke="#586e75" stroke-width="1.5"/>
+              <rect x="132" y="54" width="26" height="92" fill="#268bd2" opacity="0.35" stroke="#268bd2" stroke-width="2"/>
+              <text x="145" y="106" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#268bd2">vᵢ</text>
+              <text x="158" y="166" text-anchor="middle" font-family="monospace" font-size="13" fill="#586e75">Wₑᵀ ∈ ℝ^(d × |V|)</text>
+              <text x="296" y="104" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="bold" fill="#073642">×</text>
+              <!-- one-hot column vector w_i -->
+              <rect x="312" y="50" width="32" height="172" rx="4" fill="#eee8d5" stroke="#586e75" stroke-width="1.5"/>
+              <rect x="312" y="122" width="32" height="24" fill="#cb4b16"/>
+              <text x="328" y="72" text-anchor="middle" font-family="monospace" font-size="12" fill="#586e75">0</text>
+              <text x="328" y="139" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#fdf6e3">1</text>
+              <text x="328" y="205" text-anchor="middle" font-family="monospace" font-size="12" fill="#586e75">0</text>
+              <text x="328" y="238" text-anchor="middle" font-family="monospace" font-size="12" fill="#cb4b16">wᵢ</text>
+              <text x="364" y="104" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="bold" fill="#073642">=</text>
+              <rect x="384" y="54" width="32" height="92" rx="4" fill="#268bd2" opacity="0.28" stroke="#268bd2" stroke-width="2"/>
+              <text x="400" y="106" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#268bd2">vᵢ</text>
+              <text x="470" y="96" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#859900">Zeros skip</text>
+              <text x="470" y="114" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#859900">|V|−1 cols!</text>
+              <text x="269" y="262" text-anchor="middle" font-family="sans-serif" font-size="13.5" font-weight="bold" fill="#073642">No matrix multiply — just index row i of Wₑ!</text>
+
+              <text x="811" y="34" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#cb4b16">Decoder: W_dᵀ vᵢ  =  O(|V|·d) Dense Bottleneck!</text>
+              <!-- W_d^T matrix (|V| x d) -->
+              <rect x="572" y="50" width="112" height="172" rx="4" fill="#eee8d5" stroke="#586e75" stroke-width="1.5"/>
+              <rect x="572" y="150" width="112" height="24" fill="#cb4b16" opacity="0.28" stroke="#cb4b16" stroke-width="2"/>
+              <text x="628" y="167" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#cb4b16">u_jᵀ (target j)</text>
+              <text x="628" y="238" text-anchor="middle" font-family="monospace" font-size="12.5" fill="#586e75">W_dᵀ ∈ ℝ^(|V| × d)</text>
+              <text x="700" y="128" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="bold" fill="#073642">×</text>
+              <rect x="718" y="82" width="32" height="92" rx="4" fill="#268bd2" opacity="0.28" stroke="#268bd2" stroke-width="2"/>
+              <text x="734" y="133" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#268bd2">vᵢ</text>
+              <text x="768" y="128" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="bold" fill="#073642">=</text>
+              <rect x="788" y="50" width="42" height="172" rx="4" fill="#fbeec2" stroke="#cb4b16" stroke-width="1.8"/>
+              <rect x="788" y="150" width="42" height="24" fill="#cb4b16"/>
+              <text x="809" y="167" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#fdf6e3">≈ 1</text>
+              <text x="809" y="82" text-anchor="middle" font-family="monospace" font-size="11.5" fill="#586e75">≈ 0</text>
+              <text x="952" y="102" text-anchor="middle" font-family="sans-serif" font-size="13.5" font-weight="bold" fill="#dc322f">Must score ALL |V|</text>
+              <text x="952" y="122" text-anchor="middle" font-family="sans-serif" font-size="13.5" font-weight="bold" fill="#dc322f">columns for softmax!</text>
+              <text x="952" y="160" text-anchor="middle" font-family="sans-serif" font-size="12.5" fill="#586e75">Separate Wₑ &amp; W_d</text>
+              <text x="952" y="178" text-anchor="middle" font-family="sans-serif" font-size="12.5" fill="#586e75">avoids high vᵢᵀvᵢ</text>
+              <text x="952" y="196" text-anchor="middle" font-family="sans-serif" font-size="12.5" fill="#586e75">self-repeat bias</text>
+              <text x="811" y="262" text-anchor="middle" font-family="sans-serif" font-size="13.5" font-weight="bold" fill="#073642">Dense vector × dense matrix costs O(|V|·d)!</text>
+            </svg>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 20.5px; text-align: center; padding: 6px 14px; margin-top: 6px;" class="fragment roll-in">
+              <b>Key insight:</b> $\vec{v}_i = \bm{W}_e^\top \vec{w}_i$ is trivial ($O(1)$), whereas scoring every word $\bm{W}_d^\top \vec{v}_i$ for Softmax requires $O(|V|\cdot d)$ operations!
+            </blockquote>
+          </section>
+
+          <section>
+            <h3>Step 2: Continuous Bag of Words (CBOW)</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 21px; padding: 6px 14px;">
+              Window of $5$: given context $(w_{t-2}, w_{t-1}, w_{t+1}, w_{t+2})$, predict center word $w_t$ (index $j$):
+            </blockquote>
+            <div style="font-size: 22px; margin-top: 8px; line-height: 1.4;">
+              <div class="fragment roll-in" data-fragment-index="0">
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; text-align: center; padding: 8px 10px; margin-bottom: 8px;">
+                  <b>Distributive Multi-Hot Trick:</b><br>
+                  $\vec{v}_{\text{ctx}} = \bm{W}_e^\top \vec{w}_{t-2} + \bm{W}_e^\top \vec{w}_{t-1} + \bm{W}_e^\top \vec{w}_{t+1} + \bm{W}_e^\top \vec{w}_{t+2} = \bm{W}_e^\top \underbrace{(\vec{w}_{t-2} + \vec{w}_{t-1} + \vec{w}_{t+1} + \vec{w}_{t+2})}_{\text{single binary vector } \Rightarrow \text{ sum 4 rows of } \bm{W}_e!}$
+                </blockquote>
+              </div>
+              <div class="fragment roll-in" data-fragment-index="1">
+                <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; text-align: center; padding: 8px 10px; margin-bottom: 8px;">
+                  $\displaystyle \hat{y}_j = \frac{\exp\!\big(\vec{v}_{\text{ctx}}^\top \vec{u}_j\big)}{\sum_{k=1}^{|V|} \exp\!\big(\vec{v}_{\text{ctx}}^\top \vec{u}_k\big)}, \qquad {\cal L}_{\text{CE}} = -\log \hat{y}_j, \qquad \vec{u}_k = (\bm{W}_d)_{:,k}$
+                </blockquote>
+              </div>
+            </div>
+            <row style="gap: 14px; margin-top: 6px;">
+              <col50 class="fragment roll-in" data-fragment-index="2">
+                <div class="emb-card" style="border-left: 5px solid #859900; font-size: 18.5px;">
+                  <b>Where is the embedding dictionary?</b> After SGD, row $i$ of $\bm{W}_e \in \RR^{|V| \times d}$ <em>is</em> the dense vector for word $i$!
+                </div>
+              </col50>
+              <col50 class="fragment roll-in" data-fragment-index="3">
+                <div class="emb-card" style="border-left: 5px solid #268bd2; font-size: 18.5px;">
+                  <b>CBOW works as well as Skip-Gram!</b> A silly gradient/averaging bug in the original <code>word2vec.c</code> made CBOW look weaker — <a href="https://arxiv.org/abs/2012.15332" target="_blank">kōan (2020)</a> fixed it and matched Skip-Gram!
+                </div>
+              </col50>
+            </row>
+            <aside class="notes">
+              CBOW itself has no representational flaw — both naive CBOW and naive Skip-Gram share the same O(|V|·d) full-softmax denominator bottleneck solved next by Negative Sampling. The implementation bug exposed in kōan (arXiv:2012.15332) caused people to believe Skip-Gram was intrinsically better when properly implemented CBOW matches it.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Step 3: Skip-Gram &amp; The Softmax Bottleneck</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 21px; padding: 6px 14px;">
+              Flip the direction: from a single target $\vec{w}_t \xrightarrow{\bm{W}_e^\top} \vec{v}_t$, predict every context word $w_c \in {\cal C}(t)$:
+            </blockquote>
+            <div style="font-size: 22px; margin-top: 8px;">
+              <blockquote class="fragment roll-in" data-fragment-index="0" style="background-color: #eee8d5; width: 100%; box-sizing: border-box; text-align: center; padding: 8px 12px; margin-bottom: 8px;">
+                $\displaystyle P(w_c \mid w_t) = \frac{\exp\!\big(\vec{v}_t^\top \vec{u}_c\big)}{\underbrace{\sum_{k=1}^{|V|} \exp\!\big(\vec{v}_t^\top \vec{u}_k\big)}_{\mathbf{O(|V|\cdot d)} \text{ over } |V| \sim 10^6 \text{ words!}}}, \qquad {\cal L}_{\text{SG}} = -\sum_{t=1}^{T}\sum_{\substack{-m \le j \le m \\ j \neq 0}} \log P(w_{t+j} \mid w_t)$
+              </blockquote>
+              <blockquote class="fragment roll-in" data-fragment-index="1" style="background-color: #eee8d5; width: 100%; box-sizing: border-box; text-align: center; padding: 8px 12px; margin-bottom: 8px;">
+                <b>Reverse-Mode AD Gradient (Lecture 18):</b> $\quad \displaystyle \frac{\partial {\cal L}_{\text{SG}}}{\partial \vec{v}_t} = -\underbrace{\vec{u}_c}_{\text{pull positive}} + \underbrace{\sum_{k=1}^{|V|} P(w_k \mid w_t)\,\vec{u}_k}_{\text{push ALL } |V| \text{ words!}}$
+              </blockquote>
+            </div>
+            <alert class="fragment roll-in" data-fragment-index="2" style="display: block; font-size: 21px; margin: 6px 30px 0 95px;">
+              In both CBOW and Skip-Gram, full Softmax forward pass AND backward AD touch all $10^6$ rows of $\bm{W}_d$ on every token!
+            </alert>
+          </section>
+
+          <section>
+            <h3>Step 4: Skip-Gram with Negative Sampling (SGNS)</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 20px; padding: 6px 14px;">
+              Example window: <code>"... a teaspoon of <b>apricot</b> jam ..."</code> &mdash; turn $|V|$-way softmax into binary Logistic Regression (Lecture 11)!
+            </blockquote>
+            <row style="gap: 14px; margin-top: 6px;">
+              <col45 style="width: 44%;">
+                <div class="emb-card fragment roll-in" data-fragment-index="0" style="border-left: 5px solid #859900; font-size: 18px; margin-bottom: 8px; padding: 8px 10px;">
+                  <b>Positives ($D=1$, real context):</b><br>
+                  <code>(apricot, teaspoon)</code>, <code>(apricot, jam)</code>, <code>(apricot, of)</code>, <code>(apricot, a)</code>
+                </div>
+                <div class="emb-card fragment roll-in" data-fragment-index="1" style="border-left: 5px solid #dc322f; font-size: 18px; padding: 8px 10px;">
+                  <b>$K$ Noise Negatives ($D=0$, $n_k \sim P_{0.75}$):</b><br>
+                  <code>(apricot, pizza)</code>, <code>(apricot, yummy)</code>, <code>(apricot, freeze)</code>
+                </div>
+              </col45>
+              <col55 style="width: 56%;">
+                <blockquote class="fragment roll-in" data-fragment-index="2" style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 19px; text-align: center; padding: 7px 10px; margin-bottom: 8px;">
+                  $P(D=1 \mid w_t, w_c) = \sigma(\vec{v}_t^\top \vec{u}_c) = \dfrac{1}{1 + e^{-\vec{v}_t^\top \vec{u}_c}}$<br>
+                  $P(D=0 \mid w_t, w_n) = 1 - \sigma(\vec{v}_t^\top \vec{u}_n) = \dfrac{e^{-\vec{v}_t^\top \vec{u}_n}}{1 + e^{-\vec{v}_t^\top \vec{u}_n}} = \sigma(-\vec{v}_t^\top \vec{u}_n)$
+                </blockquote>
+                <blockquote class="fragment roll-in" data-fragment-index="3" style="background-color: #eee8d5; border-left: 5px solid #cb4b16; width: 100%; box-sizing: border-box; font-size: 19.5px; text-align: center; padding: 7px 10px;">
+                  $\displaystyle \ell_{\text{SGNS}} = \log \sigma(\vec{v}_t^\top \vec{u}_c) + \sum_{k=1}^K \log \sigma(-\vec{v}_t^\top \vec{u}_{n_k})$
+                </blockquote>
+              </col55>
+            </row>
+            <alert class="fragment roll-in" data-fragment-index="4" style="display: block; font-size: 21px; margin: 8px 30px 0 95px;">
+              Per-pair work drops from $O(|V|\cdot d)$ ($\sim 10^6 d$) to just $\mathbf{O((K+1)d)}$ vector-vector dot products ($K \approx 5\text{–}20$)!
+            </alert>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1310.4546" target="_blank">Mikolov et al. (NeurIPS 2013): Distributed Representations of Words and Phrases and their Compositionality</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Why SGNS Works: Self-Supervision &amp; Implicit PMI</h3>
+            <row style="gap: 16px; align-items: stretch;">
+              <col50>
+                <div class="emb-card" style="height: 100%; border-top: 5px solid #268bd2;">
+                  <div style="font-weight: bold; color: #268bd2; font-size: 20px; margin-bottom: 6px;">Metric &amp; Self-Supervised Learning</div>
+                  <ul style="font-size: 18.5px; line-height: 1.38; margin-left: 18px;">
+                    <li class="fragment roll-in" data-fragment-index="0"> <b>Contrastive Pull vs. Push:</b> positives pull $\vec{v}_t, \vec{u}_c$ together; negatives push random words apart so representations don't collapse!
+                    <li class="fragment roll-in" data-fragment-index="1"> <b>Zero Human Labels:</b> raw sentence windows manufacture their own supervised pairs — <em>self-supervised learning</em>!
+                    <li class="fragment roll-in" data-fragment-index="2"> <b>Warm-Start Tip:</b> initializes downstream project classifiers instead of training from sparse BoW.
+                  </ul>
+                </div>
+              </col50>
+              <col50>
+                <div class="emb-card" style="height: 100%; border-top: 5px solid #859900;">
+                  <div style="font-weight: bold; color: #859900; font-size: 20px; margin-bottom: 6px;">Grand Unification (Levy &amp; Goldberg, 2014)</div>
+                  <div class="fragment roll-in" data-fragment-index="3" style="font-size: 18.5px; color: #073642; line-height: 1.38;">
+                    Differentiating expected corpus loss $\mathcal{L}_{\text{SGNS}}$ wrt $s = \vec{v}_t^\top \vec{u}_c$ and setting $\partial\mathcal{L}/\partial s = 0$:
+                  </div>
+                  <blockquote class="fragment roll-in" data-fragment-index="4" style="background-color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 17.5px; text-align: center; padding: 6px 8px; margin: 8px 0;">
+                    $\#(w_t, w_c)\,\sigma(-s) = K\,\#(w_t)\,P_{0.75}(w_c)\,\sigma(s)$<br>
+                    $\displaystyle \implies \vec{v}_t^\top \vec{u}_c = \log \frac{P(w_t, w_c)}{P(w_t)\,P_{0.75}(w_c)} - \log K$
+                  </blockquote>
+                  <div class="fragment roll-in" data-fragment-index="5" style="font-size: 18.5px; font-weight: bold; color: #859900;">
+                    SGNS implicitly factors a shifted PMI matrix in streaming $O((K+1)d)$ time!
+                  </div>
+                </div>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://papers.nips.cc/paper/2014/hash/feab05aa91085b7a8012516bc3533958-Abstract.html" target="_blank">Levy &amp; Goldberg (NeurIPS 2014): Neural Word Embedding as Implicit Matrix Factorization</a>
+            </div>
+          </section>
+
+          <!-- Interactive Demo 2: Live SGNS Trainer -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 2px 0 6px 0; font-size: 38px; line-height: 1.1;">Skip-Gram with Negative Sampling Live Trainer</h3>
+            <div data-prevent-swipe style="position: relative; z-index: 25; display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 auto; user-select: none;">
+
+              <div id="emb-sgns-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 5px 14px; box-sizing: border-box; font-size: 13.5px; color: #073642; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                Step or play SGNS updates on "... a teaspoon of apricot jam ..." — try K = 0 to see vectors collapse without negative samples!
+              </div>
+
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="emb-sgns-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: #fdf6e3; box-sizing: border-box; cursor: pointer;"></canvas>
+              </div>
+
+              <div data-prevent-swipe style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 13px; color: #586e75; gap: 10px; white-space: nowrap;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <button id="emb-sgns-play" style="cursor: pointer; padding: 3px 10px; border: none; border-radius: 4px; background: #cb4b16; color: #fdf6e3; font-weight: bold; font-size: 12px;">Play</button>
+                  <button id="emb-sgns-step" style="cursor: pointer; padding: 3px 10px; border: none; border-radius: 4px; background: #268bd2; color: #fdf6e3; font-weight: bold; font-size: 12px;">Step 1 Pair</button>
+                  <button id="emb-sgns-burst" style="cursor: pointer; padding: 3px 10px; border: none; border-radius: 4px; background: #859900; color: #fdf6e3; font-weight: bold; font-size: 12px;">Train 100 Steps</button>
+                  <button id="emb-sgns-reset" style="cursor: pointer; padding: 3px 9px; border: none; border-radius: 4px; background: #93a1a1; color: #fdf6e3; font-weight: bold; font-size: 12px;">Reset</button>
+                  <label style="display: inline-flex; align-items: center; gap: 5px; margin-left: 6px;">
+                    <b>Negatives K:</b>
+                    <input type="range" id="emb-sgns-k" min="0" max="6" step="1" value="3" style="width: 90px; cursor: pointer;">
+                    <span id="emb-sgns-k-val" style="font-family: monospace; color: #dc322f; min-width: 16px;">3</span>
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 5px;">
+                    <b>LR η:</b>
+                    <input type="range" id="emb-sgns-lr" min="0.05" max="0.45" step="0.05" value="0.20" style="width: 85px; cursor: pointer;">
+                    <span id="emb-sgns-lr-val" style="font-family: monospace; color: #268bd2; min-width: 34px;">0.20</span>
+                  </label>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; font-family: monospace; font-size: 12px;">
+                  <span>Step: <b id="emb-sgns-step-val" style="color: #073642;">0</b></span>
+                  <span>Loss: <b id="emb-sgns-loss-val" style="color: #cb4b16;">2.77</b></span>
+                </div>
+              </div>
+            </div>
+            <aside class="notes">
+              1. Click "Step 1 Pair" right at step 0: point out center word "apricot", positive context "jam" (green attractive force), and K random negatives like "pizza" / "freeze" (red repulsive force).<br>
+              2. Hit "Train 50 Steps" or "Play" so students watch random points self-organize into fruit/jam vs. savory vs. cold clusters on the 1:1 embedding plane.<br>
+              3. Set Negatives K = 0 and click Reset + Play: prove why removing negative samples causes collapse (all words drift to high positive dot products together)!
+            </aside>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 6: GEOMETRY OF MEANING — ANALOGIES, DRIFT & CREATIVITY            -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h2>Geometry of Meaning</h2>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 28px; text-align: center;">
+              Linear relational offsets, Procrustes drift alignment &amp; measuring human creativity.
+            </blockquote>
+          </section>
+
+          <section>
+            <h3>Semantic Vector Algebra &amp; Analogies</h3>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 22px; text-align: center; padding: 8px 14px;">
+              $\vec{v}_{\text{king}} - \vec{v}_{\text{man}} + \vec{v}_{\text{woman}} \approx \vec{v}_{\text{queen}} \qquad\qquad \hat{w}^* = \argmax_{w \notin \{a,b,c\}} \cos\!\big(\vec{v}_w,\; \vec{v}_b - \vec{v}_a + \vec{v}_c\big)$
+            </blockquote>
+            <svg viewBox="0 0 1080 285" width="1040" style="display: block; margin: 10px auto;">
+              <defs>
+                <marker id="alg-blue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1 L 10 5 L 0 9 z" fill="#268bd2"/>
+                </marker>
+                <marker id="alg-orange" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1 L 10 5 L 0 9 z" fill="#cb4b16"/>
+                </marker>
+                <marker id="alg-green" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1 L 10 5 L 0 9 z" fill="#859900"/>
+                </marker>
+              </defs>
+              <!-- Left side: Gender offset (borderless) -->
+              <line x1="540" y1="16" x2="540" y2="270" stroke="#93a1a1" stroke-width="1.2" stroke-dasharray="5,4"/>
+              <text x="267" y="36" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#268bd2">Relational Gender Subspace</text>
+              <g stroke="#268bd2" stroke-width="3" marker-end="url(#alg-blue)">
+                <line x1="88" y1="145" x2="188" y2="85"/>
+                <line x1="218" y1="185" x2="318" y2="125"/>
+                <line x1="348" y1="225" x2="448" y2="165"/>
+              </g>
+              <line x1="88" y1="145" x2="348" y2="225" stroke="#93a1a1" stroke-width="1.5" stroke-dasharray="5,4"/>
+              <line x1="194" y1="81" x2="454" y2="161" stroke="#93a1a1" stroke-width="1.5" stroke-dasharray="5,4"/>
+              <g font-family="sans-serif" font-size="15" font-weight="bold" fill="#073642">
+                <circle cx="88" cy="145" r="5" fill="#073642"/><text x="72" y="168">man</text>
+                <circle cx="194" cy="81" r="5" fill="#268bd2"/><text x="172" y="70">woman</text>
+                <circle cx="218" cy="185" r="5" fill="#073642"/><text x="195" y="208">uncle</text>
+                <circle cx="324" cy="121" r="5" fill="#268bd2"/><text x="315" y="110">aunt</text>
+                <circle cx="348" cy="225" r="5" fill="#073642"/><text x="332" y="248">king</text>
+                <circle cx="454" cy="161" r="6" fill="#cb4b16"/><text x="434" y="148" fill="#cb4b16">queen</text>
+              </g>
+
+              <!-- Right side: Capital & Plural offsets (borderless) -->
+              <text x="812" y="36" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#859900">Syntax (Plural) &amp; Capitals Compose Cleanly</text>
+              <line x1="650" y1="220" x2="775" y2="200" stroke="#268bd2" stroke-width="3" marker-end="url(#alg-blue)"/>
+              <line x1="650" y1="220" x2="605" y2="120" stroke="#cb4b16" stroke-width="3" marker-end="url(#alg-orange)"/>
+              <line x1="782" y1="199" x2="737" y2="99" stroke="#cb4b16" stroke-width="3" marker-end="url(#alg-orange)"/>
+              <g font-family="sans-serif" font-size="14.5" font-weight="bold" fill="#073642">
+                <circle cx="650" cy="220" r="5" fill="#073642"/><text x="635" y="242">king</text>
+                <circle cx="782" cy="199" r="5" fill="#268bd2"/><text x="772" y="222">queen</text>
+                <circle cx="602" cy="112" r="5" fill="#cb4b16"/><text x="582" y="96">kings</text>
+                <circle cx="734" cy="91" r="5" fill="#cb4b16"/><text x="712" y="78">queens</text>
+              </g>
+              <line x1="875" y1="215" x2="985" y2="170" stroke="#859900" stroke-width="3" marker-end="url(#alg-green)"/>
+              <line x1="875" y1="140" x2="985" y2="95" stroke="#859900" stroke-width="3" marker-end="url(#alg-green)"/>
+              <g font-family="sans-serif" font-size="14.5" font-weight="bold" fill="#073642">
+                <circle cx="875" cy="215" r="5" fill="#073642"/><text x="855" y="238">France</text>
+                <circle cx="991" cy="167" r="5" fill="#859900"/><text x="985" y="190">Paris</text>
+                <circle cx="875" cy="140" r="5" fill="#073642"/><text x="858" y="128">Italy</text>
+                <circle cx="991" cy="92" r="5" fill="#859900"/><text x="985" y="80">Rome</text>
+              </g>
+            </svg>
+            <div class="slide-footer">
+              <a href="https://aclanthology.org/N13-1090/" target="_blank">Mikolov et al. (NAACL 2013): Linguistic Regularities in Continuous Space Word Representations</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Relational Projections &amp; Comparative Degree</h3>
+            <row style="align-items: center; gap: 16px;">
+              <col50 style="text-align: center;">
+                <img src="figures/w2v_relation.png" alt="Gender and nobility relations" style="max-height: 325px; width: 98%; object-fit: contain; margin: 0 auto;">
+                <div style="font-size: 18.5px; color: #073642; margin-top: 4px;"><b>Collinear male/female vectors</b> across family &amp; title pairs</div>
+              </col50>
+              <col50 style="text-align: center;">
+                <img src="figures/w2v_degree.png" alt="Comparative superlative trajectories" style="max-height: 325px; width: 98%; object-fit: contain; margin: 0 auto;">
+                <div style="font-size: 18.5px; color: #073642; margin-top: 4px;"><b>Consistent gamma arcs:</b> base $\to$ comparative $\to$ superlative</div>
+              </col50>
+            </row>
+            <blockquote style="background-color: #eee8d5; width: auto; box-sizing: border-box; font-size: 19px; text-align: center; padding: 6px 14px; margin: 8px 30px 0 95px;">
+              <b>Important Caveat:</b> Distributional embeddings inherit — and can amplify — human cultural &amp; gender stereotypes present in training corpora (<a href="https://arxiv.org/abs/1607.06520" target="_blank">Bolukbasi et al., NeurIPS 2016</a>).
+            </blockquote>
+            <div class="slide-footer">
+              Figures from <a href="https://nlp.stanford.edu/pubs/glove.pdf" target="_blank">Pennington, Socher &amp; Manning (EMNLP 2014)</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Tracking Semantic Drift Across Centuries</h3>
+            <img src="figures/w2v_diachronic.png" alt="Diachronic word vector comparison" style="max-height: 295px; width: auto; margin: 6px auto;">
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 20px; padding: 6px 14px; margin-top: 6px;">
+              <b>Why can't we subtract 1920 and 1990 vectors directly?</b> Each SVD/SGNS run has an arbitrary rotation ($\bm{U}\bm{Q}(\bm{V}\bm{Q})^\top = \bm{U}\bm{V}^\top$)!
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 20.5px; text-align: center; padding: 6px 14px; margin-top: 6px;">
+              <b>Orthogonal Procrustes Alignment:</b> $\;\displaystyle \bm{R}^* = \argmin_{\bm{Q}^\top \bm{Q} = \bm{I}} \big\|\bm{W}^{(t)}\bm{Q} - \bm{W}^{(t+1)}\big\|_F = \bm{U}\bm{V}^\top \quad (\text{via SVD of }\bm{W}^{(t+1)\top}\bm{W}^{(t)})$
+            </blockquote>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1605.09096" target="_blank">Hamilton, Leskovec &amp; Jurafsky (ACL 2016): Diachronic Word Embeddings Reveal Statistical Laws of Semantic Change</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>Statistical Laws of Semantic Change (1850–1990)</h3>
+            <img src="figures/w2v_evolution.png" alt="Diachronic trajectories gay broadcast awful" style="max-height: 315px; width: 92%; margin: 4px auto;">
+            <row style="gap: 12px; margin: 6px 20px 0 70px; width: auto;">
+              <col30 style="width: 32%;">
+                <div class="emb-card" style="border-top: 4px solid #268bd2; font-size: 16.5px; padding: 7px 10px;">
+                  <b>Cultural Shift:</b> <code>gay</code> moves from <em>daft / cheerful</em> (1900s) $\to$ <em>witty / bright</em> (1950s) $\to$ modern identity (1990s).
+                </div>
+              </col30>
+              <col30 style="width: 32%;">
+                <div class="emb-card" style="border-top: 4px solid #859900; font-size: 16.5px; padding: 7px 10px;">
+                  <b>Tech Shift:</b> <code>broadcast</code> shifts from <em>scattering seeds</em> (1850s) $\to$ <em>newspapers</em> $\to$ <em>radio / TV / BBC</em>!
+                </div>
+              </col30>
+              <col30 style="width: 32%;">
+                <div class="emb-card" style="border-top: 4px solid #cb4b16; font-size: 16.5px; padding: 7px 10px;">
+                  <b>Sentiment Reversal:</b> <code>awful</code> turns from <em>solemn majesty</em> (1850s) $\to$ <em>horrible / terrible</em> (1900s+).
+                </div>
+              </col30>
+            </row>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1605.09096" target="_blank">Hamilton, Leskovec &amp; Jurafsky (ACL 2016)</a> · 30M Google Books volumes (1850–1990)
+            </div>
+          </section>
+
+          <section>
+            <h3>Quantifying Creativity in Embedding Space</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 21px; padding: 7px 14px;">
+              <b>Divergent Association Task (DAT):</b> Name $7$ unrelated nouns as semantically far apart as possible!
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 22px; text-align: center; padding: 10px 14px; margin-top: 10px;" class="fragment roll-in">
+              $\displaystyle \text{DAT}\big(\{w_1, \dots, w_7\}\big) = \frac{100}{\binom{7}{2}} \sum_{1 \le i < j \le 7} \Big(1 - \cos\!\big(\vec{v}_{w_i},\, \vec{v}_{w_j}\big)\Big)$
+            </blockquote>
+            <row style="gap: 16px; margin-top: 12px;" class="fragment roll-in">
+              <col50>
+                <div class="emb-card" style="border-left: 5px solid #2aa198; font-size: 19px;">
+                  <b>Validated Psychometric Metric:</b> A 2-minute cosine distance score in GloVe space correlates strongly with classic divergent-thinking creativity tests across ~9,000 participants!
+                </div>
+              </col50>
+              <col50>
+                <div class="emb-card" style="border-left: 5px solid #cb4b16; font-size: 19px;">
+                  <b>Try it live:</b> <a href="https://www.datcreativity.com/" target="_blank">datcreativity.com</a> — most humans score around $75\text{–}82$; pure semantic distance beats subjective grading!
+                </div>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://doi.org/10.1073/pnas.2022340118" target="_blank">Olson et al. (PNAS 2021): Naming unrelated words predicts creativity</a>
+            </div>
+          </section>
+
+          <!-- Interactive Demo 3: Semantic Analogies, Drift & Creativity Explorer -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 2px 0 6px 0; font-size: 38px; line-height: 1.1;">Semantic Analogies, Drift &amp; Creativity Explorer</h3>
+            <div data-prevent-swipe style="position: relative; z-index: 25; display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 auto; user-select: none;">
+
+              <div id="emb-analogy-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 5px 14px; box-sizing: border-box; font-size: 13.5px; color: #073642; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                Test vector algebra parallelograms (a : b :: c : ?), inspect Procrustes-aligned historical drift, or play the DAT Creativity Challenge!
+              </div>
+
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="emb-analogy-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: #fdf6e3; box-sizing: border-box; cursor: pointer;"></canvas>
+              </div>
+
+              <div data-prevent-swipe style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 13px; color: #586e75; gap: 10px; white-space: nowrap;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <label><b>Mode:</b>
+                    <select id="emb-an-mode" style="padding: 2px 6px; border: 1px solid #268bd2; border-radius: 4px; background: #fff; font-size: 12px;">
+                      <option value="analogy" selected>Analogy Parallelogram (3CosAdd)</option>
+                      <option value="drift">Diachronic Drift (1850 → 1990)</option>
+                      <option value="dat">DAT Creativity Challenge (PNAS 2021)</option>
+                    </select>
+                  </label>
+                  <label id="emb-an-preset-wrap"><b>Query:</b>
+                    <select id="emb-an-preset" style="padding: 2px 6px; border: 1px solid #859900; border-radius: 4px; background: #fff; font-size: 12px;">
+                      <option value="king" selected>man : woman :: king : ?</option>
+                      <option value="capitals">France : Paris :: Italy : ?</option>
+                      <option value="degree">slow : slower :: strong : ?</option>
+                      <option value="plural">king : kings :: queen : ?</option>
+                      <option value="culinary">apricot : sweet :: spinach : ?</option>
+                    </select>
+                  </label>
+                  <label id="emb-an-era-wrap" style="display: none;"><b>Era:</b>
+                    <input type="range" id="emb-an-era" min="0" max="2" step="1" value="2" style="width: 90px; cursor: pointer;">
+                    <span id="emb-an-era-val" style="font-family: monospace; color: #cb4b16; min-width: 44px;">1990s</span>
+                  </label>
+                  <button id="emb-an-action" style="cursor: pointer; padding: 3px 9px; border: none; border-radius: 4px; background: #2aa198; color: #fdf6e3; font-weight: bold; font-size: 12px;">Auto Optimal</button>
+                  <button id="emb-an-reset" style="cursor: pointer; padding: 3px 9px; border: none; border-radius: 4px; background: #93a1a1; color: #fdf6e3; font-weight: bold; font-size: 12px;">Reset</button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; font-family: monospace; font-size: 12px;">
+                  <span>Result: <b id="emb-an-res-val" style="color: #cb4b16;">queen (cos=0.97)</b></span>
+                </div>
+              </div>
+            </div>
+            <aside class="notes">
+              1. Analogy mode: show how b - a + c forms a parallelogram on the 1:1 PCA plane while ranking top-5 cosine candidates in full 8D embedding space.<br>
+              2. Switch Mode to "Diachronic Drift": scrub Era from 1850s → 1900s → 1990s to watch broadcast, awful, and gay migrate across semantic neighborhoods.<br>
+              3. Switch Mode to "DAT Creativity Challenge": click words on the map to maximize average pairwise cosine distance (or hit Auto Optimal to see how spreading across opposite poles scores ~90+).
+            </aside>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 7: SUBWORDS, CONTEXTUAL LLMS & FRONTIER EMBEDDINGS (2016 - 2026)  -->
+        <!-- ========================================================================= -->
+        <section>
+          <section>
+            <h2>Modern &amp; Contextual Embeddings</h2>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 28px; text-align: center;">
+              From static word tables to BPE subwords, self-attention, InfoNCE &amp; Matryoshka spaces (2016–2026).
+            </blockquote>
+          </section>
+
+          <section>
+            <h3>Why Static Word Tables Hit a Ceiling</h3>
+            <row style="gap: 18px; align-items: stretch; margin-top: 8px;">
+              <col50>
+                <div class="emb-card" style="height: 100%; border-top: 5px solid #dc322f;">
+                  <div style="font-weight: bold; color: #dc322f; font-size: 21px; margin-bottom: 8px;">1. Out-of-Vocabulary (OOV) Blindness</div>
+                  <div style="font-size: 19px; color: #073642; line-height: 1.4;">
+                    Rare inflections (<code>"unbelievably"</code>), biomedical compounds, typos, and code identifiers fall into a single <code>&lt;UNK&gt;</code> bucket — and static tables ignore shared roots like <code>play / playing / replay</code>.
+                  </div>
+                  <img src="figures/wordspace.png" alt="Biomedical clinical terminology" style="max-height: 190px; width: auto; margin: 10px auto 0 auto; border-radius: 4px;">
+                </div>
+              </col50>
+              <col50>
+                <div class="emb-card" style="height: 100%; border-top: 5px solid #268bd2;">
+                  <div style="font-weight: bold; color: #268bd2; font-size: 21px; margin-bottom: 8px;">2. Polysemy Collapse</div>
+                  <div style="font-size: 19px; color: #073642; line-height: 1.4;">
+                    Static Word2Vec/GloVe assigns <b>one fixed row</b> $\vec{v}_{\text{bank}}$ regardless of sentence context!
+                  </div>
+                  <svg viewBox="0 0 460 205" width="450" style="display: block; margin: 10px auto 0 auto;">
+                    <circle cx="95" cy="98" r="46" fill="#2aa198" opacity="0.18" stroke="#2aa198" stroke-dasharray="4,3"/>
+                    <text x="95" y="42" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#2aa198">River / Nature</text>
+                    <text x="95" y="102" text-anchor="middle" font-family="monospace" font-size="12.5" fill="#073642">river, mud</text>
+                    <circle cx="365" cy="98" r="46" fill="#cb4b16" opacity="0.18" stroke="#cb4b16" stroke-dasharray="4,3"/>
+                    <text x="365" y="42" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#cb4b16">Finance</text>
+                    <text x="365" y="102" text-anchor="middle" font-family="monospace" font-size="12.5" fill="#073642">loan, cash</text>
+                    <line x1="145" y1="98" x2="315" y2="98" stroke="#586e75" stroke-width="2" stroke-dasharray="4,3"/>
+                    <circle cx="230" cy="98" r="10" fill="#dc322f"/>
+                    <text x="230" y="130" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#dc322f">static "bank"</text>
+                    <text x="230" y="168" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#586e75">Forced to average both incompatible senses!</text>
+                  </svg>
+                </div>
+              </col50>
+            </row>
+          </section>
+
+          <section>
+            <h3>Subwords: FastText $n$-Grams &amp; Byte-Pair Encoding</h3>
+            <row style="gap: 18px; align-items: stretch; margin-top: 8px;">
+              <col50>
+                <div class="emb-card" style="height: 100%; border-left: 5px solid #859900;">
+                  <div style="font-weight: bold; color: #859900; font-size: 21px; margin-bottom: 6px;">1. FastText: Character $n$-Gram Sums (2017)</div>
+                  <blockquote style="background-color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 20px; text-align: center; padding: 6px 8px; margin: 6px 0;">
+                    $\displaystyle \vec{v}_w = \sum_{g \in {\cal G}(w)} \vec{z}_g$
+                  </blockquote>
+                  <div style="font-size: 18.5px; color: #073642; line-height: 1.4;">
+                    Represent <code>"apricot"</code> by its character $3\text{–}6$-grams: <code>&lt;ap</code>, <code>apr</code>, <code>pri</code>, <code>ric</code>, <code>ico</code>, <code>cot</code>, <code>ot&gt;</code>.<br><br>
+                    Shares morphological subwords across words and synthesizes vectors for unseen OOV words!
+                  </div>
+                </div>
+              </col50>
+              <col50>
+                <div class="emb-card" style="height: 100%; border-left: 5px solid #268bd2;">
+                  <div style="font-weight: bold; color: #268bd2; font-size: 21px; margin-bottom: 6px;">2. Byte-Pair Encoding / BPE (LLMs)</div>
+                  <div style="font-size: 18.5px; color: #073642; line-height: 1.4;">
+                    Start from raw bytes/characters and greedily merge the most frequent adjacent pair until reaching $|V| \approx 32\text{K–}256\text{K}$:<br><br>
+                    <code>un + believ + ably</code>, <code>token + ization</code>.<br><br>
+                    <b>Zero <code>&lt;UNK&gt;</code> tokens!</b> Universal input vocabulary of GPT, Llama, Claude &amp; Gemini.
+                  </div>
+                </div>
+              </col50>
+            </row>
+            <div class="slide-footer">
+              <a href="https://aclanthology.org/Q17-1010/" target="_blank">Bojanowski et al. (TACL 2017): FastText</a> ·
+              <a href="https://aclanthology.org/P16-1162/" target="_blank">Sennrich et al. (ACL 2016): Neural Machine Translation of Rare Words with Subword Units (BPE)</a>
+            </div>
+          </section>
+
+          <section>
+            <h3>From Static Rows to Contextual Self-Attention</h3>
+            <blockquote style="background-color: #93a1a1; color: #fdf6e3; width: 100%; box-sizing: border-box; font-size: 20px; padding: 6px 14px;">
+              Every modern LLM begins with <b>Word2Vec-style lookup</b> $\vec{x}_i^{(0)} = \bm{W}_e^\top \vec{w}_i + \vec{p}_i$ — then remixes context dynamically!
+            </blockquote>
+            <blockquote style="background-color: #eee8d5; width: 100%; box-sizing: border-box; font-size: 21px; text-align: center; padding: 8px 12px; margin-top: 8px;">
+              $\displaystyle \vec{h}_i = \sum_{j=1}^{T} \underbrace{\operatorname{softmax}_j\!\left(\frac{(\bm{W}_Q \vec{x}_i)^\top (\bm{W}_K \vec{x}_j)}{\sqrt{d_k}}\right)}_{\text{context-dependent similarity } \alpha_{ij}} \bm{W}_V \vec{x}_j, \qquad P(w_{\text{next}} \mid \vec{h}_T) = \operatorname{softmax}\!\big(\underbrace{\bm{W}_e}_{\text{weight-tied!}} \vec{h}_T\big)$
+            </blockquote>
+            <svg viewBox="0 0 1060 205" width="1020" style="display: block; margin: 8px auto;">
+              <!-- Static bank -> two contextual branches (borderless fills) -->
+              <rect x="30" y="72" width="170" height="58" rx="6" fill="#eee8d5"/>
+              <rect x="30" y="72" width="5" height="58" rx="2" fill="#dc322f"/>
+              <text x="115" y="98" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#dc322f">Layer 0: x_bank</text>
+              <text x="115" y="118" text-anchor="middle" font-family="sans-serif" font-size="12.5" fill="#586e75">Static Wₑ row (ambiguous)</text>
+
+              <line x1="204" y1="90" x2="292" y2="56" stroke="#2aa198" stroke-width="2.8" marker-end="url(#w2v-arr)"/>
+              <line x1="204" y1="112" x2="292" y2="148" stroke="#cb4b16" stroke-width="2.8" marker-end="url(#w2v-arr)"/>
+
+              <rect x="300" y="24" width="420" height="62" rx="6" fill="#eee8d5"/>
+              <rect x="300" y="24" width="5" height="62" rx="2" fill="#2aa198"/>
+              <text x="510" y="50" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#2aa198">"kayak near the muddy river bank"</text>
+              <text x="510" y="72" text-anchor="middle" font-family="monospace" font-size="12.5" fill="#073642">α(bank, river) = 0.72 → h_bank ∈ Nature</text>
+
+              <rect x="300" y="116" width="420" height="62" rx="6" fill="#eee8d5"/>
+              <rect x="300" y="116" width="5" height="62" rx="2" fill="#cb4b16"/>
+              <text x="510" y="142" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#cb4b16">"deposit cash at the central bank"</text>
+              <text x="510" y="164" text-anchor="middle" font-family="monospace" font-size="12.5" fill="#073642">α(bank, cash) = 0.68 → h_bank ∈ Finance</text>
+
+              <rect x="748" y="34" width="282" height="134" rx="6" fill="#fbeec2"/>
+              <rect x="748" y="34" width="282" height="4" rx="2" fill="#b58900"/>
+              <text x="889" y="64" text-anchor="middle" font-family="sans-serif" font-size="14.5" font-weight="bold" fill="#073642">Full Circle to Word2Vec!</text>
+              <text x="889" y="92" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#586e75">• RoPE rotates Q &amp; K by position</text>
+              <text x="889" y="116" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#586e75">• Tied unembedding W_d = Wₑᵀ</text>
+              <text x="889" y="140" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#586e75">• Predicts next token via cross-entropy</text>
+            </svg>
+            <div class="slide-footer">
+              <a href="https://arxiv.org/abs/1706.03762" target="_blank">Vaswani et al. (2017): Attention Is All You Need</a> ·
+              <a href="https://arxiv.org/abs/1802.05365" target="_blank">ELMo (2018)</a> ·
+              <a href="https://arxiv.org/abs/1810.04805" target="_blank">BERT (2019)</a>
+            </div>
+          </section>
+
+          <!-- Interactive Demo 4: Subword BPE & Contextual Polysemy Studio -->
+          <section data-vertical-align-top>
+            <h3 style="margin: 2px 0 6px 0; font-size: 38px; line-height: 1.1;">Subword BPE &amp; Contextual Polysemy Studio</h3>
+            <div data-prevent-swipe style="position: relative; z-index: 25; display: flex; flex-direction: column; align-items: center; width: 1180px; margin: 0 auto; user-select: none;">
+
+              <div id="emb-mod-banner" style="width: 100%; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 8px 8px 0 0; padding: 5px 14px; box-sizing: border-box; font-size: 13.5px; color: #073642; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                Step through Byte-Pair Encoding merges with zero &lt;UNK&gt;, or watch Self-Attention split polysemous words ("bank", "apple", "cell") by context!
+              </div>
+
+              <div style="position: relative; width: 100%; height: 450px; box-sizing: border-box;">
+                <canvas id="emb-modern-canvas" width="1180" height="450" style="display: block; width: 100%; height: 100%; border-left: 1px solid #93a1a1; border-right: 1px solid #93a1a1; background: #fdf6e3; box-sizing: border-box; cursor: pointer;"></canvas>
+              </div>
+
+              <div data-prevent-swipe style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(253, 246, 227, 0.96); border: 1px solid #93a1a1; border-radius: 0 0 8px 8px; padding: 6px 14px; box-sizing: border-box; font-size: 13px; color: #586e75; gap: 10px; white-space: nowrap;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <label><b>Mode:</b>
+                    <select id="emb-mod-mode" style="padding: 2px 6px; border: 1px solid #268bd2; border-radius: 4px; background: #fff; font-size: 12px;">
+                      <option value="polysemy" selected>Contextual Self-Attention (Polysemy)</option>
+                      <option value="bpe">BPE Subword Merge Stepper</option>
+                    </select>
+                  </label>
+                  <label id="emb-mod-word-wrap"><b>Target:</b>
+                    <select id="emb-mod-word" style="padding: 2px 6px; border: 1px solid #859900; border-radius: 4px; background: #fff; font-size: 12px;">
+                      <option value="bank" selected>"bank" (river vs. loan)</option>
+                      <option value="apple">"apple" (fruit vs. iPhone)</option>
+                      <option value="cell">"cell" (biology vs. battery)</option>
+                    </select>
+                  </label>
+                  <label id="emb-mod-bpe-wrap" style="display: none;"><b>Phrase:</b>
+                    <select id="emb-mod-phrase" style="padding: 2px 6px; border: 1px solid #859900; border-radius: 4px; background: #fff; font-size: 12px;">
+                      <option value="apricot" selected>"unbelievably sweet apricot jam"</option>
+                      <option value="morph">"playing replay player plays"</option>
+                      <option value="bio">"neuroimaging tokenization"</option>
+                    </select>
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 5px;">
+                    <b id="emb-mod-slider-lbl">Layer Depth:</b>
+                    <input type="range" id="emb-mod-slider" min="0" max="4" step="1" value="3" style="width: 115px; cursor: pointer;">
+                    <span id="emb-mod-slider-val" style="font-family: monospace; color: #cb4b16; min-width: 34px;">L=3</span>
+                  </label>
+                  <button id="emb-mod-toggle" style="cursor: pointer; padding: 3px 9px; border: none; border-radius: 4px; background: #2aa198; color: #fdf6e3; font-weight: bold; font-size: 12px;">Compare Both</button>
+                  <button id="emb-mod-reset" style="cursor: pointer; padding: 3px 9px; border: none; border-radius: 4px; background: #93a1a1; color: #fdf6e3; font-weight: bold; font-size: 12px;">Reset</button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; font-family: monospace; font-size: 12px;">
+                  <span>State: <b id="emb-mod-stat-val" style="color: #268bd2;">Split cos=0.22</b></span>
+                </div>
+              </div>
+            </div>
+            <aside class="notes">
+              1. Contextual mode at Layer L=0: both occurrences of "bank" sit on top of one another at the static midpoint (cosine=1.00 — polysemy collapse!).<br>
+              2. Drag Layer Depth from 0 → 4: self-attention weights α pull the green token into the Nature/River basin and the orange token into the Finance basin!<br>
+              3. Switch Mode to "BPE Subword Merge Stepper": scrub Merge Steps 0..10 to watch raw characters fuse into frequent stems and suffixes ("un", "believ", "ably", "apricot") with zero &lt;UNK&gt;.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Embeddings Across Frontier AI (2020–2026)</h3>
+            <row style="gap: 16px; align-items: stretch; margin-top: 10px;">
+              <col30 style="width: 32%;">
+                <div class="emb-card" style="height: 300px; border-top: 5px solid #268bd2;">
+                  <div style="font-weight: bold; color: #268bd2; font-size: 20.5px; margin-bottom: 8px;">1. Contrastive &amp; RAG (InfoNCE)</div>
+                  <div style="font-size: 18px; color: #073642; line-height: 1.38;">
+                    <b>CLIP</b> &amp; dense <b>RAG</b> encoders generalize SGNS softmax to whole sentences &amp; images:<br>
+                    $\log \dfrac{\exp(\text{sim}(\vec{q},\vec{k}^+)/\tau)}{\sum_j \exp(\text{sim}(\vec{q},\vec{k}_j)/\tau)}$<br><br>
+                    <span style="color: #586e75; font-size: 16px;">Radford et al. (ICML 2021)</span>
+                  </div>
+                </div>
+              </col30>
+              <col30 style="width: 32%;">
+                <div class="emb-card" style="height: 300px; border-top: 5px solid #859900;">
+                  <div style="font-weight: bold; color: #859900; font-size: 20.5px; margin-bottom: 8px;">2. Matryoshka Embeddings</div>
+                  <div style="font-size: 18px; color: #073642; line-height: 1.38;">
+                    Train nested prefix dimensions $d \in \{64, 128, 512, 3072\}$ simultaneously — restoring <b>SVD's coarse-to-fine truncation</b> for $10\times$ faster vector DB search!<br><br>
+                    <span style="color: #586e75; font-size: 16px;">Kusupati et al. (NeurIPS 2022)</span>
+                  </div>
+                </div>
+              </col30>
+              <col30 style="width: 32%;">
+                <div class="emb-card" style="height: 300px; border-top: 5px solid #cb4b16;">
+                  <div style="font-weight: bold; color: #cb4b16; font-size: 20.5px; margin-bottom: 8px;">3. Multimodal &amp; Bio Tokens</div>
+                  <div style="font-size: 18px; color: #073642; line-height: 1.38;">
+                    <b>ViT</b> patch stems (Lecture 21), discrete audio RVQ codes, and protein embeddings (<b>ESM-2/3</b>) where amino-acid context recovers 3D structure!<br><br>
+                    <span style="color: #586e75; font-size: 16px;">Lin et al. (Science 2023)</span>
+                  </div>
+                </div>
+              </col30>
+            </row>
+            <alert style="display: block; font-size: 22px; margin: 14px 30px 0 95px;">
+              Every modern foundation model — text, vision, audio, or biology — begins by embedding discrete tokens into geometry!
+            </alert>
+          </section>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SECTION 8: TAKE HOME POINTS                                               -->
+        <!-- ========================================================================= -->
+        <section>
+          <section data-background="figures/w2v_arrival_ft.png" data-background-size="contain">
+            <div style="background: rgba(253, 246, 227, 0.94); border-radius: 10px; padding: 16px 26px; box-shadow: 0 6px 24px rgba(0,43,54,0.18);">
+              <h3 style="margin-top: 0;">Take Home Points</h3>
+              <ul style="font-size: 21.5px; line-height: 1.38; text-align: left; margin-left: 22px;">
+                <li class="fragment" data-fragment-index="0">
+                  <b>Distributional Semantics:</b> Rigid rule definitions break on real categories (Labov, Wittgenstein); empirical meaning emerges from context co-occurrence (<em>"meaning is use"</em>).
+                </li>
+                <li class="fragment" data-fragment-index="1" style="margin-top: 6px;">
+                  <b>From Orthogonal One-Hots to PPMI &amp; SVD:</b> TF-IDF and PPMI suppress stop-word &amp; boilerplate dominance; truncated SVD and GloVe compress ratios into unit-normalized cosine spaces.
+                </li>
+                <li class="fragment" data-fragment-index="2" style="margin-top: 6px;">
+                  <b>Word2Vec &amp; SGNS:</b> A context-predicting linear autoencoder ($\bm{W}_e, \bm{W}_d$) with $K$ logistic negative samples cuts $O(|V|\cdot d)$ softmax to $O((K+1)d)$ while implicitly factoring shifted PMI!
+                </li>
+                <li class="fragment" data-fragment-index="3" style="margin-top: 6px;">
+                  <b>Rich Emergent Geometry:</b> Self-supervised vectors support linear analogies, Procrustes-aligned semantic drift, creativity scoring (DAT), and strong warm-starts over BoW.
+                </li>
+                <li class="fragment" data-fragment-index="4" style="margin-top: 6px;">
+                  <b>Modern Token Spaces:</b> BPE eliminates OOVs, self-attention disambiguates polysemy, and InfoNCE + Matryoshka embeddings power LLMs, RAG, CLIP, and scientific foundation models.
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/verticator/verticator.js"></script>
+    <link rel="stylesheet" href="plugin/verticator/verticator.css">
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/math/math.js"></script>
+    <script src="plugin/chalkboard/plugin.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/fullscreen/fullscreen.js"></script>
+    <script src="plugin/menu/menu.js"></script>
+
+    <script>
+      Reveal.initialize({
+        hash: true,
+        width: 1200,
+        height: 700,
+        margin: 0.05,
+        minScale: 0.01,
+        maxScale: 4.0,
+        center: true,
+        controls: false,
+        keyboard: true,
+        overview: true,
+        transition: 'slide',
+        transitionSpeed: 'slow',
+
+        menu: {
+          themes: false,
+          openSlideNumber: true,
+          openButton: false,
+        },
+
+        chalkboard: {
+          boardmarkerWidth: 1,
+          chalkWidth: 2,
+          chalkEffect: 1,
+          toggleNotesButton: false,
+          toggleChalkboardButton: false,
+          slideWidth: Reveal.width,
+          slideHeight: Reveal.height,
+          readOnly: false,
+          theme: "blackboard",
+          eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30 },
+        },
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+          config: 'TeX-AMS_SVG-full',
+          TeX: {
+            Macros: {
+              RR: '\\mathbb{R}',
+              PP: '\\mathbb{P}',
+              EE: '\\mathbb{E}',
+              NN: '\\mathbb{N}',
+              vth: '\\vec{\\theta}',
+              loss: '{\\cal l}',
+              hclass: '{\\cal H}',
+              CD: '{\\cal D}',
+              def: '\\stackrel{\\text{def}}{=}',
+              pag: ['\\text{pa}_{{\\cal G}^{#1}}(#2)', 2],
+              vec: ['\\boldsymbol{\\mathbf #1}', 1],
+              set: ['\\left\\{#1 \\; : \\; #2\\right\\}', 2],
+              bm: ['\\boldsymbol{\\mathbf #1}', 1],
+              argmin: ['\\operatorname*{arg\\,min\\,}'],
+              argmax: ['\\operatorname*{arg\\,max\\,}'],
+              prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+              fragment: ["\\class{fragment}{\\cssId{fragment-index-#1}{#2}}", 2]
+            },
+            loader: { load: ['[tex]/color', '[tex]/cancel'] },
+            extensions: ["color.js", "cancel.js"],
+            tex: { packages: { '[+]': ['color', 'cancel'] } },
+            svg: {
+              fontCache: 'global'
+            }
+          },
+          AssistiveMML: { disabled: true }
+        },
+
+        plugins: [ Verticator, RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu ],
+      });
+
+      function syncMathFragments() {
+        if (!window.MathJax || !MathJax.Hub) {
+          setTimeout(syncMathFragments, 100);
+          return;
+        }
+        const applyFragmentIndices = function() {
+          document.querySelectorAll('.MJX_Assistive_MathML .fragment').forEach(function(el) {
+            el.classList.remove('fragment');
+          });
+          document.querySelectorAll('[id^="fragment-index-"]').forEach(function(el) {
+            const m = el.id.match(/^fragment-index-(\d+)$/);
+            if (m) {
+              el.setAttribute('data-fragment-index', m[1]);
+            }
+          });
+          if (window.Reveal && Reveal.isReady && Reveal.isReady()) {
+            Reveal.sync();
+          }
+        };
+        MathJax.Hub.Queue(applyFragmentIndices);
+        Reveal.on('slidechanged', function() {
+          MathJax.Hub.Queue(applyFragmentIndices);
+        });
+      }
+      syncMathFragments();
+
+      Reveal.configure({ fragments: true });
+      Reveal.configure({ slideNumber: true });
+      Reveal.configure({ slideNumber: 'c / t' });
+      Reveal.addEventListener('darkside', function() {
+        document.getElementById('theme').setAttribute('href', 'dist/theme/aml_dark.css');
+      }, false);
+      Reveal.addEventListener('brightside', function() {
+        document.getElementById('theme').setAttribute('href', 'dist/theme/aml.css');
+      }, false);
+    </script>
+
+    <style type="text/css">
+      #header-left {
+        position: absolute;
+        top: 0%;
+        left: 0%;
+      }
+      #header-right {
+        position: absolute;
+        top: 0%;
+        right: 0%;
+      }
+      #footer-left {
+        position: absolute;
+        bottom: 0%;
+        left: 0%;
+      }
+    </style>
+
+    <div id="hidden" style="display:none;">
+      <div id="header">
+        <div id="header-left"><h4>CS8850</h4></div>
+        <div id="header-right"><h4>Advanced Machine Learning</h4></div>
+        <div id="footer-left">
+          <img style="border:0; box-shadow: 0px 0px 0px rgba(150, 150, 255, 1);" width="200"
+               src="figures/valentino.png" alt="robot learning">
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var header = $('#header').html();
+      if (window.location.search.match(/print-pdf/gi)) {
+        Reveal.addEventListener('ready', function() {
+          $('.slide-background').append(header);
+        });
+      } else {
+        $('div.reveal').append(header);
+      }
+    </script>
+
+    <!-- Interactive Demonstrations for Lecture 22 -->
+    <script src="js/embedding_demos.js"></script>
   </body>
 </html>
